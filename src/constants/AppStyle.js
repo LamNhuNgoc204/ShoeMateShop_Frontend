@@ -25,6 +25,4 @@ const appst = StyleSheet.create({
     height: 24,
   },
 });
-
-
 export default appst;
