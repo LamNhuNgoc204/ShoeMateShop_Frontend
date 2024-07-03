@@ -7,6 +7,7 @@ export const itCart = StyleSheet.create({
   container: {
     width: '100%',
     alignItems: 'center',
+    paddingBottom: spacing.xm,
   },
   viewContainer: {
     width: '90%',
@@ -15,13 +16,13 @@ export const itCart = StyleSheet.create({
     borderRadius: 8,
     //ios
     shadowOpacity: 0.08,
-    shadowOffset:{
-        width: 0,
-        height: 20
+    shadowOffset: {
+      width: 0,
+      height: 20,
     },
     shadowRadius: 10,
     // android
-    elevation: 5
+    elevation: 5,
   },
   image: {
     width: 83,
@@ -54,9 +55,12 @@ export const itCart = StyleSheet.create({
     fontFamily: fonts.pp_regular,
   },
   //Delete
-  deleteContainer:{
+  deleteContainer: {
     backgroundColor: 'red',
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+    width: 58,
+    borderRadius: 8,
+    marginRight: spacing.md,
+  },
 });
