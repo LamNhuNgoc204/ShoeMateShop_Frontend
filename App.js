@@ -1,16 +1,17 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import { fonts } from './src/constants/fonts'
-import { colors } from './src/constants/colors'
-import appst from './src/constants/AppStyle'
-import OnBoardScreen from './src/screens/OnBoardScreen'
+import {KeyboardAvoidingView} from 'react-native';
+import React from 'react';
+import appst from './src/constants/AppStyle';
+import MainNav from './src/routes';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const App = () => {
   return (
-    <View style={appst.container}>
-      <OnBoardScreen/>
-    </View>
-  )
-}
+    <GestureHandlerRootView style={{flex: 1}}>
+      <KeyboardAvoidingView style={appst.container}>
+        <MainNav />
+      </KeyboardAvoidingView>
+    </GestureHandlerRootView>
+  );
+};
 
-export default App
+export default App;
