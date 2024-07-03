@@ -1,0 +1,54 @@
+import {View, Text, FlatList, TouchableOpacity, Image} from 'react-native';
+import React from 'react';
+import appst from '../../constants/AppStyle';
+import {cartst} from './style';
+import ItemCart from '../../items/CartItem/ItemCart';
+import {spacing} from '../../constants';
+
+const CartScreen = () => {
+  return (
+    <View style={[appst.container, cartst.container]}>
+      <View style={{width: '100%', height: 50, backgroundColor: 'blue'}} />
+      <View style={cartst.viewBody}>
+        <Text style={cartst.text1}>3 item</Text>
+        <FlatList
+          style={cartst.flat}
+          data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+          renderItem={({item}) => <ItemCart item={item} />}
+          extraData={item => item.id}
+          ItemSeparatorComponent={<View style={{marginBottom: spacing.sm}} />}
+        />
+      </View>
+      <View style={cartst.viewFooter}>
+        <View style={appst.rowCenter}>
+          <Text style={cartst.text2}>Subtotal</Text>
+          <Text style={cartst.text3}>$753.95</Text>
+        </View>
+        <View style={[appst.rowCenter, cartst.borderBottom]}>
+          <Text style={cartst.text2}>Delivery</Text>
+          <Text style={cartst.text3}>$60.2</Text>
+        </View>
+        <View style={[appst.rowCenter, cartst.view1]}>
+          <Text style={cartst.text4}>Total Cost</Text>
+          <Text style={cartst.text5}>$814.15</Text>
+        </View>
+        <View style={[appst.rowCenter]}>
+          <View style={appst.rowCenter}>
+            <TouchableOpacity>
+              <Image
+                style={appst.icon24}
+                source={require('../../assets/icons/icon_check.png')}
+              />
+            </TouchableOpacity>
+            <Text style={cartst.text6}>All products</Text>
+          </View>
+          <TouchableOpacity style={cartst.btCheckout}>
+            <Text style={cartst.textTouch}>Checkout</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
+};
+
+export default CartScreen;
