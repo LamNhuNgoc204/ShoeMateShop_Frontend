@@ -26,4 +26,5 @@ const appst = StyleSheet.create({
   },
 });
 
+
 export default appst;
