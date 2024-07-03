@@ -7,7 +7,8 @@ const { width, height } = Dimensions.get('window');
 
 const onBoardStyle = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: colors.background_onboard
     },
     onboardBg: {
         width,
