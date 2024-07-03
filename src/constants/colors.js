@@ -15,3 +15,4 @@ export const colors = {
   white_EC: '#ECECEC',
   white_D8: '#D8D8D8',
 };
+
