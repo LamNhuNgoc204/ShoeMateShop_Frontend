@@ -15,7 +15,7 @@ const buttonStyle = StyleSheet.create({
         fontSize: 14,
         fontFamily: fonts.rlw_bold,
         fontWeight: 'semibold',
-        color:  colors.text_black
+        color:  colors.text_black2B
     }
 })
 
