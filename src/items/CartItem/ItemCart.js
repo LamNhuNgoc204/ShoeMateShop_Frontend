@@ -1,31 +1,49 @@
 import {View, Text, TouchableOpacity, Image} from 'react-native';
-import React, {useState} from 'react';
+import React, {useRef} from 'react';
 import {itCart} from './style';
 import appst from '../../constants/AppStyle';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 
-const ItemCart = () => {
-  const [isSwiping, setIsSwiping] = useState(false);
+const ItemCart = ({
+  item,
+  currentlyOpenSwipeable,
+  setCurrentlyOpenSwipeable,
+}) => {
+  const swipeableRef = useRef(null);
 
   const rightSwipeable = () => {
-    if (isSwiping) {
-      return (
-        <View style={itCart.deleteContainer}>
-          <TouchableOpacity onPress={() => console.log('Delete success')}>
-            <Text style={itCart.deleteText}>Delete</Text>
-          </TouchableOpacity>
-        </View>
-      );
-    } else {
-      return null;
-    }
+    return (
+      <View style={itCart.deleteContainer}>
+        <TouchableOpacity onPress={() => console.log('Delete success')}>
+          <Image
+            style={appst.icon24}
+            source={require('../../assets/icons/cart_del.png')}
+          />
+        </TouchableOpacity>
+      </View>
+    );
   };
 
   return (
     <Swipeable
+      ref={swipeableRef}
       renderRightActions={rightSwipeable}
-      onSwipeableOpen={() => setIsSwiping(true)}
-      onSwipeableClose={() => setIsSwiping(false)}>
+      onSwipeableOpen={() => {
+        console.log('Swipeable opened');
+        if (
+          currentlyOpenSwipeable &&
+          currentlyOpenSwipeable !== swipeableRef.current
+        ) {
+          currentlyOpenSwipeable.close();
+        }
+        setCurrentlyOpenSwipeable(swipeableRef.current);
+      }}
+      onSwipeableClose={() => {
+        console.log('Swipeable closed');
+        if (currentlyOpenSwipeable === swipeableRef.current) {
+          setCurrentlyOpenSwipeable(null);
+        }
+      }}>
       <View style={itCart.container}>
         <View style={[itCart.viewContainer, appst.rowStart]}>
           <TouchableOpacity>

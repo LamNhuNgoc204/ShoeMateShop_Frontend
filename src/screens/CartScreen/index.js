@@ -1,11 +1,13 @@
 import {View, Text, FlatList, TouchableOpacity, Image} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import appst from '../../constants/AppStyle';
 import {cartst} from './style';
 import ItemCart from '../../items/CartItem/ItemCart';
 import {spacing} from '../../constants';
 
 const CartScreen = () => {
+  const [currentlyOpenSwipeable, setCurrentlyOpenSwipeable] = useState(null);
+
   return (
     <View style={[appst.container, cartst.container]}>
       <View style={{width: '100%', height: 50, backgroundColor: 'blue'}} />
@@ -14,9 +16,16 @@ const CartScreen = () => {
         <FlatList
           style={cartst.flat}
           data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
-          renderItem={({item}) => <ItemCart item={item} />}
+          renderItem={({item}) => (
+            <ItemCart
+              item={item}
+              currentlyOpenSwipeable={currentlyOpenSwipeable}
+              setCurrentlyOpenSwipeable={setCurrentlyOpenSwipeable}
+            />
+          )}
           extraData={item => item.id}
           ItemSeparatorComponent={<View style={{marginBottom: spacing.sm}} />}
+          showsVerticalScrollIndicator={false}
         />
       </View>
       <View style={cartst.viewFooter}>
