@@ -2,11 +2,13 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import { fonts } from './src/constants/fonts'
 import { colors } from './src/constants/colors'
+import appst from './src/constants/AppStyle'
+import OnBoardScreen from './src/screens/OnBoardScreen'
 
 const App = () => {
   return (
-    <View style={{backgroundColor: colors.background_primary}}>
-      <Text style={{fontFamily: fonts.rlw_Italic, fontSize: 20}}>App</Text>
+    <View style={appst.container}>
+      <OnBoardScreen/>
     </View>
   )
 }
