@@ -6,13 +6,14 @@ import CartScreen from '../screens/CartScreen';
 import HomeScreen from '../screens/HomeScreen';
 import CheckOutScreen from '../screens/CheckoutScreen';
 import ChooseAddress from '../screens/Address/ChooseAddress';
+import FavoriteScreen from '../screens/FavoriteScreen';
 
 const Stack = createNativeStackNavigator();
 
 const StackNav = () => {
   return (
     <Stack.Navigator
-      initialRouteName="HomeScreen"
+      initialRouteName="FavoriteScreen"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="SplashScreen" component={SplashScreen} />
       <Stack.Screen name="OnBoardScreen" component={OnBoardScreen} />
@@ -20,6 +21,7 @@ const StackNav = () => {
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="CheckOutScreen" component={CheckOutScreen} />
       <Stack.Screen name="ChooseAddress" component={ChooseAddress} />
+      <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} />
     </Stack.Navigator>
   );
 };
