@@ -17,12 +17,12 @@ export const colors = {
   background_onboard: '#1483C2',
   white_EC: '#ECECEC',
   white_D8: '#D8D8D8',
-<<<<<<< HEAD
   light_blue: '#E3EEF3',
   light_pink: "#FF8282"
-=======
   colorC8C7C7: '#C8C7C7',
   black: '#000'
->>>>>>> e30ff4beac84de3465de1250cb2fa646579879e4
+  colorF3F6FF: '#F3F6FF',
+  color05E444: '#05E444',
+  color95989A: '#95989A'
 };
 
