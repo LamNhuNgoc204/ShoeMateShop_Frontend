@@ -5,6 +5,7 @@ import SplashScreen from '../screens/SplashScreen';
 import CartScreen from '../screens/CartScreen';
 import HomeScreen from '../screens/HomeScreen';
 import CheckOutScreen from '../screens/CheckoutScreen';
+import ChooseAddress from '../screens/Address/ChooseAddress';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ const StackNav = () => {
       <Stack.Screen name="CartScreen" component={CartScreen} />
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="CheckOutScreen" component={CheckOutScreen} />
+      <Stack.Screen name="ChooseAddress" component={ChooseAddress} />
     </Stack.Navigator>
   );
 };
