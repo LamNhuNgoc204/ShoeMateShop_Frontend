@@ -18,9 +18,9 @@ export const colors = {
   white_EC: '#ECECEC',
   white_D8: '#D8D8D8',
   light_blue: '#E3EEF3',
-  light_pink: "#FF8282"
+  light_pink: "#FF8282",
   colorC8C7C7: '#C8C7C7',
-  black: '#000'
+  black: '#000',
   colorF3F6FF: '#F3F6FF',
   color05E444: '#05E444',
   color95989A: '#95989A'
