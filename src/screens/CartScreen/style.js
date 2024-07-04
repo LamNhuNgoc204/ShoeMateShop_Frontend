@@ -6,32 +6,28 @@ import {fonts} from '../../constants/fonts';
 export const cartst = StyleSheet.create({
   container: {
     backgroundColor: colors.background_secondary,
-    position: 'relative',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
+  },
+  viewHeader: {
+    width: '100%',
+    height: 50,
+    backgroundColor: colors.background_blue,
   },
   viewBody: {
     marginTop: spacing.sm,
-    flex: 1
+    flex: 1,
   },
   text1: {
     fontFamily: fonts.pp_medium,
     color: colors.color1A2530,
     fontSize: sizes.size16,
     marginBottom: spacing.sm,
-    marginHorizontal: spacing.lg
+    marginHorizontal: spacing.lg,
   },
-  flat:{
-    flex: 1
+  flat: {
+    flex: 1,
   },
   viewFooter: {
     backgroundColor: colors.background_primary,
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
     width: '100%',
     paddingVertical: spacing.xl,
     paddingHorizontal: spacing.md,
@@ -65,22 +61,22 @@ export const cartst = StyleSheet.create({
     fontSize: sizes.size16,
     fontFamily: fonts.pp_medium,
   },
-  text6:{
+  text6: {
     fontSize: sizes.size14,
     fontFamily: fonts.pp_medium,
     marginLeft: spacing.xm,
-    color: colors.primary
+    color: colors.primary,
   },
-  btCheckout:{
+  btCheckout: {
     backgroundColor: colors.primary,
     borderRadius: 12,
-    width: 210
+    width: 210,
   },
-  textTouch:{
+  textTouch: {
     paddingVertical: spacing.md,
     textAlign: 'center',
     color: colors.colorFFF,
     fontFamily: fonts.rlw_medium,
-    fontSize: sizes.size14
-  }
+    fontSize: sizes.size14,
+  },
 });
