@@ -14,5 +14,7 @@ export const colors = {
   background_onboard: '#1483C2',
   white_EC: '#ECECEC',
   white_D8: '#D8D8D8',
+  colorC8C7C7: '#C8C7C7',
+  black: '#000'
 };
 
