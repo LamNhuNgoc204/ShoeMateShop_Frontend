@@ -4,6 +4,13 @@ import {sizes, spacing} from '../../constants';
 import {fonts} from '../../constants/fonts';
 
 export const c_outst = StyleSheet.create({
+  containerPosition: {
+    position: 'relative',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
   container: {
     backgroundColor: colors.background_secondary,
   },
@@ -58,22 +65,75 @@ export const c_outst = StyleSheet.create({
   text3: {
     fontFamily: fonts.pp_light,
   },
-  body2:{
-    marginTop: spacing.sm
+  body2: {
+    marginTop: spacing.sm,
   },
-  bd2Text1:{
+  bd2Text1: {
     color: colors.black,
     fontSize: sizes.size14,
     fontFamily: fonts.rlw_semibold,
-    marginLeft: spacing.md
+    marginLeft: spacing.md,
   },
-  flat:{
+  flat: {
     marginHorizontal: spacing.sm,
-    marginTop: spacing.sm
+    marginTop: spacing.sm,
+    marginBottom: spacing.xm,
+    backgroundColor: colors.colorF3F6FF,
+    borderRadius: 10
   },
-
-
-
+  body3: {
+    marginTop: spacing.sm,
+    paddingHorizontal: spacing.md,
+    width: '100%',
+  },
+  text6: {
+    fontSize: sizes.size13,
+    fontFamily: fonts.rlw_semibold,
+    color: colors.black,
+    marginLeft: spacing.sm,
+  },
+  text7: {
+    fontSize: sizes.size10,
+    fontFamily: fonts.rlw_regular,
+    color: colors.color05E444,
+    marginRight: spacing.xm,
+  },
+  body4: {
+    marginVertical: spacing.sm,
+  },
+  view4Text: {
+    marginHorizontal: spacing.xm,
+  },
+  textTitle: {
+    color: colors.black,
+    fontSize: sizes.size12,
+    fontFamily: fonts.rlw_regular,
+  },
+  textTitle1: {
+    fontFamily: fonts.rlw_semibold,
+  },
+  textPrice: {
+    fontSize: sizes.size12,
+    fontFamily: fonts.pp_light,
+    color: colors.black,
+  },
+  textPrice1: {
+    fontFamily: fonts.pp_medium,
+  },
+  body5: {
+    marginTop: spacing.sm,
+    marginRight: spacing.md,
+    width: '100%',
+    paddingBottom:spacing.xl
+  },
+  textTerm: {
+    marginLeft: spacing.xm,
+    fontSize: sizes.size10,
+    color: colors.black,
+    flex:1,
+    fontFamily: fonts.rlw_regular,
+  },
+  textTerm1: {color: colors.primary},
   viewFooter: {
     backgroundColor: colors.background_primary,
     padding: spacing.lg,
@@ -88,9 +148,9 @@ export const c_outst = StyleSheet.create({
   textPress: {
     color: colors.background_primary,
     textAlign: 'center',
-    fontSize: sizes.size14,
+    fontSize: sizes.size16,
     fontFamily: fonts.rlw_bold,
-    paddingVertical: spacing.sm,
+    paddingVertical: spacing.md,
   },
   text4: {
     color: colors.text_black2B,
@@ -100,6 +160,6 @@ export const c_outst = StyleSheet.create({
   text5: {
     fontFamily: fonts.pp_medium,
     fontSize: sizes.size16,
-    color: colors.primary
+    color: colors.primary,
   },
 });

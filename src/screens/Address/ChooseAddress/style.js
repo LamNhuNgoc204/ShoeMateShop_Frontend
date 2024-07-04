@@ -1,0 +1,43 @@
+import {StyleSheet} from 'react-native';
+import {colors} from '../../../constants/colors';
+import {sizes, spacing} from '../../../constants';
+import {fonts} from '../../../constants/fonts';
+
+export const c_adst = StyleSheet.create({
+  container: {
+    backgroundColor: colors.background_secondary,
+  },
+  borderBottom: {
+    borderBottomWidth: 1,
+    borderBottomColor: colors.colorC8C7C7,
+  },
+  // viewHeader: {
+  //   height: 50,
+  //   width: '100%',
+  //   backgroundColor: colors.background_blue,
+  // },
+  viewBody: {
+    flex: 1,
+  },
+  text: {
+    marginHorizontal: spacing.md,
+    marginVertical: spacing.lg,
+    color: colors.black,
+    fontFamily: fonts.rlw_semibold,
+    fontSize: sizes.size16,
+  },
+  body1: {
+    backgroundColor: colors.background_primary,
+  },
+  flat: {},
+  viewFooter: {
+    flexDirection: 'row',
+    paddingVertical: spacing.sm,
+  },
+  textAdd: {
+    fontFamily: fonts.rlw_medium,
+    fontSize: sizes.size12,
+    color: colors.primary,
+    marginLeft: spacing.xm,
+  },
+});

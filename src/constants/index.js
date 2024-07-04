@@ -1,7 +1,10 @@
 export const sizes = {
+  size20: 20,
   size16: 16,
   size14: 14,
-  size12: 12
+  size13: 13,
+  size12: 12,
+  size10: 10,
 };
 
 export const spacing = {

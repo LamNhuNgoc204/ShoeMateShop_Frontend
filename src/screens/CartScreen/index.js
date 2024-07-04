@@ -4,13 +4,18 @@ import appst from '../../constants/AppStyle';
 import {cartst} from './style';
 import ItemCart from '../../items/CartItem/ItemCart';
 import {spacing} from '../../constants';
+import Header from '../../components/Header';
 
 const CartScreen = () => {
   const [currentlyOpenSwipeable, setCurrentlyOpenSwipeable] = useState(null);
 
   return (
     <View style={[appst.container, cartst.container]}>
-      <View style={[appst.rowCenter, cartst.viewHeader]}></View>
+      {/* <View style={[appst.rowCenter, cartst.viewHeader]}></View> */}
+      <Header
+        iconLeft={require('../../assets/icons/back.png')}
+        name={'My Cart'}
+      />
       <View style={cartst.viewBody}>
         <Text style={cartst.text1}>3 item</Text>
         <FlatList

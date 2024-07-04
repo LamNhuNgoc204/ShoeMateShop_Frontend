@@ -1,10 +1,8 @@
 import {StyleSheet} from 'react-native';
-import {colors} from './colors';
 
 const appst = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: colors.background_onboard
   },
   rowCenter: {
     flexDirection: 'row',
@@ -17,12 +15,20 @@ const appst = StyleSheet.create({
     alignItems: 'center',
   },
   columnSb: {
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+  },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   //ICON
   icon24: {
     width: 24,
     height: 24,
+  },
+  icon30: {
+    width: 30,
+    height: 30,
   },
 });
 export default appst;
