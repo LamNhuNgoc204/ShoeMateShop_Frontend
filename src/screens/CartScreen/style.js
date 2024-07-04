@@ -7,6 +7,11 @@ export const cartst = StyleSheet.create({
   container: {
     backgroundColor: colors.background_secondary,
   },
+  viewHeader: {
+    width: '100%',
+    height: 50,
+    backgroundColor: colors.background_blue,
+  },
   viewBody: {
     marginTop: spacing.sm,
     flex: 1,

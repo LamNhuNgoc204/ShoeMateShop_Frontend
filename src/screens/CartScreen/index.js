@@ -10,7 +10,7 @@ const CartScreen = () => {
 
   return (
     <View style={[appst.container, cartst.container]}>
-      <View style={{width: '100%', height: 50, backgroundColor: 'blue'}} />
+      <View style={[appst.rowCenter, cartst.viewHeader]}></View>
       <View style={cartst.viewBody}>
         <Text style={cartst.text1}>3 item</Text>
         <FlatList
