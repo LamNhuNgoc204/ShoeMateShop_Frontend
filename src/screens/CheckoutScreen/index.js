@@ -84,7 +84,7 @@ const CheckOutScreen = ({navigation}) => {
             <View style={appst.rowCenter}>
               <Image
                 style={appst.icon24}
-                source={require('../../assets/icons/voucher.png')}
+                source={require('../../assets/icons/vouchers.png')}
               />
               <Text style={c_outst.text6}>Vouchers</Text>
             </View>
