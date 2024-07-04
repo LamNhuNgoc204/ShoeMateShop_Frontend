@@ -3,6 +3,7 @@ import {StyleSheet} from 'react-native';
 const appst = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
   rowCenter: {
     flexDirection: 'row',
@@ -21,6 +22,11 @@ const appst = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  rowEnd: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
   //ICON
   icon24: {
     width: 24,
@@ -29,6 +35,14 @@ const appst = StyleSheet.create({
   icon30: {
     width: 30,
     height: 30,
+  },
+  icon40: {
+    width: 40,
+    height: 40,
+  },
+  icon50: {
+    width: 50,
+    height: 50,
   },
 });
 export default appst;
