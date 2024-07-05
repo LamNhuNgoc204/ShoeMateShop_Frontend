@@ -56,4 +56,10 @@ export const modalst = StyleSheet.create({
     fontFamily: fonts.rlw_medium,
     textAlign: 'center',
   },
+  modalContent: {
+    fontSize: sizes.size16,
+    fontFamily: fonts.pp_medium,
+    color: colors.color707B81,
+    textAlign: 'center',
+  },
 });

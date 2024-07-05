@@ -178,7 +178,14 @@ const CheckOutScreen = ({navigation}) => {
           </TouchableOpacity>
         </View>
       </View>
-      <CustomModal visible={modalVisible} closeModal={closeModal} />
+      <CustomModal
+       visible={modalVisible} 
+       closeModal={closeModal}
+       image = {require('../../assets/images/img_success.png')}
+       title = 'Your Payment Is Successful'
+       content='We have send password recovery code in your email'
+       textbutton = 'Back To Shopping'
+       />
     </View>
   );
 };
