@@ -23,6 +23,7 @@ export const colors = {
   black: '#000',
   colorF3F6FF: '#F3F6FF',
   color05E444: '#05E444',
-  color95989A: '#95989A'
+  color95989A: '#95989A',
+  color7D848D: '#7D848D'
 };
 

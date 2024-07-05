@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native'
+import appst from '../../constants/AppStyle';
 import {sizes, spacing} from '../../constants';
 import {fonts} from '../../constants/fonts';
 import {colors} from '../../constants/colors';
-
 
 export default styles = StyleSheet.create({
     container: {
@@ -26,6 +26,21 @@ export default styles = StyleSheet.create({
         textAlign: 'center',
       },
     
+      text3: {
+        fontSize: sizes.size20,
+        fontFamily: fonts.rlw_medium,
+        color: colors.text_black2B,
+        marginTop: spacing.xsm,
+        fontWeight: 'bold',
+      },
+
+      text4: {
+        fontSize: sizes.size12,
+        fontFamily: fonts.rlw_medium,
+        color: colors.color7D848D,
+        marginTop: spacing.xm,
+      },
+
       button: {
         backgroundColor: colors.primary,
         borderRadius: sizes.size14,
@@ -40,9 +55,22 @@ export default styles = StyleSheet.create({
         color: colors.colorFFF,
         fontWeight: 'semibold',
       },
-    
-      ViewInput:{
-        marginTop: spacing.lg
-      }
+      otpContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginVertical: spacing.md,
+        marginTop: spacing.xl,
+      },
+      otpInput: {
+        width: sizes.size70,
+        height: sizes.size56,
+        borderWidth: 1,
+        borderColor: '#ddd',
+        textAlign: 'center',
+        fontSize: 18,
+        borderRadius: 8,
+        backgroundColor: colors.background_secondary,
+      },
+      
 })
 
