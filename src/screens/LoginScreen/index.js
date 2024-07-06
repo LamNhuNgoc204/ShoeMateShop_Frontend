@@ -1,16 +1,26 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import appst from '../../constants/AppStyle';
-
+import { useNavigation } from '@react-navigation/native';
 import CustomTextInput from '../../components/Input';
 import styles from './style';
 
 const LoginScreen = () => {
+  const navigation = useNavigation();
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+
+  const handleSignIn = () => {
+    navigation.navigate('HomeScreen');
+  };
+
+  const handleGoogle = () => {
+    navigation.navigate('HomeScreen');
+  };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}>
      <Image
         style={appst.icon40}
         source={require('../../assets/icons/ic_back.png')}
@@ -34,24 +44,34 @@ const LoginScreen = () => {
         onTogglePassword={() => setSecureTextEntry(!secureTextEntry)}
       />
       <View style={appst.rowEnd}>
-        <Text style={styles.text4}>Recovery Password</Text>
+        <Text style={styles.text4}
+        onPress={()=> navigation.navigate('ForgotPassWord')}
+        >Recovery Password</Text>
       </View>
       <View>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.text5}>Sign In</Text>
+        <TouchableOpacity style={styles.button}
+         onPress={handleSignIn}>
+          <Text style={styles.text5}
+         
+          >Sign In</Text>
         </TouchableOpacity>
       </View>
       <View>
-        <TouchableOpacity style={styles.buttonGoogle}>
+        <TouchableOpacity style={styles.buttonGoogle}
+         onPress={handleGoogle}>
           <Image
             style={styles.iconGoogle}
             source={require('../../assets/icons/google.png')}
           />
-          <Text style={styles.text6}>Sign In With Google</Text>
+          <Text style={styles.text6}
+         
+          >Sign In With Google</Text>
         </TouchableOpacity>
       </View>
       <View style={[appst.center, { marginTop: 150 }]}>
-        <Text style={styles.text7}>New User? <Text style={styles.text8}>Create Account</Text></Text>
+        <Text style={styles.text7}>New User? <Text style={styles.text8}
+        onPress={()=> navigation.navigate('SignUpScreen')}
+        >Create Account</Text></Text>
       </View>
     </View>
   );

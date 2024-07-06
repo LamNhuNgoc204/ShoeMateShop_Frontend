@@ -19,8 +19,8 @@ export default styles = StyleSheet.create({
         fontWeight: 'bold',
       },
       text2: {
-        fontSize: sizes.size16,
-        fontFamily: fonts.pp_medium,
+        fontSize: sizes.size18,
+        fontFamily: fonts.rlw_medium,
         color: colors.color707B81,
         marginBottom: spacing.sm,
         textAlign: 'center',
@@ -35,7 +35,7 @@ export default styles = StyleSheet.create({
       },
 
       text4: {
-        fontSize: sizes.size12,
+        fontSize: sizes.size14,
         fontFamily: fonts.rlw_medium,
         color: colors.color7D848D,
         marginTop: spacing.xm,

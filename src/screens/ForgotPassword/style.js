@@ -20,8 +20,8 @@ export default styles = StyleSheet.create({
         fontWeight: 'bold',
       },
       text2: {
-        fontSize: sizes.size16,
-        fontFamily: fonts.pp_medium,
+        fontSize: sizes.size18,
+        fontFamily: fonts.rlw_medium,
         color: colors.color707B81,
         marginBottom: spacing.sm,
         textAlign: 'center',
