@@ -10,8 +10,10 @@ import React, {useState, useRef, useEffect} from 'react';
 import appst from '../../constants/AppStyle';
 import {spacing} from '../../constants';
 import styles from './style';
+import { useNavigation } from '@react-navigation/native';
 
 const OtpVerification = () => {
+  const navigation = useNavigation();
   const [otp, setOtp] = useState(['', '', '', '']);
   const [completeOtp, setCompleteOtp] = useState('');
   const inputs = useRef([]);
@@ -43,9 +45,16 @@ const OtpVerification = () => {
     }
   }, [otp]);
 
+  const handeVerify = () => {
+    if (completeOtp === '1234') {
+      navigation.navigate('HomeScreen');
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}>
         <Image
           style={appst.icon40}
           source={require('../../assets/icons/ic_back.png')}
@@ -73,7 +82,8 @@ const OtpVerification = () => {
         ))}
       </View>
       <View>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button}
+        onPress={handeVerify}>
           <Text style={styles.text5}>Verify</Text>
         </TouchableOpacity>
       </View>

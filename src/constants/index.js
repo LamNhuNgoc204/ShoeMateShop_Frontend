@@ -8,6 +8,7 @@ export const sizes = {
   size24: 24,
   size22: 22,
   size20: 20,
+  size18: 18,
   size16: 16,
   size14: 14,
   size13: 13,

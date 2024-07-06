@@ -58,7 +58,7 @@ export const modalst = StyleSheet.create({
   },
   modalContent: {
     fontSize: sizes.size16,
-    fontFamily: fonts.pp_medium,
+    fontFamily: fonts.rlw_medium,
     color: colors.color707B81,
     textAlign: 'center',
   },

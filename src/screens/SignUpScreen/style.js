@@ -20,8 +20,8 @@ export default styles = StyleSheet.create({
         fontWeight: 'bold',
       },
       text2: {
-        fontSize: sizes.size16,
-        fontFamily: fonts.pp_medium,
+        fontSize: sizes.size18,
+        fontFamily: fonts.rlw_medium,
         color: colors.color707B81,
         marginBottom: spacing.sm,
         textAlign: 'center',
@@ -30,7 +30,7 @@ export default styles = StyleSheet.create({
      
       text4: {
         fontSize: sizes.size14,
-        fontFamily: fonts.pp_medium,
+        fontFamily: fonts.rlw_medium,
         color: colors.color707B81,
         marginTop: spacing.xm,
       },
@@ -69,13 +69,13 @@ export default styles = StyleSheet.create({
         fontWeight: 'semibold',
       },
       text7: {
-        fontSize: sizes.size14,
+        fontSize: sizes.size16,
         fontFamily: fonts.rlw_medium,
         color: colors.color707B81,
         marginTop: spacing.xm,
       },
       text8: {
-        fontSize: sizes.size14,
+        fontSize: sizes.size16,
         fontFamily: fonts.rlw_medium,
         color: colors.text_black,
         marginTop: spacing.xm,

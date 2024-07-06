@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import appst from '../../constants/AppStyle';
-
+import { useNavigation } from '@react-navigation/native';
 import CustomTextInput from '../../components/Input';
 import styles from './style';
 import {spacing} from '../../constants';
@@ -9,12 +9,16 @@ import CustomModal from '../../components/Modal';
 
 const ForgotPassWord = () => {
   const [modalVisible, setModalVisible] = useState(false);
+  const navigation = useNavigation();
   const closeModal = () => {
     setModalVisible(false);
+    navigation.navigate('OtpVerification');
   };
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
+      <TouchableOpacity
+      onPress={() => navigation.goBack()}
+      >
         <Image
           style={appst.icon40}
           source={require('../../assets/icons/ic_back.png')}
