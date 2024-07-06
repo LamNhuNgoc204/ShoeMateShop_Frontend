@@ -12,13 +12,14 @@ import SignUpScreen from '../screens/SignUpScreen';
 import ForgotPassWord from '../screens/ForgotPassword';
 import NewPasswordScreen from '../screens/NewPassWordScreen';
 import OtpVerification from '../screens/OtpVerification';
+import { CustomedButton } from '../components';
 
 const Stack = createNativeStackNavigator();
 
 const StackNav = () => {
   return (
     <Stack.Navigator
-      initialRouteName="OtpVerification"
+      initialRouteName="CheckOutScreen"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="SplashScreen" component={SplashScreen} />
       <Stack.Screen name="OnBoardScreen" component={OnBoardScreen} />

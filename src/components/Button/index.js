@@ -4,7 +4,7 @@ import buttonStyle from './style'
 
 const CustomedButton = ({onPress, style, titleStyle, title}) => {
   return (
-    <TouchableOpacity onPress={onPress} style={[buttonStyle.container, buttonStyle]}>
+    <TouchableOpacity onPress={onPress} style={[buttonStyle.container, buttonStyle, style]}>
       <Text style={[buttonStyle.text, titleStyle]}>{title}</Text>
     </TouchableOpacity>
   )

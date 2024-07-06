@@ -5,8 +5,9 @@ import {cartst} from './style';
 import ItemCart from '../../items/CartItem/ItemCart';
 import {spacing} from '../../constants';
 import Header from '../../components/Header';
+import {CustomedButton} from '../../components';
 
-const CartScreen = () => {
+const CartScreen = ({navigation}) => {
   const [currentlyOpenSwipeable, setCurrentlyOpenSwipeable] = useState(null);
 
   return (
@@ -56,9 +57,12 @@ const CartScreen = () => {
             </TouchableOpacity>
             <Text style={cartst.text6}>All products</Text>
           </View>
-          <TouchableOpacity style={cartst.btCheckout}>
-            <Text style={cartst.textTouch}>Checkout</Text>
-          </TouchableOpacity>
+          <CustomedButton
+            title={'Checkout'}
+            style={cartst.btCheckout}
+            titleStyle={cartst.textTouch}
+            onPress={() => navigation.navigate('CheckOutScreen')}
+          />
         </View>
       </View>
     </View>

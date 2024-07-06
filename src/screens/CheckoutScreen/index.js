@@ -14,6 +14,7 @@ import CheckOutItem from '../../items/CheckOutItem';
 import {spacing} from '../../constants';
 import CustomModal from '../../components/Modal';
 import Header from '../../components/Header';
+import {CustomedButton} from '../../components';
 
 const CheckOutScreen = ({navigation}) => {
   const [isswitch, setIsswitch] = useState(false);
@@ -40,8 +41,10 @@ const CheckOutScreen = ({navigation}) => {
     <View style={[appst.container, c_outst.containerPosition]}>
       <View style={[appst.container]}>
         {/* <View style={c_outst.viewHeader} /> */}
-        <Header iconLeft={require('../../assets/icons/back.png')}
-        name={"Check Out"} />
+        <Header
+          iconLeft={require('../../assets/icons/back.png')}
+          name={'Check Out'}
+        />
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={c_outst.viewBody}>
@@ -173,19 +176,22 @@ const CheckOutScreen = ({navigation}) => {
             <Text style={c_outst.text4}>Total Cost</Text>
             <Text style={c_outst.text5}>$30.5</Text>
           </View>
-          <TouchableOpacity style={c_outst.press} onPress={() => openModal()}>
-            <Text style={c_outst.textPress}>Place Order</Text>
-          </TouchableOpacity>
+          <CustomedButton
+            title={'Place Order'}
+            titleStyle={c_outst.textPress}
+            onPress={() => openModal()}
+            style={c_outst.press}
+          />
         </View>
       </View>
       <CustomModal
-       visible={modalVisible} 
-       closeModal={closeModal}
-       image = {require('../../assets/images/img_success.png')}
-       title = 'Your Payment Is Successful'
-       content='We have send password recovery code in your email'
-       textbutton = 'Back To Shopping'
-       />
+        visible={modalVisible}
+        closeModal={closeModal}
+        image={require('../../assets/images/img_success.png')}
+        title="Your Payment Is Successful"
+        content="We have send password recovery code in your email"
+        textbutton="Back To Shopping"
+      />
     </View>
   );
 };
