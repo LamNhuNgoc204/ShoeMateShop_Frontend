@@ -14,7 +14,9 @@ import NewPasswordScreen from '../screens/NewPassWordScreen';
 import OtpVerification from '../screens/OtpVerification';
 import SearchScreen from '../screens/SearchScreen';
 import CategoryDetail from '../screens/CategoryDetail';
-
+import { CustomedButton } from '../components';
+import OrderScreen from '../screens/Orders';
+import OrderDetail from '../screens/OrderDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -37,6 +39,8 @@ const StackNav = () => {
       <Stack.Screen name="OtpVerification" component={OtpVerification} />
       <Stack.Screen name="SearchScreen" component={SearchScreen} />
       <Stack.Screen name="CategoryDetail" component={CategoryDetail}/>
+      <Stack.Screen name="OrderScreen" component={OrderScreen} />
+      <Stack.Screen name="OrderDetail" component={OrderDetail} />
     </Stack.Navigator>
   );
 };
