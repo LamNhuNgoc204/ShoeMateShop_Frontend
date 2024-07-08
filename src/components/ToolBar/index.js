@@ -2,34 +2,39 @@ import { View, Text, Image, TextInput, TouchableOpacity } from 'react-native'
 import React from 'react'
 import toolBarStyle from './style'
 import appst from '../../constants/AppStyle'
+import SearchInput from '../SearchInput'
 
 
-const SearchInput = ({ style, onChangeText, placeholder = 'Looking for shoe' }) => {
-    return (
-        <View style={[toolBarStyle.searchContainer, style]}>
-            <Image style={toolBarStyle.icon15} source={require('../../assets/icons/search.png')} />
-            <TextInput onChangeText={onChangeText} style={toolBarStyle.input} placeholder={placeholder} />
-        </View>
-    )
-}
 
 const ToolBar = ({ iconRight, iconLeft, style, onIconRightPress, onIconLeftPress, title, onChangeText, placeholder }) => {
     return (
         <View style={[toolBarStyle.container, style]}>
-            <TouchableOpacity onPress={onIconLeftPress} style={[toolBarStyle.icon35, !iconLeft && toolBarStyle.hide]}>
-                <Image source={iconLeft || require('../../assets/icons/message.png')} />
-            </TouchableOpacity>
+            {
+                iconLeft? (
+                    <TouchableOpacity onPress={onIconLeftPress} style={[toolBarStyle.icon35, !iconLeft && toolBarStyle.hide]}>
+                        <Image style={toolBarStyle.icon35} source={iconLeft || require('../../assets/icons/ic_back.png')} />
+                    </TouchableOpacity>
+                ) : (
+                    title && <View style={toolBarStyle.view35} />
+                )
+            }
             {
                 title ? (
-                    <Text style={toolBarStyle.title}>Title</Text>
+                    <Text style={toolBarStyle.title}>{title}</Text>
                 ) : (
-                    <SearchInput placeholder={placeholder} onChangeText={onChangeText} style={[iconRight && toolBarStyle.marginRight20, iconLeft && toolBarStyle.marginLeft20]} />
+                    <SearchInput placeholder={placeholder} onChangeText={onChangeText} style={[iconRight && toolBarStyle.marginRight20, iconLeft && toolBarStyle.marginLeft20, {flex: 1}]} />
 
                 )
             }
-            <TouchableOpacity onPress={onIconRightPress} style={[toolBarStyle.icon35, !iconRight && toolBarStyle.hide]}>
-                <Image source={iconRight || require('../../assets/icons/message.png')} />
-            </TouchableOpacity>
+            {
+                iconRight ? (
+                    <TouchableOpacity onPress={onIconRightPress} style={[toolBarStyle.icon35, !iconRight && toolBarStyle.hide]}>
+                        <Image source={iconRight || require('../../assets/icons/ic_back.png')} />
+                    </TouchableOpacity>
+                ) : (
+                    title && <View style={toolBarStyle.view35} />
+                )
+            }
         </View>
     )
 }
