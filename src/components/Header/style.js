@@ -16,7 +16,7 @@ export const hdst = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.background_primary,
-    elevation: 5
+    // elevation: 5
   },
   name: {
     fontSize: sizes.size16,

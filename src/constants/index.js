@@ -10,9 +10,11 @@ export const sizes = {
   size20: 20,
   size18: 18,
   size16: 16,
+  size15: 15,
   size14: 14,
   size13: 13,
   size12: 12,
+  size11: 11,
   size10: 10,
 };
 
