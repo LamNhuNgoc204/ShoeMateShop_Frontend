@@ -22,6 +22,9 @@ import EditProfile from '../screens/EditProfile';
 import SettingScreen from '../screens/SettingScreen';
 import RecentViewed from '../screens/RecentlyViewedScreen';
 import ResetPasswordScreen from '../screens/ResetPasswordScreen';
+import MyRating from '../screens/Rating';
+import Review from '../screens/Review';
+
 const Stack = createNativeStackNavigator();
 
 const StackNav = () => {
@@ -50,6 +53,9 @@ const StackNav = () => {
       <Stack.Screen name="SettingScreen" component={SettingScreen} />
       <Stack.Screen name="RecentViewed" component={RecentViewed} />
       <Stack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen} />
+      <Stack.Screen name="MyRating" component={MyRating} />
+      <Stack.Screen name="Review" component={Review} />
+
     </Stack.Navigator>
   );
 };
