@@ -28,6 +28,10 @@ const appst = StyleSheet.create({
     alignItems: 'center',
   },
   //ICON
+  icon10: {
+    width: 10,
+    height: 10,
+  },
   icon24: {
     width: 24,
     height: 24,
