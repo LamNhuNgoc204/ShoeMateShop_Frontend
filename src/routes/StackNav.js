@@ -17,13 +17,17 @@ import CategoryDetail from '../screens/CategoryDetail';
 import { CustomedButton } from '../components';
 import OrderScreen from '../screens/Orders';
 import OrderDetail from '../screens/OrderDetail';
-
+import Profile from '../screens/Profile';
+import EditProfile from '../screens/EditProfile';
+import SettingScreen from '../screens/SettingScreen';
+import RecentViewed from '../screens/RecentlyViewedScreen';
+import ResetPasswordScreen from '../screens/ResetPasswordScreen';
 const Stack = createNativeStackNavigator();
 
 const StackNav = () => {
   return (
     <Stack.Navigator
-      initialRouteName="CategoryDetail"
+      initialRouteName="LoginScreen"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="SplashScreen" component={SplashScreen} />
       <Stack.Screen name="OnBoardScreen" component={OnBoardScreen} />
@@ -41,6 +45,11 @@ const StackNav = () => {
       <Stack.Screen name="CategoryDetail" component={CategoryDetail}/>
       <Stack.Screen name="OrderScreen" component={OrderScreen} />
       <Stack.Screen name="OrderDetail" component={OrderDetail} />
+      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
+      <Stack.Screen name="SettingScreen" component={SettingScreen} />
+      <Stack.Screen name="RecentViewed" component={RecentViewed} />
+      <Stack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen} />
     </Stack.Navigator>
   );
 };

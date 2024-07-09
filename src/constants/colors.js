@@ -27,6 +27,8 @@ export const colors = {
   color7D848D: '#7D848D',
   colorB7B7B7: '#B7B7B7',
   color707070: '#707070',
-  color93B3FF: '#93B3FF'
+  color93B3FF: '#93B3FF',
+  colorD8E8FF: '#D8E8FF',
+  color001560: '#001560',
 };
 

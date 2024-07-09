@@ -6,6 +6,7 @@ import CustomTextInput from '../../components/Input';
 import styles from './style';
 import {spacing} from '../../constants';
 import CustomModal from '../../components/Modal';
+import { CustomedButton } from '../../components';
 
 const ForgotPassWord = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -34,11 +35,13 @@ const ForgotPassWord = () => {
         <CustomTextInput placeholder="xyz@gmail.com" />
       </View>
       <View>
-        <TouchableOpacity style={styles.button}
-        onPress={() => setModalVisible(true)}
-        >
-          <Text style={styles.text5}>Reset Password</Text>
-        </TouchableOpacity>
+      
+        <CustomedButton
+          title={'Reset Password'}
+          titleStyle={styles.textPress}
+          onPress={() => setModalVisible(true)}
+          style={styles.press}
+        />
       </View>
       <CustomModal
        visible={modalVisible} 

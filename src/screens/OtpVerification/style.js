@@ -71,6 +71,20 @@ export default styles = StyleSheet.create({
         borderRadius: 8,
         backgroundColor: colors.background_secondary,
       },
+      press: {
+        width: '100%',
+        alignItems: 'center',
+        borderRadius: 12,
+        backgroundColor: colors.primary,
+        marginTop: spacing.xl,
+      },
+      textPress: {
+        color: colors.background_primary,
+        textAlign: 'center',
+        fontSize: sizes.size16,
+        fontFamily: fonts.rlw_bold,
+        paddingVertical: spacing.md,
+      },
       
 })
 
