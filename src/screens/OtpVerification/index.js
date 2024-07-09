@@ -11,6 +11,7 @@ import appst from '../../constants/AppStyle';
 import {spacing} from '../../constants';
 import styles from './style';
 import { useNavigation } from '@react-navigation/native';
+import { CustomedButton } from '../../components';
 
 const OtpVerification = () => {
   const navigation = useNavigation();
@@ -82,10 +83,13 @@ const OtpVerification = () => {
         ))}
       </View>
       <View>
-        <TouchableOpacity style={styles.button}
-        onPress={handeVerify}>
-          <Text style={styles.text5}>Verify</Text>
-        </TouchableOpacity>
+      
+          <CustomedButton
+          title={'Verify'}
+          titleStyle={styles.textPress}
+          onPress={handeVerify}
+          style={styles.press}
+        />
       </View>
       <View style={[appst.rowCenter, {marginTop: spacing.xm}]}>
         <Text style={styles.text4}>Resend code to</Text>
