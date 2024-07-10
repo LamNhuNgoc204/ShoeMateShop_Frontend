@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {View, TouchableOpacity, Image} from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {spacing} from '../../constants';
 
 const StarRating = ({maxStars, rating, onStarPress}) => {
