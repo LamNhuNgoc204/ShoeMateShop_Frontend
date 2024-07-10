@@ -16,6 +16,11 @@ import SearchScreen from '../screens/SearchScreen';
 import CategoryDetail from '../screens/CategoryDetail';
 import OrderScreen from '../screens/Orders';
 import OrderDetail from '../screens/OrderDetail';
+import Profile from '../screens/Profile';
+import EditProfile from '../screens/EditProfile';
+import SettingScreen from '../screens/SettingScreen';
+import RecentViewed from '../screens/RecentlyViewedScreen';
+import ResetPasswordScreen from '../screens/ResetPasswordScreen';
 import MyRating from '../screens/Rating';
 import Review from '../screens/Review';
 import SearchResult from '../screens/SearchResult';
@@ -44,6 +49,11 @@ const StackNav = () => {
       <Stack.Screen name="CategoryDetail" component={CategoryDetail}/>
       <Stack.Screen name="OrderScreen" component={OrderScreen} />
       <Stack.Screen name="OrderDetail" component={OrderDetail} />
+      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
+      <Stack.Screen name="SettingScreen" component={SettingScreen} />
+      <Stack.Screen name="RecentViewed" component={RecentViewed} />
+      <Stack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen} />
       <Stack.Screen name="MyRating" component={MyRating} />
       <Stack.Screen name="Review" component={Review} />
       <Stack.Screen name="SearchResult" component={SearchResult} />

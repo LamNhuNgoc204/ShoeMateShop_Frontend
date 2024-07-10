@@ -4,6 +4,7 @@ import appst from '../../constants/AppStyle';
 import { useNavigation } from '@react-navigation/native';
 import CustomTextInput from '../../components/Input';
 import styles from './style';
+import { CustomedButton } from '../../components';
 
 const SignUpScreen = () => {
   const navigation = useNavigation();
@@ -48,11 +49,13 @@ const SignUpScreen = () => {
       />
      
       <View>
-        <TouchableOpacity style={styles.button}
-        onPress={handleSignUp}
-        >
-          <Text style={styles.text5}>Sign Up</Text>
-        </TouchableOpacity>
+      
+        <CustomedButton
+          title={'Sign Up'}
+          titleStyle={styles.textPress}
+          onPress={handleSignUp}
+          style={styles.press}
+        />
       </View>
       <View>
         <TouchableOpacity style={styles.buttonGoogle}

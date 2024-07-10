@@ -4,6 +4,7 @@ import appst from '../../constants/AppStyle';
 
 import CustomTextInput from '../../components/Input';
 import styles from './style';
+import { CustomedButton } from '../../components';
 
 const NewPassWordScreen = () => {
   const [secureNewPass, setsecureNewPass] = useState(true);
@@ -41,9 +42,13 @@ const NewPassWordScreen = () => {
      </View>
      
         <View style={{marginTop: 300}}>
-          <TouchableOpacity style={styles.button}>
-          <Text style={styles.text5}>Confirm</Text>
-        </TouchableOpacity>
+         
+          <CustomedButton
+          title={'Confirm'}
+          titleStyle={styles.textPress}
+          onPress={()=> console.log('Press')}
+          style={styles.press}
+        />
         </View>
      
     </View>
