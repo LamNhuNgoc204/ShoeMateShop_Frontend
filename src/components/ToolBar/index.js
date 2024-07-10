@@ -29,7 +29,7 @@ const ToolBar = ({ iconRight, iconLeft, style, onIconRightPress, onIconLeftPress
             {
                 iconRight ? (
                     <TouchableOpacity onPress={onIconRightPress} style={[toolBarStyle.icon35, !iconRight && toolBarStyle.hide]}>
-                        <Image source={iconRight || require('../../assets/icons/ic_back.png')} />
+                        <Image style={toolBarStyle.icon35} source={iconRight || require('../../assets/icons/ic_back.png')} />
                     </TouchableOpacity>
                 ) : (
                     title && <View style={toolBarStyle.view35} />

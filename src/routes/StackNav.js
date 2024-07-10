@@ -14,18 +14,19 @@ import NewPasswordScreen from '../screens/NewPassWordScreen';
 import OtpVerification from '../screens/OtpVerification';
 import SearchScreen from '../screens/SearchScreen';
 import CategoryDetail from '../screens/CategoryDetail';
-import { CustomedButton } from '../components';
 import OrderScreen from '../screens/Orders';
 import OrderDetail from '../screens/OrderDetail';
 import MyRating from '../screens/Rating';
 import Review from '../screens/Review';
+import SearchResult from '../screens/SearchResult';
+
 
 const Stack = createNativeStackNavigator();
 
 const StackNav = () => {
   return (
     <Stack.Navigator
-      initialRouteName="MyRating"
+      initialRouteName="CategoryDetail"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="SplashScreen" component={SplashScreen} />
       <Stack.Screen name="OnBoardScreen" component={OnBoardScreen} />
@@ -45,6 +46,7 @@ const StackNav = () => {
       <Stack.Screen name="OrderDetail" component={OrderDetail} />
       <Stack.Screen name="MyRating" component={MyRating} />
       <Stack.Screen name="Review" component={Review} />
+      <Stack.Screen name="SearchResult" component={SearchResult} />
     </Stack.Navigator>
   );
 };
