@@ -2,7 +2,7 @@ import React from 'react';
 import { TextInput, View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
 import styles from './style';
-const CustomTextInput = ({ label, placeholder, secureTextEntry, isPassword, onTogglePassword,value,keyboardtype }) => {
+const CustomTextInput = ({ label, placeholder, secureTextEntry, isPassword, onTogglePassword,value,keyboardtype,onChangeText }) => {
   return (
     <View style={!isPassword && styles.viewInput}>
       <Text style={styles.label}>{label}</Text>
@@ -13,6 +13,7 @@ const CustomTextInput = ({ label, placeholder, secureTextEntry, isPassword, onTo
           style={styles.input}
           placeholder={placeholder}
           value={value}
+          onChangeText={onChangeText}
         />
         {isPassword && (
           <TouchableOpacity style={styles.iconContainer} onPress={onTogglePassword}>
