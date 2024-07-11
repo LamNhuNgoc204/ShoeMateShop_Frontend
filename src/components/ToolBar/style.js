@@ -18,7 +18,8 @@ const toolBarStyle = StyleSheet.create({
         height: 35,
         elevation: 2,
         backgroundColor: "#fff",
-        borderRadius: 35
+        borderRadius: 35,
+        resizeMode: 'cover'
     },
     marginLeft20: {
         marginLeft: 20
@@ -32,7 +33,7 @@ const toolBarStyle = StyleSheet.create({
         lineHeight: 20,
         color: colors.text_black2B
     },
-    view35: { width: 35, height: 35 }
+    view35: { width: 35, height: 35, alignItems: 'center', justifyContent: 'center' }
 
 })
 

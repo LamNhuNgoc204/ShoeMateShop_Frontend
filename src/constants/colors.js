@@ -18,6 +18,7 @@ export const colors = {
   white_EC: '#ECECEC',
   white_D8: '#D8D8D8',
   light_blue: '#E3EEF3',
+  blue66EDFF: '#66EDFF',
   light_pink: "#FF8282",
   colorC8C7C7: '#C8C7C7',
   black: '#000',
