@@ -25,6 +25,7 @@ import MyRating from '../screens/Rating';
 import Review from '../screens/Review';
 import SearchResult from '../screens/SearchResult';
 import AddAddress from '../screens/AddAddressScreen'
+import MessageScreen from '../screens/MessageScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -59,6 +60,7 @@ const StackNav = () => {
       <Stack.Screen name="Review" component={Review} />
       <Stack.Screen name="SearchResult" component={SearchResult} />
       <Stack.Screen name="AddAddress" component={AddAddress} />
+      <Stack.Screen name="MessageScreen" component={MessageScreen}/>
     </Stack.Navigator>
   );
 };
