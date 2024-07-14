@@ -24,6 +24,7 @@ import ResetPasswordScreen from '../screens/ResetPasswordScreen';
 import MyRating from '../screens/Rating';
 import Review from '../screens/Review';
 import SearchResult from '../screens/SearchResult';
+import AddAddress from '../screens/AddAddressScreen'
 import MessageScreen from '../screens/MessageScreen';
 
 
@@ -32,7 +33,7 @@ const Stack = createNativeStackNavigator();
 const StackNav = () => {
   return (
     <Stack.Navigator
-      initialRouteName="MessageScreen"
+      initialRouteName="AddAddress"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="SplashScreen" component={SplashScreen} />
       <Stack.Screen name="OnBoardScreen" component={OnBoardScreen} />
@@ -58,6 +59,7 @@ const StackNav = () => {
       <Stack.Screen name="MyRating" component={MyRating} />
       <Stack.Screen name="Review" component={Review} />
       <Stack.Screen name="SearchResult" component={SearchResult} />
+      <Stack.Screen name="AddAddress" component={AddAddress} />
       <Stack.Screen name="MessageScreen" component={MessageScreen}/>
     </Stack.Navigator>
   );
