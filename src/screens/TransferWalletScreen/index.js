@@ -10,16 +10,21 @@ import {
 import {SelectList} from 'react-native-dropdown-select-list';
 import appst from '../../constants/AppStyle';
 import {spacing} from '../../constants';
-import { CustomedButton } from '../../components';
+import {CustomedButton} from '../../components';
 import styles from './style';
-
+import CustomModal from './Modal';
+import { useNavigation } from '@react-navigation/native';
 const TransferWalletScreen = () => {
   const [selected, setSelected] = useState('');
   const [data, setData] = useState([]);
-  const [selectedUser, setSelectedUser] = useState({name: '', phone: ''});
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
-
+  const [modalVisible, setModalVisible] = useState(false);
+  const navigation = useNavigation();
+  const closeModal = () => {
+    setModalVisible(false);
+    navigation.navigate('OtpVerification');
+  };
   useEffect(() => {
     // Get Values from database
     fetch('https://jsonplaceholder.typicode.com/users')
@@ -37,6 +42,10 @@ const TransferWalletScreen = () => {
         console.log(e);
       });
   }, []);
+
+  const handleTransfer = () => {
+    setModalVisible(true);
+  };
 
   useEffect(() => {
     if (selected) {
@@ -74,8 +83,8 @@ const TransferWalletScreen = () => {
             setSelected={setSelected}
             data={data}
             onSelect={() => console.log('onSelect')}
-            placeholder="Select a user"
-            boxStyles={styles.selectListBox} 
+            placeholder="Mobile number"
+            boxStyles={styles.selectListBox}
             inputStyles={styles.selectListInput}
             dropdownStyles={styles.selectListDropdown}
           />
@@ -94,14 +103,20 @@ const TransferWalletScreen = () => {
           />
         </View>
         <View style={styles.viewButton}>
-        <CustomedButton
+          <CustomedButton
             title={'Transfer'}
             titleStyle={styles.textPress}
-            onPress={() => console.log('Transfer')}
+            onPress={handleTransfer}
             style={styles.press}
           />
         </View>
       </View>
+      <CustomModal
+       visible={modalVisible} 
+       closeModal={closeModal}
+       title = 'Enter PIN'
+       textbutton = 'OK'
+       />
     </View>
   );
 };
