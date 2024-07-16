@@ -36,5 +36,11 @@ export const colors = {
   blue004BFE: "#004BFE",
   colorE5EBFC: "#E5EBFC",
   color004BFE: "#004BFE",
+  colorA0A0A0: "#A0A0A0",
+  color0159A6: "#0159A6",
+  color615D5D: "#615D5D",
+  colorDC1414: "#DC1414",
+  color23AD00: "#23AD00",
+  colorE9F3FF: "#E9F3FF",
 };
 

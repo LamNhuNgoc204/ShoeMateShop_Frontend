@@ -26,6 +26,9 @@ import Review from '../screens/Review';
 import SearchResult from '../screens/SearchResult';
 import AddAddress from '../screens/AddAddressScreen'
 import MessageScreen from '../screens/MessageScreen';
+import HomeWallet from '../screens/HomeWalletScreen';
+import DepositWalletScreen from '../screens/DepositWalletScreen';
+import TransferWalletScreen from '../screens/TransferWalletScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -33,7 +36,7 @@ const Stack = createNativeStackNavigator();
 const StackNav = () => {
   return (
     <Stack.Navigator
-      initialRouteName="AddAddress"
+      initialRouteName="TransferWalletScreen"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="SplashScreen" component={SplashScreen} />
       <Stack.Screen name="OnBoardScreen" component={OnBoardScreen} />
@@ -61,6 +64,9 @@ const StackNav = () => {
       <Stack.Screen name="SearchResult" component={SearchResult} />
       <Stack.Screen name="AddAddress" component={AddAddress} />
       <Stack.Screen name="MessageScreen" component={MessageScreen}/>
+      <Stack.Screen name="HomeWallet" component={HomeWallet}/>
+      <Stack.Screen name="DepositWalletScreen" component={DepositWalletScreen}/>
+      <Stack.Screen name="TransferWalletScreen" component={TransferWalletScreen}/>
     </Stack.Navigator>
   );
 };
