@@ -32,6 +32,10 @@ const appst = StyleSheet.create({
     width: 10,
     height: 10,
   },
+  icon20: {
+    width: 20,
+    height: 20,
+  },
   icon24: {
     width: 24,
     height: 24,

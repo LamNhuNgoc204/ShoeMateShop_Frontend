@@ -3,9 +3,9 @@ import React from 'react';
 import appst from '../../constants/AppStyle';
 import {hdst} from './style';
 
-const Header = ({iconLeft, leftOnPress, name, iconRight, rightOnPress}) => {
+const Header = ({iconLeft, leftOnPress, name, iconRight, rightOnPress, backgroundColor}) => {
   return (
-    <View style={[appst.rowCenter, hdst.container]}>
+    <View style={[appst.rowCenter, hdst.container,{backgroundColor: backgroundColor}]}>
       {iconLeft ? (
         <TouchableOpacity style={hdst.press} onPress={leftOnPress}>
           <Image style={appst.icon24} source={iconLeft} />

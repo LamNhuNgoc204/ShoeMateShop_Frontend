@@ -8,7 +8,7 @@ export const hdst = StyleSheet.create({
     height: 50,
     marginHorizontal: spacing.md,
     marginVertical: spacing.sm,
-   backgroundColor:colors.background_primary,
+    backgroundColor: colors.background_primary,
   },
   press: {
     width: 44,
@@ -24,7 +24,7 @@ export const hdst = StyleSheet.create({
     fontFamily: fonts.rlw_semibold,
     color: colors.text_black2B,
   },
-  view:{
-    width: 24
-  }
+  view: {
+    width: 24,
+  },
 });
