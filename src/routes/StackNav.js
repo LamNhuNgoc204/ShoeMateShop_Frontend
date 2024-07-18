@@ -29,6 +29,7 @@ import MessageScreen from '../screens/MessageScreen';
 import HomeWallet from '../screens/HomeWalletScreen';
 import DepositWalletScreen from '../screens/DepositWalletScreen';
 import TransferWalletScreen from '../screens/TransferWalletScreen';
+import ProductDetail from '../screens/ProductDetail';
 
 
 const Stack = createNativeStackNavigator();
@@ -67,6 +68,7 @@ const StackNav = () => {
       <Stack.Screen name="HomeWallet" component={HomeWallet}/>
       <Stack.Screen name="DepositWalletScreen" component={DepositWalletScreen}/>
       <Stack.Screen name="TransferWalletScreen" component={TransferWalletScreen}/>
+      <Stack.Screen name="ProductDetail" component={ProductDetail}/>
     </Stack.Navigator>
   );
 };
