@@ -41,7 +41,7 @@ const pddt = StyleSheet.create({
   body1: {
     marginVertical: spacing.sm,
     borderRadius: 10,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   name: {
     color: colors.text_black1A,
@@ -87,41 +87,72 @@ const pddt = StyleSheet.create({
   body2: {
     backgroundColor: 'white',
     borderRadius: 20,
-    paddingVertical: spacing.md,
-    marginTop: spacing.xl
+    paddingTop: spacing.md,
+    marginTop: spacing.xl,
   },
-  reviewTitle:{
+  reviewTitle: {
     fontFamily: fonts.rlw_semibold,
     fontSize: sizes.size14,
     lineHeight: 22,
     color: colors.black,
     borderBottomColor: colors.colorE5EBFC,
     borderBottomWidth: 1,
-    paddingBottom:spacing.sm
+    paddingBottom: spacing.sm,
   },
-  pdHorizon:{
-    paddingHorizontal: spacing.lg
+  pdHorizon: {
+    paddingHorizontal: spacing.lg,
   },
-  footer1: {
-    width: '50%',
+  text1: {
+    color: colors.primary,
+    fontFamily: fonts.pp_bold,
+    fontSize: sizes.size12,
+    lineHeight: 22,
+    textAlign: 'center',
+    marginVertical: spacing.xm,
   },
-  pressAddtocart: {
-    width: '80%',
-    height: 50,
-    backgroundColor: colors.primary,
-    borderRadius: 12,
+  border: {
+    width: '25%',
+    height: 1,
+    backgroundColor: colors.black,
   },
-  txtAdd: {},
+  text2: {
+    fontFamily: fonts.rlw_semibold,
+    fontSize: sizes.size14,
+    color: colors.black,
+    marginVertical: spacing.md,
+    marginHorizontal: spacing.sm
+  },
+
   footer: {
     backgroundColor: '#F0F6FB',
-    padding: spacing.xm,
+    paddingHorizontal: spacing.xm,
     width: width,
   },
   pressBuynow: {
     width: '45%',
     height: 50,
+    backgroundColor: '#0159A6',
+    borderRadius: 12,
+  },
+  footer1: {
+    width: '50%',
+  },
+  chat: {
+    width: 70,
+    height: 70,
+  },
+  pressAddtocart: {
+    width: '70%',
+    height: 50,
     backgroundColor: colors.primary,
     borderRadius: 12,
+  },
+  txtPress: {
+    color: '#fff',
+    fontFamily: fonts.rlw_semibold,
+    fontSize: sizes.size14,
+    lineHeight: 22,
+    textAlign: 'center',
   },
 });
 

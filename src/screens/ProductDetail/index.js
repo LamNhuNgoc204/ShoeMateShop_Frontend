@@ -3,7 +3,6 @@ import {
   Text,
   FlatList,
   Image,
-  Dimensions,
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
@@ -13,8 +12,12 @@ import pddt from './style';
 import Header from '../../components/Header';
 import {colors} from '../../constants/colors';
 import ItemReview from '../../items/ReviewItem/ProductDetail';
+import {spacing} from '../../constants';
+import ProductItem from '../../items/ProductItem';
 
 const ProductDetail = ({navigation}) => {
+  const products = new Array(10).fill(1);
+
   return (
     <View style={[appst.container, pddt.container]}>
       <Header
@@ -25,7 +28,7 @@ const ProductDetail = ({navigation}) => {
         iconRight={require('../../assets/icons/mycart.png')}
         backgroundColor={colors.background_secondary}
       />
-      <ScrollView style={{flex: 1}}>
+      <ScrollView style={{flex: 1, marginBottom: spacing.md}}>
         <View>
           <FlatList
             horizontal
@@ -93,11 +96,33 @@ const ProductDetail = ({navigation}) => {
             Product Reviews
           </Text>
           <FlatList
-            style={pddt.pdHorizon}
             data={[1, 2]}
             renderItem={({item}) => <ItemReview item={item} />}
             extraData={item => item.id}
+            scrollEnabled={false}
           />
+          <Text style={pddt.text1}>See All (32)</Text>
+        </View>
+
+        <View>
+          <View style={[appst.center, {flexDirection: 'row'}]}>
+            <View style={pddt.border} />
+            <Text style={pddt.text2}>Similar Product</Text>
+            <View style={pddt.border} />
+          </View>
+          <View style={appst.center}>
+            <FlatList
+              data={products}
+              renderItem={({item, index}) => (
+                <ProductItem product={item} index={index} />
+              )}
+              keyExtractor={(item, index) => index.toString()}
+              numColumns={2}
+              showsVerticalScrollIndicator={false}
+              scrollEnabled={false}
+              // ItemSeparatorComponent={() => <View style={homeStyle.separator}/>}
+            />
+          </View>
         </View>
       </ScrollView>
 
@@ -106,15 +131,15 @@ const ProductDetail = ({navigation}) => {
           <TouchableOpacity>
             <Image
               source={require('../../assets/icons/chatwithshop.png')}
-              style={appst.icon50}
+              style={pddt.chat}
             />
           </TouchableOpacity>
           <TouchableOpacity style={[pddt.pressAddtocart, appst.center]}>
-            <Text style={pddt.txtAdd}>Add to cart</Text>
+            <Text style={pddt.txtPress}>Add to cart</Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity style={[pddt.pressBuynow, appst.center]}>
-          <Text>Buy now</Text>
+          <Text style={pddt.txtPress}>Buy now</Text>
         </TouchableOpacity>
       </View>
     </View>
