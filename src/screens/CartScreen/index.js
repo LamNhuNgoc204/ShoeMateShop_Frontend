@@ -12,11 +12,13 @@ const CartScreen = ({navigation}) => {
 
   return (
     <View style={[appst.container, cartst.container]}>
-      {/* <View style={[appst.rowCenter, cartst.viewHeader]}></View> */}
-      <Header
-        iconLeft={require('../../assets/icons/back.png')}
-        name={'My Cart'}
-      />
+      <View style={cartst.header}>
+        <Header
+          background={'#fff'}
+          iconLeft={require('../../assets/icons/back.png')}
+          name={'My Cart'}
+        />
+      </View>
       <View style={cartst.viewBody}>
         <Text style={cartst.text1}>3 item</Text>
         <FlatList

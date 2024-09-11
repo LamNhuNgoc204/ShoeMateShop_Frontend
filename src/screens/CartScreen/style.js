@@ -6,6 +6,10 @@ import {fonts} from '../../constants/fonts';
 export const cartst = StyleSheet.create({
   container: {
     backgroundColor: colors.background_secondary,
+    marginTop: spacing.md,
+  },
+  header: {
+    marginHorizontal: spacing.md,
   },
   viewHeader: {
     width: '100%',

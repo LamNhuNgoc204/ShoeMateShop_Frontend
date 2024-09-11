@@ -3,15 +3,30 @@ import React from 'react';
 import appst from '../../constants/AppStyle';
 import {hdst} from './style';
 
-const Header = ({iconLeft, leftOnPress, name, iconRight, rightOnPress, backgroundColor}) => {
+const Header = ({
+  iconLeft,
+  leftOnPress,
+  name,
+  iconRight,
+  rightOnPress,
+  backgroundColor,
+  background,
+}) => {
   return (
-    <View style={[appst.rowCenter, hdst.container,{backgroundColor: backgroundColor}]}>
+    <View
+      style={[
+        appst.rowCenter,
+        hdst.container,
+        {backgroundColor: backgroundColor},
+      ]}>
       {iconLeft ? (
-        <TouchableOpacity style={hdst.press} onPress={leftOnPress}>
+        <TouchableOpacity
+          style={[hdst.press, {backgroundColor: background}]}
+          onPress={leftOnPress}>
           <Image style={appst.icon24} source={iconLeft} />
         </TouchableOpacity>
       ) : (
-        <View style={hdst.view}/>
+        <View style={hdst.view} />
       )}
       <Text style={hdst.name}>{name}</Text>
       {iconRight ? (
@@ -19,7 +34,7 @@ const Header = ({iconLeft, leftOnPress, name, iconRight, rightOnPress, backgroun
           <Image style={appst.icon24} source={iconRight} />
         </TouchableOpacity>
       ) : (
-        <View style={hdst.view}/>
+        <View style={hdst.view} />
       )}
     </View>
   );

@@ -41,13 +41,13 @@ const StackNav = () => {
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="SplashScreen" component={SplashScreen} />
       <Stack.Screen name="OnBoardScreen" component={OnBoardScreen} />
+      <Stack.Screen name="LoginScreen" component={LoginScreen} />
+      <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
       <Stack.Screen name="CartScreen" component={CartScreen} />
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="CheckOutScreen" component={CheckOutScreen} />
       <Stack.Screen name="ChooseAddress" component={ChooseAddress} />
       <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} />
-      <Stack.Screen name="LoginScreen" component={LoginScreen} />
-      <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
       <Stack.Screen name="ForgotPassWord" component={ForgotPassWord} />
       <Stack.Screen name="NewPasswordScreen" component={NewPasswordScreen} />
       <Stack.Screen name="OtpVerification" component={OtpVerification} />
