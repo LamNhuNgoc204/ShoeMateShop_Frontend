@@ -17,6 +17,7 @@
     "@react-navigation/native-stack": "^6.10.0",
     "react": "18.2.0",
     "react-native": "0.74.2",
+    "react-native-dropdown-select-list": "^2.0.5",
     "react-native-gesture-handler": "^2.17.1",
     "react-native-modal": "^13.0.1",
     "react-native-pager-view": "^6.3.3",

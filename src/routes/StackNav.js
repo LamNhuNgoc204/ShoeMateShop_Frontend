@@ -24,20 +24,20 @@ import ResetPasswordScreen from '../screens/ResetPasswordScreen';
 import MyRating from '../screens/Rating';
 import Review from '../screens/Review';
 import SearchResult from '../screens/SearchResult';
-import AddAddress from '../screens/AddAddressScreen'
+import AddAddress from '../screens/AddAddressScreen';
 import MessageScreen from '../screens/MessageScreen';
 import HomeWallet from '../screens/HomeWalletScreen';
 import DepositWalletScreen from '../screens/DepositWalletScreen';
 import TransferWalletScreen from '../screens/TransferWalletScreen';
 import ProductDetail from '../screens/ProductDetail';
-
+import BottomNav from './BottomNav';
 
 const Stack = createNativeStackNavigator();
 
 const StackNav = () => {
   return (
     <Stack.Navigator
-      initialRouteName="TransferWalletScreen"
+      initialRouteName="SplashScreen"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="SplashScreen" component={SplashScreen} />
       <Stack.Screen name="OnBoardScreen" component={OnBoardScreen} />
@@ -52,23 +52,33 @@ const StackNav = () => {
       <Stack.Screen name="NewPasswordScreen" component={NewPasswordScreen} />
       <Stack.Screen name="OtpVerification" component={OtpVerification} />
       <Stack.Screen name="SearchScreen" component={SearchScreen} />
-      <Stack.Screen name="CategoryDetail" component={CategoryDetail}/>
+      <Stack.Screen name="CategoryDetail" component={CategoryDetail} />
       <Stack.Screen name="OrderScreen" component={OrderScreen} />
       <Stack.Screen name="OrderDetail" component={OrderDetail} />
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="SettingScreen" component={SettingScreen} />
       <Stack.Screen name="RecentViewed" component={RecentViewed} />
-      <Stack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen} />
+      <Stack.Screen
+        name="ResetPasswordScreen"
+        component={ResetPasswordScreen}
+      />
       <Stack.Screen name="MyRating" component={MyRating} />
       <Stack.Screen name="Review" component={Review} />
       <Stack.Screen name="SearchResult" component={SearchResult} />
       <Stack.Screen name="AddAddress" component={AddAddress} />
-      <Stack.Screen name="MessageScreen" component={MessageScreen}/>
-      <Stack.Screen name="HomeWallet" component={HomeWallet}/>
-      <Stack.Screen name="DepositWalletScreen" component={DepositWalletScreen}/>
-      <Stack.Screen name="TransferWalletScreen" component={TransferWalletScreen}/>
-      <Stack.Screen name="ProductDetail" component={ProductDetail}/>
+      <Stack.Screen name="MessageScreen" component={MessageScreen} />
+      <Stack.Screen name="HomeWallet" component={HomeWallet} />
+      <Stack.Screen
+        name="DepositWalletScreen"
+        component={DepositWalletScreen}
+      />
+      <Stack.Screen
+        name="TransferWalletScreen"
+        component={TransferWalletScreen}
+      />
+      <Stack.Screen name="ProductDetail" component={ProductDetail} />
+      <Stack.Screen name="BottomNav" component={BottomNav} />
     </Stack.Navigator>
   );
 };
