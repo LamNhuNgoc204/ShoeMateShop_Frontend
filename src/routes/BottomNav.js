@@ -1,10 +1,6 @@
 import React, {useState} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {
-  createBottomTabNavigator,
-  BottomTabBarProps,
-} from '@react-navigation/bottom-tabs';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {Pressable, StyleSheet, Text, View, Image} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Svg, {Path} from 'react-native-svg';
 import HomeScreen from '../screens/HomeScreen';
@@ -43,6 +39,17 @@ const BottomNav = () => {
           {routes.map((route, index) => {
             const isCartScreen = route.name === 'CartScreen';
 
+            let iconImage;
+            if (route.name === 'Home') {
+              iconImage = require('../assets/icon_bottom/home.png');
+            } else if (route.name === 'Search') {
+              iconImage = require('../assets/icon_bottom/heart.png');
+            } else if (route.name === 'FavoriteScreen') {
+              iconImage = require('../assets/icon_bottom/notification.png');
+            } else if (route.name === 'ProfileScreen') {
+              iconImage = require('../assets/icon_bottom/profile.png');
+            }
+
             return (
               <View key={route.key} style={{flex: 1, alignItems: 'center'}}>
                 {isCartScreen && (
@@ -65,7 +72,25 @@ const BottomNav = () => {
                     setActiveTab(route.name);
                   }}
                   isCartScreen={isCartScreen}>
-                  <Text>{isCartScreen ? '🛒' : '?'}</Text>
+                  {isCartScreen ? (
+                    <Image
+                      source={require('../assets/icon_bottom/cart.png')}
+                      style={{
+                        width: 24,
+                        height: 24,
+                        // tintColor: activeIndex === index ? '#0F6DFA' : '#000',
+                      }}
+                    />
+                  ) : (
+                    <Image
+                      source={iconImage}
+                      style={{
+                        width: 24,
+                        height: 24,
+                        tintColor: activeIndex === index ? '#0F6DFA' : '#000',
+                      }}
+                    />
+                  )}
                 </TabBarComponent>
               </View>
             );
@@ -120,7 +145,7 @@ const style = StyleSheet.create({
   componentCircle: {
     flex: 1,
     borderRadius: 30,
-    backgroundColor: 'blue',
+    backgroundColor: '#0F6DFA',
     elevation: 10,
   },
   iconContainer: {

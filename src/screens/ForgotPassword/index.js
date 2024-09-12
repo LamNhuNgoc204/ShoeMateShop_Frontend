@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {Text, View, Image, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import appst from '../../constants/AppStyle';
 import { useNavigation } from '@react-navigation/native';
