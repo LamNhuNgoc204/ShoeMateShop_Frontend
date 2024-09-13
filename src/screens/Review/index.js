@@ -11,8 +11,11 @@ import appst from '../../constants/AppStyle';
 import rvst from './style';
 import Header from '../../components/Header';
 import StarRating from '../../items/StarRating';
+import {useTranslation} from 'react-i18next';
 
 const Review = ({navitaion}) => {
+  const {t} = useTranslation();
+
   const [rating, setRating] = useState(0);
 
   const handleStarPress = rating => {
@@ -24,7 +27,7 @@ const Review = ({navitaion}) => {
   return (
     <View style={[appst.container, rvst.container]}>
       <Header
-        name={'Review'}
+        name={t('review.review')}
         iconLeft={require('../../assets/icons/back.png')}
       />
       <View style={[rvst.itemPd]}>
@@ -41,7 +44,7 @@ const Review = ({navitaion}) => {
       </View>
 
       <View style={[rvst.viewStar, appst.rowStart]}>
-        <Text style={rvst.quality}>Product Quality:</Text>
+        <Text style={rvst.quality}>{t('review.sub_title')}:</Text>
         <StarRating
           maxStars={5}
           rating={rating}
@@ -52,11 +55,11 @@ const Review = ({navitaion}) => {
       <View style={[appst.rowCenter, rvst.viewAsset]}>
         <TouchableOpacity style={[rvst.viewBorder]}>
           <Image source={require('../../assets/icons/addphoto.png')} />
-          <Text style={rvst.text}>Add photos</Text>
+          <Text style={rvst.text}>{t('review.photo')}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[rvst.viewBorder]}>
           <Image source={require('../../assets/icons/addvideo.png')} />
-          <Text style={rvst.text}>Add video</Text>
+          <Text style={rvst.text}>{t('review.video')}</Text>
         </TouchableOpacity>
       </View>
 
@@ -87,7 +90,7 @@ const Review = ({navitaion}) => {
         multiline={true}
         onChangeText={e => setText(e)}
         value={text}
-        placeholder="Enter your review here..."
+        placeholder={t('review.placeholder')}
       />
     </View>
   );

@@ -6,8 +6,10 @@ import CustomTextInput from '../../components/Input';
 import styles from './style';
 import {CustomedButton} from '../../components';
 import Header from '../../components/Header';
+import {useTranslation} from 'react-i18next';
 
 const NewPassWordScreen = ({navigation}) => {
+  const {t} = useTranslation();
   const [secureNewPass, setsecureNewPass] = useState(true);
   const [secureConNewPass, setsecureConNewPass] = useState(true);
 
@@ -19,13 +21,13 @@ const NewPassWordScreen = ({navigation}) => {
         leftOnPress={() => navigation.goBack()}
       />
       <View style={appst.center}>
-        <Text style={styles.text1}>New Password</Text>
-        <Text style={styles.text2}>Please enter a new password</Text>
+        <Text style={styles.text1}>{t('form_input.newpass')}</Text>
+        <Text style={styles.text2}>{t('titles.sub_newpass')}</Text>
       </View>
       <View style={styles.ViewInput}>
         <CustomTextInput
-          label="New password"
-          placeholder="********"
+          label={t('form_input.newpass')}
+          placeholder={t('form_input.placeholder_newpass')}
           secureTextEntry={secureNewPass}
           isPassword={true}
           onTogglePassword={() => setsecureNewPass(!secureNewPass)}
@@ -33,8 +35,8 @@ const NewPassWordScreen = ({navigation}) => {
       </View>
       <View style={styles.ViewInput}>
         <CustomTextInput
-          label="Confirm password"
-          placeholder="********"
+          label={t('form_input.confirm_pass')}
+          placeholder={t('form_input.placeholder_confirm')}
           secureTextEntry={secureConNewPass}
           isPassword={true}
           onTogglePassword={() => setsecureConNewPass(!secureConNewPass)}
@@ -43,7 +45,7 @@ const NewPassWordScreen = ({navigation}) => {
 
       <View style={{marginTop: 300}}>
         <CustomedButton
-          title={'Confirm'}
+          title={t('buttons.btn_confirm')}
           titleStyle={styles.textPress}
           onPress={() => console.log('Press')}
           style={styles.press}

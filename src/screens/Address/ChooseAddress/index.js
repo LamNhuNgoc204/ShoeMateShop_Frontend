@@ -12,10 +12,10 @@ const ChooseAddress = ({navigation}) => {
       <Header
         iconLeft={require('../../../assets/icons/back.png')}
         leftOnPress={() => navigation.goBack()}
-        name={'Address Selection'}
+        name={t('home.address')}
       />
       <View style={c_adst.viewBody}>
-        <Text style={c_adst.text}>Address:</Text>
+        <Text style={c_adst.text}>{t('titles.address')}:</Text>
         <View style={c_adst.body1}>
           <FlatList
             style={c_adst.flat}
@@ -30,7 +30,7 @@ const ChooseAddress = ({navigation}) => {
               style={appst.icon30}
               source={require('../../../assets/icons/add_adr.png')}
             />
-            <Text style={c_adst.textAdd}>Add new address</Text>
+            <Text style={c_adst.textAdd}>{t('buttons.btn_new_address')}</Text>
           </View>
         </View>
       </View>

@@ -15,8 +15,10 @@ import {spacing} from '../../constants';
 import CustomModal from '../../components/Modal';
 import Header from '../../components/Header';
 import {CustomedButton} from '../../components';
+import {useTranslation} from 'react-i18next';
 
 const CheckOutScreen = ({navigation}) => {
+  const {t} = useTranslation();
   const [isswitch, setIsswitch] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -43,7 +45,7 @@ const CheckOutScreen = ({navigation}) => {
         {/* <View style={c_outst.viewHeader} /> */}
         <Header
           iconLeft={require('../../assets/icons/back.png')}
-          name={'Check Out'}
+          name={t('buttons.btn_checkout')}
         />
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -57,7 +59,7 @@ const CheckOutScreen = ({navigation}) => {
                 source={require('../../assets/icons/address.png')}
               />
               <View style={c_outst.body1Text}>
-                <Text style={c_outst.text1}>Delivery Address:</Text>
+                <Text style={c_outst.text1}>{t('checkout.address')}:</Text>
                 <Text style={c_outst.text2}>
                   Minh Quan | <Text style={c_outst.text3}>(+84) 336758295</Text>{' '}
                   số 10 phố Phạm Văn Bạch, phường Dịch Vọng, quận Cầu Giấy, Hà
@@ -72,7 +74,7 @@ const CheckOutScreen = ({navigation}) => {
           </View>
 
           <View style={[c_outst.borderBottom, c_outst.body2]}>
-            <Text style={c_outst.bd2Text1}>Your Products:</Text>
+            <Text style={c_outst.bd2Text1}>{t('checkout.your_product')}</Text>
             <FlatList
               style={[c_outst.flat]}
               scrollEnabled={false}
@@ -89,7 +91,7 @@ const CheckOutScreen = ({navigation}) => {
                 style={appst.icon24}
                 source={require('../../assets/icons/vouchers.png')}
               />
-              <Text style={c_outst.text6}>Vouchers</Text>
+              <Text style={c_outst.text6}>{t('checkout.vouchers')}</Text>
             </View>
             <View style={[appst.rowCenter]}>
               <Text style={c_outst.text7}>Use 1 Voucher</Text>
@@ -118,7 +120,7 @@ const CheckOutScreen = ({navigation}) => {
                   style={appst.icon24}
                   source={require('../../assets/icons/payoption.png')}
                 />
-                <Text style={c_outst.text6}>Payment Option</Text>
+                <Text style={c_outst.text6}>{t('checkout.pay_option')}</Text>
               </View>
               <Image
                 style={appst.icon24}
@@ -131,24 +133,28 @@ const CheckOutScreen = ({navigation}) => {
                   style={appst.icon24}
                   source={require('../../assets/icons/payment.png')}
                 />
-                <Text style={c_outst.text6}>Payment Details</Text>
+                <Text style={c_outst.text6}>{t('checkout.pay_detail')}</Text>
               </View>
             </View>
             <View style={[appst.rowCenter, c_outst.view4Text]}>
-              <Text style={c_outst.textTitle}>Merchandise Subtotal</Text>
+              <Text style={c_outst.textTitle}>{t('checkout.merchandise')}</Text>
               <Text style={c_outst.textPrice}>$ 22</Text>
             </View>
             <View style={[appst.rowCenter, c_outst.view4Text]}>
-              <Text style={c_outst.textTitle}>Shipping Subtotal</Text>
+              <Text style={c_outst.textTitle}>
+                {t('checkout.shipping_total')}
+              </Text>
               <Text style={c_outst.textPrice}>$ 17</Text>
             </View>
             <View style={[appst.rowCenter, c_outst.view4Text]}>
-              <Text style={c_outst.textTitle}>Shipping Discount Subtotal</Text>
+              <Text style={c_outst.textTitle}>
+                {t('checkout.shipping_discount')}
+              </Text>
               <Text style={c_outst.textPrice}>$ 8.5</Text>
             </View>
             <View style={[appst.rowCenter, c_outst.view4Text]}>
               <Text style={[c_outst.textTitle, c_outst.textTitle1]}>
-                Total Payment:
+                {t('checkout.payment')}
               </Text>
               <Text style={[c_outst.textPrice, c_outst.textPrice1]}>
                 $ 30.5
@@ -163,21 +169,19 @@ const CheckOutScreen = ({navigation}) => {
               />
             </View>
             <Text style={c_outst.textTerm}>
-              By clicking “Place Order”, you are agreeing to{' '}
-              <Text style={c_outst.textTerm1}>
-                Shop General Transaction Terms
-              </Text>
+              {t('checkout.detail')}
+              <Text style={c_outst.textTerm1}>{t('checkout.term')}</Text>
             </Text>
           </View>
         </ScrollView>
 
         <View style={c_outst.viewFooter}>
           <View style={[appst.rowCenter, c_outst.borderTop]}>
-            <Text style={c_outst.text4}>Total Cost</Text>
+            <Text style={c_outst.text4}>{t('home.total')}</Text>
             <Text style={c_outst.text5}>$30.5</Text>
           </View>
           <CustomedButton
-            title={'Place Order'}
+            title={t('buttons.btn_place_order')}
             titleStyle={c_outst.textPress}
             onPress={() => openModal()}
             style={c_outst.press}
@@ -188,9 +192,9 @@ const CheckOutScreen = ({navigation}) => {
         visible={modalVisible}
         closeModal={closeModal}
         image={require('../../assets/images/img_success.png')}
-        title="Your Payment Is Successful"
-        content="We have send password recovery code in your email"
-        textbutton="Back To Shopping"
+        title={t('modals.title_payment')}
+        content={t('modals.sub_title_mail')}
+        textbutton={t('buttons.btn_back_to_shop')}
       />
     </View>
   );

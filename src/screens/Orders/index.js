@@ -10,8 +10,10 @@ import Cancalled from './Cancalled';
 import {colors} from '../../constants/colors';
 import {sizes} from '../../constants';
 import {fonts} from '../../constants/fonts';
+import {useTranslation} from 'react-i18next';
 
 const OrderScreen = ({navigation}) => {
+  const {t} = useTranslation();
   const TopTab = createMaterialTopTabNavigator();
 
   return (
@@ -19,7 +21,7 @@ const OrderScreen = ({navigation}) => {
       <Header
         iconLeft={require('../../assets/icons/back.png')}
         leftOnPress={() => navigation.goBack()}
-        name={'Order History'}
+        name={t('profiles.order_history')}
         iconRight={require('../../assets/icons/search.png')}
         rightOnPress={() => navigation.navigate('')}
       />
@@ -38,10 +40,10 @@ const OrderScreen = ({navigation}) => {
           tabBarActiveTintColor: colors.primary,
           tabBarInactiveTintColor: colors.black,
         }}>
-        <TopTab.Screen name="To Pay" component={ToPay} />
-        <TopTab.Screen name="To Ship" component={ToShip} />
-        <TopTab.Screen name="To Receive" component={ToReceive} />
-        <TopTab.Screen name="Cancalled" component={Cancalled} />
+        <TopTab.Screen name={t('orders.pay')} component={ToPay} />
+        <TopTab.Screen name={t('orders.ship')} component={ToShip} />
+        <TopTab.Screen name={t('orders.receive')} component={ToReceive} />
+        <TopTab.Screen name={t('orders.cancel')} component={Cancalled} />
       </TopTab.Navigator>
     </View>
   );

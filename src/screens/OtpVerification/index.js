@@ -1,19 +1,14 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  TextInput,
-} from 'react-native';
+import {Text, View, Image, TouchableOpacity, TextInput} from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import appst from '../../constants/AppStyle';
 import {spacing} from '../../constants';
 import styles from './style';
-import { useNavigation } from '@react-navigation/native';
-import { CustomedButton } from '../../components';
+import {useNavigation} from '@react-navigation/native';
+import {CustomedButton} from '../../components';
+import {useTranslation} from 'react-i18next';
 
 const OtpVerification = () => {
+  const {t} = useTranslation();
   const navigation = useNavigation();
   const [otp, setOtp] = useState(['', '', '', '']);
   const [completeOtp, setCompleteOtp] = useState('');
@@ -54,18 +49,15 @@ const OtpVerification = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => navigation.goBack()}>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
         <Image
           style={appst.icon40}
           source={require('../../assets/icons/ic_back.png')}
         />
       </TouchableOpacity>
       <View style={[appst.center]}>
-        <Text style={styles.text1}>OTP Verification</Text>
-        <Text style={styles.text2}>
-          Please check your email to see the verification code
-        </Text>
+        <Text style={styles.text1}>{t('titles.otp')}</Text>
+        <Text style={styles.text2}>{t('titles.sub_otp')}</Text>
         <Text style={styles.text3}>OTP Code</Text>
       </View>
       <View style={styles.otpContainer}>
@@ -83,8 +75,7 @@ const OtpVerification = () => {
         ))}
       </View>
       <View>
-      
-          <CustomedButton
+        <CustomedButton
           title={'Verify'}
           titleStyle={styles.textPress}
           onPress={handeVerify}
@@ -92,7 +83,7 @@ const OtpVerification = () => {
         />
       </View>
       <View style={[appst.rowCenter, {marginTop: spacing.xm}]}>
-        <Text style={styles.text4}>Resend code to</Text>
+        <Text style={styles.text4}>{t('titles.resend_code')}</Text>
         <Text style={styles.text4}>0:30</Text>
       </View>
     </View>

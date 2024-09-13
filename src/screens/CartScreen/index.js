@@ -6,8 +6,10 @@ import ItemCart from '../../items/CartItem/ItemCart';
 import {spacing} from '../../constants';
 import Header from '../../components/Header';
 import {CustomedButton} from '../../components';
+import {useTranslation} from 'react-i18next';
 
 const CartScreen = ({navigation}) => {
+  const {t} = useTranslation();
   const [currentlyOpenSwipeable, setCurrentlyOpenSwipeable] = useState(null);
 
   return (
@@ -16,11 +18,11 @@ const CartScreen = ({navigation}) => {
         <Header
           background={'#fff'}
           iconLeft={require('../../assets/icons/back.png')}
-          name={'My Cart'}
+          name={t("home.cart")}
         />
       </View>
       <View style={cartst.viewBody}>
-        <Text style={cartst.text1}>3 item</Text>
+        <Text style={cartst.text1}>3 {t('home.item')}</Text>
         <FlatList
           style={cartst.flat}
           data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
@@ -38,15 +40,15 @@ const CartScreen = ({navigation}) => {
       </View>
       <View style={cartst.viewFooter}>
         <View style={appst.rowCenter}>
-          <Text style={cartst.text2}>Subtotal</Text>
+          <Text style={cartst.text2}>{t("home.subtotal")}</Text>
           <Text style={cartst.text3}>$753.95</Text>
         </View>
         <View style={[appst.rowCenter, cartst.borderBottom]}>
-          <Text style={cartst.text2}>Delivery</Text>
+          <Text style={cartst.text2}>{t('home.delivery')}</Text>
           <Text style={cartst.text3}>$60.2</Text>
         </View>
         <View style={[appst.rowCenter, cartst.view1]}>
-          <Text style={cartst.text4}>Total Cost</Text>
+          <Text style={cartst.text4}>{t('home.total')}</Text>
           <Text style={cartst.text5}>$814.15</Text>
         </View>
         <View style={[appst.rowCenter]}>
@@ -57,10 +59,10 @@ const CartScreen = ({navigation}) => {
                 source={require('../../assets/icons/icon_check.png')}
               />
             </TouchableOpacity>
-            <Text style={cartst.text6}>All products</Text>
+            <Text style={cartst.text6}>{t('home.all_product')}</Text>
           </View>
           <CustomedButton
-            title={'Checkout'}
+            title={t("buttons.btn_checkout")}
             style={cartst.btCheckout}
             titleStyle={cartst.textTouch}
             onPress={() => navigation.navigate('CheckOutScreen')}

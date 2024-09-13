@@ -1,12 +1,12 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
 import homeStyle from './style';
 import ToolBar from '../../components/ToolBar';
 import PagerView from 'react-native-pager-view';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
+import {FlatList, ScrollView} from 'react-native-gesture-handler';
 import ProductItem from '../../items/ProductItem';
 import appst from '../../constants/AppStyle';
-
+import { useTranslation } from 'react-i18next';
 
 const banners = [
   require('../../assets/images/banner1.png'),
@@ -80,28 +80,28 @@ const categories = [
     name: 'voucher',
     image: require('../../assets/icons/voucher.png'),
   },
-]
+];
 
-const products = new Array(10).fill(1)
+const products = new Array(10).fill(1);
 
-
-const Category = ({ category, style }) => {
+const Category = ({category, style}) => {
   return (
-    <TouchableOpacity style={[homeStyle.categoryItem, homeStyle.marginBottom15, style]}>
+    <TouchableOpacity
+      style={[homeStyle.categoryItem, homeStyle.marginBottom15, style]}>
       <View style={homeStyle.categoryIconWrapper}>
         <Image source={category.image} style={homeStyle.categoryImage} />
       </View>
       <Text style={homeStyle.categoryText}>{category.name}</Text>
     </TouchableOpacity>
-  )
-}
+  );
+};
 
 const HomeScreen = () => {
+  const {t} = useTranslation()
   const pagerRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
 
-
-  const goToPage = (page) => {
+  const goToPage = page => {
     if (page < banners.length) {
       pagerRef.current.setPage(page);
       setCurrentPage(page);
@@ -125,7 +125,12 @@ const HomeScreen = () => {
       <ToolBar iconRight={require('../../assets/icons/message.png')} />
       <ScrollView showsVerticalScrollIndicator={false} style={appst.container}>
         <View style={homeStyle.bannerContainer}>
-          <PagerView onPageSelected={(e) => { goToPage(e.nativeEvent.position) }} initialPage={0} ref={pagerRef}>
+          <PagerView
+            onPageSelected={e => {
+              goToPage(e.nativeEvent.position);
+            }}
+            initialPage={0}
+            ref={pagerRef}>
             {banners.map((item, index) => (
               <View key={index}>
                 <Image source={item} style={homeStyle.banner} />
@@ -134,33 +139,41 @@ const HomeScreen = () => {
           </PagerView>
           <FlatList
             data={banners}
-            renderItem={({ item, index }) => (
+            renderItem={({item, index}) => (
               <View
                 style={[
                   homeStyle.indicatorDot,
                   index === currentPage && homeStyle.indicatorActiveDot,
                   index !== banners.length - 1 && homeStyle.marginRight12,
-                ]}
-              ></View>
+                ]}></View>
             )}
             keyExtractor={(item, index) => index.toString()}
             horizontal
             style={homeStyle.indicator}
           />
-
         </View>
 
-
-
-        <ScrollView showsHorizontalScrollIndicator={false} style={homeStyle.scrollContainer} horizontal>
+        <ScrollView
+          showsHorizontalScrollIndicator={false}
+          style={homeStyle.scrollContainer}
+          horizontal>
           <View>
             <FlatList
               scrollEnabled={false}
               style={homeStyle.marginTop15}
               data={categories}
-              renderItem={({ item, index }) => {
+              renderItem={({item, index}) => {
                 if (index % 2 === 0) {
-                  return <Category category={item} style={[index < categories.length - 2 && homeStyle.marginRight40, homeStyle.marginBottom15]} />
+                  return (
+                    <Category
+                      category={item}
+                      style={[
+                        index < categories.length - 2 &&
+                          homeStyle.marginRight40,
+                        homeStyle.marginBottom15,
+                      ]}
+                    />
+                  );
                 }
               }}
               horizontal
@@ -171,9 +184,17 @@ const HomeScreen = () => {
             <FlatList
               scrollEnabled={false}
               data={categories}
-              renderItem={({ item, index }) => {
+              renderItem={({item, index}) => {
                 if (index % 2 === 1) {
-                  return <Category category={item} style={[index < categories.length - 2 && homeStyle.marginRight40]} />
+                  return (
+                    <Category
+                      category={item}
+                      style={[
+                        index < categories.length - 2 &&
+                          homeStyle.marginRight40,
+                      ]}
+                    />
+                  );
                 }
               }}
               horizontal
@@ -183,14 +204,13 @@ const HomeScreen = () => {
           </View>
         </ScrollView>
 
-
-        <Text style={homeStyle.pfyText}>
-          Product for you
-        </Text>
+        <Text style={homeStyle.pfyText}>{t("home.list_product")}</Text>
 
         <FlatList
           data={products}
-          renderItem={({ item, index }) => <ProductItem product={item} index={index} />}
+          renderItem={({item, index}) => (
+            <ProductItem product={item} index={index} />
+          )}
           keyExtractor={(item, index) => index.toString()}
           numColumns={2}
           showsVerticalScrollIndicator={false}
@@ -198,7 +218,6 @@ const HomeScreen = () => {
           // ItemSeparatorComponent={() => <View style={homeStyle.separator}/>}
         />
       </ScrollView>
-
     </View>
   );
 };

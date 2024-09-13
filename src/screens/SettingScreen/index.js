@@ -1,20 +1,13 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Image,
-  FlatList,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
-import {sizes, spacing} from '../../constants';
-import {fonts} from '../../constants/fonts';
-import {colors} from '../../constants/colors';
+import {View, Text, Image, FlatList, TouchableOpacity} from 'react-native';
 import appst from '../../constants/AppStyle';
 import {useNavigation} from '@react-navigation/native';
 import RenderSettingItem from './ItemSetting/RenderSettingItem';
 import styles from './style';
+import {useTranslation} from 'react-i18next';
+
 const SettingScreen = () => {
+  const {t} = useTranslation();
   const navigation = useNavigation();
 
   const data = [
@@ -45,7 +38,7 @@ const SettingScreen = () => {
             source={require('../../assets/icons/ic_back.png')}
           />
         </TouchableOpacity>
-        <Text style={styles.title}>Profile</Text>
+        <Text style={styles.title}>{t('home.profile')}</Text>
         <View style={{width: 40}} />
       </View>
       <View style={styles.viewBody}>
@@ -56,11 +49,10 @@ const SettingScreen = () => {
         />
       </View>
       <View style={appst.center}>
-        <Text style={styles.signOut}>Sign Out</Text>
+        <Text style={styles.signOut}>{t('buttons.btn_signout')}</Text>
       </View>
     </View>
   );
 };
 
 export default SettingScreen;
-

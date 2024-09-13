@@ -4,14 +4,17 @@ import appst from '../../constants/AppStyle';
 import {fvst} from './style';
 import Header from '../../components/Header';
 import ProductItem from '../../items/ProductItem';
+import {useTranslation} from 'react-i18next';
 
 const FavoriteScreen = ({navigation}) => {
+  const {t} = useTranslation();
+
   return (
     <View style={[appst.container, fvst.container]}>
       <Header
         iconLeft={require('../../assets/icons/back.png')}
         leftOnPress={() => navigation.goBack()}
-        name={'Favorite'}
+        name={t('home.favorite')}
         iconRight={require('../../assets/icons/favorite.png')}
       />
       <View style={[appst.center]}>

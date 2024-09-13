@@ -7,8 +7,10 @@ import styles from './style';
 import {CustomedButton} from '../../components';
 import Header from '../../components/Header';
 import {handleNavigate} from '../../utils/functions/navigationHelper';
+import {useTranslation} from 'react-i18next';
 
 const LoginScreen = () => {
+  const {t} = useTranslation();
   const navigation = useNavigation();
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
@@ -20,15 +22,16 @@ const LoginScreen = () => {
         leftOnPress={() => navigation.goBack()}
       />
       <View style={appst.center}>
-        <Text style={styles.text1}>Hello Again!</Text>
-        <Text style={styles.text2}>
-          Fill your details or continue with social media
-        </Text>
+        <Text style={styles.text1}>{t('titles.signin')}</Text>
+        <Text style={styles.text2}>{t('titles.sub_title')}</Text>
       </View>
-      <CustomTextInput label="Email Address" placeholder="xyz@gmail.com" />
       <CustomTextInput
-        label="Password"
-        placeholder="********"
+        label={t('form_input.email')}
+        placeholder={t('form_input.placeholder_email')}
+      />
+      <CustomTextInput
+        label={t('form_input.password')}
+        placeholder={t('form_input.placeholder_password')}
         secureTextEntry={secureTextEntry}
         isPassword={true}
         onTogglePassword={() => setSecureTextEntry(!secureTextEntry)}
@@ -37,12 +40,12 @@ const LoginScreen = () => {
         <Text
           style={styles.text4}
           onPress={() => handleNavigate(navigation, 'ForgotPassWord')}>
-          Recovery Password
+          {t('titles.reset_password')}
         </Text>
       </View>
       <View>
         <CustomedButton
-          title={'Sign In'}
+          title={t('buttons.btn_signin')}
           titleStyle={styles.textPress}
           onPress={() => handleNavigate(navigation, 'BottomNav')}
           style={styles.press}
@@ -54,16 +57,16 @@ const LoginScreen = () => {
             style={styles.iconGoogle}
             source={require('../../assets/icons/google.png')}
           />
-          <Text style={styles.text6}>Sign In With Google</Text>
+          <Text style={styles.text6}>{t('buttons.btn_signin_gg')}</Text>
         </TouchableOpacity>
       </View>
       <View style={[appst.center, {marginTop: 150}]}>
         <Text style={styles.text7}>
-          New User?
+          {t('titles.new_users')}
           <Text
             style={styles.text8}
             onPress={() => handleNavigate(navigation, 'SignUpScreen')}>
-            Create Account
+            {t('buttons.btn_create_account')}
           </Text>
         </Text>
       </View>

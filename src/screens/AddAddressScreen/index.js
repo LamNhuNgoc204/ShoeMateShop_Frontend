@@ -5,8 +5,10 @@ import CustomTextInput from '../../components/Input';
 import {CustomedButton} from '../../components';
 import styles from './style';
 import appst from '../../constants/AppStyle';
+import {useTranslation} from 'react-i18next';
 
 const App = () => {
+  const {t} = useTranslation();
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);
@@ -64,7 +66,6 @@ const App = () => {
     )}`;
     setAddress(address);
     console.log('Address:', address);
-
   };
 
   const findProvinceName = value => {
@@ -91,18 +92,18 @@ const App = () => {
             source={require('../../assets/icons/ic_back.png')}
           />
         </TouchableOpacity>
-        <Text style={styles.title}>Address</Text>
+        <Text style={styles.title}>{t('titles.address')}</Text>
         <View style={{width: 40}} />
       </View>
       <View style={styles.viewBody}>
         <CustomTextInput
-          label="Full name"
-          placeholder="Nguyen Van A"
+          label={t('form_input.fullname')}
+          placeholder={t('form_input.placeholder_fullname')}
           onChangeText={text => setFullName(text)}
         />
         <CustomTextInput
-          label="Mobile number"
-          placeholder="0123456789"
+          label={t('form_input.phone')}
+          placeholder={t('form_input.placeholder_phone')}
           keyboardType="numeric"
           onChangeText={text => setPhoneNumber(text)}
         />
@@ -156,7 +157,7 @@ const App = () => {
         />
 
         <CustomedButton
-          title={'Save Changes'}
+          title={t('buttons.btn_save_change')}
           titleStyle={styles.textPress}
           onPress={saveChanges}
           style={styles.press}

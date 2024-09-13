@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 import React from 'react';
 import ratingst from './style';
 import appst from '../../constants/AppStyle';
@@ -9,14 +9,16 @@ import MyReviews from './MyReviews';
 import {colors} from '../../constants/colors';
 import {sizes} from '../../constants';
 import {fonts} from '../../constants/fonts';
+import {useTranslation} from 'react-i18next';
 
 const MyRating = () => {
+  const {t} = useTranslation();
   const TopTab = createMaterialTopTabNavigator();
 
   return (
     <View style={[ratingst.container, appst.container]}>
       <Header
-        name={'My Rating'}
+        name={t('profiles.rating')}
         iconLeft={require('../../assets/icons/back.png')}
         leftOnPress={() => {}}
       />
@@ -37,11 +39,11 @@ const MyRating = () => {
           tabBarStyle: {
             backgroundColor: colors.colorF3F6FF,
             padding: 0,
-            margin: 0
+            margin: 0,
           },
         }}>
-        <TopTab.Screen name="To Rate" component={ToRate} />
-        <TopTab.Screen name="My Reviews" component={MyReviews} />
+        <TopTab.Screen name={t('profiles.rate')} component={ToRate} />
+        <TopTab.Screen name={t('review.to_review')} component={MyReviews} />
       </TopTab.Navigator>
     </View>
   );
