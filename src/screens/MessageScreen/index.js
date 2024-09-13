@@ -1,8 +1,7 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native'
+import { View, Text, Image, TouchableOpacity, FlatList, TextInput } from 'react-native'
 import React, { useState } from 'react'
 import appst from '../../constants/AppStyle'
 import messageScreenStyle from './style'
-import { FlatList, TextInput } from 'react-native-gesture-handler'
 import { colors } from '../../constants/colors'
 
 
@@ -100,7 +99,7 @@ const renderBottom = () => {
   const [focused, setFocused] = useState(false)
   return (
     <View style={messageScreenStyle.bottomContainer}>
-      <TextInput onBlur={() => {setFocused(false)}} onFocus={() => {setFocused(true)}} style={messageScreenStyle.input} placeholder='Message' placeholderTextColor={colors.color004BFE} />
+      <TextInput onBlur={() => { setFocused(false) }} onFocus={() => { setFocused(true) }} style={messageScreenStyle.input} placeholder='Message' placeholderTextColor={colors.color004BFE} />
       <TouchableOpacity>
         <Image source={require('../../assets/icons/open_gallery.png')} style={[messageScreenStyle.icon26, messageScreenStyle.marginLeft15, focused && messageScreenStyle.hide]} />
       </TouchableOpacity>
