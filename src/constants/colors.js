@@ -42,6 +42,9 @@ export const colors = {
   colorDC1414: "#DC1414",
   color23AD00: "#23AD00",
   colorE9F3FF: "#E9F3FF",
-  color507AAB: '#507AAB'
+  color507AAB: '#507AAB',
+  color004CFF: "#004CFF",
+  color202020: "#202020",
+  colorDEDEDE: "#DEDEDE",
 };
 
