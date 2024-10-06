@@ -110,7 +110,7 @@ const BottomNav = () => {
       }}
       tabBar={props => <AnimatedTabBar {...props} />}>
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Search" component={SearchScreen} />
+      <Tab.Screen name="Search" component={FavoriteScreen} />
       <Tab.Screen name="CartScreen" component={CartScreen} />
       <Tab.Screen name="FavoriteScreen" component={FavoriteScreen} />
       <Tab.Screen name="ProfileScreen" component={ProfileScreen} />
