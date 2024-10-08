@@ -38,7 +38,11 @@ const Stack = createNativeStackNavigator();
 const StackNav = () => {
   return (
     <Stack.Navigator
+<<<<<<< Updated upstream
       initialRouteName="SplashScreen"
+=======
+      initialRouteName="LoginScreen"
+>>>>>>> Stashed changes
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="SplashScreen" component={SplashScreen} />
       <Stack.Screen name="OnBoardScreen" component={OnBoardScreen} />
