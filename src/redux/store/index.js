@@ -1,10 +1,11 @@
 // redux/store.js
 import { configureStore } from '@reduxjs/toolkit';
-import { Provider } from 'react-redux';
-import rootReducer from '../reducer'; // Import rootReducer mà bạn đã tạo
+import authReducer from '../slices/authSlice';
 
 const store = configureStore({
-  reducer: rootReducer, // Sử dụng rootReducer
+  reducer: {
+    auth: authReducer,
+  },
 });
 
 export default store;
