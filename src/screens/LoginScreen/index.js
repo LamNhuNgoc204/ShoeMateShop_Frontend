@@ -22,9 +22,20 @@ import {
   validatePassword,
 } from '../../utils/validate/ValidString';
 import {login} from '../../redux/thunks/UserThunks';
+import React, { useState } from 'react';
+import { Text, View, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
+import appst from '../../constants/AppStyle';
+import { useNavigation } from '@react-navigation/native';
+import CustomTextInput from '../../components/Input';
+import styles from './style';
+import { CustomedButton } from '../../components';
+import Header from '../../components/Header';
+import { handleNavigate } from '../../utils/functions/navigationHelper';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 
 const LoginScreen = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const [email, setEmail] = useState('HongLinh@gmail.com');
   const [password, setPassword] = useState('Linh@08012004');
@@ -99,10 +110,31 @@ const LoginScreen = () => {
         value={password}
         onChangeText={setPassword}
       />
+      <View style={{ position: 'relative' }}>
+        <CustomTextInput
+          label={t('form_input.email')}
+          placeholder={t('form_input.placeholder_email')}
+          value={email}
+          onChangeText={setEmail}
+        />
+      </View>
+      <View style={{ position: 'relative' }}>
+        <CustomTextInput
+          label={t('form_input.password')}
+          placeholder={t('form_input.placeholder_password')}
+          secureTextEntry={secureTextEntry}
+          value={password}
+          onChangeText={setPassword}
+          isPassword={true}
+          onTogglePassword={() => setSecureTextEntry(!secureTextEntry)}
+        />
+        
+      </View>
       <View style={appst.rowEnd}>
         <Text
           style={styles.text4}
-          onPress={() => handleNavigate(navigation, 'ForgotPassWord')}>
+          onPress={() => handleNavigate(navigation, 'ForgotPassWord')}
+        >
           {t('titles.reset_password')}
         </Text>
       </View>
@@ -119,6 +151,7 @@ const LoginScreen = () => {
           onPress={handleLogin}
           titleStyle={styles.textPress}
           // onPress={() => handleNavigate(navigation, 'BottomNav')}
+          disabled={loading}
           style={styles.press}
         />
       </View>
@@ -131,12 +164,13 @@ const LoginScreen = () => {
           <Text style={styles.text6}>{t('buttons.btn_signin_gg')}</Text>
         </TouchableOpacity>
       </View>
-      <View style={[appst.center, {marginTop: 150}]}>
+      <View style={[appst.center, { marginTop: 150 }]}>
         <Text style={styles.text7}>
           {t('titles.new_users')}
           <Text
             style={styles.text8}
-            onPress={() => handleNavigate(navigation, 'SignUpScreen')}>
+            onPress={() => handleNavigate(navigation, 'SignUpScreen')}
+          >
             {t('buttons.btn_create_account')}
           </Text>
         </Text>

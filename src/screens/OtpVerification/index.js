@@ -1,19 +1,44 @@
-import {Text, View, Image, TouchableOpacity, TextInput} from 'react-native';
+import {Text, View, Image, TouchableOpacity, TextInput, Alert, ToastAndroid} from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import appst from '../../constants/AppStyle';
 import {spacing} from '../../constants';
 import styles from './style';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {CustomedButton} from '../../components';
 import {useTranslation} from 'react-i18next';
+import AxiosInstance from '../../helpers/AxiosInstance';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const OtpVerification = () => {
   const {t} = useTranslation();
   const navigation = useNavigation();
+  const route = useRoute();
+  const { email } = route.params;
   const [otp, setOtp] = useState(['', '', '', '']);
   const [completeOtp, setCompleteOtp] = useState('');
   const inputs = useRef([]);
-  console.log(completeOtp);
+  const [resendOtp, setResendOtp] = useState(false);
+  const [timer, setTimer] = useState(60);
+
+  useEffect(() => {
+    if (resendOtp && timer > 0) {
+      const countdown = setInterval(() => {
+        setTimer(prevTimer => prevTimer - 1);
+      }, 1000);
+      return () => clearInterval(countdown);
+    }
+  }, [resendOtp, timer]);
+
+  const handleResendOtp = async () => {
+    try {
+      await AxiosInstance().post('auth/resend-otp', { email });
+      ToastAndroid.show("OTP has been resent successfully!", ToastAndroid.SHORT);
+      setResendOtp(true);
+      setTimer(60); // Reset timer to 60 seconds
+    } catch (error) {
+      ToastAndroid.show("Error, please try again.", ToastAndroid.SHORT);
+    }
+  };
 
   const handleChangeText = (text, index) => {
     const newOtp = [...otp];
@@ -29,31 +54,27 @@ const OtpVerification = () => {
     }
   };
 
-  const handleKeyPress = (e, index) => {
-    if (e.nativeEvent.key === 'Backspace' && otp[index] === '' && index > 0) {
-      inputs.current[index - 1].focus();
-    }
-  };
-
-  useEffect(() => {
-    if (otp.every(digit => digit.length === 1)) {
-      setCompleteOtp(otp.join(''));
-    }
-  }, [otp]);
-
-  const handeVerify = () => {
-    if (completeOtp === '1234') {
-      navigation.navigate('HomeScreen');
+  const handleVerify = async () => {
+    try {
+      const response = await AxiosInstance().post('auth/verify-email', {
+        email,
+        otpCode: completeOtp,
+      });
+      
+      if (response.status && response.data.token) {
+        await AsyncStorage.setItem('token', response.data.token);
+        ToastAndroid.show("You are verified successfully.", ToastAndroid.SHORT);
+        navigation.navigate('HomeScreen');
+      }
+    } catch (error) {
+      ToastAndroid.show("Error, please try again. " + error.message, ToastAndroid.SHORT);
     }
   };
 
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Image
-          style={appst.icon40}
-          source={require('../../assets/icons/ic_back.png')}
-        />
+        <Image style={appst.icon40} source={require('../../assets/icons/ic_back.png')} />
       </TouchableOpacity>
       <View style={[appst.center]}>
         <Text style={styles.text1}>{t('titles.otp')}</Text>
@@ -75,16 +96,13 @@ const OtpVerification = () => {
         ))}
       </View>
       <View>
-        <CustomedButton
-          title={'Verify'}
-          titleStyle={styles.textPress}
-          onPress={handeVerify}
-          style={styles.press}
-        />
+        <CustomedButton title={'Verify'} titleStyle={styles.textPress} onPress={handleVerify} style={styles.press} />
       </View>
       <View style={[appst.rowCenter, {marginTop: spacing.xm}]}>
-        <Text style={styles.text4}>{t('titles.resend_code')}</Text>
-        <Text style={styles.text4}>0:30</Text>
+        <TouchableOpacity onPress={handleResendOtp} disabled={resendOtp && timer > 0}>
+          <Text style={styles.text4}>{t('titles.resend_code')}</Text>
+        </TouchableOpacity>
+        {resendOtp && <Text style={styles.text4}>{` 0:${timer < 10 ? `0${timer}` : timer}`}</Text>}
       </View>
     </View>
   );

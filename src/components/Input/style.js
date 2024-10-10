@@ -6,6 +6,7 @@ import { colors } from '../../constants/colors';
 export default styles = StyleSheet.create({
     viewInput: {
       marginBottom: spacing.xl,
+      position: 'relative',
     },
     label: {
       fontSize: sizes.size16,

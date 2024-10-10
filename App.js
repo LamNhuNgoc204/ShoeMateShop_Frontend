@@ -9,7 +9,6 @@ import {I18nextProvider} from 'react-i18next';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {persistor, store} from './src/redux/store/store';
-
 const App = () => {
   i18next.changeLanguage('en');
 
@@ -26,5 +25,6 @@ const App = () => {
       </PersistGate>
     </Provider>
   );
+ 
 };
 export default App;

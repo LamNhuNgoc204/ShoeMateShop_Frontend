@@ -1,4 +1,4 @@
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {View, Text, Image, TouchableOpacity, Pressable, Button} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import homeStyle from './style';
 import ToolBar from '../../components/ToolBar';
@@ -7,6 +7,7 @@ import {FlatList, ScrollView} from 'react-native-gesture-handler';
 import ProductItem from '../../items/ProductItem';
 import appst from '../../constants/AppStyle';
 import { useTranslation } from 'react-i18next';
+import { getToken } from '../../utils/functions/getToken';
 
 const banners = [
   require('../../assets/images/banner1.png'),
@@ -120,8 +121,10 @@ const HomeScreen = () => {
     return () => clearInterval(interval);
   }, [currentPage, banners.length]);
 
+
   return (
     <View style={[homeStyle.container, appst.container]}>
+      <Button title={"get token "} onPress={() => getToken()}></Button>
       <ToolBar iconRight={require('../../assets/icons/message.png')} />
       <ScrollView showsVerticalScrollIndicator={false} style={appst.container}>
         <View style={homeStyle.bannerContainer}>
