@@ -1,4 +1,3 @@
-// src/redux/slices/UserSlice.js
 import {createSlice} from '@reduxjs/toolkit';
 import {login, registerUser} from '../thunks/UserThunks';
 
