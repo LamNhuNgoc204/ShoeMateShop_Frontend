@@ -22,7 +22,7 @@ const CustomTextInput = ({
           style={styles.input}
           placeholder={placeholder}
           value={value}
-          onChangeText={onChangeText}
+          onChangeText={e => onChangeText(e)}
         />
         {isPassword && (
           <TouchableOpacity
