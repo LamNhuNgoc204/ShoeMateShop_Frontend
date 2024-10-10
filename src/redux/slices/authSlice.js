@@ -1,6 +1,7 @@
 // redux/slices/authSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import AxiosInstance from '../../helpers/AxiosInstance';
+import { loginWithGG } from '../thunks/UserThunks';
 
 // Async Thunks cho các API calls
 export const registerUser = createAsyncThunk(
@@ -67,7 +68,19 @@ const authSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+      .addCase(loginWithGG.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loginWithGG.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(loginWithGG.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
   }
 });
 
