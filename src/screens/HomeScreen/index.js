@@ -1,4 +1,4 @@
-import {View, Text, Image, TouchableOpacity, Pressable, Button} from 'react-native';
+import {View, Text, Image, TouchableOpacity, Button} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import homeStyle from './style';
 import ToolBar from '../../components/ToolBar';
@@ -6,8 +6,10 @@ import PagerView from 'react-native-pager-view';
 import {FlatList, ScrollView} from 'react-native-gesture-handler';
 import ProductItem from '../../items/ProductItem';
 import appst from '../../constants/AppStyle';
-import { useTranslation } from 'react-i18next';
-import { getToken } from '../../utils/functions/getToken';
+import {useTranslation} from 'react-i18next';
+import {getToken} from '../../utils/functions/getToken';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchProductsThunk} from '../../redux/thunks/productThunks';
 
 const banners = [
   require('../../assets/images/banner1.png'),
@@ -83,8 +85,6 @@ const categories = [
   },
 ];
 
-const products = new Array(10).fill(1);
-
 const Category = ({category, style}) => {
   return (
     <TouchableOpacity
@@ -98,9 +98,28 @@ const Category = ({category, style}) => {
 };
 
 const HomeScreen = () => {
-  const {t} = useTranslation()
+  const {t} = useTranslation();
   const pagerRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
+  const [listProduct, setListProduct] = useState([]);
+
+  const useAppSelector = useSelector;
+  const productState = useAppSelector(state => state.products);
+  const useAppDispatch = () => useDispatch();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      await dispatch(fetchProductsThunk());
+    };
+    fetchProduct();
+  }, []);
+
+  useEffect(() => {
+    setListProduct(productState.products);
+  }, [productState]);
+
+  // console.log('product data', productState, '-----', listProduct);
 
   const goToPage = page => {
     if (page < banners.length) {
@@ -121,10 +140,9 @@ const HomeScreen = () => {
     return () => clearInterval(interval);
   }, [currentPage, banners.length]);
 
-
   return (
     <View style={[homeStyle.container, appst.container]}>
-      <Button title={"get token "} onPress={() => getToken()}></Button>
+      <Button title={'get token '} onPress={() => getToken()}></Button>
       <ToolBar iconRight={require('../../assets/icons/message.png')} />
       <ScrollView showsVerticalScrollIndicator={false} style={appst.container}>
         <View style={homeStyle.bannerContainer}>
@@ -207,10 +225,10 @@ const HomeScreen = () => {
           </View>
         </ScrollView>
 
-        <Text style={homeStyle.pfyText}>{t("home.list_product")}</Text>
+        <Text style={homeStyle.pfyText}>{t('home.list_product')}</Text>
 
         <FlatList
-          data={products}
+          data={listProduct}
           renderItem={({item, index}) => (
             <ProductItem product={item} index={index} />
           )}
