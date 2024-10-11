@@ -120,7 +120,7 @@ const pddt = StyleSheet.create({
     fontSize: sizes.size14,
     color: colors.black,
     marginVertical: spacing.md,
-    marginHorizontal: spacing.sm
+    marginHorizontal: spacing.sm,
   },
 
   footer: {
@@ -153,6 +153,44 @@ const pddt = StyleSheet.create({
     fontSize: sizes.size14,
     lineHeight: 22,
     textAlign: 'center',
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center', // Center the modal vertically
+    alignItems: 'center', // Center the modal horizontally
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent gray background
+  },
+
+  modalContent: {
+    backgroundColor: 'white', // Modal content background
+    padding: 20,
+    borderRadius: 10,
+    width: '80%', // Adjust this width to be relative to screen size
+    maxWidth: 400, // Optional: max width for larger screens
+    alignItems: 'center', // Center text and buttons inside
+  },
+
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+
+  sizeOption: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 5,
+    marginVertical: 5,
+  },
+
+  sizeText: {
+    fontSize: 16,
+  },
+  modalClose: {
+    marginTop: 20,
+    fontSize: 16,
+    color: colors.primary,
   },
 });
 

@@ -5,6 +5,9 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  Modal,
+  Pressable,
+  ToastAndroid,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import appst from '../../constants/AppStyle';
@@ -24,9 +27,20 @@ const ProductDetail = props => {
 
   const useAppSelector = useSelector;
   const productState = useAppSelector(state => state.products);
-  const products = new Array(10).fill(1);
 
   const [product, setProduct] = useState([]);
+  const [sizeModalVisible, setSizeModalVisible] = useState(false);
+  const [selectedSize, setSelectedSize] = useState(null);
+
+  const handleAddToCart = () => {
+    // Show the modal when "Add to Cart" is pressed
+    setSizeModalVisible(true);
+  };
+
+  const handleSizeSelect = size => {
+    setSelectedSize(size);
+    console.log(`Size selected: ${size}`);
+  };
 
   const fetchProduct = async () => {
     try {
@@ -35,7 +49,7 @@ const ProductDetail = props => {
         setProduct(response);
         // console.log("pd day ne", product);
       }
-      console.log('data product detail', response);
+      // console.log('data product detail', response);
     } catch (error) {
       console.log(error);
     }
@@ -45,6 +59,36 @@ const ProductDetail = props => {
     fetchProduct();
     return () => {};
   }, []);
+
+  const addToCart = async () => {
+    try {
+      const itemCart = {
+        product_id: product._id,
+        size_id: selectedSize,
+        quantity: 1,
+      };
+
+      const response = await AxiosInstance().post(
+        `/cart/add-product-to-cart`,
+        itemCart,
+      );
+      if (response.status) {
+        setSizeModalVisible(false);
+        ToastAndroid.show(
+          'Chúc mừng bạn đã thêm vào giỏ hàng thành công',
+          ToastAndroid.SHORT,
+        );
+      } else {
+        setSizeModalVisible(false);
+        ToastAndroid.show(
+          'Oops. Xảy ra lỗi rồi. Thử lại nhé :3',
+          ToastAndroid.SHORT,
+        );
+      }
+    } catch (error) {
+      console.log('error add to cart, ', error);
+    }
+  };
 
   return (
     <View style={[appst.container, pddt.container]}>
@@ -152,6 +196,42 @@ const ProductDetail = props => {
         </View>
       </ScrollView>
 
+      {/* Modal for selecting size */}
+      <Modal
+        visible={sizeModalVisible}
+        animationType="slide"
+        transparent={true} // Set to true for transparent background
+        onRequestClose={() => setSizeModalVisible(false)}>
+        {/* Background overlay */}
+        <View style={pddt.modalOverlay}>
+          {/* Modal content with dynamic width */}
+          <View style={pddt.modalContent}>
+            <Text style={pddt.modalTitle}>Select Size</Text>
+
+            <View style={{flexDirection: 'row'}}>
+              {product.size && product.size.length > 0 ? (
+                product.size.map((size, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={[pddt.sizeOption, {marginRight: 10}]}
+                    onPress={() => handleSizeSelect(size._id)}>
+                    <Text style={pddt.sizeText}>{size.sizeId.name}</Text>
+                  </TouchableOpacity>
+                ))
+              ) : (
+                <Text>No sizes available</Text>
+              )}
+            </View>
+
+            <TouchableOpacity
+              onPress={() => addToCart()}
+              style={[pddt.pressAddtocart, appst.center]}>
+              <Text style={pddt.txtPress}>Add to cart</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
       <View style={[pddt.footer, appst.rowCenter]}>
         <View style={[appst.rowCenter, pddt.footer1]}>
           <TouchableOpacity>
@@ -160,7 +240,9 @@ const ProductDetail = props => {
               style={pddt.chat}
             />
           </TouchableOpacity>
-          <TouchableOpacity style={[pddt.pressAddtocart, appst.center]}>
+          <TouchableOpacity
+            onPress={() => handleAddToCart()}
+            style={[pddt.pressAddtocart, appst.center]}>
             <Text style={pddt.txtPress}>Add to cart</Text>
           </TouchableOpacity>
         </View>

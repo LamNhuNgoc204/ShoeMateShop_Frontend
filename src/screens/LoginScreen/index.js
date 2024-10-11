@@ -22,12 +22,12 @@ import {
   validatePassword,
 } from '../../utils/validate/ValidString';
 import {login, loginWithGG} from '../../redux/thunks/UserThunks';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 GoogleSignin.configure({
-  webClientId: "376658898807-l5sdnif3gi80l9e9o07ldiv5kitk03mn.apps.googleusercontent.com"
-})
+  webClientId:
+    '376658898807-l5sdnif3gi80l9e9o07ldiv5kitk03mn.apps.googleusercontent.com',
+});
 const LoginScreen = () => {
   const {t} = useTranslation();
   const navigation = useNavigation();
@@ -68,7 +68,7 @@ const LoginScreen = () => {
 
       if (login.fulfilled.match(resultAction)) {
         ToastAndroid.show('Đăng nhập thành công', ToastAndroid.SHORT);
-        handleNavigate(navigation, 'OtpVerification');
+        handleNavigate(navigation, 'BottomNav');
       } else {
         ToastAndroid.show('Đăng nhập thất bại', ToastAndroid.SHORT);
       }
@@ -81,20 +81,22 @@ const LoginScreen = () => {
   const singinWithGG = async () => {
     try {
       await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn()
+      const userInfo = await GoogleSignin.signIn();
       console.log(userInfo.data.user);
-      const resultF = await dispatch(loginWithGG({
-        name: userInfo.data.user.name,
-        email: userInfo.data.user.email,
-        avatar: userInfo.data.user.photo
-      }))
-      if(loginWithGG.fulfilled.match(resultF)) {
-        navigation.navigate('BottomNav')
+      const resultF = await dispatch(
+        loginWithGG({
+          name: userInfo.data.user.name,
+          email: userInfo.data.user.email,
+          avatar: userInfo.data.user.photo,
+        }),
+      );
+      if (loginWithGG.fulfilled.match(resultF)) {
+        navigation.navigate('BottomNav');
       }
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
