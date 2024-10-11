@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import appst from '../../constants/AppStyle';
 import pddt from './style';
 import Header from '../../components/Header';
@@ -14,16 +14,44 @@ import {colors} from '../../constants/colors';
 import ItemReview from '../../items/ReviewItem/ProductDetail';
 import {spacing} from '../../constants';
 import ProductItem from '../../items/ProductItem';
+import AxiosInstance from '../../helpers/AxiosInstance';
+import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 
-const ProductDetail = ({navigation}) => {
+const ProductDetail = props => {
+  const navigation = useNavigation();
+  const {index} = props.route.params;
+
+  const useAppSelector = useSelector;
+  const productState = useAppSelector(state => state.products);
   const products = new Array(10).fill(1);
+
+  const [product, setProduct] = useState([]);
+
+  const fetchProduct = async () => {
+    try {
+      const response = await AxiosInstance().get(`/products//detail/${index}`);
+      if (response) {
+        setProduct(response);
+        // console.log("pd day ne", product);
+      }
+      console.log('data product detail', response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProduct();
+    return () => {};
+  }, []);
 
   return (
     <View style={[appst.container, pddt.container]}>
       <Header
         iconLeft={require('../../assets/icons/back.png')}
         leftOnPress={() => navigation.goBack()}
-        name={'Shoes'}
+        name={product.name}
         rightOnPress={() => navigation.navigate()}
         iconRight={require('../../assets/icons/mycart.png')}
         backgroundColor={colors.background_secondary}
@@ -66,8 +94,8 @@ const ProductDetail = ({navigation}) => {
           <Text style={pddt.bestSl}>BEST SELLER</Text>
           <View style={[appst.rowCenter, pddt.body1]}>
             <View>
-              <Text style={pddt.name}>Nike Air Jordan</Text>
-              <Text style={pddt.price}>$918.000</Text>
+              <Text style={pddt.name}>{product.name}</Text>
+              <Text style={pddt.price}>${product.price}</Text>
             </View>
             <View style={[pddt.iconfav, appst.center]}>
               <Image source={require('../../assets/icons/favorite.png')} />
@@ -83,9 +111,7 @@ const ProductDetail = ({navigation}) => {
           </View>
           <View style={pddt.viewDes}>
             <Text numberOfLines={3} style={pddt.des}>
-              The Max Air 270 unit delivers unrivaled, all-day comfort. The
-              sleek, running-inspired design roots you to everything
-              Nike........
+              {product.description}
             </Text>
             <Text style={pddt.readmore}>Read More</Text>
           </View>
@@ -112,7 +138,7 @@ const ProductDetail = ({navigation}) => {
           </View>
           <View style={appst.center}>
             <FlatList
-              data={products}
+              data={productState.products}
               renderItem={({item, index}) => (
                 <ProductItem product={item} index={index} />
               )}

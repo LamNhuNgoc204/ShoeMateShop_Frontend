@@ -2,21 +2,33 @@ import {View, Text, Image} from 'react-native';
 import React from 'react';
 import productStyle from './style';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useNavigation} from '@react-navigation/native';
 
-const ProductItem = ({product, index, onProductPress, onHeartPress, style}) => {
-  const imageAssets = product.assets.filter(asset => {
-    return asset.match(/\.(jpeg|jpg|png|gif)$/);
-  });
+const ProductItem = ({product, onHeartPress, style}) => {
+  const navigation = useNavigation();
+  const imageAssets =
+    product.assets &&
+    product.assets.filter(asset => {
+      return asset.match(/\.(jpeg|jpg|png|gif)$/);
+    });
 
-  const imageUrl = imageAssets.length > 0 ? imageAssets[0] : null;
+  const imageUrl =
+    imageAssets && imageAssets.length > 0 ? imageAssets[0] : null;
+
+  function onProductDetail() {
+    navigation.navigate('ProductDetail', {index: product._id});
+  }
 
   return (
     <TouchableOpacity
-      onPress={onProductPress}
+      onPress={onProductDetail}
       style={[
         productStyle.container,
         style,
-        index % 2 == 0 && productStyle.marginRight20,
+        {
+          marginRight: 10,
+        },
+        // index % 2 == 0 && productStyle.marginRight20,
       ]}>
       <Image
         style={productStyle.image}
@@ -51,7 +63,7 @@ const ProductItem = ({product, index, onProductPress, onHeartPress, style}) => {
           <Text numberOfLines={1} ellipsizeMode="tail">
             <Text style={productStyle.dolar}>$</Text>{' '}
             <Text style={productStyle.text14}>
-              {product.price.toLocaleString('vi-VN')}đ
+              {product.price}đ{/* .toLocaleString('vi-VN') */}
             </Text>
           </Text>
           <TouchableOpacity onPress={onHeartPress}>

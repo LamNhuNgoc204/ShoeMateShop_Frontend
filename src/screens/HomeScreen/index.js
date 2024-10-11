@@ -142,7 +142,7 @@ const HomeScreen = () => {
 
   return (
     <View style={[homeStyle.container, appst.container]}>
-      <Button title={'get token '} onPress={() => getToken()}></Button>
+      {/* <Button title={'get token '} onPress={() => getToken()}></Button> */}
       <ToolBar iconRight={require('../../assets/icons/message.png')} />
       <ScrollView showsVerticalScrollIndicator={false} style={appst.container}>
         <View style={homeStyle.bannerContainer}>
@@ -229,9 +229,7 @@ const HomeScreen = () => {
 
         <FlatList
           data={listProduct}
-          renderItem={({item, index}) => (
-            <ProductItem product={item} index={index} />
-          )}
+          renderItem={({item}) => <ProductItem product={item} />}
           keyExtractor={(item, index) => index.toString()}
           numColumns={2}
           showsVerticalScrollIndicator={false}
