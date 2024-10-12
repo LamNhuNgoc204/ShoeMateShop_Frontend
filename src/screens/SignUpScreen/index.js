@@ -27,7 +27,7 @@ const SignUpScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   
-  const {loading, error} = useSelector(state => state.user);
+  const {isLoading, error} = useSelector(state => state.user);
   const [errors, setErrors] = useState({});
 
   const validateFields = () => {
@@ -120,11 +120,11 @@ const SignUpScreen = () => {
 
       <View>
         <CustomedButton
-          title={loading ? <ActivityIndicator color="#fff" /> : t('buttons.btn_signup')}
+          title={isLoading ? <ActivityIndicator color="#fff" /> : t('buttons.btn_signup')}
           titleStyle={styles.textPress}
           style={styles.press}
           onPress={handleSignUp}
-          disabled={loading}
+          disabled={isLoading}
         />
       </View>
       <View>
