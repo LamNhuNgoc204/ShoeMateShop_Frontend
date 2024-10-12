@@ -16,7 +16,7 @@ import {CustomedButton} from '../../components';
 import Header from '../../components/Header';
 import {handleNavigate} from '../../utils/functions/navigationHelper';
 import {useTranslation} from 'react-i18next';
-import {registerUser} from '../../redux/slices/authSlice'; // Import registerUser từ authSlice
+import {register} from '../../redux/thunks/UserThunks';
 
 const SignUpScreen = () => {
   const {t} = useTranslation();
@@ -26,12 +26,10 @@ const SignUpScreen = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  // Lấy trạng thái từ authSlice
-  const {loading, error} = useSelector(state => state.auth);
+  
+  const {isLoading, error} = useSelector(state => state.user);
   const [errors, setErrors] = useState({});
 
-  // Hàm validate
   const validateFields = () => {
     const newErrors = {};
     if (!name || name.length < 6) {
@@ -53,7 +51,7 @@ const SignUpScreen = () => {
       return;
     }
 
-    dispatch(registerUser({email, password, name}))
+    dispatch(register({email, password, name}))
       .unwrap()
       .then(() => {
         ToastAndroid.show('Register successfully', ToastAndroid.SHORT);
@@ -122,17 +120,11 @@ const SignUpScreen = () => {
 
       <View>
         <CustomedButton
-          title={
-            loading ? (
-              <ActivityIndicator color="#fff" />
-            ) : (
-              t('buttons.btn_signup')
-            )
-          }
+          title={isLoading ? <ActivityIndicator color="#fff" /> : t('buttons.btn_signup')}
           titleStyle={styles.textPress}
           style={styles.press}
           onPress={handleSignUp}
-          disabled={loading}
+          disabled={isLoading}
         />
       </View>
       <View>

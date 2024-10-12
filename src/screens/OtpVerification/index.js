@@ -32,11 +32,11 @@ const OtpVerification = () => {
   const handleResendOtp = async () => {
     try {
       await AxiosInstance().post('auth/resend-otp', { email });
-      ToastAndroid.show("OTP has been resent successfully!", ToastAndroid.SHORT);
+      ToastAndroid.show("Đã gửi lại OPT,vui lòng kiểm tra email",ToastAndroid.SHORT);
       setResendOtp(true);
       setTimer(60); // Reset timer to 60 seconds
     } catch (error) {
-      ToastAndroid.show("Error, please try again.", ToastAndroid.SHORT);
+      ToastAndroid.show("Gửi otp thất bại",ToastAndroid.SHORT);
     }
   };
 
@@ -63,11 +63,11 @@ const OtpVerification = () => {
       
       if (response.status && response.data.token) {
         await AsyncStorage.setItem('token', response.data.token);
-        ToastAndroid.show("You are verified successfully.", ToastAndroid.SHORT);
+        ToastAndroid.show("Bạn đã xác thực tài khoản thành công", ToastAndroid.SHORT);
         navigation.navigate('HomeScreen');
       }
     } catch (error) {
-      ToastAndroid.show("Error, please try again. " + error.message, ToastAndroid.SHORT);
+      ToastAndroid.show("Xác minh tài khoản thất bại " , ToastAndroid.SHORT);
     }
   };
 
