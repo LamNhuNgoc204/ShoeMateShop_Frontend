@@ -8,22 +8,76 @@ import {
   Modal,
   Pressable,
   ToastAndroid,
+  StyleSheet,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import appst from '../../constants/AppStyle';
-import pddt from './style';
+import pddt, { bottomSheetStyle } from './style';
 import Header from '../../components/Header';
-import {colors} from '../../constants/colors';
+import { colors } from '../../constants/colors';
 import ItemReview from '../../items/ReviewItem/ProductDetail';
-import {spacing} from '../../constants';
+import { sizes, spacing } from '../../constants';
 import ProductItem from '../../items/ProductItem';
 import AxiosInstance from '../../helpers/AxiosInstance';
-import {useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import buttonStyle from '../../components/Button/style';
+import style from '../LoginScreen/style';
+import { fonts } from '../../constants/fonts';
+
+
+const BottomSheetContent = () => {
+
+  return (
+    <View style={bottomSheetStyle.container} >
+      <View style={bottomSheetStyle.topContainer}>
+        <Image style={bottomSheetStyle.image} source={{ uri: "https://product.hstatic.net/1000219207/product/nike-air-force-1-low-like-auth-sieu-cap-rep-1-1_d07f962c30fa4adf928c53a81a56b58d_master.jpg" }} />
+        <View style={bottomSheetStyle.colContainer}>
+          <Text style={bottomSheetStyle.priceText}>$123.212</Text>
+          <View style={bottomSheetStyle.handleCountContainer}>
+            <TouchableOpacity style={bottomSheetStyle.minBotton}>
+              <Text style={bottomSheetStyle.minText}>-</Text>
+            </TouchableOpacity>
+            <Text style={bottomSheetStyle.handleCountText}>12</Text>
+            <TouchableOpacity>
+
+              <Image style={bottomSheetStyle.handleCountBtn} source={require('../../assets/icons/add_id.png')} />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+
+      </View>
+      <View style={bottomSheetStyle.line} />
+
+      <View style={bottomSheetStyle.bottomContainer}>
+        <Text style={bottomSheetStyle.sizeText}>Size</Text>
+        <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
+          {
+            new Array(10).fill(0).map(() => {
+              return (
+                <View style={bottomSheetStyle.sizeView}>
+                  <Text style={bottomSheetStyle.textSizeItem}>27</Text>
+                </View>
+              )
+            })
+          }
+        </View>
+
+        <TouchableOpacity style={bottomSheetStyle.buyButton}>
+          <Text style={bottomSheetStyle.txtPress}>BUY NOW</Text>
+        </TouchableOpacity>
+
+      </View>
+
+    </View>
+  )
+}
 
 const ProductDetail = props => {
   const navigation = useNavigation();
-  const {index} = props.route.params;
+  const { index } = props.route.params;
 
   const useAppSelector = useSelector;
   const productState = useAppSelector(state => state.products);
@@ -32,9 +86,11 @@ const ProductDetail = props => {
   const [sizeModalVisible, setSizeModalVisible] = useState(false);
   const [selectedSize, setSelectedSize] = useState(null);
 
+  const bottomSheetRef = useRef(null);
+
   const handleAddToCart = () => {
     // Show the modal when "Add to Cart" is pressed
-    setSizeModalVisible(true);
+
   };
 
   const handleSizeSelect = size => {
@@ -57,7 +113,7 @@ const ProductDetail = props => {
 
   useEffect(() => {
     fetchProduct();
-    return () => {};
+    return () => { };
   }, []);
 
   const addToCart = async () => {
@@ -90,6 +146,23 @@ const ProductDetail = props => {
     }
   };
 
+  const handleSheetChanges = useCallback((index) => {
+    console.log('handleSheetChanges', index);
+  }, []);
+
+  const onOpenSheet = () => {
+    console.log('on open')
+    if (bottomSheetRef.current) {
+      bottomSheetRef.current.snapToIndex(0);
+    }
+  }
+
+  useEffect(() => {
+    if (bottomSheetRef.current) {
+      bottomSheetRef.current.close();
+    }
+  }, [])
+
   return (
     <View style={[appst.container, pddt.container]}>
       <Header
@@ -100,7 +173,7 @@ const ProductDetail = props => {
         iconRight={require('../../assets/icons/mycart.png')}
         backgroundColor={colors.background_secondary}
       />
-      <ScrollView style={{flex: 1, marginBottom: spacing.md}}>
+      <ScrollView style={{ flex: 1, marginBottom: spacing.md }}>
         <View>
           <FlatList
             horizontal
@@ -108,7 +181,7 @@ const ProductDetail = props => {
             showsHorizontalScrollIndicator={false}
             data={[1, 2, 3]}
             extraData={item => item.id}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <Image
                 style={pddt.pdImg}
                 source={require('../../assets/images/banner1.png')}
@@ -121,8 +194,8 @@ const ProductDetail = props => {
             showsHorizontalScrollIndicator={false}
             data={[1, 2, 3]}
             extraData={item => item.id}
-            ItemSeparatorComponent={<View style={{marginHorizontal: 5}} />}
-            renderItem={({item}) => {
+            ItemSeparatorComponent={<View style={{ marginHorizontal: 5 }} />}
+            renderItem={({ item }) => {
               return (
                 <Image
                   style={pddt.controlItem}
@@ -130,7 +203,7 @@ const ProductDetail = props => {
                 />
               );
             }}
-            contentContainerStyle={<View style={{marginHorizontal: 5}} />}
+            contentContainerStyle={<View style={{ marginHorizontal: 5 }} />}
           />
         </View>
 
@@ -167,7 +240,7 @@ const ProductDetail = props => {
           </Text>
           <FlatList
             data={[1, 2]}
-            renderItem={({item}) => <ItemReview item={item} />}
+            renderItem={({ item }) => <ItemReview item={item} />}
             extraData={item => item.id}
             scrollEnabled={false}
           />
@@ -175,7 +248,7 @@ const ProductDetail = props => {
         </View>
 
         <View>
-          <View style={[appst.center, {flexDirection: 'row'}]}>
+          <View style={[appst.center, { flexDirection: 'row' }]}>
             <View style={pddt.border} />
             <Text style={pddt.text2}>Similar Product</Text>
             <View style={pddt.border} />
@@ -183,54 +256,20 @@ const ProductDetail = props => {
           <View style={appst.center}>
             <FlatList
               data={productState.products}
-              renderItem={({item, index}) => (
+              renderItem={({ item, index }) => (
                 <ProductItem product={item} index={index} />
               )}
               keyExtractor={(item, index) => index.toString()}
               numColumns={2}
               showsVerticalScrollIndicator={false}
               scrollEnabled={false}
-              // ItemSeparatorComponent={() => <View style={homeStyle.separator}/>}
+            // ItemSeparatorComponent={() => <View style={homeStyle.separator}/>}
             />
           </View>
         </View>
       </ScrollView>
 
-      {/* Modal for selecting size */}
-      <Modal
-        visible={sizeModalVisible}
-        animationType="slide"
-        transparent={true} // Set to true for transparent background
-        onRequestClose={() => setSizeModalVisible(false)}>
-        {/* Background overlay */}
-        <View style={pddt.modalOverlay}>
-          {/* Modal content with dynamic width */}
-          <View style={pddt.modalContent}>
-            <Text style={pddt.modalTitle}>Select Size</Text>
 
-            <View style={{flexDirection: 'row'}}>
-              {product.size && product.size.length > 0 ? (
-                product.size.map((size, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    style={[pddt.sizeOption, {marginRight: 10}]}
-                    onPress={() => handleSizeSelect(size._id)}>
-                    <Text style={pddt.sizeText}>{size.sizeId.name}</Text>
-                  </TouchableOpacity>
-                ))
-              ) : (
-                <Text>No sizes available</Text>
-              )}
-            </View>
-
-            <TouchableOpacity
-              onPress={() => addToCart()}
-              style={[pddt.pressAddtocart, appst.center]}>
-              <Text style={pddt.txtPress}>Add to cart</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
 
       <View style={[pddt.footer, appst.rowCenter]}>
         <View style={[appst.rowCenter, pddt.footer1]}>
@@ -241,7 +280,7 @@ const ProductDetail = props => {
             />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => handleAddToCart()}
+            onPress={() => onOpenSheet()}
             style={[pddt.pressAddtocart, appst.center]}>
             <Text style={pddt.txtPress}>Add to cart</Text>
           </TouchableOpacity>
@@ -250,6 +289,20 @@ const ProductDetail = props => {
           <Text style={pddt.txtPress}>Buy now</Text>
         </TouchableOpacity>
       </View>
+
+      {/* Modal for selecting size */}
+      <BottomSheet
+        ref={bottomSheetRef}
+        onChange={handleSheetChanges}
+        snapPoints={[360]}
+        index={-1}
+        enablePanDownToClose={true}
+      >
+
+        <BottomSheetView style={styles.contentContainer}>
+          <BottomSheetContent />
+        </BottomSheetView>
+      </BottomSheet>
     </View>
   );
 };
