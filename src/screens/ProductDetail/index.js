@@ -55,11 +55,11 @@ const BottomSheetContent = () => {
         <Text style={bottomSheetStyle.sizeText}>Size</Text>
         <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
           {
-            new Array(10).fill(0).map(() => {
+            new Array(10).fill(0).map((e, i) => {
               return (
-                <View style={bottomSheetStyle.sizeView}>
+                <TouchableOpacity key={i.toString()} style={bottomSheetStyle.sizeTouchableOpacity}>
                   <Text style={bottomSheetStyle.textSizeItem}>27</Text>
-                </View>
+                </TouchableOpacity>
               )
             })
           }
