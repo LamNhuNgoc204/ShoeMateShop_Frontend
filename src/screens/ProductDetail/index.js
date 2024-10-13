@@ -294,12 +294,12 @@ const ProductDetail = props => {
       <BottomSheet
         ref={bottomSheetRef}
         onChange={handleSheetChanges}
-        snapPoints={[360]}
+        snapPoints={[380]}
         index={-1}
         enablePanDownToClose={true}
       >
 
-        <BottomSheetView style={styles.contentContainer}>
+        <BottomSheetView style={{flex: 1}}>
           <BottomSheetContent />
         </BottomSheetView>
       </BottomSheet>

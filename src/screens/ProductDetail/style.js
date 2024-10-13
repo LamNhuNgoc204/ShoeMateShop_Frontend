@@ -7,7 +7,7 @@ const {width, height} = Dimensions.get('window');
 
 export const bottomSheetStyle = StyleSheet.create({
   container: {
-    height: 340,
+    height: 360,
     width: '100%',
     backgroundColor: 'white'
   },
@@ -115,6 +115,16 @@ export const bottomSheetStyle = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: colors.primary
+  },
+  sizeTouchableOpacity: {
+    width: 50,
+    height: 50,
+    backgroundColor: '#F8F9FA',
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 10,
+    marginTop: 10
   }
 })
 
