@@ -58,7 +58,7 @@ const SignUpScreen = () => {
         navigation.navigate('OtpVerification', {email});
       })
       .catch(error => {
-        ToastAndroid.show('Register failed: ' + error, ToastAndroid.SHORT);
+        ToastAndroid.show('Register failed: ' + error.message, ToastAndroid.SHORT);
       });
   };
 
