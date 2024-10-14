@@ -5,6 +5,129 @@ import {fonts} from '../../constants/fonts';
 
 const {width, height} = Dimensions.get('window');
 
+export const bottomSheetStyle = StyleSheet.create({
+  container: {
+    height: 360,
+    width: '100%',
+    backgroundColor: 'white'
+  },
+  topContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    padding: 20
+  },
+  colContainer: {
+    display: 'flex',
+    flexDirection: "column",
+    marginLeft: 15,
+    justifyContent: 'flex-end'
+  },
+  handleCountContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  priceText: {
+    fontSize: 16,
+    lineHeight: 24,
+    fontWeight: '700',
+    color: "#838080",
+  },
+  handleCountBtn: {
+    width: 20, height: 20,
+    objectFit: 'cover',
+    resizeMode: 'contain'
+  },
+  handleCountText: {
+    fontSize: 16,
+    fontWeight: '400',
+    lineHeight: 24,
+    color: "#000",
+    marginHorizontal: 10
+  },
+  line: {
+    width: '100%',
+    height: 1,
+    backgroundColor: "#C9C7C78A",
+    opacity: 0.5
+  },
+  sizeText: {
+    fontSize: 16,
+    lineHeight: 24,
+    fontWeight: '600',
+    color: "#3498DB"
+  },
+  sizeView: {
+    width: 40,
+    height: 40,
+    backgroundColor: "#F8F9FA",
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+    marginRight: 10
+  },
+  textSizeItem: {
+    fontSize: 16,
+    lineHeight: 28,
+    fontWeight: '400',
+    color: "#6A6A6A"
+  },
+  image: {
+    height: 70,
+    width: 70,
+    objectFit: 'cover'
+  },
+  buyButton: {
+    width: '100%',
+    height: 50,
+    backgroundColor: colors.primary,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  bottomContainer: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: 'white'
+  },
+  txtPress: {
+    color: '#fff',
+    fontFamily: fonts.rlw_semibold,
+    fontSize: sizes.size14,
+    lineHeight: 22,
+    textAlign: 'center',
+  },
+  handleBotton: {
+    width: 20, height: 20,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  minBotton: {
+    width: 20, height: 20,
+    borderWidth: 1,
+    borderColor: colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10
+  },
+  minText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: colors.primary
+  },
+  sizeTouchableOpacity: {
+    width: 50,
+    height: 50,
+    backgroundColor: '#F8F9FA',
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 10,
+    marginTop: 10
+  }
+})
+
 const pddt = StyleSheet.create({
   container: {
     backgroundColor: colors.background_secondary,
@@ -120,7 +243,7 @@ const pddt = StyleSheet.create({
     fontSize: sizes.size14,
     color: colors.black,
     marginVertical: spacing.md,
-    marginHorizontal: spacing.sm
+    marginHorizontal: spacing.sm,
   },
 
   footer: {
@@ -153,6 +276,44 @@ const pddt = StyleSheet.create({
     fontSize: sizes.size14,
     lineHeight: 22,
     textAlign: 'center',
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center', // Center the modal vertically
+    alignItems: 'center', // Center the modal horizontally
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent gray background
+  },
+
+  modalContent: {
+    backgroundColor: 'white', // Modal content background
+    padding: 20,
+    borderRadius: 10,
+    width: '80%', // Adjust this width to be relative to screen size
+    maxWidth: 400, // Optional: max width for larger screens
+    alignItems: 'center', // Center text and buttons inside
+  },
+
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+
+  sizeOption: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 5,
+    marginVertical: 5,
+  },
+
+  sizeText: {
+    fontSize: 16,
+  },
+  modalClose: {
+    marginTop: 20,
+    fontSize: 16,
+    color: colors.primary,
   },
 });
 

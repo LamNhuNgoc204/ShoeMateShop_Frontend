@@ -1,3 +1,4 @@
+import React, {useState} from 'react';
 import {
   Text,
   View,
@@ -6,95 +7,91 @@ import {
   ActivityIndicator,
   ToastAndroid,
 } from 'react-native';
-import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-
 import styles from './style';
 import Header from '../../components/Header';
 import appst from '../../constants/AppStyle';
 import {CustomedButton} from '../../components';
 import CustomTextInput from '../../components/Input';
 import {handleNavigate} from '../../utils/functions/navigationHelper';
-import {
-  validateEmail,
-  validatePassword,
-} from '../../utils/validate/ValidString';
 import {login, loginWithGG} from '../../redux/thunks/UserThunks';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-
-
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 GoogleSignin.configure({
-  webClientId: "376658898807-l5sdnif3gi80l9e9o07ldiv5kitk03mn.apps.googleusercontent.com"
-})
+  webClientId:
+    '376658898807-l5sdnif3gi80l9e9o07ldiv5kitk03mn.apps.googleusercontent.com',
+});
 const LoginScreen = () => {
   const {t} = useTranslation();
   const navigation = useNavigation();
-  const [email, setEmail] = useState('HongLinh@gmail.com');
-  const [password, setPassword] = useState('Linh@08012004');
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-
-  const useAppDispatch = () => useDispatch();
-  const dispatch = useAppDispatch();
-  const useAppSelector = useSelector;
-  const userState = useAppSelector(state => state.user);
+  const {isLoading} = useSelector(state => state.user);
+  const [errors, setErrors] = useState({}); // Trạng thái lỗi
+ 
+  // Hàm kiểm tra và lưu lỗi
+  const validateFields = () => {
+    const newErrors = {};
+    if (!email) {
+      newErrors.email = 'Email không được bỏ trống.';
+    }
+    if (!password) {
+      newErrors.password = 'Mật khẩu không được bỏ trống.';
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // Trả về true nếu không có lỗi
+  };
 
   const handleLogin = async () => {
-    try {
-      const body = {
-        email: email,
-        password: password,
-      };
+    if (!validateFields()) {
+      ToastAndroid.show('Vui lòng điền đầy đủ thông tin', ToastAndroid.SHORT);
+      return;
+    }
 
-      if (!email || !password) {
-        ToastAndroid.show('Khong de trong form', ToastAndroid.SHORT);
-        return;
-      }
+    const body = {
+      email,
+      password,
+    };
 
-      if (!validateEmail(email)) {
-        ToastAndroid.show('Mail sai dinh dang', ToastAndroid.SHORT);
-        return;
-      }
+    const resultAction = await dispatch(login(body));
 
-      if (!validatePassword(password)) {
-        ToastAndroid.show('Mk sai dinh dang', ToastAndroid.SHORT);
-        return;
-      }
+    if (login.fulfilled.match(resultAction)) {
+      const {user} = resultAction.payload;
+      ToastAndroid.show('Đăng nhập thành công', ToastAndroid.SHORT);
 
-      console.log('user information =>>>>', userState);
-
-      const resultAction = await dispatch(login(body));
-
-      if (login.fulfilled.match(resultAction)) {
-        ToastAndroid.show('Đăng nhập thành công', ToastAndroid.SHORT);
-        handleNavigate(navigation, 'OtpVerification');
+      if (!user.isVerified) {
+        navigation.navigate('OtpVerification', {email});
       } else {
-        ToastAndroid.show('Đăng nhập thất bại', ToastAndroid.SHORT);
+        navigation.navigate('HomeScreen'); // Chuyển hướng đến màn hình chính nếu đã xác minh
       }
-    } catch (error) {
-      console.log('error', error);
-      ToastAndroid.show('Đăng nhập failed', ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show('Đăng nhập thất bại', ToastAndroid.SHORT);
     }
   };
 
   const singinWithGG = async () => {
     try {
       await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn()
+      const userInfo = await GoogleSignin.signIn();
       console.log(userInfo.data.user);
-      const resultF = await dispatch(loginWithGG({
-        name: userInfo.data.user.name,
-        email: userInfo.data.user.email,
-        avatar: userInfo.data.user.photo
-      }))
-      if(loginWithGG.fulfilled.match(resultF)) {
-        navigation.navigate('BottomNav')
+      const resultF = await dispatch(
+        loginWithGG({
+          name: userInfo.data.user.name,
+          email: userInfo.data.user.email,
+          avatar: userInfo.data.user.photo,
+        }),
+      );
+      if (loginWithGG.fulfilled.match(resultF)) {
+        navigation.navigate('BottomNav');
+        navigation.navigate('HomeScreen');
       }
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -104,48 +101,55 @@ const LoginScreen = () => {
         leftOnPress={() => navigation.goBack()}
       />
       <View style={appst.center}>
-        <Text style={styles.text1}>{t('titles.signin')}</Text>
+        <Text style={styles.text1}>{t('titles.login')}</Text>
         <Text style={styles.text2}>{t('titles.sub_title')}</Text>
       </View>
-      <CustomTextInput
-        label={t('form_input.email')}
-        placeholder={t('form_input.placeholder_email')}
-        value={email}
-        onChangeText={setEmail}
-      />
-      <CustomTextInput
-        label={t('form_input.password')}
-        placeholder={t('form_input.placeholder_password')}
-        secureTextEntry={secureTextEntry}
-        isPassword={true}
-        onTogglePassword={() => setSecureTextEntry(!secureTextEntry)}
-        value={password}
-        onChangeText={setPassword}
-      />
-      <View style={appst.rowEnd}>
-        <Text
-          style={styles.text4}
-          onPress={() => handleNavigate(navigation, 'ForgotPassWord')}>
-          {t('titles.reset_password')}
-        </Text>
+
+      <View style={{position: 'relative'}}>
+        <CustomTextInput
+          label={t('form_input.email')}
+          placeholder={t('form_input.placeholder_email')}
+          value={email}
+          onChangeText={setEmail}
+        />
+        {errors.email && (
+          <Text style={{color: 'red', position: 'absolute', bottom: 12}}>
+            {errors.email}
+          </Text>
+        )}
       </View>
+
+      <View style={{position: 'relative'}}>
+        <CustomTextInput
+          label={t('form_input.password')}
+          placeholder={t('form_input.placeholder_password')}
+          secureTextEntry={secureTextEntry}
+          isPassword={true}
+          onTogglePassword={() => setSecureTextEntry(!secureTextEntry)}
+          value={password}
+          onChangeText={setPassword}
+        />
+        {errors.password && (
+          <Text style={{color: 'red'}}>{errors.password}</Text>
+        )}
+      </View>
+
       <View>
         <CustomedButton
-          title={t('buttons.btn_signin')}
-          // title={
-          //   loading ? (
-          //     <ActivityIndicator color="#fff" />
-          //   ) : (
-          //     t('buttons.btn_signin')
-          //   )
-          // }
-          onPress={handleLogin}
+          title={
+            isLoading ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              t('buttons.btn_login')
+            )
+          }
           titleStyle={styles.textPress}
-          // onPress={() => handleNavigate(navigation, 'BottomNav')}
-          // disabled={loading}
           style={styles.press}
+          onPress={handleLogin}
+          disabled={isLoading}
         />
       </View>
+
       <View>
         <TouchableOpacity onPress={singinWithGG} style={styles.buttonGoogle}>
           <Image
