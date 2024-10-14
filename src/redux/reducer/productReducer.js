@@ -1,10 +1,13 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {fetchProductsThunk} from '../thunks/productThunks';
+import { getCategoryThunk } from '../thunks/categoryThunk';
+import { statusCodes } from '@react-native-google-signin/google-signin';
 
 const initialState = {
   isLoading: false,
   error: null,
   products: [],
+  categories: []
 };
 
 const ProductSlice = createSlice({
@@ -31,7 +34,20 @@ const ProductSlice = createSlice({
       .addCase(fetchProductsThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-      });
+      })
+      .addCase(getCategoryThunk.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(getCategoryThunk.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.categories = action.payload;
+        console.log('---------------------fulliled--------------');
+        console.log('---------------------state.categories--------------');
+      })
+      .addCase(getCategoryThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
   },
 });
 

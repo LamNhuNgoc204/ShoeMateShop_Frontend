@@ -10,87 +10,19 @@ import {useTranslation} from 'react-i18next';
 import {getToken} from '../../utils/functions/getToken';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchProductsThunk} from '../../redux/thunks/productThunks';
+import { getCategoryThunk } from '../../redux/thunks/categoryThunk';
 
 const banners = [
   require('../../assets/images/banner1.png'),
   require('../../assets/images/banner2.jpg'),
   require('../../assets/images/banner3.jpg'),
 ];
-
-const categories = [
-  {
-    id: 1,
-    name: 'voucher',
-    image: require('../../assets/icons/voucher.png'),
-  },
-  {
-    id: 1,
-    name: 'voucher',
-    image: require('../../assets/icons/voucher.png'),
-  },
-  {
-    id: 1,
-    name: 'voucher',
-    image: require('../../assets/icons/voucher.png'),
-  },
-  {
-    id: 1,
-    name: 'voucher',
-    image: require('../../assets/icons/voucher.png'),
-  },
-  {
-    id: 1,
-    name: 'voucher',
-    image: require('../../assets/icons/voucher.png'),
-  },
-  {
-    id: 1,
-    name: 'voucher',
-    image: require('../../assets/icons/voucher.png'),
-  },
-  {
-    id: 1,
-    name: 'voucher',
-    image: require('../../assets/icons/voucher.png'),
-  },
-  {
-    id: 1,
-    name: 'voucher',
-    image: require('../../assets/icons/voucher.png'),
-  },
-  {
-    id: 1,
-    name: 'voucher',
-    image: require('../../assets/icons/voucher.png'),
-  },
-  {
-    id: 1,
-    name: 'voucher',
-    image: require('../../assets/icons/voucher.png'),
-  },
-  {
-    id: 1,
-    name: 'voucher',
-    image: require('../../assets/icons/voucher.png'),
-  },
-  {
-    id: 1,
-    name: 'voucher',
-    image: require('../../assets/icons/voucher.png'),
-  },
-  {
-    id: 1,
-    name: 'voucher',
-    image: require('../../assets/icons/voucher.png'),
-  },
-];
-
 const Category = ({category, style}) => {
   return (
     <TouchableOpacity
       style={[homeStyle.categoryItem, homeStyle.marginBottom15, style]}>
       <View style={homeStyle.categoryIconWrapper}>
-        <Image source={category.image} style={homeStyle.categoryImage} />
+        <Image source={{uri: category.image}} style={homeStyle.categoryImage} />
       </View>
       <Text style={homeStyle.categoryText}>{category.name}</Text>
     </TouchableOpacity>
@@ -102,6 +34,7 @@ const HomeScreen = () => {
   const pagerRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [listProduct, setListProduct] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   const useAppSelector = useSelector;
   const productState = useAppSelector(state => state.products);
@@ -112,11 +45,13 @@ const HomeScreen = () => {
     const fetchProduct = async () => {
       await dispatch(fetchProductsThunk());
     };
+    dispatch(getCategoryThunk())
     fetchProduct();
   }, []);
 
   useEffect(() => {
     setListProduct(productState.products);
+    setCategories(productState.categories);
   }, [productState]);
 
   // console.log('product data', productState, '-----', listProduct);
@@ -190,7 +125,7 @@ const HomeScreen = () => {
                       category={item}
                       style={[
                         index < categories.length - 2 &&
-                          homeStyle.marginRight40,
+                          homeStyle.marginRight30,
                         homeStyle.marginBottom15,
                       ]}
                     />
@@ -212,7 +147,7 @@ const HomeScreen = () => {
                       category={item}
                       style={[
                         index < categories.length - 2 &&
-                          homeStyle.marginRight40,
+                          homeStyle.marginRight30,
                       ]}
                     />
                   );
