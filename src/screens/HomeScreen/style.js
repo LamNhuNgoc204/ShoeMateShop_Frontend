@@ -56,14 +56,16 @@ const homeStyle = StyleSheet.create({
         marginTop: 4,
         fontSize: 10,
         fontFamily: fonts.rlw_regular,
-        color: colors.text_black00
+        color: colors.text_black00,
+        width: 50,
+        textAlign: 'center'
     },
     categoryItem: {
         alignSelf: 'baseline',
         alignItems: 'center'
     },
-    marginRight40: {
-        marginRight: 40
+    marginRight30: {
+        marginRight: 30
     },
     marginBottom15: {
         marginBottom: 15
