@@ -7,14 +7,11 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   dropdown: {
-    height: 50,
     borderColor: 'gray',
     borderWidth: 0.5,
-    borderRadius: 8,
+    borderRadius: 5,
     paddingHorizontal: 8,
-  },
-  icon: {
-    marginRight: 5,
+    paddingVertical: 8,
   },
   label: {
     position: 'absolute',

@@ -35,7 +35,6 @@ const DropdownComponent = memo(() => {
         style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
-        iconStyle={styles.iconStyle}
         data={LANGUAGES}
         maxHeight={300}
         labelField="label"

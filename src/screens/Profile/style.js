@@ -13,16 +13,16 @@ export default styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: sizes.size16,
-    height: 108,
+    paddingHorizontal: sizes.size16,
+    paddingVertical: 8,
   },
   avatar: {
-    width: sizes.size80,
-    height: sizes.size80,
+    width: 65,
+    height: 65,
     borderRadius: 50,
   },
   info: {
-    marginRight: spacing.xxxxl,
+    marginLeft: 10,
   },
   name: {
     fontSize: sizes.size18,
@@ -45,6 +45,7 @@ export default styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: spacing.sm,
     paddingStart: spacing.lg,
+    marginVertical: 4,
   },
   ic_mygadget: {
     width: sizes.size32,

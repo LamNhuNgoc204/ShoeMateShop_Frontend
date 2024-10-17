@@ -1,20 +1,23 @@
-import {Image, Text, View, FlatList} from 'react-native';
 import React from 'react';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {useNavigation} from '@react-navigation/native';
-import ChildItemGadget from './Mygadget';
-import ChildItem from './ChildItems';
-import styles from './style';
 import {useTranslation} from 'react-i18next';
-import {useSelector} from 'react-redux';
-import { PROFILE } from '../../api/mockData';
+import {useDispatch, useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+import {Image, Text, View, FlatList, ToastAndroid} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import styles from './style';
+import ChildItem from './ChildItems';
+import ChildItemGadget from './Mygadget';
+import {PROFILE} from '../../api/mockData';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {logout} from '../../redux/reducer/userReducer';
+import appst from '../../constants/AppStyle';
 
 const ProfileScreen = () => {
   const {t} = useTranslation();
+  const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const {user} = useSelector(state => state.user);
-  console.log('user', user);
 
   const renderItem = ({item}) => (
     <ChildItem
@@ -24,22 +27,35 @@ const ProfileScreen = () => {
     />
   );
 
+  const Logout = async () => {
+    try {
+      dispatch(logout());
+      await AsyncStorage.removeItem('token');
+      navigation.replace('LoginScreen');
+    } catch (error) {
+      ToastAndroid.show('Xảy ra lỗi. Thử lại sau', ToastAndroid.SHORT);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.profile}>
-        <Image
-          style={styles.avatar}
-          source={{
-            uri: user.avatar
-              ? user.avatar
-              : 'https://i.pinimg.com/enabled_hi/564x/d4/35/42/d435423c9386e708c678b7663656b9c0.jpg',
-          }}
-        />
-        <View style={styles.info}>
-          <Text style={styles.name}>{user.name}</Text>
-          <Text style={styles.email}>{user.email}</Text>
+        <View style={appst.rowStart}>
+          <Image
+            style={styles.avatar}
+            source={{
+              uri:
+                user && user.avatar
+                  ? user.avatar
+                  : 'https://i.pinimg.com/enabled_hi/564x/d4/35/42/d435423c9386e708c678b7663656b9c0.jpg',
+            }}
+          />
+          <View style={styles.info}>
+            <Text style={styles.name}>{user && user.name}</Text>
+            <Text style={styles.email}>{user && user.email}</Text>
+          </View>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={Logout}>
           <Image
             style={styles.logout}
             source={require('../../assets/icons/logout.png')}
@@ -53,10 +69,6 @@ const ProfileScreen = () => {
         />
         <Text style={styles.text1}>{t('profiles.bag')}</Text>
       </View>
-      <Image
-        style={styles.line}
-        source={require('../../assets/icons/lineprofile.png')}
-      />
       <View style={styles.childsMyGadget}>
         <ChildItemGadget
           onPress={() => navigation.navigate('MyWallet')}

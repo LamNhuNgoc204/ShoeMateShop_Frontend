@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { login, loginWithGG, register } from '../thunks/UserThunks';
+import {createSlice} from '@reduxjs/toolkit';
+import {login, loginWithGG, register} from '../thunks/UserThunks';
 
 const initialState = {
   isLoading: false,
@@ -11,6 +11,12 @@ const initialState = {
 const UserSlice = createSlice({
   name: 'user',
   initialState,
+  reducers: {
+    logout: state => {
+      state.user = null;
+      state.token = null;
+    },
+  },
   extraReducers: builder => {
     builder
       .addCase(login.pending, state => {
@@ -47,24 +53,23 @@ const UserSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(loginWithGG.pending, (state, action) => {
-        console.log('login with gg........')
+        console.log('login with gg........');
         state.isLoading = true;
         state.error = null;
       })
       .addCase(loginWithGG.fulfilled, (state, action) => {
-        console.log('login with gg: successful!')
+        console.log('login with gg: successful!');
         state.isLoading = false;
         console.log('user: ', action.payload);
         state.user = action.payload;
       })
       .addCase(loginWithGG.rejected, (state, action) => {
-        console.log('login with gg: failure!')
+        console.log('login with gg: failure!');
         state.isLoading = false;
         state.error = action.payload;
-      })
+      });
   },
 });
 
-// export actions as needed, e.g., logout action
-// export const { logout } = UserSlice.actions;
+export const {logout} = UserSlice.actions;
 export default UserSlice.reducer;

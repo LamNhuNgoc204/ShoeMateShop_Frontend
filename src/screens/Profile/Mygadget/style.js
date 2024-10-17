@@ -22,6 +22,5 @@ export default styles = StyleSheet.create({
     fontFamily: fonts.rlw_medium,
     color: colors.text_black00,
     textAlign: 'center',
-    marginTop: 4,
   },
 });

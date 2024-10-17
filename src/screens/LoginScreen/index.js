@@ -150,7 +150,7 @@ const LoginScreen = () => {
           <Text style={styles.text6}>{t('buttons.btn_signin_gg')}</Text>
         </TouchableOpacity>
       </View>
-      <View style={[appst.center, {marginTop: 120}]}>
+      <View style={[appst.center, {marginTop: 130}]}>
         <Text style={styles.text7}>
           {t('titles.new_users')}
           <Text

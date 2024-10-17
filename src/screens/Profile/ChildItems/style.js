@@ -1,10 +1,10 @@
 import {StyleSheet} from 'react-native';
+import {fonts} from '../../../constants/fonts';
 import {colors} from '../../../constants/colors';
 import {sizes, spacing} from '../../../constants';
-import {fonts} from '../../../constants/fonts';
+
 export default styles = StyleSheet.create({
   recentlyViewedContainer: {
-    height: sizes.size50,
     backgroundColor: 'white',
     flexDirection: 'row',
     alignItems: 'center',
