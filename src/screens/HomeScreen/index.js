@@ -10,7 +10,7 @@ import {useTranslation} from 'react-i18next';
 import {getToken} from '../../utils/functions/getToken';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchProductsThunk} from '../../redux/thunks/productThunks';
-import { getCategoryThunk } from '../../redux/thunks/categoryThunk';
+import {getCategoryThunk} from '../../redux/thunks/categoryThunk';
 
 const banners = [
   require('../../assets/images/banner1.png'),
@@ -41,11 +41,13 @@ const HomeScreen = ({navigation}) => {
   const useAppDispatch = () => useDispatch();
   const dispatch = useAppDispatch();
 
+  console.log('productState', productState);
+
   useEffect(() => {
     const fetchProduct = async () => {
       await dispatch(fetchProductsThunk());
     };
-    dispatch(getCategoryThunk())
+    dispatch(getCategoryThunk());
     fetchProduct();
   }, []);
 
@@ -78,7 +80,12 @@ const HomeScreen = ({navigation}) => {
   return (
     <View style={[homeStyle.container, appst.container]}>
       {/* <Button title={'get token '} onPress={() => getToken()}></Button> */}
-      <ToolBar iconRight={require('../../assets/icons/message.png')} onIconRightPress={() => {navigation.navigate('MessageScreen')}}/>
+      <ToolBar
+        iconRight={require('../../assets/icons/message.png')}
+        onIconRightPress={() => {
+          navigation.navigate('MessageScreen');
+        }}
+      />
       <ScrollView showsVerticalScrollIndicator={false} style={appst.container}>
         <View style={homeStyle.bannerContainer}>
           <PagerView
