@@ -7,7 +7,6 @@ import {FlatList, ScrollView} from 'react-native-gesture-handler';
 import ProductItem from '../../items/ProductItem';
 import appst from '../../constants/AppStyle';
 import {useTranslation} from 'react-i18next';
-import {getToken} from '../../utils/functions/getToken';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchProductsThunk} from '../../redux/thunks/productThunks';
 import {getCategoryThunk} from '../../redux/thunks/categoryThunk';
@@ -37,11 +36,9 @@ const HomeScreen = ({navigation}) => {
   const [categories, setCategories] = useState([]);
 
   const useAppSelector = useSelector;
-  const productState = useAppSelector(state => state.products);
+  const state = useAppSelector(state => state.products);
   const useAppDispatch = () => useDispatch();
   const dispatch = useAppDispatch();
-
-  console.log('productState', productState);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -52,11 +49,12 @@ const HomeScreen = ({navigation}) => {
   }, []);
 
   useEffect(() => {
-    setListProduct(productState.products);
-    setCategories(productState.categories);
-  }, [productState]);
+    setListProduct(state.products);
+    setCategories(state.categories);
+  }, [state]);
 
   // console.log('product data', productState, '-----', listProduct);
+  // console.log('productState', state.products);
 
   const goToPage = page => {
     if (page < banners.length) {

@@ -26,14 +26,16 @@ const ProductItem = ({product, onHeartPress, style}) => {
         productStyle.container,
         style,
         {
-          marginRight: 10,
+          marginRight: 20,
         },
         // index % 2 == 0 && productStyle.marginRight20,
       ]}>
       <Image
         style={productStyle.image}
         source={
-          imageUrl ? {uri: imageUrl} : require('../../assets/images/nike1.png')
+          imageUrl
+            ? {uri: imageUrl}
+            : require('../../assets/images/placeholder_image.jpg')
         }
       />
       <View style={productStyle.contentContainer}>
@@ -63,7 +65,7 @@ const ProductItem = ({product, onHeartPress, style}) => {
           <Text numberOfLines={1} ellipsizeMode="tail">
             <Text style={productStyle.dolar}>$</Text>{' '}
             <Text style={productStyle.text14}>
-              {product.price}đ{/* .toLocaleString('vi-VN') */}
+              {product.price.toLocaleString('vi-VN')}đ{/* .toLocaleString('vi-VN') */}
             </Text>
           </Text>
           <TouchableOpacity onPress={onHeartPress}>

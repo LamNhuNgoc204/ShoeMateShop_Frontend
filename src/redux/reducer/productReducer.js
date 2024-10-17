@@ -1,13 +1,12 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {fetchProductsThunk} from '../thunks/productThunks';
-import { getCategoryThunk } from '../thunks/categoryThunk';
-import { statusCodes } from '@react-native-google-signin/google-signin';
+import {getCategoryThunk} from '../thunks/categoryThunk';
 
 const initialState = {
   isLoading: false,
   error: null,
   products: [],
-  categories: []
+  categories: [],
 };
 
 const ProductSlice = createSlice({
@@ -27,7 +26,10 @@ const ProductSlice = createSlice({
         state.isLoading = false;
         state.products = action.payload;
         console.log('---------------------fulliled--------------');
-        console.log('---------------------state.products--------------');
+        console.log(
+          '---------------------state.products--------------',
+          state.products,
+        );
 
         state.error = null;
       })
@@ -42,12 +44,15 @@ const ProductSlice = createSlice({
         state.isLoading = false;
         state.categories = action.payload;
         console.log('---------------------fulliled--------------');
-        console.log('---------------------state.categories--------------');
+        console.log(
+          '---------------------state.categories--------------',
+          state.categories,
+        );
       })
       .addCase(getCategoryThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-      })
+      });
   },
 });
 
