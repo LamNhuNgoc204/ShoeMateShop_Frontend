@@ -53,8 +53,8 @@ const HomeScreen = ({navigation}) => {
     setCategories(state.categories);
   }, [state]);
 
-  // console.log('product data', productState, '-----', listProduct);
-  // console.log('productState', state.products);
+  // console.log('product data', state, '-----', listProduct);
+  // console.log('listProduct===========', listProduct);
 
   const goToPage = page => {
     if (page < banners.length) {

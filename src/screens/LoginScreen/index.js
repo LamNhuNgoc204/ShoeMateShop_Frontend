@@ -18,6 +18,9 @@ import CustomTextInput from '../../components/Input';
 import {handleNavigate} from '../../utils/functions/navigationHelper';
 import {login, loginWithGG} from '../../redux/thunks/UserThunks';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import DropdownComponent from '../../components/ButtonLanguages';
+import {validateFieldsLogin} from '../../utils/functions/validData';
+
 GoogleSignin.configure({
   webClientId:
     '376658898807-l5sdnif3gi80l9e9o07ldiv5kitk03mn.apps.googleusercontent.com',
@@ -30,35 +33,20 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const {isLoading} = useSelector(state => state.user);
-  const [errors, setErrors] = useState({}); // Trạng thái lỗi
-  const authState = useSelector(state => state.user)
- 
-  // Hàm kiểm tra và lưu lỗi
-  const validateFields = () => {
-    const newErrors = {};
-    if (!email) {
-      newErrors.email = 'Email không được bỏ trống.';
-    }
-    if (!password) {
-      newErrors.password = 'Mật khẩu không được bỏ trống.';
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Trả về true nếu không có lỗi
-  };
+  const [errors, setErrors] = useState({});
+  const authState = useSelector(state => state.user);
 
   const handleLogin = async () => {
-    if (!validateFields()) {
+    if (!validateFieldsLogin(email, password, setErrors)) {
       ToastAndroid.show('Vui lòng điền đầy đủ thông tin', ToastAndroid.SHORT);
       return;
     }
-
     const body = {
       email,
       password,
     };
 
     const resultAction = await dispatch(login(body));
-
     if (login.fulfilled.match(resultAction)) {
       const {user} = resultAction.payload;
       ToastAndroid.show('Đăng nhập thành công', ToastAndroid.SHORT);
@@ -66,7 +54,7 @@ const LoginScreen = () => {
       if (!user.isVerified) {
         navigation.navigate('OtpVerification', {email});
       } else {
-        navigation.navigate('HomeScreen'); // Chuyển hướng đến màn hình chính nếu đã xác minh
+        navigation.navigate('HomeScreen');
       }
     } else {
       ToastAndroid.show('Đăng nhập thất bại', ToastAndroid.SHORT);
@@ -91,10 +79,10 @@ const LoginScreen = () => {
   };
 
   useEffect(() => {
-    if(authState.user) {
+    if (authState.user) {
       navigation.navigate('HomeScreen');
     }
-  }, [authState?.user])
+  }, [authState?.user]);
 
   return (
     <View style={styles.container}>
@@ -104,7 +92,7 @@ const LoginScreen = () => {
         leftOnPress={() => navigation.goBack()}
       />
       <View style={appst.center}>
-        <Text style={styles.text1}>{t('titles.login')}</Text>
+        <Text style={styles.text1}>{t('titles.signin')}</Text>
         <Text style={styles.text2}>{t('titles.sub_title')}</Text>
       </View>
 
@@ -162,7 +150,7 @@ const LoginScreen = () => {
           <Text style={styles.text6}>{t('buttons.btn_signin_gg')}</Text>
         </TouchableOpacity>
       </View>
-      <View style={[appst.center, {marginTop: 150}]}>
+      <View style={[appst.center, {marginTop: 120}]}>
         <Text style={styles.text7}>
           {t('titles.new_users')}
           <Text
@@ -171,6 +159,7 @@ const LoginScreen = () => {
             {t('buttons.btn_create_account')}
           </Text>
         </Text>
+        <DropdownComponent />
       </View>
     </View>
   );

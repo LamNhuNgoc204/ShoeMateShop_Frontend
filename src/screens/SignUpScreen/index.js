@@ -7,16 +7,18 @@ import {
   ActivityIndicator,
   ToastAndroid,
 } from 'react-native';
+import {useTranslation} from 'react-i18next';
 import {useDispatch, useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 import styles from './style';
 import appst from '../../constants/AppStyle';
-import {useNavigation} from '@react-navigation/native';
-import CustomTextInput from '../../components/Input';
-import {CustomedButton} from '../../components';
 import Header from '../../components/Header';
-import {handleNavigate} from '../../utils/functions/navigationHelper';
-import {useTranslation} from 'react-i18next';
+import {CustomedButton} from '../../components';
+import CustomTextInput from '../../components/Input';
 import {register} from '../../redux/thunks/UserThunks';
+import {validateFields} from '../../utils/functions/validData';
+import DropdownComponent from '../../components/ButtonLanguages';
+import {handleNavigate} from '../../utils/functions/navigationHelper';
 
 const SignUpScreen = () => {
   const {t} = useTranslation();
@@ -26,27 +28,12 @@ const SignUpScreen = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
-  const {isLoading, error} = useSelector(state => state.user);
+
+  const {isLoading} = useSelector(state => state.user);
   const [errors, setErrors] = useState({});
 
-  const validateFields = () => {
-    const newErrors = {};
-    if (!name || name.length < 6) {
-      newErrors.name = 'Tên phải có ít nhất 6 ký tự.';
-    }
-    if (!email) {
-      newErrors.email = 'Email không được bỏ trống.';
-    }
-    if (!password || password.length < 6) {
-      newErrors.password = 'Mật khẩu phải có ít nhất 6 ký tự.';
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const handleSignUp = () => {
-    if (!validateFields()) {
+    if (!validateFields(name, email, password, setErrors)) {
       ToastAndroid.show('Vui lòng điền đầy đủ thông tin', ToastAndroid.SHORT);
       return;
     }
@@ -58,7 +45,10 @@ const SignUpScreen = () => {
         navigation.navigate('OtpVerification', {email});
       })
       .catch(error => {
-        ToastAndroid.show('Register failed: ' + error.message, ToastAndroid.SHORT);
+        ToastAndroid.show(
+          'Register failed: ' + error.message,
+          ToastAndroid.SHORT,
+        );
       });
   };
 
@@ -112,15 +102,19 @@ const SignUpScreen = () => {
           onChangeText={setPassword}
         />
         {errors.password && (
-          <Text style={{color: 'red'}}>
-            {errors.password}
-          </Text>
+          <Text style={{color: 'red'}}>{errors.password}</Text>
         )}
       </View>
 
       <View>
         <CustomedButton
-          title={isLoading ? <ActivityIndicator color="#fff" /> : t('buttons.btn_signup')}
+          title={
+            isLoading ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              t('buttons.btn_signup')
+            )
+          }
           titleStyle={styles.textPress}
           style={styles.press}
           onPress={handleSignUp}
@@ -136,7 +130,7 @@ const SignUpScreen = () => {
           <Text style={styles.text6}>{t('buttons.btn_signup_gg')}</Text>
         </TouchableOpacity>
       </View>
-      <View style={[appst.center, {marginTop: 50}]}>
+      <View style={[appst.center, {marginTop: 30}]}>
         <Text style={styles.text7}>
           {t('titles.have_account')}
           <Text
@@ -145,6 +139,7 @@ const SignUpScreen = () => {
             {t('buttons.btn_signin')}
           </Text>
         </Text>
+        <DropdownComponent />
       </View>
     </View>
   );

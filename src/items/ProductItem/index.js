@@ -53,8 +53,10 @@ const ProductItem = ({product, onHeartPress, style}) => {
             style={productStyle.icon14}
             source={require('../../assets/icons/star.png')}
           />
-          <Text style={productStyle.text14}>4.5</Text>
-          <Text style={productStyle.review}>(1.5k reviews)</Text>
+          <Text style={productStyle.text14}>{product.avgRating}</Text>
+          <Text style={productStyle.review}>
+            ({product.numOfReviews} reviews)
+          </Text>
         </Text>
         <View
           style={[
@@ -65,7 +67,8 @@ const ProductItem = ({product, onHeartPress, style}) => {
           <Text numberOfLines={1} ellipsizeMode="tail">
             <Text style={productStyle.dolar}>$</Text>{' '}
             <Text style={productStyle.text14}>
-              {product.price.toLocaleString('vi-VN')}đ{/* .toLocaleString('vi-VN') */}
+              {product.price.toLocaleString('vi-VN')}đ
+              {/* .toLocaleString('vi-VN') */}
             </Text>
           </Text>
           <TouchableOpacity onPress={onHeartPress}>
