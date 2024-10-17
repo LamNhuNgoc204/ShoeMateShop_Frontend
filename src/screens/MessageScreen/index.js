@@ -1,76 +1,19 @@
 import { View, Text, Image, TouchableOpacity, FlatList, TextInput } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import appst from '../../constants/AppStyle'
 import messageScreenStyle from './style'
 import { colors } from '../../constants/colors'
-
-
-const messages = [
-  {
-    message_id: 1,
-    conversation_id: 1001,
-    text: "Hello, how can I help you today?",
-    isCustomerSent: false,
-    create_at: "2024-07-13 10:00:00"
-  },
-  {
-    message_id: 2,
-    conversation_id: 1001,
-    text: "I am looking for information on your products.",
-    isCustomerSent: true,
-    create_at: "2024-07-13 10:01:00"
-  },
-  {
-    message_id: 3,
-    conversation_id: 1002,
-    text: "Can you provide me with a quote?",
-    isCustomerSent: true,
-    create_at: "2024-07-13 10:02:00"
-  },
-  {
-    message_id: 4,
-    conversation_id: 1003,
-    text: "Sure, what products are you interested in?",
-    isCustomerSent: false,
-    create_at: "2024-07-13 10:03:00"
-  },
-  {
-    message_id: 5,
-    conversation_id: 1002,
-    text: "I am interested in the premium package.",
-    isCustomerSent: true,
-    create_at: "2024-07-13 10:04:00"
-  },
-  {
-    message_id: 6,
-    conversation_id: 1001,
-    text: "Our products include a variety of options...",
-    isCustomerSent: false,
-    create_at: "2024-07-13 10:05:00"
-  },
-  {
-    message_id: 7,
-    conversation_id: 1003,
-    text: "How soon can you deliver?",
-    isCustomerSent: true,
-    create_at: "2024-07-13 10:06:00"
-  },
-  {
-    message_id: 8,
-    conversation_id: 1003,
-    text: "We can deliver within 3-5 business days.",
-    isCustomerSent: false,
-    create_at: "2024-07-13 10:07:00"
-  }
-];
+import { getConversationAction, getMessagesAction, sendMessageAction } from '../../redux/actions/messageAction'
+import { useSelector } from 'react-redux'
+import io from 'socket.io-client';
+import { IPV4} from '@env'
 
 
 
-
-const renderToolbar = () => {
+const renderToolbar = ({onBack}) => {
   return (
     <View style={[appst.toolbar, messageScreenStyle.toolBarStyle]}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={onBack}>
         <Image style={messageScreenStyle.icon16} source={require('../../assets/icons/back-blue.png')} />
       </TouchableOpacity>
       <View style={[messageScreenStyle.imageWrapper, messageScreenStyle.marginLeft15]}>
@@ -85,46 +28,134 @@ const renderToolbar = () => {
 }
 
 
-const MessageItem = ({ message }) => {
+const MessageItem = ({ message, user }) => {
   return (
-    <View style={[messageScreenStyle.messageItem, messageScreenStyle.marginTop10, message.isCustomerSent && messageScreenStyle.customerMessageItem]}>
-      <Text style={[messageScreenStyle.messageContent, message.isCustomerSent && messageScreenStyle.customerMessageContent]}>{message.text}</Text>
+    <View style={[messageScreenStyle.messageItem, messageScreenStyle.marginTop10, !(message.senderId == user._id) && messageScreenStyle.customerMessageItem]}>
+      <Text style={[messageScreenStyle.messageContent, !(message.senderId == user._id) && messageScreenStyle.customerMessageContent]}>{message.text}</Text>
     </View>
   )
 }
 
 
-const renderBottom = () => {
-
-  const [focused, setFocused] = useState(false)
+const renderBottom = ({focused, onFocused, onBlur, text, onChangeText, onSend}) => {
   return (
     <View style={messageScreenStyle.bottomContainer}>
-      <TextInput onBlur={() => { setFocused(false) }} onFocus={() => { setFocused(true) }} style={messageScreenStyle.input} placeholder='Message' placeholderTextColor={colors.color004BFE} />
+      <TextInput value={text} onChangeText={onChangeText} onFocus={onFocused} onBlur={onBlur} style={messageScreenStyle.input} placeholder='Message' placeholderTextColor={colors.color004BFE} />
       <TouchableOpacity>
         <Image source={require('../../assets/icons/open_gallery.png')} style={[messageScreenStyle.icon26, messageScreenStyle.marginLeft15, focused && messageScreenStyle.hide]} />
       </TouchableOpacity>
       <TouchableOpacity>
         <Image source={require('../../assets/icons/menu.png')} style={[messageScreenStyle.icon26, messageScreenStyle.marginLeft15, focused && messageScreenStyle.hide]} />
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={onSend}>
         <Image source={require('../../assets/icons/send.png')} style={[messageScreenStyle.icon26, messageScreenStyle.marginLeft15, !focused && messageScreenStyle.hide]} />
       </TouchableOpacity>
     </View>
   )
 }
 
-const MessageScreen = () => {
+const MessageScreen = ({navigation}) => {
+  const [conversation, setConversation] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [focused, setFocused] = useState(false);
+  const [user, setUser] = useState(null);
+  const [text, setText] = useState("");
+  const authState = useSelector((state) => state.user)
+  const messagesRef = useRef(null);
+
+  const SOCKET_URL = `http://${IPV4}:3000/`
+
+  const getConversation = async () => {
+    try {
+      const conversation = await getConversationAction();
+      const messages = await getMessagesAction(conversation._id);
+      console.log('messages...: ', messages);
+      console.log('getConversation...: ', conversation);
+      setMessages(messages);
+      setConversation(conversation);
+    } catch (error) {
+      console.error('Error getting conversation:', error);
+    }
+  } 
+
+  const sendMessage = async () => {
+    try {
+      console.log('send message.....');
+      const response = await sendMessageAction(conversation._id, user._id, text);
+      console.log('response...: ', response);
+      setText("")
+    } catch (error) {
+      console.error('Error sending message:', error);
+    }
+  }
+
+  const onChangeText = (txt) => {
+    setText(txt);
+  }
+
+  const onFocused = () => {
+    setFocused(true);
+  }
+  const onBlur = () => {
+    setFocused(false);
+  }
+  const onBack = () => {
+    navigation.goBack();
+  }
+
+  useEffect(() => {
+    getConversation();
+    setUser(authState.user);
+  },[authState.user]);
+
+  useEffect(() => {
+    // Kết nối tới server
+    const socket = io(SOCKET_URL);
+
+    // Lắng nghe sự kiện 'connect' khi kết nối thành công
+    socket.on('connect', () => {
+      console.log('Socket connected');
+    });
+
+    // Lắng nghe sự kiện 'newMessage' để nhận tin nhắn mới
+    socket.on('sendMessage', (data) => {
+      console.log('Received message:', data.message);
+      setMessages((prevMessages) => [...prevMessages, data.message]);
+    });
+
+    // Lắng nghe sự kiện 'disconnect'
+    socket.on('disconnect', () => {
+      console.log('Socket disconnected');
+    });
+
+    // Cleanup function khi component bị unmount
+    return () => {
+      socket.disconnect();
+      console.log('Socket disconnected on cleanup');
+    };
+  }, []);
+
+
+  useEffect(() => {
+    if(messagesRef.current) {
+       messagesRef.current?.scrollToEnd({ animated: true });
+    }
+  }, [messages])
+
+  
   return (
-    <View style={[appst.container, messageScreenStyle.container]}>
-      {renderToolbar()}
+    conversation ? (<View style={[appst.container, messageScreenStyle.container]}>
+      {renderToolbar({onBack})}
       <FlatList
+      ref={messagesRef}
         data={messages}
-        renderItem={({ item }) => <MessageItem message={item} />}
+        renderItem={({ item }) => <MessageItem user={user} message={item} />}
         keyExtractor={(item, index) => index.toString()}
         style={{ paddingHorizontal: 20, flex: 1 }}
+        contentContainerStyle={{paddingTop: 10}}
       />
-      {renderBottom()}
-    </View>
+      {renderBottom({focused, onFocused, onBlur, text, onChangeText, onSend: sendMessage})}
+    </View>) : <Text>Loading...</Text>
   )
 }
 

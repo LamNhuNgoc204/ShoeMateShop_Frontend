@@ -69,18 +69,6 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(loginWithGG.pending, (state, action) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(loginWithGG.fulfilled, (state, action) => {
-        state.loading = false;
-        state.user = action.payload;
-      })
-      .addCase(loginWithGG.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
   }
 });
 
