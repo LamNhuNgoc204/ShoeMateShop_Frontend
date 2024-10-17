@@ -166,7 +166,7 @@ const ProductDetail = props => {
         iconLeft={require('../../assets/icons/back.png')}
         leftOnPress={() => navigation.goBack()}
         name={product.name}
-        rightOnPress={() => navigation.navigate()}
+        rightOnPress={() => navigation.navigate('CartScreen')}
         iconRight={require('../../assets/icons/mycart.png')}
         backgroundColor={colors.background_secondary}
       />
