@@ -10,16 +10,16 @@ import {
 import {useTranslation} from 'react-i18next';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import styles from './style';
 import Header from '../../components/Header';
 import appst from '../../constants/AppStyle';
 import {CustomedButton} from '../../components';
 import CustomTextInput from '../../components/Input';
-import {handleNavigate} from '../../utils/functions/navigationHelper';
 import {login, loginWithGG} from '../../redux/thunks/UserThunks';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import DropdownComponent from '../../components/ButtonLanguages';
 import {validateFieldsLogin} from '../../utils/functions/validData';
+import {handleNavigate} from '../../utils/functions/navigationHelper';
 
 GoogleSignin.configure({
   webClientId:
@@ -27,14 +27,14 @@ GoogleSignin.configure({
 });
 const LoginScreen = () => {
   const {t} = useTranslation();
-  const navigation = useNavigation();
   const dispatch = useDispatch();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const {isLoading} = useSelector(state => state.user);
+  const navigation = useNavigation();
   const [errors, setErrors] = useState({});
+  const [email, setEmail] = useState('nora@gmail.com');
+  const [password, setPassword] = useState('Nora@123');
+  const {isLoading} = useSelector(state => state.user);
   const authState = useSelector(state => state.user);
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
 
   const handleLogin = async () => {
     if (!validateFieldsLogin(email, password, setErrors)) {
@@ -54,7 +54,7 @@ const LoginScreen = () => {
       if (!user.isVerified) {
         navigation.navigate('OtpVerification', {email});
       } else {
-        navigation.navigate('HomeScreen');
+        navigation.navigate('BottomNav');
       }
     } else {
       ToastAndroid.show('Đăng nhập thất bại', ToastAndroid.SHORT);
@@ -80,7 +80,7 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (authState.user) {
-      navigation.navigate('HomeScreen');
+      navigation.navigate('BottomNav');
     }
   }, [authState?.user]);
 

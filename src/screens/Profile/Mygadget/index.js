@@ -1,18 +1,14 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
-
+import React from 'react';
+import {Image, Text} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-
-import React from 'react'
 import styles from './style';
+import appst from '../../../constants/AppStyle';
 
 const ChildItemGadget = ({onPress, iconSource, text}) => (
-    <TouchableOpacity onPress={onPress}>
-      <View style={styles.childItem}>
-        <Image style={styles.ic_childs_mygadget} source={iconSource} />
-        <Text style={styles.text2}>{text}</Text>
-      </View>
-    </TouchableOpacity>
-  );
+  <TouchableOpacity style={styles.childItem} onPress={onPress}>
+    <Image style={appst.icon30} source={iconSource} />
+    <Text style={styles.text2}>{text}</Text>
+  </TouchableOpacity>
+);
 
-export default ChildItemGadget
-
+export default ChildItemGadget;

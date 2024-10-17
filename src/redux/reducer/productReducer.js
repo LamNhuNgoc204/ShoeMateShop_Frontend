@@ -25,11 +25,11 @@ const ProductSlice = createSlice({
       .addCase(fetchProductsThunk.fulfilled, (state, action) => {
         state.isLoading = false;
         state.products = action.payload;
-        console.log('---------------------fulliled--------------');
-        console.log(
-          '---------------------state.products--------------',
-          state.products,
-        );
+        console.log('---------------------fulliled products--------------');
+        // console.log(
+        //   '---------------------state.products--------------',
+        //   state.products,
+        // );
 
         state.error = null;
       })
@@ -43,11 +43,11 @@ const ProductSlice = createSlice({
       .addCase(getCategoryThunk.fulfilled, (state, action) => {
         state.isLoading = false;
         state.categories = action.payload;
-        console.log('---------------------fulliled--------------');
-        console.log(
-          '---------------------state.categories--------------',
-          state.categories,
-        );
+        console.log('---------------------fulliled categories--------------');
+        // console.log(
+        //   '---------------------state.categories--------------',
+        //   state.categories,
+        // );
       })
       .addCase(getCategoryThunk.rejected, (state, action) => {
         state.isLoading = false;

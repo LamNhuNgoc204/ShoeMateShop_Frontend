@@ -1,20 +1,13 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
-
-import {TouchableOpacity} from 'react-native-gesture-handler';
-
-import React from 'react'
+import React from 'react';
+import {Image, Text, View, TouchableOpacity} from 'react-native';
 import styles from './style';
+import appst from '../../../constants/AppStyle';
 
 const ChildItem = ({onPress, iconSource, text}) => (
-    <TouchableOpacity
-    onPress={onPress}
-    >
+  <TouchableOpacity onPress={onPress}>
     <View style={styles.recentlyViewedContainer}>
       <View style={styles.recentlyViewed}>
-        <Image
-          style={styles.ic_recently}
-          source={iconSource}
-        />
+        <Image style={appst.icon24} source={iconSource} />
         <Text style={styles.text3}>{text}</Text>
       </View>
       <Image
@@ -23,7 +16,6 @@ const ChildItem = ({onPress, iconSource, text}) => (
       />
     </View>
   </TouchableOpacity>
-  );
+);
 
-export default ChildItem
-
+export default ChildItem;

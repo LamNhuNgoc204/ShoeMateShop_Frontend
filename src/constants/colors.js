@@ -29,7 +29,7 @@ export const colors = {
   colorB7B7B7: '#B7B7B7',
   color707070: '#707070',
   color93B3FF: '#93B3FF',
-  colorD8E8FF: '#D8E8FF',
+  colorF2F7FF: '#F2F7FF',
   color001560: '#001560',
   colorF3F6FF : '#F3F6FF',
   colorF9F9F9: '#F9F9F9',

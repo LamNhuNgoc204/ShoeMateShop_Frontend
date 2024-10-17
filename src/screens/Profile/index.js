@@ -6,55 +6,15 @@ import ChildItemGadget from './Mygadget';
 import ChildItem from './ChildItems';
 import styles from './style';
 import {useTranslation} from 'react-i18next';
+import {useSelector} from 'react-redux';
+import { PROFILE } from '../../api/mockData';
 
 const ProfileScreen = () => {
   const {t} = useTranslation();
   const navigation = useNavigation();
 
-  const data = [
-    {
-      id: '1',
-      iconSource: require('../../assets/icons/ic_recently.png'),
-      text: 'Recently Viewed',
-      navigateTo: 'RecentlyViewed',
-    },
-    {
-      id: '2',
-      iconSource: require('../../assets/icons/ic-myrating.png'),
-      text: 'My Rating',
-      navigateTo: 'MyRating',
-    },
-    {
-      id: '3',
-      iconSource: require('../../assets/icons/ic_orderhistory.png'),
-      text: 'Order History',
-      navigateTo: 'OrderHistory',
-    },
-    {
-      id: '4',
-      iconSource: require('../../assets/icons/ic_accountsettings.png'),
-      text: 'Account Settings',
-      navigateTo: 'AccountSettings',
-    },
-    {
-      id: '5',
-      iconSource: require('../../assets/icons/ic_informationsecurity.png'),
-      text: 'Information Security',
-      navigateTo: 'InformationSecurity',
-    },
-    {
-      id: '6',
-      iconSource: require('../../assets/icons/ic_help.png'),
-      text: 'Help',
-      navigateTo: 'Help',
-    },
-    {
-      id: '7',
-      iconSource: require('../../assets/icons/ic_chatwithshop.png'),
-      text: 'Chat with Shop',
-      navigateTo: 'ChatWithShop',
-    },
-  ];
+  const {user} = useSelector(state => state.user);
+  console.log('user', user);
 
   const renderItem = ({item}) => (
     <ChildItem
@@ -69,11 +29,15 @@ const ProfileScreen = () => {
       <View style={styles.profile}>
         <Image
           style={styles.avatar}
-          source={require('../../assets/images/avatar.png')}
+          source={{
+            uri: user.avatar
+              ? user.avatar
+              : 'https://i.pinimg.com/enabled_hi/564x/d4/35/42/d435423c9386e708c678b7663656b9c0.jpg',
+          }}
         />
         <View style={styles.info}>
-          <Text style={styles.name}>Nguyen Van A</Text>
-          <Text style={styles.email}>vana123@gmail.com</Text>
+          <Text style={styles.name}>{user.name}</Text>
+          <Text style={styles.email}>{user.email}</Text>
         </View>
         <TouchableOpacity>
           <Image
@@ -116,7 +80,7 @@ const ProfileScreen = () => {
         />
       </View>
       <FlatList
-        data={data}
+        data={PROFILE}
         renderItem={renderItem}
         keyExtractor={item => item.id}
       />
