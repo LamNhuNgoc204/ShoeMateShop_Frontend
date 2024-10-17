@@ -29,7 +29,7 @@ const Category = ({category, style}) => {
   );
 };
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   const {t} = useTranslation();
   const pagerRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
@@ -78,7 +78,7 @@ const HomeScreen = () => {
   return (
     <View style={[homeStyle.container, appst.container]}>
       {/* <Button title={'get token '} onPress={() => getToken()}></Button> */}
-      <ToolBar iconRight={require('../../assets/icons/message.png')} />
+      <ToolBar iconRight={require('../../assets/icons/message.png')} onIconRightPress={() => {navigation.navigate('MessageScreen')}}/>
       <ScrollView showsVerticalScrollIndicator={false} style={appst.container}>
         <View style={homeStyle.bannerContainer}>
           <PagerView

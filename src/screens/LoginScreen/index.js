@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -31,6 +31,7 @@ const LoginScreen = () => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const {isLoading} = useSelector(state => state.user);
   const [errors, setErrors] = useState({}); // Trạng thái lỗi
+  const authState = useSelector(state => state.user)
  
   // Hàm kiểm tra và lưu lỗi
   const validateFields = () => {
@@ -77,21 +78,23 @@ const LoginScreen = () => {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       console.log(userInfo.data.user);
-      const resultF = await dispatch(
+      dispatch(
         loginWithGG({
           name: userInfo.data.user.name,
           email: userInfo.data.user.email,
           avatar: userInfo.data.user.photo,
         }),
       );
-      if (loginWithGG.fulfilled.match(resultF)) {
-        navigation.navigate('BottomNav');
-        navigation.navigate('HomeScreen');
-      }
     } catch (error) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if(authState.user) {
+      navigation.navigate('HomeScreen');
+    }
+  }, [authState?.user])
 
   return (
     <View style={styles.container}>

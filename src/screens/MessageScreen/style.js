@@ -67,7 +67,8 @@ const messageScreenStyle = StyleSheet.create({
         lineHeight:  19
     },
     marginTop10:{
-        marginTop:10
+        marginTop:0,
+        marginBottom: 10,
     },
     customerMessageItem: {
         backgroundColor: "#FFFFFF",

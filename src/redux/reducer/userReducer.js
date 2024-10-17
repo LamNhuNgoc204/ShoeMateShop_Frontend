@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { login, register } from '../thunks/UserThunks';
+import { login, loginWithGG, register } from '../thunks/UserThunks';
 
 const initialState = {
   isLoading: false,
   error: null,
-  user: {},
+  user: null,
   token: null,
 };
 
@@ -45,7 +45,23 @@ const UserSlice = createSlice({
         console.log('Register rejected');
         state.isLoading = false;
         state.error = action.payload;
-      });
+      })
+      .addCase(loginWithGG.pending, (state, action) => {
+        console.log('login with gg........')
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(loginWithGG.fulfilled, (state, action) => {
+        console.log('login with gg: successful!')
+        state.isLoading = false;
+        console.log('user: ', action.payload);
+        state.user = action.payload;
+      })
+      .addCase(loginWithGG.rejected, (state, action) => {
+        console.log('login with gg: failure!')
+        state.isLoading = false;
+        state.error = action.payload;
+      })
   },
 });
 
