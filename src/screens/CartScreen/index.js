@@ -1,12 +1,12 @@
-import {View, Text, FlatList, TouchableOpacity, Image} from 'react-native';
 import React, {useState} from 'react';
-import appst from '../../constants/AppStyle';
+import {useTranslation} from 'react-i18next';
+import {View, Text, FlatList, TouchableOpacity, Image} from 'react-native';
 import {cartst} from './style';
-import ItemCart from '../../items/CartItem/ItemCart';
 import {spacing} from '../../constants';
 import Header from '../../components/Header';
+import appst from '../../constants/AppStyle';
 import {CustomedButton} from '../../components';
-import {useTranslation} from 'react-i18next';
+import ItemCart from '../../items/CartItem/ItemCart';
 
 const CartScreen = ({navigation}) => {
   const {t} = useTranslation();
@@ -18,7 +18,7 @@ const CartScreen = ({navigation}) => {
         <Header
           background={'#fff'}
           iconLeft={require('../../assets/icons/back.png')}
-          name={t("home.cart")}
+          name={t('home.cart')}
         />
       </View>
       <View style={cartst.viewBody}>
@@ -40,7 +40,7 @@ const CartScreen = ({navigation}) => {
       </View>
       <View style={cartst.viewFooter}>
         <View style={appst.rowCenter}>
-          <Text style={cartst.text2}>{t("home.subtotal")}</Text>
+          <Text style={cartst.text2}>{t('home.subtotal')}</Text>
           <Text style={cartst.text3}>$753.95</Text>
         </View>
         <View style={[appst.rowCenter, cartst.borderBottom]}>
@@ -62,7 +62,7 @@ const CartScreen = ({navigation}) => {
             <Text style={cartst.text6}>{t('home.all_product')}</Text>
           </View>
           <CustomedButton
-            title={t("buttons.btn_checkout")}
+            title={t('buttons.btn_checkout')}
             style={cartst.btCheckout}
             titleStyle={cartst.textTouch}
             onPress={() => navigation.navigate('CheckOutScreen')}

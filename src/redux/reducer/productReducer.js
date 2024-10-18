@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {fetchProductsThunk} from '../thunks/productThunks';
+import {fetchProductsThunk, fetchWishlistThunk} from '../thunks/productThunks';
 import {getCategoryThunk} from '../thunks/categoryThunk';
 
 const initialState = {
@@ -7,6 +7,7 @@ const initialState = {
   error: null,
   products: [],
   categories: [],
+  wishlist: [],
 };
 
 const ProductSlice = createSlice({
@@ -30,7 +31,6 @@ const ProductSlice = createSlice({
         //   '---------------------state.products--------------',
         //   state.products,
         // );
-
         state.error = null;
       })
       .addCase(fetchProductsThunk.rejected, (state, action) => {
@@ -50,6 +50,19 @@ const ProductSlice = createSlice({
         // );
       })
       .addCase(getCategoryThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchWishlistThunk.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchWishlistThunk.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.wishlist = action.payload;
+        console.log('---------------------fulliled wishlist--------------');
+        console.log('-------state.wishlist----------', state.wishlist);
+      })
+      .addCase(fetchWishlistThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });

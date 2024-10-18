@@ -33,7 +33,8 @@ export const cartst = StyleSheet.create({
   viewFooter: {
     backgroundColor: colors.background_primary,
     width: '100%',
-    paddingVertical: spacing.xl,
+    paddingTop: 5,
+    paddingBottom: spacing.xl,
     paddingHorizontal: spacing.md,
   },
   text2: {
@@ -50,10 +51,10 @@ export const cartst = StyleSheet.create({
     borderColor: colors.color707B81,
     borderBottomWidth: 1,
     borderStyle: 'dashed',
-    paddingVertical: spacing.sm,
+    paddingVertical: 5,
   },
   view1: {
-    marginVertical: spacing.sm,
+    marginVertical: 5,
   },
   text4: {
     fontSize: sizes.size16,
@@ -74,7 +75,7 @@ export const cartst = StyleSheet.create({
   btCheckout: {
     backgroundColor: colors.primary,
     borderRadius: 12,
-    width: 210,
+    width: 150,
   },
   textTouch: {
     paddingVertical: spacing.md,

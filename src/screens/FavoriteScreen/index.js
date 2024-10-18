@@ -7,9 +7,13 @@ import ProductItem from '../../items/ProductItem';
 import {useTranslation} from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Text} from 'react-native-svg';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchWishlistThunk} from '../../redux/thunks/productThunks';
 
 const FavoriteScreen = ({navigation}) => {
   const {t} = useTranslation();
+  const dispatch = useDispatch();
+  const wishlist = useSelector(state => state.products.wishlist);
 
   const [token, setToken] = useState(null);
 
@@ -21,8 +25,13 @@ const FavoriteScreen = ({navigation}) => {
 
     fetchToken();
   }, []);
-
   console.log('Token:', token);
+
+  useEffect(() => {
+    dispatch(fetchWishlistThunk());
+  }, []);
+
+  console.log('wishList', wishlist);
 
   return (
     <View style={[appst.container, fvst.container]}>
@@ -32,7 +41,25 @@ const FavoriteScreen = ({navigation}) => {
         name={t('home.favorite')}
         iconRight={require('../../assets/icons/favorite.png')}
       />
-      {token !== null ? (
+      <View style={[appst.center]}>
+        {wishlist.length !== 0 ? (
+          <FlatList
+            data={[1, 2, 3, 4, 5]}
+            renderItem={({item, index}) => (
+              <ProductItem product={item} index={index} />
+            )}
+            keyExtractor={item => item.id}
+            numColumns={2}
+            showsVerticalScrollIndicator={false}
+          />
+        ) : (
+          <Text>
+            Bạn chưa thêm sản phẩm nào vào danh sách yêu thích cả. Đến trang chủ
+            ngay
+          </Text>
+        )}
+      </View>
+      {/* {token !== null ? (
         <View style={[appst.center]}>
           <FlatList
             data={[1, 2, 3, 4, 5]}
@@ -62,7 +89,7 @@ const FavoriteScreen = ({navigation}) => {
             Đến trang đăng nhập
           </Text>
         </View>
-      )}
+      )} */}
     </View>
   );
 };
