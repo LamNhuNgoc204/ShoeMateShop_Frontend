@@ -4,11 +4,14 @@ import toolBarStyle from '../ToolBar/style'
 import searchInputStyle from './style'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
-const SearchInput = ({ style, onChangeText, placeholder = 'Looking for shoe',  onMicPress}) => {
+const SearchInput = ({ style, onChangeText, placeholder = 'Looking for shoe', onMicPress, editable = true, onEditPress, handleSubmit, value }) => {
     return (
         <View style={[searchInputStyle.searchContainer, style]}>
-            <Image style={searchInputStyle.icon15} source={require('../../assets/icons/search.png')} />
-            <TextInput onChangeText={onChangeText} style={searchInputStyle.input} placeholder={placeholder} />
+            <TouchableOpacity onPress={onEditPress} >
+                <Image style={searchInputStyle.icon15} source={require('../../assets/icons/search.png')} />
+
+            </TouchableOpacity>
+            <TextInput value={value} onSubmitEditing={handleSubmit} editable={editable} onChangeText={onChangeText} style={searchInputStyle.input} placeholder={placeholder} />
             <Text>|   </Text>
             <TouchableOpacity onPress={onMicPress}>
                 <Image style={searchInputStyle.icon15} source={require('../../assets/icons/ic_mic.png')} />

@@ -1,20 +1,39 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import categoryDetailStyle from './style'
 import ToolBar from '../../components/ToolBar'
 import appst from '../../constants/AppStyle'
 import { FlatList } from 'react-native-gesture-handler'
 import ProductItem from '../../items/ProductItem'
 import FilterPanel from '../../components/FilterPanel'
+import { getProductOfCategoryAction } from '../../redux/actions/categoriesAction'
 
-const products = new Array(10).fill(1)
 
-const CategoryDetail = () => {
+
+const CategoryDetail = ({route, navigation}) => {
   const [filterOpen, setFilterOpen] = useState(false)
   const [listSelectedBrand, setListSelectedBrand] = useState([])
   const [listSelectedStar, setListSelectedStar] = useState([])
   const [minPrice, setMinPrice] = useState(0)
   const [maxPrice, setMaxPrice] = useState(0)
+  const {categoryId} = route.params;
+  const [products, setProducts] = useState([]);
+
+  const getProductOfCategory = async () => {
+    try {
+      const response = await getProductOfCategoryAction(categoryId);
+      setProducts(response)
+    } catch (error) {
+      console.log(error.message)
+      
+    }
+  }
+
+  useEffect(() => {
+    if(categoryId) {
+      getProductOfCategory()
+    }
+  }, [categoryId])
   
 
   const onOpenFilter = () => {
@@ -66,13 +85,17 @@ const CategoryDetail = () => {
       setMaxPrice(maxPrice)
     }
   }
+
+  const onBack = () => {
+    navigation.goBack();
+  }
   return (
     <View style={[categoryDetailStyle.container, appst.container]}>
-      <ToolBar iconLeft={require('../../assets/icons/ic_back.png')} />
+      <ToolBar iconLeft={require('../../assets/icons/ic_back.png')} onIconLeftPress={onBack}/>
       <View style={[categoryDetailStyle.marginTop16, categoryDetailStyle.headerView]}>
         <Text style={categoryDetailStyle.textContainer}>
           Hot {`\n`}
-          <Text style={categoryDetailStyle.subContent}>25 products found</Text>
+          <Text style={categoryDetailStyle.subContent}>{products.length} products found</Text>
         </Text>
 
         <TouchableOpacity onPress={onOpenFilter}>
