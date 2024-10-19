@@ -7,7 +7,7 @@ export const itCart = StyleSheet.create({
   container: {
     width: '100%',
     alignItems: 'center',
-    paddingBottom: spacing.xm,
+    padding: spacing.xm,
   },
   viewContainer: {
     width: '90%',
@@ -29,6 +29,8 @@ export const itCart = StyleSheet.create({
     height: 85,
     borderRadius: 16,
     marginHorizontal: spacing.sm,
+    borderWidth: 1,
+    borderColor: colors.primary,
   },
   name: {
     fontFamily: fonts.rlw_medium,
@@ -40,9 +42,6 @@ export const itCart = StyleSheet.create({
     color: colors.text_black,
     fontSize: sizes.size14,
   },
-  viewQuatity: {
-    height: 84,
-  },
   view: {
     backgroundColor: colors.primary,
     borderRadius: 8,
@@ -53,6 +52,7 @@ export const itCart = StyleSheet.create({
     color: colors.colorFFF,
     fontSize: sizes.size14,
     fontFamily: fonts.pp_regular,
+    marginHorizontal: 20,
   },
   //Delete
   deleteContainer: {

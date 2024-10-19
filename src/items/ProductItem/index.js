@@ -72,10 +72,17 @@ const ProductItem = ({product, onHeartPress, style}) => {
             </Text>
           </Text>
           <TouchableOpacity onPress={onHeartPress}>
-            <Image
-              style={productStyle.icon21}
-              source={require('../../assets/icons/heart.png')}
-            />
+            {!product.isFavorite ? (
+              <Image
+                style={productStyle.icon21}
+                source={require('../../assets/icons/heart.png')}
+              />
+            ) : (
+              <Image
+                style={productStyle.icon21}
+                source={require('../../assets/icons/heart_select.png')}
+              />
+            )}
           </TouchableOpacity>
         </View>
       </View>

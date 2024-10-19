@@ -8,6 +8,7 @@ import CartScreen from '../screens/CartScreen';
 import FavoriteScreen from '../screens/FavoriteScreen';
 import ProfileScreen from '../screens/Profile';
 import SearchScreen from '../screens/SearchScreen';
+import Notifycation from '../screens/Notifycation';
 
 const Tab = createBottomTabNavigator();
 
@@ -44,7 +45,7 @@ const BottomNav = () => {
               iconImage = require('../assets/icon_bottom/home.png');
             } else if (route.name === 'Search') {
               iconImage = require('../assets/icon_bottom/heart.png');
-            } else if (route.name === 'FavoriteScreen') {
+            } else if (route.name === 'Notifycation') {
               iconImage = require('../assets/icon_bottom/notification.png');
             } else if (route.name === 'ProfileScreen') {
               iconImage = require('../assets/icon_bottom/profile.png');
@@ -112,7 +113,7 @@ const BottomNav = () => {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Search" component={FavoriteScreen} />
       <Tab.Screen name="CartScreen" component={CartScreen} />
-      <Tab.Screen name="FavoriteScreen" component={FavoriteScreen} />
+      <Tab.Screen name="Notifycation" component={Notifycation} />
       <Tab.Screen name="ProfileScreen" component={ProfileScreen} />
     </Tab.Navigator>
   );
