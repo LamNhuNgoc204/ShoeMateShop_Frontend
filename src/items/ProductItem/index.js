@@ -1,10 +1,10 @@
-import {View, Text, Image} from 'react-native';
-import React from 'react';
-import productStyle from './style';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import React, {useState} from 'react';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import productStyle from './style';
+import {addProductInWishlist} from '../../api/ProductApi';
 
-const ProductItem = ({product, onHeartPress, style}) => {
+const ProductItem = ({handleHeartPress, product, style}) => {
   const navigation = useNavigation();
   const imageAssets =
     product.assets &&
@@ -67,11 +67,11 @@ const ProductItem = ({product, onHeartPress, style}) => {
           <Text numberOfLines={1} ellipsizeMode="tail">
             <Text style={productStyle.dolar}>$</Text>{' '}
             <Text style={productStyle.text14}>
-              {product.price.toLocaleString('vi-VN')}đ
-              {/* .toLocaleString('vi-VN') */}
+              {product.price.toLocaleString('vi-VN')}
             </Text>
           </Text>
-          <TouchableOpacity onPress={onHeartPress}>
+          <TouchableOpacity
+            onPress={() => handleHeartPress(product._id, product.isFavorite)}>
             {!product.isFavorite ? (
               <Image
                 style={productStyle.icon21}
