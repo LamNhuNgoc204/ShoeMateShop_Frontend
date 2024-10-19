@@ -1,14 +1,35 @@
 import React from 'react';
-import {View, Text, Image, FlatList, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  ToastAndroid,
+} from 'react-native';
 import appst from '../../constants/AppStyle';
 import {useNavigation} from '@react-navigation/native';
 import RenderSettingItem from './ItemSetting/RenderSettingItem';
 import styles from './style';
 import {useTranslation} from 'react-i18next';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {logout} from '../../redux/reducer/userReducer';
+import {useDispatch} from 'react-redux';
 
 const SettingScreen = () => {
   const {t} = useTranslation();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const Logout = async () => {
+    try {
+      dispatch(logout());
+      await AsyncStorage.removeItem('token');
+      navigation.replace('LoginScreen');
+    } catch (error) {
+      ToastAndroid.show('Xảy ra lỗi. Thử lại sau', ToastAndroid.SHORT);
+    }
+  };
 
   const data = [
     {
@@ -16,7 +37,7 @@ const SettingScreen = () => {
       text: 'Change Profile Picture',
       navigateTo: 'ChangeProfilePicture',
     },
-    {id: '2', text: 'Shipping Address', navigateTo: 'ShippingAddress'},
+    {id: '2', text: 'Shipping Address', navigateTo: 'ChooseAddress'},
     {id: '3', text: 'Payment Method', navigateTo: 'PaymentMethod'},
     {id: '4', text: 'Password', navigateTo: 'Password'},
     {
@@ -49,7 +70,9 @@ const SettingScreen = () => {
         />
       </View>
       <View style={appst.center}>
-        <Text style={styles.signOut}>{t('buttons.btn_signout')}</Text>
+        <TouchableOpacity onPress={Logout}>
+          <Text style={styles.signOut}>{t('buttons.btn_signout')}</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

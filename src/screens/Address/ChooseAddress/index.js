@@ -4,11 +4,13 @@ import appst from '../../../constants/AppStyle';
 import {c_adst} from './style';
 import ChooseAddressItem from '../../../items/ChooseAddress';
 import Header from '../../../components/Header';
+import {useTranslation} from 'react-i18next';
 
 const ChooseAddress = ({navigation}) => {
+  const {t} = useTranslation();
+
   return (
     <View style={[appst.container]}>
-      {/* <View style={c_adst.viewHeader}></View> */}
       <Header
         iconLeft={require('../../../assets/icons/back.png')}
         leftOnPress={() => navigation.goBack()}
