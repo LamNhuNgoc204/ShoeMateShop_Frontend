@@ -76,6 +76,8 @@ const CartScreen = ({navigation}) => {
     setTotalPrice(total);
   }, [checkedProducts]);
 
+  console.log('checkedProducts', checkedProducts);
+
   return (
     <View style={[appst.container, cartst.container]}>
       <View style={cartst.header}>
@@ -138,7 +140,12 @@ const CartScreen = ({navigation}) => {
                 title={t('buttons.btn_checkout')}
                 style={cartst.btCheckout}
                 titleStyle={cartst.textTouch}
-                onPress={() => navigation.navigate('CheckOutScreen')}
+                onPress={() =>
+                  navigation.navigate('CheckOutScreen', {
+                    checkedProducts,
+                    totalPrice,
+                  })
+                }
               />
             </View>
           </View>

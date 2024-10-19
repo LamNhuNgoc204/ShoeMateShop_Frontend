@@ -1,19 +1,34 @@
-import { View, Text, Image } from 'react-native'
-import React from 'react'
-import { c_outIt } from './style'
-import appst from '../../constants/AppStyle'
+import React from 'react';
+import {View, Text, Image} from 'react-native';
+import {c_outIt} from './style';
 
 const CheckOutItem = ({item}) => {
   return (
     <View style={[c_outIt.container]}>
-      <Image style={c_outIt.image} source={require('../../assets/images/onboard1.png')} />
+      <Image
+        style={c_outIt.image}
+        source={require('../../assets/images/onboard1.png')}
+      />
       <View style={c_outIt.viewText}>
-        <Text style={c_outIt.name} numberOfLines={1}>Spring New Style Women Casual .....</Text>
-        <Text style={c_outIt.text}>Size: <Text style={c_outIt.size1}>X</Text></Text>
-        <Text style={c_outIt.text}>Price: <Text style={c_outIt.price1}>$11</Text></Text>
+        <Text style={c_outIt.name} numberOfLines={1}>
+          {item.product_id.name}
+        </Text>
+        <Text style={c_outIt.text}>
+          Size: <Text style={c_outIt.size1}>{item.size_id.name}</Text>
+        </Text>
+        <Text style={c_outIt.text}>
+          Quantity: <Text style={c_outIt.size1}> {item.quantity}</Text>
+        </Text>
+        <Text style={c_outIt.text}>
+          Price:
+          <Text style={c_outIt.price1}>
+            {' '}
+            ${item && item.product_id.price.toLocaleString('vi-VN')}
+          </Text>
+        </Text>
       </View>
     </View>
-  )
-}
+  );
+};
 
-export default CheckOutItem
+export default CheckOutItem;

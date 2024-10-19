@@ -86,6 +86,13 @@ const AddNewAddress = () => {
       console.log('response', response);
 
       if (response.status) {
+        setFullName('');
+        setPhoneNumber('');
+        setAddress('');
+        setAddressDetail('');
+        setSelectedProvince('');
+        setSelectedWard('');
+        setSelectedDistrict('');
         ToastAndroid.show('Theem address thanh cong', ToastAndroid.SHORT);
       } else {
         console.log('loi server');

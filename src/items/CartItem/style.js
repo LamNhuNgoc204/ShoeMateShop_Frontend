@@ -47,12 +47,12 @@ export const itCart = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xm,
+    width: '60%',
   },
   quatity: {
     color: colors.colorFFF,
     fontSize: sizes.size14,
     fontFamily: fonts.pp_regular,
-    marginHorizontal: 20,
   },
   //Delete
   deleteContainer: {

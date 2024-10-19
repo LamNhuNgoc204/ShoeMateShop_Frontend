@@ -1,11 +1,9 @@
 import {View, Text, TouchableOpacity, Image} from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import {c_adrIt} from './style';
 import appst from '../../constants/AppStyle';
 
 const ChooseAddressItem = ({item}) => {
-  const [defaultValue, setDefaultValue] = useState(true);
-
   return (
     <View style={[c_adrIt.container, appst.rowCenter]}>
       {item.isDefault ? (
@@ -28,9 +26,11 @@ const ChooseAddressItem = ({item}) => {
           {'\n'}
           {item.address}
         </Text>
-        <View style={c_adrIt.viewDefault}>
-          <Text style={c_adrIt.textDefault}>Default</Text>
-        </View>
+        {item.isDefault && (
+          <View style={c_adrIt.viewDefault}>
+            <Text style={c_adrIt.textDefault}>Default</Text>
+          </View>
+        )}
       </View>
 
       <TouchableOpacity style={c_adrIt.icon}>

@@ -1,5 +1,5 @@
-import {View, Text, FlatList, Image, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
+import {View, Text, FlatList, Image, TouchableOpacity} from 'react-native';
 import appst from '../../../constants/AppStyle';
 import c_adst from './style';
 import ChooseAddressItem from '../../../items/ChooseAddress';
