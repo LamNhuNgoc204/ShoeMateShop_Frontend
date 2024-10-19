@@ -32,6 +32,7 @@ import TransferWalletScreen from '../screens/TransferWalletScreen';
 import ProductDetail from '../screens/ProductDetail';
 import BottomNav from './BottomNav';
 import VoucherScreen from '../screens/VoucherScreen';
+import Notifycation from '../screens/Notifycation';
 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +47,7 @@ const StackNav = () => {
       <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
       <Stack.Screen name="CartScreen" component={CartScreen} />
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
+      <Stack.Screen name="Notifycation" component={Notifycation} />
       <Stack.Screen name="CheckOutScreen" component={CheckOutScreen} />
       <Stack.Screen name="ChooseAddress" component={ChooseAddress} />
       <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} />

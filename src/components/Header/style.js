@@ -5,7 +5,7 @@ import {colors} from '../../constants/colors';
 
 export const hdst = StyleSheet.create({
   container: {
-    height: 30,
+    height: 40,
     // marginHorizontal: spacing.md,
     // marginVertical: spacing.sm,
     backgroundColor: colors.background_primary,

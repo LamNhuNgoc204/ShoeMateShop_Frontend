@@ -1,10 +1,13 @@
-// import AxiosInstance from '../helpers/AxiosInstance';
+import AxiosInstance from '../helpers/AxiosInstance';
 
-// // Hàm gọi API để thêm sản phẩm vào giỏ hàng
-// export const addItemToCartApi = async item => {
-//   const response = await AxiosInstance().post('/carts/add', item);
-//   return response.data;
-// };
+// Hàm gọi API để thêm sản phẩm vào giỏ hàng
+export const addItemToCartApi = async item => {
+  const response = await AxiosInstance().post(
+    '/cart/add-product-to-cart',
+    item,
+  );
+  return response;
+};
 
 // // Hàm gọi API để xóa sản phẩm khỏi giỏ hàng
 // export const removeItemFromsApi = async id => {

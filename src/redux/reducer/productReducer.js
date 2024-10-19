@@ -26,7 +26,7 @@ const ProductSlice = createSlice({
       .addCase(fetchProductsThunk.fulfilled, (state, action) => {
         state.isLoading = false;
         state.products = action.payload;
-        console.log('---------------------fulliled products--------------');
+        // console.log('---------------------fulliled products--------------');
         // console.log(
         //   '---------------------state.products--------------',
         //   state.products,
@@ -43,7 +43,7 @@ const ProductSlice = createSlice({
       .addCase(getCategoryThunk.fulfilled, (state, action) => {
         state.isLoading = false;
         state.categories = action.payload;
-        console.log('---------------------fulliled categories--------------');
+        // console.log('---------------------fulliled categories--------------');
         // console.log(
         //   '---------------------state.categories--------------',
         //   state.categories,
@@ -59,8 +59,8 @@ const ProductSlice = createSlice({
       .addCase(fetchWishlistThunk.fulfilled, (state, action) => {
         state.isLoading = false;
         state.wishlist = action.payload;
-        console.log('---------------------fulliled wishlist--------------');
-        console.log('-------state.wishlist----------', state.wishlist);
+        // console.log('---------------------fulliled wishlist--------------');
+        // console.log('-------state.wishlist----------', state.wishlist);
       })
       .addCase(fetchWishlistThunk.rejected, (state, action) => {
         state.isLoading = false;
