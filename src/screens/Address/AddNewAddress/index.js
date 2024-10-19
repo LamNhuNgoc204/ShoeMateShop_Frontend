@@ -75,6 +75,7 @@ const AddNewAddress = () => {
         address: address,
         recieverPhoneNumber: phoneNumber,
         recieverName: fullName,
+        isDefault: true,
       };
       console.log('body', body);
 
@@ -82,6 +83,8 @@ const AddNewAddress = () => {
         '/addresses/add-address',
         body,
       );
+      console.log('response', response);
+
       if (response.status) {
         ToastAndroid.show('Theem address thanh cong', ToastAndroid.SHORT);
       } else {

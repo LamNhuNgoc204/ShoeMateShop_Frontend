@@ -5,8 +5,7 @@ import c_adst from './style';
 import ChooseAddressItem from '../../../items/ChooseAddress';
 import Header from '../../../components/Header';
 import {useTranslation} from 'react-i18next';
-import {handleNavigate} from '../../../utils/functions/navigationHelper';
-import {getAllAddress} from '../../../api/AddressAPI';
+import AxiosInstance from '../../../helpers/AxiosInstance';
 
 const ChooseAddress = ({navigation}) => {
   const {t} = useTranslation();
@@ -15,7 +14,9 @@ const ChooseAddress = ({navigation}) => {
   useEffect(() => {
     const fetchAddress = async () => {
       try {
-        const response = await getAllAddress();
+        const response = await AxiosInstance().get(
+          '/addresses/get-all-address',
+        );
         if (response.status) {
           setAddresses(response.data);
         }
@@ -27,7 +28,7 @@ const ChooseAddress = ({navigation}) => {
   }, []);
 
   console.log('addresses', addresses);
-  console.log('c_adst', c_adst);
+  // console.log('c_adst', c_adst);
 
   return (
     <View style={[appst.container]}>
@@ -56,7 +57,7 @@ const ChooseAddress = ({navigation}) => {
           <View style={c_adst.borderBottom} />
           <TouchableOpacity
             style={[c_adst.viewFooter, appst.center]}
-            onPress={() => handleNavigate(navigation, 'AddNewAddress')}>
+            onPress={() => navigation.navigate('AddNewAddress')}>
             <Image
               style={appst.icon30}
               source={require('../../../assets/icons/add_adr.png')}
