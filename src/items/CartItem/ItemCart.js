@@ -10,36 +10,67 @@ const ItemCart = ({
   item,
   cards,
   setCards,
+  setTotalPrice,
   currentlyOpenSwipeable,
   setCurrentlyOpenSwipeable,
   checkedProducts,
   setCheckedProducts,
+  isChecked,
+  onCheckedChange,
 }) => {
-  const [isChecked, setIsChecked] = useState(false);
   const [productQuantity, setProductQuantity] = useState(item.quantity);
-  // console.log('so luong sp => ', productQuantity);
 
   const handlePress = () => {
-    setIsChecked(!isChecked);
+    onCheckedChange(item, !isChecked);
   };
 
   useEffect(() => {
     if (isChecked) {
-      setCheckedProducts([...checkedProducts, item]);
+      setCheckedProducts(prev => {
+        if (!prev.some(cart => cart._id === item._id)) {
+          return [...prev, item];
+        }
+        return prev;
+      });
     } else {
-      setCheckedProducts(checkedProducts.filter(item => item._id !== item._id));
+      setCheckedProducts(prev => prev.filter(cart => cart._id !== item._id));
     }
-  }, [isChecked]); // Sử dụng isChecked làm dependency
-  console.log('checkedProducts====', checkedProducts);
+  }, [isChecked]);
+
+  const calculateTotalPrice = products => {
+    const total = products.reduce((sum, product) => {
+      return sum + product.product_id.price * product.quantity;
+    }, 0);
+    setTotalPrice(total);
+  };
+
+  useEffect(() => {
+    calculateTotalPrice(checkedProducts);
+  }, [checkedProducts]);
 
   const tangSL = async () => {
-    setProductQuantity(prev => prev + 1);
-    // console.log(productQuantity);
+    setProductQuantity(prev => {
+      const newQuantity = prev + 1;
+      // Cập nhật tổng giá khi quantity thay đổi
+      const updatedCards = checkedProducts.map(cart =>
+        cart._id === item._id ? {...cart, quantity: newQuantity} : cart,
+      );
+      setCheckedProducts(updatedCards);
+      return newQuantity;
+    });
   };
 
   const giamSL = async () => {
     if (productQuantity > 1) {
-      setProductQuantity(prev => prev - 1);
+      setProductQuantity(prev => {
+        const newQuantity = prev - 1;
+        // Cập nhật danh sách sản phẩm đã chọn
+        const updatedCards = checkedProducts.map(cart =>
+          cart._id === item._id ? {...cart, quantity: newQuantity} : cart,
+        );
+        setCheckedProducts(updatedCards);
+        return newQuantity;
+      });
     } else {
       SweetAlert.showAlertWithOptions(
         {
@@ -52,6 +83,9 @@ const ItemCart = ({
         },
         () => {
           setProductQuantity(0);
+          setCheckedProducts(
+            checkedProducts.filter(cart => cart._id !== item._id),
+          );
           setCards(cards.filter(cart => cart._id !== item._id));
         },
       );
@@ -111,8 +145,6 @@ const ItemCart = ({
       </View>
     );
   };
-
-  // console.log('item', item);
 
   return (
     <Swipeable

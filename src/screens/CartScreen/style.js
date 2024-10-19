@@ -33,38 +33,17 @@ export const cartst = StyleSheet.create({
   viewFooter: {
     backgroundColor: colors.background_primary,
     width: '100%',
-    paddingTop: 5,
-    paddingBottom: spacing.xl,
+    paddingVertical: 20,
     paddingHorizontal: spacing.md,
   },
   text2: {
-    fontSize: sizes.size16,
-    fontFamily: fonts.rlw_medium,
-    color: colors.color707B81,
+    color: 'black',
+    fontSize: 12,
   },
   text3: {
-    color: colors.color1A2530,
-    fontFamily: fonts.pp_medium,
-    fontSize: sizes.size16,
-  },
-  borderBottom: {
-    borderColor: colors.color707B81,
-    borderBottomWidth: 1,
-    borderStyle: 'dashed',
-    paddingVertical: 5,
-  },
-  view1: {
-    marginVertical: 5,
-  },
-  text4: {
-    fontSize: sizes.size16,
-    fontFamily: fonts.pp_medium,
-    color: colors.text_black,
-  },
-  text5: {
+    marginRight: 8,
     color: colors.primary,
-    fontSize: sizes.size16,
-    fontFamily: fonts.pp_medium,
+    fontSize: 14,
   },
   text6: {
     fontSize: sizes.size14,
@@ -75,13 +54,13 @@ export const cartst = StyleSheet.create({
   btCheckout: {
     backgroundColor: colors.primary,
     borderRadius: 12,
-    width: 150,
+    paddingHorizontal: 15,
   },
   textTouch: {
-    paddingVertical: spacing.md,
     textAlign: 'center',
     color: colors.colorFFF,
     fontFamily: fonts.rlw_medium,
-    fontSize: sizes.size14,
+    fontSize: sizes.size13,
+    fontWeight: '650',
   },
 });

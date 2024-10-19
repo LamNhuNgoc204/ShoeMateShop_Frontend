@@ -22,6 +22,10 @@ export const updateCartItem = async body => {
   return response;
 };
 
+export const deleteAllCart = async() => {
+  
+}
+
 // // Hàm gọi API để xóa sản phẩm khỏi giỏ hàng
 // export const removeItemFromsApi = async id => {
 //   const response = await AxiosInstance().delete(`/carts/remove/${id}`);

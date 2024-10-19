@@ -42,9 +42,6 @@ export const itCart = StyleSheet.create({
     color: colors.text_black,
     fontSize: sizes.size14,
   },
-  // viewQuatity: {
-  //   height: 84,
-  // },
   view: {
     backgroundColor: colors.primary,
     borderRadius: 8,
@@ -55,6 +52,7 @@ export const itCart = StyleSheet.create({
     color: colors.colorFFF,
     fontSize: sizes.size14,
     fontFamily: fonts.pp_regular,
+    marginHorizontal: 20,
   },
   //Delete
   deleteContainer: {
