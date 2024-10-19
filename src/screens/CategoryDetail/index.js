@@ -7,17 +7,19 @@ import { FlatList } from 'react-native-gesture-handler'
 import ProductItem from '../../items/ProductItem'
 import FilterPanel from '../../components/FilterPanel'
 import { getProductOfCategoryAction } from '../../redux/actions/categoriesAction'
+import AxiosInstance from '../../helpers/AxiosInstance'
 
 
 
-const CategoryDetail = ({route, navigation}) => {
+const CategoryDetail = ({ route, navigation }) => {
   const [filterOpen, setFilterOpen] = useState(false)
   const [listSelectedBrand, setListSelectedBrand] = useState([])
   const [listSelectedStar, setListSelectedStar] = useState([])
   const [minPrice, setMinPrice] = useState(0)
   const [maxPrice, setMaxPrice] = useState(0)
-  const {categoryId} = route.params;
+  const { categoryId } = route.params;
   const [products, setProducts] = useState([]);
+  const [brands, setBrands] = useState([]);
 
   const getProductOfCategory = async () => {
     try {
@@ -25,16 +27,16 @@ const CategoryDetail = ({route, navigation}) => {
       setProducts(response)
     } catch (error) {
       console.log(error.message)
-      
+
     }
   }
 
   useEffect(() => {
-    if(categoryId) {
+    if (categoryId) {
       getProductOfCategory()
     }
   }, [categoryId])
-  
+
 
   const onOpenFilter = () => {
     setFilterOpen(true)
@@ -89,9 +91,26 @@ const CategoryDetail = ({route, navigation}) => {
   const onBack = () => {
     navigation.goBack();
   }
+
+  const getAllBrand = async () => {
+    try {
+      const response = await AxiosInstance().get('/brands/get-all-brand');
+      if (response.status) {
+        setBrands(response.data);
+      }
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+
+  useEffect(() => {
+    getAllBrand();
+  }, []);
+
+
   return (
     <View style={[categoryDetailStyle.container, appst.container]}>
-      <ToolBar iconLeft={require('../../assets/icons/ic_back.png')} onIconLeftPress={onBack}/>
+      <ToolBar iconLeft={require('../../assets/icons/ic_back.png')} onIconLeftPress={onBack} />
       <View style={[categoryDetailStyle.marginTop16, categoryDetailStyle.headerView]}>
         <Text style={categoryDetailStyle.textContainer}>
           Hot {`\n`}
@@ -111,7 +130,7 @@ const CategoryDetail = ({route, navigation}) => {
         numColumns={2}
         style={categoryDetailStyle.marginTop16}
       />
-      <FilterPanel minPrice={minPrice} maxPrice={maxPrice} onMaxPriceChange={onMaxPriceChange} onMinPriceChange={onMinChange} onStarPress={onStarPress} listSelectedStar={listSelectedStar} listSelectedBrand={listSelectedBrand} onBrandPress={onBrandPress} isOpen={filterOpen} onClosePress={onCloseFilterPress} />
+      <FilterPanel listBrand={brands} minPrice={minPrice} maxPrice={maxPrice} onMaxPriceChange={onMaxPriceChange} onMinPriceChange={onMinChange} onStarPress={onStarPress} listSelectedStar={listSelectedStar} listSelectedBrand={listSelectedBrand} onBrandPress={onBrandPress} isOpen={filterOpen} onClosePress={onCloseFilterPress} />
 
     </View>
   )

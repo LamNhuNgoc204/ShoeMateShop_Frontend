@@ -30,10 +30,10 @@ const FilterPanel = ({ isOpen, listSelectedBrand, listBrand, listSelectedStar,
           </Text>
           <View style={filterPanelStyle.wrapContainer}>
             {
-              (listBrand || brands).map((item, index) => {
+              listBrand.map((item, index) => {
                 return (
                   <TouchableOpacity onPress={() => onBrandPress(index)} key={index} style={[filterPanelStyle.view44, listSelectedBrand?.includes(index) && filterPanelStyle.selected]}>
-                    <Image style={filterPanelStyle.icon34} source={require('../../assets/icons/puma.png')} />
+                    <Image style={filterPanelStyle.icon34} source={{uri: item.image}} />
                   </TouchableOpacity>
                 )
               })
