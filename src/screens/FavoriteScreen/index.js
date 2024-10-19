@@ -1,20 +1,16 @@
-import {View, FlatList} from 'react-native';
+import {useTranslation} from 'react-i18next';
 import React, {useEffect, useState} from 'react';
-import appst from '../../constants/AppStyle';
+import {View, Text, FlatList} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {fvst} from './style';
 import Header from '../../components/Header';
+import appst from '../../constants/AppStyle';
 import ProductItem from '../../items/ProductItem';
-import {useTranslation} from 'react-i18next';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Text} from 'react-native-svg';
-import {useDispatch, useSelector} from 'react-redux';
-import {fetchWishlistThunk} from '../../redux/thunks/productThunks';
+import {fetchWishlist, removeFromWishlist} from '../../api/ProductApi';
 
 const FavoriteScreen = ({navigation}) => {
   const {t} = useTranslation();
-  const dispatch = useDispatch();
-  const wishlist = useSelector(state => state.products.wishlist);
-
+  const [wishList, setWishList] = useState([]);
   const [token, setToken] = useState(null);
 
   useEffect(() => {
@@ -25,13 +21,41 @@ const FavoriteScreen = ({navigation}) => {
 
     fetchToken();
   }, []);
-  console.log('Token:', token);
+  // console.log('Token:', token);
 
   useEffect(() => {
-    dispatch(fetchWishlistThunk());
-  }, []);
+    const fetchWishlistData = async () => {
+      try {
+        const response = await fetchWishlist();
+        console.log('response wishlist: ', response);
 
-  console.log('wishList', wishlist);
+        if (response.status) {
+          setWishList(response.data);
+        }
+      } catch (error) {
+        console.log('fetchWishlistData error: ', error);
+      }
+    };
+    fetchWishlistData();
+  }, []);
+  // console.log('wishList', wishList);
+  console.log('wishList', wishList[0]);
+
+  const handleHeartPress = async (productId, _) => {
+    console.log('productId', productId);
+
+    try {
+      const response = await removeFromWishlist(productId);
+
+      if (response.status) {
+        setWishList(prevList =>
+          prevList.filter(item => item._id !== productId),
+        );
+      }
+    } catch (error) {
+      console.log('Error removing item from wishlist:', error);
+    }
+  };
 
   return (
     <View style={[appst.container, fvst.container]}>
@@ -42,13 +66,19 @@ const FavoriteScreen = ({navigation}) => {
         iconRight={require('../../assets/icons/favorite.png')}
       />
       <View style={[appst.center]}>
-        {wishlist.length !== 0 ? (
+        {wishList.length !== 0 ? (
           <FlatList
-            data={[1, 2, 3, 4, 5]}
+            data={wishList}
             renderItem={({item, index}) => (
-              <ProductItem product={item} index={index} />
+              <ProductItem
+                product={item}
+                index={index}
+                handleHeartPress={handleHeartPress}
+              />
             )}
-            keyExtractor={item => item.id}
+            keyExtractor={(item, index) =>
+              item._id ? item._id : index.toString()
+            }
             numColumns={2}
             showsVerticalScrollIndicator={false}
           />

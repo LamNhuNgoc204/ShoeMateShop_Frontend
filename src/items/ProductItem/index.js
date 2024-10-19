@@ -1,16 +1,20 @@
-import React, {useState} from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import React from 'react';
 import {useNavigation} from '@react-navigation/native';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import productStyle from './style';
-import {addProductInWishlist} from '../../api/ProductApi';
 
 const ProductItem = ({handleHeartPress, product, style}) => {
+  // console.log('product', product);
+  const id = product._id ? product._id : product.product_id._id;
+
   const navigation = useNavigation();
-  const imageAssets =
-    product.assets &&
-    product.assets.filter(asset => {
-      return asset.match(/\.(jpeg|jpg|png|gif)$/);
-    });
+  const imageAssets = product.assets
+    ? product.assets.filter(asset => {
+        return asset.match(/\.(jpeg|jpg|png|gif)$/);
+      })
+    : product.product_id.assets.filter(asset => {
+        return asset.match(/\.(jpeg|jpg|png|gif)$/);
+      });
 
   const imageUrl =
     imageAssets && imageAssets.length > 0 ? imageAssets[0] : null;
@@ -43,7 +47,7 @@ const ProductItem = ({handleHeartPress, product, style}) => {
           numberOfLines={1}
           ellipsizeMode="tail"
           style={[productStyle.text14, productStyle.maxWidth100]}>
-          {product.name}
+          {product.name ? product.name : product.product_id.name}
         </Text>
         <Text
           numberOfLines={1}
@@ -67,11 +71,13 @@ const ProductItem = ({handleHeartPress, product, style}) => {
           <Text numberOfLines={1} ellipsizeMode="tail">
             <Text style={productStyle.dolar}>$</Text>{' '}
             <Text style={productStyle.text14}>
-              {product.price.toLocaleString('vi-VN')}
+              {product.price
+                ? product.price.toLocaleString('vi-VN')
+                : product.product_id.price.toLocaleString('vi-VN')}
             </Text>
           </Text>
           <TouchableOpacity
-            onPress={() => handleHeartPress(product._id, product.isFavorite)}>
+            onPress={() => handleHeartPress(id, product.isFavorite)}>
             {!product.isFavorite ? (
               <Image
                 style={productStyle.icon21}
