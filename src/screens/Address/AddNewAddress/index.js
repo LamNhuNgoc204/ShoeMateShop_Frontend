@@ -1,13 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {View, Text, TouchableOpacity, Image, ToastAndroid} from 'react-native';
 import PickerSelect from 'react-native-picker-select';
 import CustomTextInput from '../../../components/Input';
 import {CustomedButton} from '../../../components';
 import appst from '../../../constants/AppStyle';
 import {useTranslation} from 'react-i18next';
 import styles from './style';
+import {useNavigation} from '@react-navigation/native';
+import AxiosInstance from '../../../helpers/AxiosInstance';
 
 const AddNewAddress = () => {
+  const navigation = useNavigation();
   const {t} = useTranslation();
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
@@ -58,7 +61,7 @@ const AddNewAddress = () => {
     }
   }, [selectedDistrict]);
 
-  const saveChanges = () => {
+  const saveChanges = async () => {
     const address = `${addressDetail},${findWardName(
       selectedWard,
     )},${findDistrictName(selectedDistrict)},${findProvinceName(
@@ -66,6 +69,27 @@ const AddNewAddress = () => {
     )}`;
     setAddress(address);
     console.log('Address:', address);
+
+    try {
+      const body = {
+        address: address,
+        recieverPhoneNumber: phoneNumber,
+        recieverName: fullName,
+      };
+      console.log('body', body);
+
+      const response = await AxiosInstance().post(
+        '/addresses/add-address',
+        body,
+      );
+      if (response.status) {
+        ToastAndroid.show('Theem address thanh cong', ToastAndroid.SHORT);
+      } else {
+        console.log('loi server');
+      }
+    } catch (error) {
+      console.log('error add address===', error);
+    }
   };
 
   const findProvinceName = value => {
