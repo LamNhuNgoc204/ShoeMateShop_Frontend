@@ -1,19 +1,21 @@
-import {View} from 'react-native';
-import React, {useState} from 'react';
+import { View } from 'react-native';
+import React, { useState } from 'react';
 import searchResultStyle from './style';
 import ToolBar from '../../components/ToolBar';
-import {FlatList} from 'react-native-gesture-handler';
+import { FlatList } from 'react-native-gesture-handler';
 import ProductItem from '../../items/ProductItem';
 import FilterPanel from '../../components/FilterPanel';
+import AxiosInstance from '../../helpers/AxiosInstance';
 
-const products = new Array(10).fill(1);
 
-const SearchResult = () => {
+const SearchResult = ({ navigation }) => {
   const [filterOpen, setFilterOpen] = useState(false);
   const [listSelectedBrand, setListSelectedBrand] = useState([]);
   const [listSelectedStar, setListSelectedStar] = useState([]);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(0);
+  const [products, setProducts] = useState([]);
+  const [searchText, setSearchText] = useState("");
 
   const onOpenFilter = () => {
     setFilterOpen(true);
@@ -65,16 +67,37 @@ const SearchResult = () => {
     }
   };
 
+  const onBack = () => {
+    navigation.goBack();
+  }
+
+  const onSubmit = async () => {
+    try {
+      if (searchText == "") {
+        return;
+      }
+      const response = await AxiosInstance().get(`/products/search?query=${searchText}`);
+      setProducts(response)
+      setSearchText("")
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+
   return (
     <View style={searchResultStyle.container}>
       <ToolBar
+        value={searchText}
+        handleSubmit={onSubmit}
+        onChangeText={(txt) => setSearchText(txt)}
+        onIconLeftPress={onBack}
         onIconRightPress={onOpenFilter}
         iconLeft={require('../../assets/icons/ic_back.png')}
         iconRight={require('../../assets/icons/ic_filter.png')}
       />
       <FlatList
         data={products}
-        renderItem={({item, index}) => (
+        renderItem={({ item, index }) => (
           <ProductItem product={item} index={index} />
         )}
         keyExtractor={(item, index) => index.toString()}
