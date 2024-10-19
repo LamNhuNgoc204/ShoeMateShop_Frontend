@@ -30,8 +30,8 @@ const renderToolbar = ({onBack}) => {
 
 const MessageItem = ({ message, user }) => {
   return (
-    <View style={[messageScreenStyle.messageItem, messageScreenStyle.marginTop10, !(message.senderId == user._id) && messageScreenStyle.customerMessageItem]}>
-      <Text style={[messageScreenStyle.messageContent, !(message.senderId == user._id) && messageScreenStyle.customerMessageContent]}>{message.text}</Text>
+    <View style={[messageScreenStyle.messageItem, messageScreenStyle.marginTop10, (message.senderId._id == user._id) && messageScreenStyle.customerMessageItem]}>
+      <Text style={[messageScreenStyle.messageContent, (message.senderId._id == user._id) && messageScreenStyle.customerMessageContent]}>{message.text}</Text>
     </View>
   )
 }

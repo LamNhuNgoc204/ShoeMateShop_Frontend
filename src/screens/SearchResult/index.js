@@ -6,14 +6,14 @@ import {FlatList} from 'react-native-gesture-handler';
 import ProductItem from '../../items/ProductItem';
 import FilterPanel from '../../components/FilterPanel';
 
-const products = new Array(10).fill(1);
 
-const SearchResult = () => {
+const SearchResult = ({navigation}) => {
   const [filterOpen, setFilterOpen] = useState(false);
   const [listSelectedBrand, setListSelectedBrand] = useState([]);
   const [listSelectedStar, setListSelectedStar] = useState([]);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(0);
+  const [products, setProducts] = useState([]);
 
   const onOpenFilter = () => {
     setFilterOpen(true);
@@ -64,10 +64,15 @@ const SearchResult = () => {
       setMaxPrice(maxPrice);
     }
   };
+  
+  const onBack = () => {
+    navigation.goBack();
+  }
 
   return (
     <View style={searchResultStyle.container}>
       <ToolBar
+        onIconLeftPress={onBack}
         onIconRightPress={onOpenFilter}
         iconLeft={require('../../assets/icons/ic_back.png')}
         iconRight={require('../../assets/icons/ic_filter.png')}
