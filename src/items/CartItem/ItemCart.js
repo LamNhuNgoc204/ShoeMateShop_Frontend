@@ -50,28 +50,17 @@ const ItemCart = ({
   }, [checkedProducts]);
 
   const tangSL = async () => {
-    setProductQuantity(prev => {
-      const newQuantity = prev + 1;
-      // Cập nhật tổng giá khi quantity thay đổi
-      const updatedCards = checkedProducts.map(cart =>
-        cart._id === item._id ? {...cart, quantity: newQuantity} : cart,
-      );
-      setCheckedProducts(updatedCards);
-      return newQuantity;
-    });
+    const newQuantity = productQuantity + 1;
+    setProductQuantity(newQuantity);
+    await updateQuantity(newQuantity);
   };
+
 
   const giamSL = async () => {
     if (productQuantity > 1) {
-      setProductQuantity(prev => {
-        const newQuantity = prev - 1;
-        // Cập nhật danh sách sản phẩm đã chọn
-        const updatedCards = checkedProducts.map(cart =>
-          cart._id === item._id ? {...cart, quantity: newQuantity} : cart,
-        );
-        setCheckedProducts(updatedCards);
-        return newQuantity;
-      });
+      const newQuantity = productQuantity - 1;
+      setProductQuantity(newQuantity);
+      await updateQuantity(newQuantity);
     } else {
       SweetAlert.showAlertWithOptions(
         {
@@ -82,63 +71,60 @@ const ItemCart = ({
           style: 'error',
           cancellable: true,
         },
-        () => {
+        async () => {
           setProductQuantity(0);
-          setCheckedProducts(
-            checkedProducts.filter(cart => cart._id !== item._id),
-          );
-          setCards(cards.filter(cart => cart._id !== item._id));
+          await updateQuantity(0); // Remove item
+          setCheckedProducts(prev => prev.filter(cart => cart._id !== item._id));
+          setCards(prev => prev.filter(cart => cart._id !== item._id));
         },
       );
     }
   };
 
-  useEffect(() => {
-    const updateQuantity = async () => {
-      try {
-        const productData = {
-          product_id: item.product_id._id,
-          size_id: item.size_id._id,
-          quantity: productQuantity,
-        };
-        const response = await updateCartItem(productData);
-        if (response.status) {
-          console.log('Cập nhật so luong cart thành công');
-        } else {
-          console.log('Cập nhật so luong cart thất bại');
-        }
-      } catch (error) {
-        SweetAlert.showAlertWithOptions({
-          title: 'Oops...',
-          subTitle: `Oops. Đang xảy ra lỗi ${error} rồi. Bạn đợi một chút nhé <3`,
-          confirmButtonTitle: 'OK',
-          confirmButtonColor: '#000',
-          style: 'error',
-          cancellable: true,
-        });
+  const updateQuantity = async (quantity) => {
+    try {
+      const productData = {
+        product_id: item.product_id,
+        size_name: item.sizeName,
+        quantity: quantity,
+      };
+      console.log("Data: ", productData);
+      const response = await updateCartItem(productData);
+      if (response.status) {
+        console.log('Cập nhật số lượng giỏ hàng thành công');
+      } else {
+        console.log('Cập nhật số lượng giỏ hàng thất bại');
       }
-    };
-
-    updateQuantity();
-    return () => {};
-  }, [productQuantity]);
+    } catch (error) {
+      console.error('Error updating quantity: ', error);
+      SweetAlert.showAlertWithOptions({
+        title: 'Oops...',
+        subTitle: `Oops. Đang xảy ra lỗi ${error.message || error} rồi. Bạn đợi một chút nhé <3`,
+        confirmButtonTitle: 'OK',
+        confirmButtonColor: '#000',
+        style: 'error',
+        cancellable: true,
+      });
+    }
+  };
 
   const imageAssets =
-    item.product_id.assets &&
-    item.product_id.assets.filter(asset => {
-      return asset.match(/\.(jpeg|jpg|png|gif)$/);
-    });
+  item &&
+  item.product_id &&
+  item.assets.filter(asset => {
+    return asset.match(/\.(jpeg|jpg|png|gif)$/);
+  });
 
-  const imageUrl =
-    imageAssets && imageAssets.length > 0 ? imageAssets[0] : null;
+const imageUrl =
+  imageAssets && imageAssets.length > 0 ? imageAssets[0] : 'https://i.pinimg.com/236x/6a/f1/ec/6af1ec6645410a41d5339508a83b86f9.jpg'; // Giá trị mặc định nếu không có ảnh
 
   const swipeableRef = useRef(null);
 
   const deleteItemFromCard = async () => {
     try {
       const body = {
-        product_id: item.product_id._id,
-        size_id: item.size_id._id,
+        product_id: item.product_id,
+        size_name: item.sizeName,
       };
       console.log('body delete cart: ', body);
 
@@ -230,12 +216,12 @@ const ItemCart = ({
           />
           <View style={[appst.columnSb, itCart.viewQuatity]}>
             <Text numberOfLines={1} style={itCart.name}>
-              {item && item.product_id.name}
+              {item && item.name}
             </Text>
             <Text style={itCart.price}>
-              ${item.product_id.price.toLocaleString('vi-VN')}
+              ${item.price.toLocaleString('vi-VN')}
             </Text>
-            <Text style={itCart.price}>Size: {item.size_id.name}</Text>
+            <Text style={itCart.price}>Size: {item.sizeName}</Text>
             <View style={[appst.rowCenter, itCart.view]}>
               <TouchableOpacity onPress={tangSL}>
                 <Image source={require('../../assets/icons/increase.png')} />

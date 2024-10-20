@@ -1,44 +1,48 @@
-import React, {useEffect, useState} from 'react';
-import {useTranslation} from 'react-i18next';
-import {View, Text, FlatList, TouchableOpacity, Image} from 'react-native';
-import {cartst} from './style';
-import {spacing} from '../../constants';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { View, Text, FlatList, TouchableOpacity, Image, RefreshControl } from 'react-native';
+import { cartst } from './style';
+import { spacing } from '../../constants';
 import Header from '../../components/Header';
 import appst from '../../constants/AppStyle';
-import {CustomedButton} from '../../components';
+import { CustomedButton } from '../../components';
 import ItemCart from '../../items/CartItem/ItemCart';
-import {getUserCard} from '../../api/CartApi';
-import {useDispatch} from 'react-redux';
-import {setOrderData, setToltalPrice} from '../../redux/reducer/cartReducer';
+import { getUserCard } from '../../api/CartApi';
+import { useDispatch } from 'react-redux';
+import { setOrderData, setToltalPrice } from '../../redux/reducer/cartReducer';
 
-const CartScreen = ({navigation}) => {
-  const {t} = useTranslation();
+const CartScreen = ({ navigation }) => {
+  const { t } = useTranslation();
   const [currentlyOpenSwipeable, setCurrentlyOpenSwipeable] = useState(null);
   const [cards, setCards] = useState([]);
   const dispatch = useDispatch();
   const [totalPrice, setTotalPrice] = useState(0);
   const [checkedProducts, setCheckedProducts] = useState([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    const fetchCard = async () => {
-      try {
-        const response = await getUserCard();
-        if (response.status) {
-          setCards(response.data);
-          setCheckedProducts([]);
-          setIsAllChecked(false);
-        }
-      } catch (error) {
-        console.log('error', error);
-      }
-    };
-
     fetchCard();
   }, []);
-  // console.log('cards', cards);
 
-  // Xử lý chọn hoặc bỏ chọn tất cả
+  const fetchCard = async () => {
+    setRefreshing(true);
+    try {
+      const response = await getUserCard();
+      if (response.status) {
+        console.log("Loading API cart---------------");
+        setCards(response.cart);
+        setCheckedProducts([]);
+        setIsAllChecked(false);
+      }
+    } catch (error) {
+      console.log("Loading API cart fail---------------");
+      console.log('error', error);
+    } finally {
+      setRefreshing(false); // End refreshing
+    }
+  };
+
   const handleSelectAll = () => {
     if (isAllChecked) {
       setCheckedProducts([]);
@@ -46,7 +50,7 @@ const CartScreen = ({navigation}) => {
     } else {
       setCheckedProducts(cards);
       const total = cards.reduce(
-        (sum, item) => sum + item.product_id.price * item.quantity,
+        (sum, item) => sum + item.price * item.quantity,
         0,
       );
       setTotalPrice(total);
@@ -63,23 +67,19 @@ const CartScreen = ({navigation}) => {
     });
   };
 
-  // Cập nhật isAllChecked khi checkedProducts thay đổi
   useEffect(() => {
     const allChecked =
       checkedProducts.length === cards.length && cards.length > 0;
     setIsAllChecked(allChecked);
   }, [checkedProducts, cards]);
 
-  // Tính tổng sản phẩm được chọn
   useEffect(() => {
     const total = checkedProducts.reduce(
-      (sum, item) => sum + item.product_id.price * item.quantity,
+      (sum, item) => sum + item.price * item.quantity,
       0,
     );
     setTotalPrice(total);
   }, [checkedProducts]);
-
-  // console.log('checkedProducts in cart =>  ', checkedProducts);
 
   const handleOrder = () => {
     dispatch(setOrderData(checkedProducts));
@@ -105,7 +105,7 @@ const CartScreen = ({navigation}) => {
         <FlatList
           style={cartst.flat}
           data={cards}
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <ItemCart
               item={item}
               setCards={setCards}
@@ -120,8 +120,14 @@ const CartScreen = ({navigation}) => {
             />
           )}
           extraData={item => item.id}
-          ItemSeparatorComponent={<View style={{marginBottom: spacing.sm}} />}
+          ItemSeparatorComponent={<View style={{ marginBottom: spacing.sm }} />}
           showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing} // Pass the refreshing state
+              onRefresh={fetchCard} // Refresh function
+            />
+          }
         />
       </View>
       <View style={cartst.viewFooter}>
@@ -149,7 +155,7 @@ const CartScreen = ({navigation}) => {
                 title={t('buttons.btn_checkout')}
                 style={cartst.btCheckout}
                 titleStyle={cartst.textTouch}
-                onPress={() => handleOrder()}
+                onPress={handleOrder}
               />
             </View>
           </View>

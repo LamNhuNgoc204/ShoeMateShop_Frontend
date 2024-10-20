@@ -11,10 +11,10 @@ const CheckOutItem = ({item}) => {
       <Image
         style={c_outIt.image}
         source={
-          item.product_id.assets &&
-          item.product_id.assets &&
-          item.product_id.assets.length > 0
-            ? {uri: item.product_id.assets[0]}
+          item.assets &&
+          item.assets &&
+          item.assets.length > 0
+            ? {uri: item.assets[0]}
             : require('../../assets/images/placeholder_image.jpg')
         }
       />
@@ -32,7 +32,7 @@ const CheckOutItem = ({item}) => {
           Price:
           <Text style={c_outIt.price1}>
             {' '}
-            ${item && item.product_id.price.toLocaleString('vi-VN')}
+            ${item && item.price.toLocaleString('vi-VN')}
           </Text>
         </Text>
       </View>
