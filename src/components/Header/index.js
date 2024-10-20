@@ -28,7 +28,9 @@ const Header = ({
       ) : (
         <View style={hdst.view} />
       )}
-      <Text style={hdst.name}>{name}</Text>
+      <Text numberOfLines={1} style={hdst.name}>
+        {name}
+      </Text>
       {iconRight ? (
         <TouchableOpacity style={hdst.press} onPress={rightOnPress}>
           <Image style={appst.icon24} source={iconRight} />

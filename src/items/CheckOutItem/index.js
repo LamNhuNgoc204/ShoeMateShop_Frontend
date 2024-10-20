@@ -3,11 +3,18 @@ import {View, Text, Image} from 'react-native';
 import {c_outIt} from './style';
 
 const CheckOutItem = ({item}) => {
+  console.log('item', item);
+  console.log('assets', item.product_id.assets[0]);
+
   return (
     <View style={[c_outIt.container]}>
       <Image
         style={c_outIt.image}
-        source={require('../../assets/images/onboard1.png')}
+        source={
+          item.product_id.assets && item.product_id.assets
+            ? {uri: item.product_id.assets[0]}
+            : require('../../assets/images/placeholder_image.jpg')
+        }
       />
       <View style={c_outIt.viewText}>
         <Text style={c_outIt.name} numberOfLines={1}>

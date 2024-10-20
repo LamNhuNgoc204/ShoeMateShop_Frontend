@@ -76,7 +76,7 @@ const CartScreen = ({navigation}) => {
     setTotalPrice(total);
   }, [checkedProducts]);
 
-  console.log('checkedProducts', checkedProducts);
+  console.log('checkedProducts in cart =>  ', checkedProducts);
 
   return (
     <View style={[appst.container, cartst.container]}>

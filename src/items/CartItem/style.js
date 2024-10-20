@@ -63,4 +63,7 @@ export const itCart = StyleSheet.create({
     borderRadius: 8,
     marginRight: spacing.md,
   },
+  viewQuatity: {
+    flex: 1,
+  },
 });

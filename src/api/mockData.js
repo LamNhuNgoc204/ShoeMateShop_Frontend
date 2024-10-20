@@ -21,7 +21,7 @@ export const PROFILE = [
     id: '3',
     iconSource: require('../assets/icons/ic_orderhistory.png'),
     text: 'Order History',
-    navigateTo: 'OrderHistory',
+    navigateTo: 'OrderScreen',
   },
   {
     id: '4',
