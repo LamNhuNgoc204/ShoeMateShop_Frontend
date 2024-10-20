@@ -50,9 +50,10 @@ const HomeScreen = ({navigation}) => {
     }
   };
 
-  const onItemPress = categoryId => {
+  const onItemPress = category => {
     navigation.navigate('CategoryDetail', {
-      categoryId,
+      categoryId: category._id,
+      name:  category.name
     });
   };
 
@@ -146,7 +147,7 @@ const HomeScreen = ({navigation}) => {
                   return (
                     <Category
                       onItemPress={() => {
-                        onItemPress(item._id);
+                        onItemPress(item);
                       }}
                       category={item}
                       style={[
@@ -171,7 +172,7 @@ const HomeScreen = ({navigation}) => {
                   return (
                     <Category
                       onItemPress={() => {
-                        onItemPress(item._id);
+                        onItemPress(item);
                       }}
                       category={item}
                       style={[
