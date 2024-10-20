@@ -1,17 +1,25 @@
-import {useTranslation} from 'react-i18next';
 import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {View, Text, FlatList} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {fvst} from './style';
 import Header from '../../components/Header';
 import appst from '../../constants/AppStyle';
 import ProductItem from '../../items/ProductItem';
-import {fetchWishlist, removeFromWishlist} from '../../api/ProductApi';
+import {removeFromWishlist} from '../../api/ProductApi';
+import {useDispatch, useSelector} from 'react-redux';
+import {setWishlist} from '../../redux/reducer/productReducer';
 
 const FavoriteScreen = ({navigation}) => {
   const {t} = useTranslation();
-  const [wishList, setWishList] = useState([]);
   const [token, setToken] = useState(null);
+  const useAppSelector = useSelector;
+  const wishlistRedux = useAppSelector(state => state.products.wishlist);
+  const useAppDispatch = () => useDispatch();
+  const dispatch = useAppDispatch();
+  const [wishList, setWishList] = useState(wishlistRedux);
+
+  // console.log('wishList default', wishList);
 
   useEffect(() => {
     const fetchToken = async () => {
@@ -23,34 +31,17 @@ const FavoriteScreen = ({navigation}) => {
   }, []);
   // console.log('Token:', token);
 
-  useEffect(() => {
-    const fetchWishlistData = async () => {
-      try {
-        const response = await fetchWishlist();
-        console.log('response wishlist: ', response);
-
-        if (response.status) {
-          setWishList(response.data);
-        }
-      } catch (error) {
-        console.log('fetchWishlistData error: ', error);
-      }
-    };
-    fetchWishlistData();
-  }, []);
-  // console.log('wishList', wishList);
-  console.log('wishList', wishList[0]);
-
-  const handleHeartPress = async (productId, _) => {
+  const handleHeartPress = async (productId, favorite) => {
     console.log('productId', productId);
-
     try {
       const response = await removeFromWishlist(productId);
 
-      if (response.status) {
-        setWishList(prevList =>
-          prevList.filter(item => item._id !== productId),
-        );
+      if (response) {
+        dispatch(removeFromWishlist(productId));
+        setWishList(prevList => {
+          const updatedList = prevList.filter(item => item._id !== productId);
+          return updatedList;
+        });
       }
     } catch (error) {
       console.log('Error removing item from wishlist:', error);
@@ -65,7 +56,7 @@ const FavoriteScreen = ({navigation}) => {
         name={t('home.favorite')}
         iconRight={require('../../assets/icons/favorite.png')}
       />
-      <View style={[appst.center]}>
+      <View style={{padding: 20}}>
         {wishList.length !== 0 ? (
           <FlatList
             data={wishList}

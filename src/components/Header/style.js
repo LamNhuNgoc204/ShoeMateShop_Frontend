@@ -1,13 +1,11 @@
 import {StyleSheet} from 'react-native';
-import {sizes, spacing} from '../../constants';
+import {sizes} from '../../constants';
 import {fonts} from '../../constants/fonts';
 import {colors} from '../../constants/colors';
 
 export const hdst = StyleSheet.create({
   container: {
     height: 40,
-    // marginHorizontal: spacing.md,
-    // marginVertical: spacing.sm,
     backgroundColor: colors.background_primary,
   },
   press: {
@@ -23,6 +21,8 @@ export const hdst = StyleSheet.create({
     fontSize: sizes.size16,
     fontFamily: fonts.rlw_semibold,
     color: colors.text_black2B,
+    flex: 1,
+    textAlign: 'center',
   },
   view: {
     width: 24,

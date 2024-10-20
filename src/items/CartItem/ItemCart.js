@@ -124,8 +124,8 @@ const ItemCart = ({
   }, [productQuantity]);
 
   const imageAssets =
-    item.assets &&
-    item.assets.filter(asset => {
+    item.product_id.assets &&
+    item.product_id.assets.filter(asset => {
       return asset.match(/\.(jpeg|jpg|png|gif)$/);
     });
 
@@ -186,6 +186,8 @@ const ItemCart = ({
     );
   };
 
+  console.log();
+
   return (
     <Swipeable
       ref={swipeableRef}
@@ -227,7 +229,9 @@ const ItemCart = ({
             }}
           />
           <View style={[appst.columnSb, itCart.viewQuatity]}>
-            <Text style={itCart.name}>{item && item.product_id.name}</Text>
+            <Text numberOfLines={1} style={itCart.name}>
+              {item && item.product_id.name}
+            </Text>
             <Text style={itCart.price}>
               ${item.product_id.price.toLocaleString('vi-VN')}
             </Text>

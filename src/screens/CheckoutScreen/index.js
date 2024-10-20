@@ -25,7 +25,7 @@ const CheckOutScreen = ({navigation, route}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [addressDefault, setAddressDefault] = useState({});
 
-  // console.log('checkedProducts', checkedProducts.length, '-', totalPrice);
+  console.log('checkedProducts in checkout => ', checkedProducts, '-', totalPrice);
   // console.log('addressDefault', addressDefault);
 
   useEffect(() => {

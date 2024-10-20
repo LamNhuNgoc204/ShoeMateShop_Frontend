@@ -95,7 +95,7 @@ const ProductDetail = props => {
       />
       <ScrollView style={{flex: 1, marginBottom: spacing.md}}>
         <View>
-          {product && product.assets > 0 ? (
+          {product && product.assets && product.assets.length > 0 ? (
             <FlatList
               horizontal
               pagingEnabled
@@ -113,7 +113,7 @@ const ProductDetail = props => {
               source={require('../../assets/images/placeholder_image.jpg')}
             />
           )}
-          {product && product.assets > 0 && (
+          {product && product.assets && product.assets.length > 0 && (
             <FlatList
               style={pddt.flatItem}
               horizontal

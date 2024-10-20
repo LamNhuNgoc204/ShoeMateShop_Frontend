@@ -7,14 +7,19 @@ const initialState = {
   error: null,
   products: [],
   categories: [],
+  wishlist: [],
 };
 
 const ProductSlice = createSlice({
   name: 'product',
   initialState,
   reducers: {
-    clearProducts: state => {
-      state.products = [];
+    removeFromWishlist: (state, action) => {
+      const productId = action.payload;
+      state.wishlist = state.wishlist.filter(item => item._id !== productId);
+    },
+    setWishlist: (state, action) => {
+      state.wishlist = action.payload;
     },
   },
   extraReducers: builder => {
@@ -55,5 +60,5 @@ const ProductSlice = createSlice({
   },
 });
 
-export const {clearProducts} = ProductSlice.actions;
+export const {setWishlist, removeFromWishlist} = ProductSlice.actions;
 export default ProductSlice.reducer;
