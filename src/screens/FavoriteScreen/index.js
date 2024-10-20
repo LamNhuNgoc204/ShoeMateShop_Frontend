@@ -1,47 +1,47 @@
-import React, {useEffect, useState} from 'react';
-import {useTranslation} from 'react-i18next';
-import {View, Text, FlatList} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { View, Text, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {fvst} from './style';
+import { fvst } from './style';
 import Header from '../../components/Header';
 import appst from '../../constants/AppStyle';
 import ProductItem from '../../items/ProductItem';
-import {removeFromWishlist} from '../../api/ProductApi';
-import {useDispatch, useSelector} from 'react-redux';
-import {setWishlist} from '../../redux/reducer/productReducer';
+import { addProductInWishlist, removeFromWishlist } from '../../api/ProductApi';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeFromWishlistLocal, setWishlist } from '../../redux/reducer/productReducer';
 
-const FavoriteScreen = ({navigation}) => {
-  const {t} = useTranslation();
+const FavoriteScreen = ({ navigation }) => {
+  const { t } = useTranslation();
   const [token, setToken] = useState(null);
-  const useAppSelector = useSelector;
-  const wishlistRedux = useAppSelector(state => state.products.wishlist);
+  const productsState = useSelector(state => state.products);
   const useAppDispatch = () => useDispatch();
   const dispatch = useAppDispatch();
-  const [wishList, setWishList] = useState(wishlistRedux);
+  const [wishList, setWishList] = useState([]);
 
-  // console.log('wishList default', wishList);
+  // useEffect(() => {
+  // const fetchToken = async () => {
+  //   const storedToken = await AsyncStorage.getItem('token');
+  //   setToken(storedToken);
+  // };
+
+  // fetchToken();
+  // }, []);
 
   useEffect(() => {
-    const fetchToken = async () => {
-      const storedToken = await AsyncStorage.getItem('token');
-      setToken(storedToken);
-    };
+    setWishList(productsState.wishlist)
+  }, [productsState.wishlist])
 
-    fetchToken();
-  }, []);
-  // console.log('Token:', token);
-
-  const handleHeartPress = async (productId, favorite) => {
-    console.log('productId', productId);
+  const handleHeartPress = async (product, favorite) => {
     try {
-      const response = await removeFromWishlist(productId);
+      var response;
+      if(favorite) {
+        response = await removeFromWishlist(product._id)
+      } else {
+        response = await addProductInWishlist(product._id)
+      }
 
-      if (response) {
-        dispatch(removeFromWishlist(productId));
-        setWishList(prevList => {
-          const updatedList = prevList.filter(item => item._id !== productId);
-          return updatedList;
-        });
+      if (response.status) {
+        dispatch(setWishList(product))
       }
     } catch (error) {
       console.log('Error removing item from wishlist:', error);
@@ -56,12 +56,13 @@ const FavoriteScreen = ({navigation}) => {
         name={t('home.favorite')}
         iconRight={require('../../assets/icons/favorite.png')}
       />
-      <View style={{padding: 20}}>
+      <View style={{ padding: 20 }}>
         {wishList.length !== 0 ? (
           <FlatList
             data={wishList}
-            renderItem={({item, index}) => (
+            renderItem={({ item, index }) => (
               <ProductItem
+                wishlist={wishList}
                 product={item}
                 index={index}
                 handleHeartPress={handleHeartPress}
