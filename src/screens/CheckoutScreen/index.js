@@ -17,15 +17,20 @@ import Header from '../../components/Header';
 import {CustomedButton} from '../../components';
 import {useTranslation} from 'react-i18next';
 import AxiosInstance from '../../helpers/AxiosInstance';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {setPriceToPay} from '../../redux/reducer/cartReducer';
 
 const CheckOutScreen = ({navigation}) => {
-  // const {checkedProducts, totalPrice} = route.params;
-  // const {shippingName, shippingId, shippingCost} = route.params;
   const state = useSelector(state => state.cart);
-  console.log('ỏder item --', state.productOrder, '-', state.ship);
-
-  // console.log('ship', shippingName, shippingId, shippingCost);
+  const dispatch = useDispatch();
+  console.log(
+    'ỏder item:',
+    state.productOrder,
+    '-',
+    state.ship,
+    '_',
+    state.payment,
+  );
 
   const {t} = useTranslation();
   const [isswitch, setIsswitch] = useState(false);
@@ -34,14 +39,6 @@ const CheckOutScreen = ({navigation}) => {
 
   const ship = state.ship && state.ship.cost && state.ship.cost;
   const tongchiphi = state.totalPrice + ship;
-
-  // console.log(
-  //   'checkedProducts in checkout => ',
-  //   checkedProducts,
-  //   '-',
-  //   totalPrice,
-  // );
-  // console.log('addressDefault', addressDefault);
 
   useEffect(() => {
     const getAddresDefault = async () => {
@@ -59,9 +56,13 @@ const CheckOutScreen = ({navigation}) => {
     getAddresDefault();
   }, []);
 
-  const openModal = () => {
-    console.log('Open modal...');
-    setModalVisible(true);
+  const handleOrder = () => {
+    // setModalVisible(true);
+    //check xem chon phuong thuc nao roi chuyen man hinh tuong ung
+    if (state.payment && state.payment.payment_method === 'Zalo Pay') {
+      dispatch(setPriceToPay(tongchiphi));
+      navigation.navigate('ZaloPayScreen');
+    }
   };
 
   const closeModal = () => {
@@ -106,8 +107,7 @@ const CheckOutScreen = ({navigation}) => {
                 </Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('ChooseAddress')}>
+            <TouchableOpacity onPress={() => goToScreen('ChooseAddress')}>
               <Image
                 style={appst.icon24}
                 source={require('../../assets/icons/arrow_right.png')}
@@ -156,21 +156,27 @@ const CheckOutScreen = ({navigation}) => {
           </View>
 
           <View style={[c_outst.body3, c_outst.borderBottom]}>
-            <View style={[appst.rowCenter]}>
+            <TouchableOpacity
+              onPress={() => goToScreen('ChoosePaymentScreen')}
+              style={[appst.rowCenter]}>
               <View style={appst.rowCenter}>
                 <Image
                   style={appst.icon24}
                   source={require('../../assets/icons/payoption.png')}
                 />
-                <Text style={c_outst.text6}>{t('checkout.pay_option')}</Text>
+                <Text style={c_outst.text6}>
+                  {state.payment && state.payment.payment_method
+                    ? state.payment.payment_method
+                    : t('checkout.pay_option')}
+                </Text>
               </View>
               <Image
                 style={appst.icon24}
                 source={require('../../assets/icons/arrow_right.png')}
               />
-            </View>
+            </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => navigation.navigate('ShipScreen')}
+              onPress={() => goToScreen('ShipScreen')}
               style={[appst.rowCenter, {marginTop: 5}]}>
               <View style={appst.rowCenter}>
                 <Image
@@ -248,7 +254,7 @@ const CheckOutScreen = ({navigation}) => {
           <CustomedButton
             title={t('buttons.btn_place_order')}
             titleStyle={c_outst.textPress}
-            onPress={() => openModal()}
+            onPress={() => handleOrder()}
             style={c_outst.press}
           />
         </View>

@@ -34,6 +34,9 @@ import BottomNav from './BottomNav';
 import VoucherScreen from '../screens/VoucherScreen';
 import Notifycation from '../screens/Notifycation';
 import ShipScreen from '../screens/Shipping';
+import ChoosePaymentScreen from '../screens/Payment/ChoosePayment';
+import ZaloPayScreen from '../screens/Payment/ZaloPay/Payment';
+import ZaloPayWebView from '../screens/Payment/ZaloPay/WebView';
 
 const Stack = createNativeStackNavigator();
 
@@ -85,6 +88,12 @@ const StackNav = () => {
       <Stack.Screen name="Voucher" component={VoucherScreen} />
       <Stack.Screen name="BottomNav" component={BottomNav} />
       <Stack.Screen name="ShipScreen" component={ShipScreen} />
+      <Stack.Screen name="ZaloPayScreen" component={ZaloPayScreen} />
+      <Stack.Screen name="ZaloPayWebView" component={ZaloPayWebView} />
+      <Stack.Screen
+        name="ChoosePaymentScreen"
+        component={ChoosePaymentScreen}
+      />
     </Stack.Navigator>
   );
 };

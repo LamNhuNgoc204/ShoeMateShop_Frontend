@@ -3,6 +3,18 @@ import { useTranslation } from 'react-i18next';
 import { View, Text, FlatList, TouchableOpacity, Image, RefreshControl } from 'react-native';
 import { cartst } from './style';
 import { spacing } from '../../constants';
+import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Image,
+  ToastAndroid,
+} from 'react-native';
+import {cartst} from './style';
+import {spacing} from '../../constants';
 import Header from '../../components/Header';
 import appst from '../../constants/AppStyle';
 import { CustomedButton } from '../../components';
@@ -10,6 +22,10 @@ import ItemCart from '../../items/CartItem/ItemCart';
 import { getUserCard } from '../../api/CartApi';
 import { useDispatch } from 'react-redux';
 import { setOrderData, setToltalPrice } from '../../redux/reducer/cartReducer';
+import {getUserCard} from '../../api/CartApi';
+import {useDispatch} from 'react-redux';
+import {setOrderData, setToltalPrice} from '../../redux/reducer/cartReducer';
+import Loading from '../../components/Loading';
 
 const CartScreen = ({ navigation }) => {
   const { t } = useTranslation();
@@ -22,6 +38,24 @@ const CartScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchCard = async () => {
+      try {
+        setLoading(false);
+        const response = await getUserCard();
+        if (response.status) {
+          setCards(response.data);
+          setCheckedProducts([]);
+          setIsAllChecked(false);
+          setLoading(true);
+        }
+      } catch (error) {
+        console.log('error', error);
+      }
+    };
+
     fetchCard();
   }, []);
 
@@ -82,9 +116,13 @@ const CartScreen = ({ navigation }) => {
   }, [checkedProducts]);
 
   const handleOrder = () => {
-    dispatch(setOrderData(checkedProducts));
-    dispatch(setToltalPrice(totalPrice));
-    navigation.navigate('CheckOutScreen');
+    if (checkedProducts.length == 0) {
+      ToastAndroid.show('Vui long chon sp', ToastAndroid.SHORT);
+    } else {
+      dispatch(setOrderData(checkedProducts));
+      dispatch(setToltalPrice(totalPrice));
+      navigation.navigate('CheckOutScreen');
+    }
   };
 
   return (
@@ -129,6 +167,31 @@ const CartScreen = ({ navigation }) => {
             />
           }
         />
+        {!loading ? (
+          <Loading />
+        ) : (
+          <FlatList
+            style={cartst.flat}
+            data={cards}
+            renderItem={({item}) => (
+              <ItemCart
+                item={item}
+                setCards={setCards}
+                cards={cards}
+                setTotalPrice={setTotalPrice}
+                checkedProducts={checkedProducts}
+                setCheckedProducts={setCheckedProducts}
+                currentlyOpenSwipeable={currentlyOpenSwipeable}
+                setCurrentlyOpenSwipeable={setCurrentlyOpenSwipeable}
+                isChecked={checkedProducts.some(cart => cart._id === item._id)}
+                onCheckedChange={handleCheckedChange}
+              />
+            )}
+            extraData={item => item.id}
+            ItemSeparatorComponent={<View style={{marginBottom: spacing.sm}} />}
+            showsVerticalScrollIndicator={false}
+          />
+        )}
       </View>
       <View style={cartst.viewFooter}>
         <View style={[appst.rowCenter]}>

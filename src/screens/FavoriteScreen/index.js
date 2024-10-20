@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { View, Text, FlatList } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { fvst } from './style';
+import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {View, Text, FlatList} from 'react-native';
+import {fvst} from './style';
 import Header from '../../components/Header';
 import appst from '../../constants/AppStyle';
 import ProductItem from '../../items/ProductItem';
-import { addProductInWishlist, removeFromWishlist } from '../../api/ProductApi';
-import { useDispatch, useSelector } from 'react-redux';
-import { removeFromWishlistLocal, setWishlist } from '../../redux/reducer/productReducer';
+import {addProductInWishlist, removeFromWishlist} from '../../api/ProductApi';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  removeFromWishlistLocal,
+  setWishlist,
+} from '../../redux/reducer/productReducer';
 
-const FavoriteScreen = ({ navigation }) => {
-  const { t } = useTranslation();
+const FavoriteScreen = ({navigation}) => {
+  const {t} = useTranslation();
   const [token, setToken] = useState(null);
   const productsState = useSelector(state => state.products);
   const useAppDispatch = () => useDispatch();
@@ -28,20 +30,20 @@ const FavoriteScreen = ({ navigation }) => {
   // }, []);
 
   useEffect(() => {
-    setWishList(productsState.wishlist)
-  }, [productsState.wishlist])
+    setWishList(productsState.wishlist);
+  }, [productsState.wishlist]);
 
   const handleHeartPress = async (product, favorite) => {
     try {
       var response;
-      if(favorite) {
-        response = await removeFromWishlist(product._id)
+      if (favorite) {
+        response = await removeFromWishlist(product._id);
       } else {
-        response = await addProductInWishlist(product._id)
+        response = await addProductInWishlist(product._id);
       }
 
       if (response.status) {
-        dispatch(setWishList(product))
+        dispatch(setWishList(product));
       }
     } catch (error) {
       console.log('Error removing item from wishlist:', error);
@@ -56,11 +58,11 @@ const FavoriteScreen = ({ navigation }) => {
         name={t('home.favorite')}
         iconRight={require('../../assets/icons/favorite.png')}
       />
-      <View style={{ padding: 20 }}>
+      <View style={{padding: 20}}>
         {wishList.length !== 0 ? (
           <FlatList
             data={wishList}
-            renderItem={({ item, index }) => (
+            renderItem={({item, index}) => (
               <ProductItem
                 wishlist={wishList}
                 product={item}
