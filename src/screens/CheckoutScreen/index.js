@@ -23,9 +23,8 @@ import {setPriceToPay} from '../../redux/reducer/cartReducer';
 const CheckOutScreen = ({navigation}) => {
   const state = useSelector(state => state.cart);
   const dispatch = useDispatch();
-
   console.log(
-    'ỏder item --',
+    'ỏder item:',
     state.productOrder,
     '-',
     state.ship,
@@ -58,8 +57,7 @@ const CheckOutScreen = ({navigation}) => {
   }, []);
 
   const handleOrder = () => {
-    console.log('Open modal...');
-    setModalVisible(true);
+    // setModalVisible(true);
     //check xem chon phuong thuc nao roi chuyen man hinh tuong ung
     if (state.payment && state.payment.payment_method === 'Zalo Pay') {
       dispatch(setPriceToPay(tongchiphi));
