@@ -1,11 +1,10 @@
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {View, Text, TouchableOpacity, Image, ToastAndroid} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {itCart} from './style';
 import appst from '../../constants/AppStyle';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import SweetAlert from 'react-native-sweet-alert';
 import {deleteOneItemCard, updateCartItem} from '../../api/CartApi';
-import Toast from 'react-native-toast-message';
 
 const ItemCart = ({
   item,
@@ -148,25 +147,9 @@ const ItemCart = ({
         setCheckedProducts(prevChecked =>
           prevChecked.filter(cart => cart._id !== item._id),
         );
-        Toast.show({
-          text1: 'Thông báo thành công',
-          text2: 'Đã xóa sản phẩm',
-          type: 'success',
-          position: 'bottom',
-          visibilityTime: 3000,
-          autoHide: true,
-        });
+        ToastAndroid.show('Da xoa sp', ToastAndroid.SHORT);
       } else {
-        Toast.show({
-          text1: 'Thông báo xảy ra lỗi',
-          text2: 'Lỗi server',
-          type: 'error',
-          position: 'bottom',
-          visibilityTime: 3000, // Thời gian hiển thị (mili giây)
-          autoHide: true, // Tự động ẩn
-          // topOffset: 30, // Khoảng cách từ trên cùng
-          // bottomOffset: 40, // Khoảng cách từ dưới cùng
-        });
+        ToastAndroid.show('Loi server', ToastAndroid.SHORT);
       }
     } catch (error) {
       console.log('error delete item card->', error);
