@@ -103,6 +103,7 @@ const BottomNav = () => {
 
   return (
     <Tab.Navigator
+      initialRouteName="Home"
       screenOptions={{
         tabBarStyle: {
           height: 80,
