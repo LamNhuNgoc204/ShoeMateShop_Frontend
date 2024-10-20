@@ -1,20 +1,18 @@
 import React from 'react';
 import {useTranslation} from 'react-i18next';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-import {Image, Text, View, FlatList, ToastAndroid} from 'react-native';
+import {Image, Text, View, FlatList} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import styles from './style';
 import ChildItem from './ChildItems';
 import ChildItemGadget from './Mygadget';
 import {PROFILE} from '../../api/mockData';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {logout} from '../../redux/reducer/userReducer';
 import appst from '../../constants/AppStyle';
+import {handleNavigate} from '../../utils/functions/navigationHelper';
 
 const ProfileScreen = () => {
   const {t} = useTranslation();
-  const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const {user} = useSelector(state => state.user);
@@ -26,16 +24,6 @@ const ProfileScreen = () => {
       text={item.text}
     />
   );
-
-  const Logout = async () => {
-    try {
-      dispatch(logout());
-      await AsyncStorage.removeItem('token');
-      navigation.replace('LoginScreen');
-    } catch (error) {
-      ToastAndroid.show('Xảy ra lỗi. Thử lại sau', ToastAndroid.SHORT);
-    }
-  };
 
   return (
     <View style={styles.container}>
@@ -55,10 +43,11 @@ const ProfileScreen = () => {
             <Text style={styles.email}>{user && user.email}</Text>
           </View>
         </View>
-        <TouchableOpacity onPress={Logout}>
+        <TouchableOpacity
+          onPress={() => handleNavigate(navigation, 'SettingScreen')}>
           <Image
-            style={styles.logout}
-            source={require('../../assets/icons/logout.png')}
+            style={appst.icon30}
+            source={require('../../assets/icons/setting.png')}
           />
         </TouchableOpacity>
       </View>

@@ -3,7 +3,7 @@ import {colors} from '../../../constants/colors';
 import {sizes, spacing} from '../../../constants';
 import {fonts} from '../../../constants/fonts';
 
-export const c_adst = StyleSheet.create({
+const c_adst = StyleSheet.create({
   container: {
     backgroundColor: colors.background_secondary,
   },
@@ -11,11 +11,6 @@ export const c_adst = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.colorC8C7C7,
   },
-  // viewHeader: {
-  //   height: 50,
-  //   width: '100%',
-  //   backgroundColor: colors.background_blue,
-  // },
   viewBody: {
     flex: 1,
   },
@@ -41,3 +36,5 @@ export const c_adst = StyleSheet.create({
     marginLeft: spacing.xm,
   },
 });
+
+export default c_adst;

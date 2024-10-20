@@ -22,12 +22,17 @@ export const updateCartItem = async body => {
   return response;
 };
 
-export const deleteAllCart = async() => {
-  
-}
+export const deleteAllCart = async () => {
+  const response = await AxiosInstance().delete('/cart/clear-cart');
+  return response;
+};
 
-// // Hàm gọi API để xóa sản phẩm khỏi giỏ hàng
-// export const removeItemFromsApi = async id => {
-//   const response = await AxiosInstance().delete(`/carts/remove/${id}`);
-//   return response.data;
-// };
+export const deleteOneItemCard = async body => {
+  const response = await AxiosInstance().delete(
+    '/cart/remove-product-from-cart',
+    {
+      data: body,
+    },
+  );
+  return response;
+};

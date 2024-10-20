@@ -1,14 +1,37 @@
-import {View, Text, FlatList, Image} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import {View, Text, FlatList, Image, TouchableOpacity} from 'react-native';
 import appst from '../../../constants/AppStyle';
-import {c_adst} from './style';
+import c_adst from './style';
 import ChooseAddressItem from '../../../items/ChooseAddress';
 import Header from '../../../components/Header';
+import {useTranslation} from 'react-i18next';
+import AxiosInstance from '../../../helpers/AxiosInstance';
 
 const ChooseAddress = ({navigation}) => {
+  const {t} = useTranslation();
+  const [addresses, setAddresses] = useState([]);
+
+  useEffect(() => {
+    const fetchAddress = async () => {
+      try {
+        const response = await AxiosInstance().get(
+          '/addresses/get-all-address',
+        );
+        if (response.status) {
+          setAddresses(response.data);
+        }
+      } catch (error) {
+        console.log('error address===', error);
+      }
+    };
+    fetchAddress();
+  }, []);
+
+  console.log('addresses', addresses);
+  // console.log('c_adst', c_adst);
+
   return (
     <View style={[appst.container]}>
-      {/* <View style={c_adst.viewHeader}></View> */}
       <Header
         iconLeft={require('../../../assets/icons/back.png')}
         leftOnPress={() => navigation.goBack()}
@@ -17,21 +40,30 @@ const ChooseAddress = ({navigation}) => {
       <View style={c_adst.viewBody}>
         <Text style={c_adst.text}>{t('titles.address')}:</Text>
         <View style={c_adst.body1}>
-          <FlatList
-            style={c_adst.flat}
-            data={[1, 2, 3]}
-            renderItem={({item}) => <ChooseAddressItem item={item} />}
-            extraData={item => item.id}
-            ItemSeparatorComponent={<View style={c_adst.borderBottom} />}
-          />
+          {addresses && addresses.length > 0 ? (
+            <FlatList
+              style={c_adst.flat}
+              data={addresses}
+              renderItem={({item}) => <ChooseAddressItem item={item} />}
+              extraData={item => item.id}
+              ItemSeparatorComponent={<View style={c_adst.borderBottom} />}
+            />
+          ) : (
+            <Text style={{textAlign: 'center', paddingBottom: 10}}>
+              Ban chua co dia chi nao. Vui long them dia chi moi
+            </Text>
+          )}
+
           <View style={c_adst.borderBottom} />
-          <View style={[c_adst.viewFooter, appst.center]}>
+          <TouchableOpacity
+            style={[c_adst.viewFooter, appst.center]}
+            onPress={() => navigation.navigate('AddNewAddress')}>
             <Image
               style={appst.icon30}
               source={require('../../../assets/icons/add_adr.png')}
             />
             <Text style={c_adst.textAdd}>{t('buttons.btn_new_address')}</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
     </View>

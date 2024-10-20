@@ -10,8 +10,8 @@ export const c_outIt = StyleSheet.create({
     flexDirection: 'row',
   },
   image: {
-    width: 70,
-    height: 70,
+    width: 80,
+    height: 80,
     borderRadius: 5,
   },
   viewText: {
@@ -34,6 +34,6 @@ export const c_outIt = StyleSheet.create({
     fontFamily: fonts.pp_medium,
   },
   price1: {
-    fontFamily: fonts.rlw_bold,
+    fontFamily: fonts.pp_medium,
   },
 });

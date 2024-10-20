@@ -7,7 +7,7 @@ import {
   FlatList,
   Switch,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import appst from '../../constants/AppStyle';
 import {c_outst} from './style';
 import CheckOutItem from '../../items/CheckOutItem';
@@ -16,11 +16,33 @@ import CustomModal from '../../components/Modal';
 import Header from '../../components/Header';
 import {CustomedButton} from '../../components';
 import {useTranslation} from 'react-i18next';
+import AxiosInstance from '../../helpers/AxiosInstance';
 
-const CheckOutScreen = ({navigation}) => {
+const CheckOutScreen = ({navigation, route}) => {
+  const {checkedProducts, totalPrice} = route.params;
   const {t} = useTranslation();
   const [isswitch, setIsswitch] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [addressDefault, setAddressDefault] = useState({});
+
+  // console.log('checkedProducts', checkedProducts.length, '-', totalPrice);
+  // console.log('addressDefault', addressDefault);
+
+  useEffect(() => {
+    const getAddresDefault = async () => {
+      try {
+        const response = await AxiosInstance().get(
+          '/addresses/default-address',
+        );
+        if (response.status) {
+          setAddressDefault(response.data);
+        }
+      } catch (error) {
+        console.log('Error get address default: ', error);
+      }
+    };
+    getAddresDefault();
+  }, []);
 
   const openModal = () => {
     console.log('Open modal...');
@@ -44,6 +66,7 @@ const CheckOutScreen = ({navigation}) => {
       <View style={[appst.container]}>
         {/* <View style={c_outst.viewHeader} /> */}
         <Header
+          leftOnPress={() => navigation.goBack()}
           iconLeft={require('../../assets/icons/back.png')}
           name={t('buttons.btn_checkout')}
         />
@@ -61,16 +84,21 @@ const CheckOutScreen = ({navigation}) => {
               <View style={c_outst.body1Text}>
                 <Text style={c_outst.text1}>{t('checkout.address')}:</Text>
                 <Text style={c_outst.text2}>
-                  Minh Quan | <Text style={c_outst.text3}>(+84) 336758295</Text>{' '}
-                  số 10 phố Phạm Văn Bạch, phường Dịch Vọng, quận Cầu Giấy, Hà
-                  Nội, Việt Nam
+                  {addressDefault.recieverName} |{' '}
+                  <Text style={c_outst.text3}>
+                    (+84) {addressDefault.recieverPhoneNumber}
+                  </Text>{' '}
+                  {addressDefault.address}
                 </Text>
               </View>
             </TouchableOpacity>
-            <Image
-              style={appst.icon24}
-              source={require('../../assets/icons/arrow_right.png')}
-            />
+            <TouchableOpacity
+              onPress={() => navigation.navigate('ChooseAddress')}>
+              <Image
+                style={appst.icon24}
+                source={require('../../assets/icons/arrow_right.png')}
+              />
+            </TouchableOpacity>
           </View>
 
           <View style={[c_outst.borderBottom, c_outst.body2]}>
@@ -78,9 +106,9 @@ const CheckOutScreen = ({navigation}) => {
             <FlatList
               style={[c_outst.flat]}
               scrollEnabled={false}
-              data={[1, 2, 3, 4, 5]}
+              data={checkedProducts}
               renderItem={({item}) => <CheckOutItem item={item} />}
-              extraData={item => item.id}
+              extraData={item => item._id}
               ItemSeparatorComponent={<View style={c_outst.borderBottom2} />}
             />
           </View>
@@ -170,7 +198,7 @@ const CheckOutScreen = ({navigation}) => {
             </View>
             <Text style={c_outst.textTerm}>
               {t('checkout.detail')}
-              <Text style={c_outst.textTerm1}>{t('checkout.term')}</Text>
+              <Text style={c_outst.textTerm1}> {t('checkout.term')}</Text>
             </Text>
           </View>
         </ScrollView>
@@ -178,7 +206,9 @@ const CheckOutScreen = ({navigation}) => {
         <View style={c_outst.viewFooter}>
           <View style={[appst.rowCenter, c_outst.borderTop]}>
             <Text style={c_outst.text4}>{t('home.total')}</Text>
-            <Text style={c_outst.text5}>$30.5</Text>
+            <Text style={c_outst.text5}>
+              ${totalPrice.toLocaleString('vi-VN')}
+            </Text>
           </View>
           <CustomedButton
             title={t('buttons.btn_place_order')}

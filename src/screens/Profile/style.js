@@ -35,10 +35,6 @@ export default styles = StyleSheet.create({
     fontFamily: fonts.pp_medium,
     color: colors.color001560,
   },
-  logout: {
-    width: sizes.size24,
-    height: sizes.size24,
-  },
   myGadget: {
     backgroundColor: 'white',
     flexDirection: 'row',

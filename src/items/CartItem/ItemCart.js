@@ -4,7 +4,8 @@ import {itCart} from './style';
 import appst from '../../constants/AppStyle';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import SweetAlert from 'react-native-sweet-alert';
-import {updateCartItem} from '../../api/CartApi';
+import {deleteOneItemCard, updateCartItem} from '../../api/CartApi';
+import Toast from 'react-native-toast-message';
 
 const ItemCart = ({
   item,
@@ -133,10 +134,49 @@ const ItemCart = ({
 
   const swipeableRef = useRef(null);
 
+  const deleteItemFromCard = async () => {
+    try {
+      const body = {
+        product_id: item.product_id._id,
+        size_id: item.size_id._id,
+      };
+      console.log('body delete cart: ', body);
+
+      const response = await deleteOneItemCard(body);
+      if (response.status) {
+        setCards(prevCards => prevCards.filter(cart => cart._id !== item._id));
+        setCheckedProducts(prevChecked =>
+          prevChecked.filter(cart => cart._id !== item._id),
+        );
+        Toast.show({
+          text1: 'Thông báo thành công',
+          text2: 'Đã xóa sản phẩm',
+          type: 'success',
+          position: 'bottom',
+          visibilityTime: 3000,
+          autoHide: true,
+        });
+      } else {
+        Toast.show({
+          text1: 'Thông báo xảy ra lỗi',
+          text2: 'Lỗi server',
+          type: 'error',
+          position: 'bottom',
+          visibilityTime: 3000, // Thời gian hiển thị (mili giây)
+          autoHide: true, // Tự động ẩn
+          // topOffset: 30, // Khoảng cách từ trên cùng
+          // bottomOffset: 40, // Khoảng cách từ dưới cùng
+        });
+      }
+    } catch (error) {
+      console.log('error delete item card->', error);
+    }
+  };
+
   const rightSwipeable = () => {
     return (
       <View style={itCart.deleteContainer}>
-        <TouchableOpacity onPress={() => console.log('Delete success')}>
+        <TouchableOpacity onPress={deleteItemFromCard}>
           <Image
             style={appst.icon24}
             source={require('../../assets/icons/cart_del.png')}

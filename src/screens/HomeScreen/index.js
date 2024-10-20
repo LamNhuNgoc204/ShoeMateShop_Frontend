@@ -1,36 +1,22 @@
-import { View, Text, Image, TouchableOpacity, Button } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {useTranslation} from 'react-i18next';
+import {useDispatch, useSelector} from 'react-redux';
+import {FlatList, ScrollView} from 'react-native-gesture-handler';
+
 import homeStyle from './style';
 import ToolBar from '../../components/ToolBar';
 import PagerView from 'react-native-pager-view';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import ProductItem from '../../items/ProductItem';
 import appst from '../../constants/AppStyle';
-import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchProductsThunk } from '../../redux/thunks/productThunks';
-import { getCategoryThunk } from '../../redux/thunks/categoryThunk';
+import {fetchProductsThunk} from '../../redux/thunks/productThunks';
+import {getCategoryThunk} from '../../redux/thunks/categoryThunk';
+import {BANNERS} from '../../api/mockData';
+import {addProductInWishlist} from '../../api/ProductApi';
+import Category from '../../items/Category';
 
-const banners = [
-  require('../../assets/images/banner1.png'),
-  require('../../assets/images/banner2.jpg'),
-  require('../../assets/images/banner3.jpg'),
-];
-const Category = ({ category, style, onItemPress }) => {
-  return (
-    <TouchableOpacity
-      onPress={onItemPress}
-      style={[homeStyle.categoryItem, homeStyle.marginBottom15, style]}>
-      <View style={homeStyle.categoryIconWrapper}>
-        <Image source={{ uri: category.image }} style={homeStyle.categoryImage} />
-      </View>
-      <Text style={homeStyle.categoryText}>{category.name}</Text>
-    </TouchableOpacity>
-  );
-};
-
-const HomeScreen = ({ navigation }) => {
-  const { t } = useTranslation();
+const HomeScreen = ({navigation}) => {
+  const {t} = useTranslation();
   const pagerRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [listProduct, setListProduct] = useState([]);
@@ -58,22 +44,21 @@ const HomeScreen = ({ navigation }) => {
   // console.log('listProduct===========', listProduct);
 
   const goToPage = page => {
-    if (page < banners.length) {
+    if (page < BANNERS.length) {
       pagerRef.current.setPage(page);
       setCurrentPage(page);
     }
   };
 
-
-  const onItemPress = (categoryId) => {
+  const onItemPress = categoryId => {
     navigation.navigate('CategoryDetail', {
-      categoryId
+      categoryId,
     });
-  }
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (currentPage === banners.length - 1) {
+      if (currentPage === BANNERS.length - 1) {
         goToPage(0);
       } else {
         goToPage(currentPage + 1);
@@ -81,15 +66,34 @@ const HomeScreen = ({ navigation }) => {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [currentPage, banners.length]);
+  }, [currentPage, BANNERS.length]);
 
   const onEditPress = () => {
     navigation.navigate('SearchResult');
-  }
+  };
+
+  const handleHeartPress = async (productId, isFavorite) => {
+    try {
+      const response = await addProductInWishlist(productId);
+      // console.log('response', response);
+
+      if (response.status) {
+        setListProduct(prevList =>
+          prevList.map(product =>
+            product._id === productId
+              ? {...product, isFavorite: !isFavorite}
+              : product,
+          ),
+        );
+        console.log(isFavorite ? 'Removed from wishlist' : 'Added to wishlist');
+      }
+    } catch (error) {
+      console.error('Error updating wishlist:', error);
+    }
+  };
 
   return (
     <View style={[homeStyle.container, appst.container]}>
-      {/* <Button title={'get token '} onPress={() => getToken()}></Button> */}
       <ToolBar
         onEditPress={onEditPress}
         editable={false}
@@ -106,20 +110,20 @@ const HomeScreen = ({ navigation }) => {
             }}
             initialPage={0}
             ref={pagerRef}>
-            {banners.map((item, index) => (
+            {BANNERS.map((item, index) => (
               <View key={index}>
                 <Image source={item} style={homeStyle.banner} />
               </View>
             ))}
           </PagerView>
           <FlatList
-            data={banners}
-            renderItem={({ item, index }) => (
+            data={BANNERS}
+            renderItem={({item, index}) => (
               <View
                 style={[
                   homeStyle.indicatorDot,
                   index === currentPage && homeStyle.indicatorActiveDot,
-                  index !== banners.length - 1 && homeStyle.marginRight12,
+                  index !== BANNERS.length - 1 && homeStyle.marginRight12,
                 ]}></View>
             )}
             keyExtractor={(item, index) => index.toString()}
@@ -137,15 +141,17 @@ const HomeScreen = ({ navigation }) => {
               scrollEnabled={false}
               style={homeStyle.marginTop15}
               data={categories}
-              renderItem={({ item, index }) => {
+              renderItem={({item, index}) => {
                 if (index % 2 === 0) {
                   return (
                     <Category
-                      onItemPress={() => { onItemPress(item._id) }}
+                      onItemPress={() => {
+                        onItemPress(item._id);
+                      }}
                       category={item}
                       style={[
                         index < categories.length - 2 &&
-                        homeStyle.marginRight30,
+                          homeStyle.marginRight30,
                         homeStyle.marginBottom15,
                       ]}
                     />
@@ -160,15 +166,17 @@ const HomeScreen = ({ navigation }) => {
             <FlatList
               scrollEnabled={false}
               data={categories}
-              renderItem={({ item, index }) => {
+              renderItem={({item, index}) => {
                 if (index % 2 === 1) {
                   return (
                     <Category
-                      onItemPress={() => { onItemPress(item._id) }}
+                      onItemPress={() => {
+                        onItemPress(item._id);
+                      }}
                       category={item}
                       style={[
                         index < categories.length - 2 &&
-                        homeStyle.marginRight30,
+                          homeStyle.marginRight30,
                       ]}
                     />
                   );
@@ -185,12 +193,14 @@ const HomeScreen = ({ navigation }) => {
 
         <FlatList
           data={listProduct}
-          renderItem={({ item }) => <ProductItem product={item} />}
+          renderItem={({item}) => (
+            <ProductItem handleHeartPress={handleHeartPress} product={item} />
+          )}
           keyExtractor={(item, index) => index.toString()}
           numColumns={2}
           showsVerticalScrollIndicator={false}
           scrollEnabled={false}
-        // ItemSeparatorComponent={() => <View style={homeStyle.separator}/>}
+          // ItemSeparatorComponent={() => <View style={homeStyle.separator}/>}
         />
       </ScrollView>
     </View>

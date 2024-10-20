@@ -27,7 +27,7 @@ export const PROFILE = [
     id: '4',
     iconSource: require('../assets/icons/ic_accountsettings.png'),
     text: 'Account Settings',
-    navigateTo: 'AccountSettings',
+    navigateTo: 'SettingScreen',
   },
   {
     id: '5',
@@ -45,7 +45,7 @@ export const PROFILE = [
     id: '7',
     iconSource: require('../assets/icons/ic_chatwithshop.png'),
     text: 'Chat with Shop',
-    navigateTo: 'ChatWithShop',
+    navigateTo: 'MessageScreen',
   },
   {
     id: '8',
@@ -53,4 +53,10 @@ export const PROFILE = [
     text: 'ChangeLanguage',
     navigateTo: 'ChangeLanguages',
   },
+];
+
+export const BANNERS = [
+  require('../assets/images/banner1.png'),
+  require('../assets/images/banner2.jpg'),
+  require('../assets/images/banner3.jpg'),
 ];

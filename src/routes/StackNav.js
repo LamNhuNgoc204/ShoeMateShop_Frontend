@@ -24,7 +24,7 @@ import ResetPasswordScreen from '../screens/ResetPasswordScreen';
 import MyRating from '../screens/Rating';
 import Review from '../screens/Review';
 import SearchResult from '../screens/SearchResult';
-import AddAddress from '../screens/AddAddressScreen';
+import AddNewAddress from '../screens/Address/AddNewAddress';
 import MessageScreen from '../screens/MessageScreen';
 import HomeWallet from '../screens/HomeWalletScreen';
 import DepositWalletScreen from '../screens/DepositWalletScreen';
@@ -69,7 +69,7 @@ const StackNav = () => {
       <Stack.Screen name="MyRating" component={MyRating} />
       <Stack.Screen name="Review" component={Review} />
       <Stack.Screen name="SearchResult" component={SearchResult} />
-      <Stack.Screen name="AddAddress" component={AddAddress} />
+      <Stack.Screen name="AddNewAddress" component={AddNewAddress} />
       <Stack.Screen name="MessageScreen" component={MessageScreen} />
       <Stack.Screen name="HomeWallet" component={HomeWallet} />
       <Stack.Screen

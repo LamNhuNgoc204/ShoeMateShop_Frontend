@@ -95,18 +95,25 @@ const ProductDetail = props => {
       />
       <ScrollView style={{flex: 1, marginBottom: spacing.md}}>
         <View>
-          <FlatList
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            data={product.assets}
-            extraData={selectedImage}
-            renderItem={({item}) => (
-              <Image style={pddt.pdImg} source={{uri: item}} />
-            )}
-            keyExtractor={(item, index) => index.toString()}
-          />
-          {product && product.assets && (
+          {product && product.assets > 0 ? (
+            <FlatList
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}
+              data={product.assets}
+              extraData={selectedImage}
+              renderItem={({item}) => (
+                <Image style={pddt.pdImg} source={{uri: item}} />
+              )}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          ) : (
+            <Image
+              style={pddt.pdImg}
+              source={require('../../assets/images/placeholder_image.jpg')}
+            />
+          )}
+          {product && product.assets > 0 && (
             <FlatList
               style={pddt.flatItem}
               horizontal
