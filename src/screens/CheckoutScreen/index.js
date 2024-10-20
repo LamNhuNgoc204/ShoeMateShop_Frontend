@@ -17,10 +17,13 @@ import Header from '../../components/Header';
 import {CustomedButton} from '../../components';
 import {useTranslation} from 'react-i18next';
 import AxiosInstance from '../../helpers/AxiosInstance';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {setPriceToPay} from '../../redux/reducer/cartReducer';
 
 const CheckOutScreen = ({navigation}) => {
   const state = useSelector(state => state.cart);
+  const dispatch = useDispatch();
+
   console.log(
     'ỏder item --',
     state.productOrder,
@@ -58,6 +61,10 @@ const CheckOutScreen = ({navigation}) => {
     console.log('Open modal...');
     setModalVisible(true);
     //check xem chon phuong thuc nao roi chuyen man hinh tuong ung
+    if (state.payment && state.payment.payment_method === 'Zalo Pay') {
+      dispatch(setPriceToPay(tongchiphi));
+      navigation.navigate('ZaloPayScreen');
+    }
   };
 
   const closeModal = () => {
