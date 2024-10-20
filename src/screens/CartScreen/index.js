@@ -1,31 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, Text, FlatList, TouchableOpacity, Image, RefreshControl } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Image, ToastAndroid, Modal, TouchableHighlight} from 'react-native'; // Thêm Modal và Button
 import { cartst } from './style';
 import { spacing } from '../../constants';
-import React, {useEffect, useState} from 'react';
-import {useTranslation} from 'react-i18next';
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  Image,
-  ToastAndroid,
-} from 'react-native';
-import {cartst} from './style';
-import {spacing} from '../../constants';
 import Header from '../../components/Header';
 import appst from '../../constants/AppStyle';
 import { CustomedButton } from '../../components';
 import ItemCart from '../../items/CartItem/ItemCart';
-import { getUserCard } from '../../api/CartApi';
+import { getUserCard, deleteAllCart } from '../../api/CartApi';
 import { useDispatch } from 'react-redux';
 import { setOrderData, setToltalPrice } from '../../redux/reducer/cartReducer';
-import {getUserCard} from '../../api/CartApi';
-import {useDispatch} from 'react-redux';
-import {setOrderData, setToltalPrice} from '../../redux/reducer/cartReducer';
-import Loading from '../../components/Loading';
 
 const CartScreen = ({ navigation }) => {
   const { t } = useTranslation();
@@ -36,45 +20,55 @@ const CartScreen = ({ navigation }) => {
   const [checkedProducts, setCheckedProducts] = useState([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-
-  useEffect(() => {
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const fetchCard = async () => {
-      try {
-        setLoading(false);
-        const response = await getUserCard();
-        if (response.status) {
-          setCards(response.data);
-          setCheckedProducts([]);
-          setIsAllChecked(false);
-          setLoading(true);
-        }
-      } catch (error) {
-        console.log('error', error);
-      }
-    };
-
-    fetchCard();
-  }, []);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const fetchCard = async () => {
     setRefreshing(true);
     try {
       const response = await getUserCard();
       if (response.status) {
-        console.log("Loading API cart---------------");
         setCards(response.cart);
         setCheckedProducts([]);
         setIsAllChecked(false);
       }
     } catch (error) {
-      console.log("Loading API cart fail---------------");
       console.log('error', error);
     } finally {
-      setRefreshing(false); // End refreshing
+      setRefreshing(false);
     }
+  };
+
+  useEffect(() => {
+    fetchCard();
+  }, []);
+
+  const handleDeleteAllCart = async () => {
+    try {
+      const response = await deleteAllCart();
+      if (response.status) {
+        ToastAndroid.show('Đã xóa toàn bộ giỏ hàng', ToastAndroid.SHORT);
+        setCards([]);
+        fetchCard();
+      } else {
+        ToastAndroid.show('Lỗi từ server', ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      console.log('Lỗi xóa toàn bộ giỏ hàng ->', error);
+      ToastAndroid.show('Lỗi xóa giỏ hàng', ToastAndroid.SHORT);
+    }
+  };
+
+  const showDeleteModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const hideDeleteModal = () => {
+    setIsModalVisible(false);
+  };
+
+  const confirmDeleteAllCart = () => {
+    hideDeleteModal();
+    handleDeleteAllCart();
   };
 
   const handleSelectAll = () => {
@@ -116,10 +110,10 @@ const CartScreen = ({ navigation }) => {
   }, [checkedProducts]);
 
   const handleOrder = () => {
-    if (checkedProducts.length == 0) {
-      ToastAndroid.show('Vui long chon sp', ToastAndroid.SHORT);
+    if (checkedProducts.length === 0) {
+      ToastAndroid.show('Vui lòng chọn sản phẩm', ToastAndroid.SHORT);
     } else {
-      dispatch(setOrderData(checkedProducts));
+      dispatch(setOrderData([checkedProducts]));
       dispatch(setToltalPrice(totalPrice));
       navigation.navigate('CheckOutScreen');
     }
@@ -127,6 +121,35 @@ const CartScreen = ({ navigation }) => {
 
   return (
     <View style={[appst.container, cartst.container]}>
+      <Modal
+        visible={isModalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={hideDeleteModal}
+      >
+        <View style={cartst.modalContainer}>
+          <View style={cartst.modalContent}>
+            <Text style={cartst.modalText}>{t('Bạn có chắc chắn muốn xóa toàn bộ giỏ hàng không?')}</Text>
+            <View style={cartst.modalButtons}>
+              <TouchableHighlight
+                style={[cartst.modalButton, cartst.modalCancelButton]}
+                underlayColor="#bbb"
+                onPress={hideDeleteModal}
+              >
+                <Text style={cartst.modalButtonText}>{t('Hủy')}</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={[cartst.modalButton, cartst.modalDeleteButton]}
+                underlayColor="#ff6666"
+                onPress={confirmDeleteAllCart}
+              >
+                <Text style={cartst.modalButtonText}>{t('Xóa')}</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
       <View style={cartst.header}>
         <Header
           leftOnPress={() => navigation.goBack()}
@@ -134,11 +157,12 @@ const CartScreen = ({ navigation }) => {
           iconLeft={require('../../assets/icons/back.png')}
           iconRight={require('../../assets/icons/del_card.png')}
           name={t('home.cart')}
+          rightOnPress={showDeleteModal}
         />
       </View>
       <View style={cartst.viewBody}>
         <Text style={cartst.text1}>
-          {cards && cards.length} {t('home.item')}
+          {cards.length} {t('home.item')}
         </Text>
         <FlatList
           style={cartst.flat}
@@ -155,43 +179,16 @@ const CartScreen = ({ navigation }) => {
               setCurrentlyOpenSwipeable={setCurrentlyOpenSwipeable}
               isChecked={checkedProducts.some(cart => cart._id === item._id)}
               onCheckedChange={handleCheckedChange}
+              refreshCart={fetchCard}
             />
           )}
-          extraData={item => item.id}
+          keyExtractor={(item) => item._id}
+          extraData={checkedProducts}
           ItemSeparatorComponent={<View style={{ marginBottom: spacing.sm }} />}
           showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing} // Pass the refreshing state
-              onRefresh={fetchCard} // Refresh function
-            />
-          }
+          refreshing={refreshing}
+          onRefresh={fetchCard}
         />
-        {!loading ? (
-          <Loading />
-        ) : (
-          <FlatList
-            style={cartst.flat}
-            data={cards}
-            renderItem={({item}) => (
-              <ItemCart
-                item={item}
-                setCards={setCards}
-                cards={cards}
-                setTotalPrice={setTotalPrice}
-                checkedProducts={checkedProducts}
-                setCheckedProducts={setCheckedProducts}
-                currentlyOpenSwipeable={currentlyOpenSwipeable}
-                setCurrentlyOpenSwipeable={setCurrentlyOpenSwipeable}
-                isChecked={checkedProducts.some(cart => cart._id === item._id)}
-                onCheckedChange={handleCheckedChange}
-              />
-            )}
-            extraData={item => item.id}
-            ItemSeparatorComponent={<View style={{marginBottom: spacing.sm}} />}
-            showsVerticalScrollIndicator={false}
-          />
-        )}
       </View>
       <View style={cartst.viewFooter}>
         <View style={[appst.rowCenter]}>

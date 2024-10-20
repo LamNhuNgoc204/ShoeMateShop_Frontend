@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {bottomSheetStyle} from './style';
 import appst from '../../constants/AppStyle';
 import {addItemToCartApi} from '../../api/CartApi';
+import {useNavigation} from '@react-navigation/native';
 
 const BottomSheetContent = ({
   product,
@@ -13,6 +14,7 @@ const BottomSheetContent = ({
   setQuantity,
   setSizeModalVisible,
 }) => {
+  const navigation = useNavigation();
   const [sizeId, setsizeId] = useState('');
   // const [sizeDetailId, setsizeDetailId] = useState('');
 
@@ -57,6 +59,7 @@ const BottomSheetContent = ({
         setSizeModalVisible(false);
         ToastAndroid.show('Thêm vào giỏ hàng thành công', ToastAndroid.SHORT);
         setSizeModalVisible(false);
+        navigation.goBack()
       } else {
         setSizeModalVisible(false);
         ToastAndroid.show(
