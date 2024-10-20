@@ -4,7 +4,6 @@ import filterPanelStyle from './style'
 import appst from '../../constants/AppStyle'
 import CustomedButton from '../Button'
 
-const brands = new Array(7).fill(1)
 const star = new Array(5).fill(1)
 
 const FilterPanel = ({ isOpen, listSelectedBrand, listBrand, listSelectedStar,
@@ -30,10 +29,10 @@ const FilterPanel = ({ isOpen, listSelectedBrand, listBrand, listSelectedStar,
           </Text>
           <View style={filterPanelStyle.wrapContainer}>
             {
-              (listBrand || brands).map((item, index) => {
+              listBrand.map((item, index) => {
                 return (
-                  <TouchableOpacity onPress={() => onBrandPress(index)} key={index} style={[filterPanelStyle.view44, listSelectedBrand?.includes(index) && filterPanelStyle.selected]}>
-                    <Image style={filterPanelStyle.icon34} source={require('../../assets/icons/puma.png')} />
+                  <TouchableOpacity onPress={() => onBrandPress(item._id)} key={index} style={[filterPanelStyle.view44, listSelectedBrand?.includes(item._id) && filterPanelStyle.selected]}>
+                    <Image style={filterPanelStyle.icon34} source={{uri: item.image}} />
                   </TouchableOpacity>
                 )
               })
@@ -45,9 +44,9 @@ const FilterPanel = ({ isOpen, listSelectedBrand, listBrand, listSelectedStar,
             Price
           </Text>
           <View style={filterPanelStyle.priceFilterConTainer}>
-            <TextInput keyboardType='decimal-pad' placeholder='min' style={filterPanelStyle.priceInput} />
+            <TextInput onChangeText={onMinPriceChange} value={minPrice} keyboardType='decimal-pad' placeholder='min' style={filterPanelStyle.priceInput} />
             <Text style={filterPanelStyle.minus}>  -  </Text>
-            <TextInput keyboardType='decimal-pad' placeholder='max' style={filterPanelStyle.priceInput} />
+            <TextInput onChangeText={onMaxPriceChange} value={maxPrice} keyboardType='decimal-pad' placeholder='max' style={filterPanelStyle.priceInput} />
           </View>
 
           <Text style={filterPanelStyle.subTitle}>

@@ -43,8 +43,8 @@ const filterPanelStyle = StyleSheet.create({
         marginVertical: 16
     },
     icon34: {
-        width: 38,
-        height: 38,
+        width: 25,
+        height: 25,
         resizeMode: 'contain'
     },
     view44: {

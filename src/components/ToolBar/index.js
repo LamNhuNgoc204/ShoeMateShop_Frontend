@@ -6,7 +6,7 @@ import SearchInput from '../SearchInput'
 
 
 
-const ToolBar = ({ iconRight, iconLeft, style, onIconRightPress, onIconLeftPress, title, onChangeText, placeholder, editable = true, onEditPress, handleSubmit, value }) => {
+const ToolBar = ({ iconRight, iconLeft, style, onIconRightPress, onIconLeftPress, title, onChangeText, placeholder, editable = true, onEditPress, handleSubmit, value, autoFocus }) => {
     return (
         <View style={[toolBarStyle.container, style]}>
             {
@@ -22,7 +22,7 @@ const ToolBar = ({ iconRight, iconLeft, style, onIconRightPress, onIconLeftPress
                 title ? (
                     <Text style={toolBarStyle.title}>{title}</Text>
                 ) : (
-                    <SearchInput value={value} handleSubmit={handleSubmit} onEditPress={onEditPress} editable={editable} placeholder={placeholder} onChangeText={onChangeText} style={[iconRight && toolBarStyle.marginRight20, iconLeft && toolBarStyle.marginLeft20, {flex: 1}]} />
+                    <SearchInput autoFocus={autoFocus} value={value} handleSubmit={handleSubmit} onEditPress={onEditPress} editable={editable} placeholder={placeholder} onChangeText={onChangeText} style={[iconRight && toolBarStyle.marginRight20, iconLeft && toolBarStyle.marginLeft20, {flex: 1}]} />
 
                 )
             }

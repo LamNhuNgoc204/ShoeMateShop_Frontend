@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import searchResultStyle from './style';
 import ToolBar from '../../components/ToolBar';
 import { FlatList } from 'react-native-gesture-handler';
@@ -16,6 +16,8 @@ const SearchResult = ({ navigation }) => {
   const [maxPrice, setMaxPrice] = useState(0);
   const [products, setProducts] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const [preSearch, setPreSearch] = useState();
+  const [brands, setBrands] = useState([]);
 
   const onOpenFilter = () => {
     setFilterOpen(true);
@@ -25,12 +27,12 @@ const SearchResult = ({ navigation }) => {
     setFilterOpen(false);
   };
 
-  const onBrandPress = index => {
-    const newList = [...listSelectedBrand];
-    if (newList.includes(index)) {
-      newList.splice(newList.indexOf(index), 1);
+  const onBrandPress = brandId => {
+    let newList = [...listSelectedBrand];
+    if (newList.includes(brandId)) {
+      newList = newList.filter(e => brandId !== e);
     } else {
-      newList.push(index);
+      newList.push(brandId);
     }
     console.log('newList: ', newList);
     setListSelectedBrand(newList);
@@ -78,15 +80,56 @@ const SearchResult = ({ navigation }) => {
       }
       const response = await AxiosInstance().get(`/products/search?query=${searchText}`);
       setProducts(response)
+      setPreSearch(searchText)
       setSearchText("")
     } catch (error) {
       console.log(error.message)
     }
   }
 
+  const getAllBrand = async () => {
+    try {
+      const response = await AxiosInstance().get('/brands/get-all-brand');
+      if (response.status) {
+        setBrands(response.data);
+      }
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+
+  const onFilterPress = async () => {
+    try {
+      if(minPrice > maxPrice) {
+        return;
+      }
+      const filterData = {
+        brands: listSelectedBrand,
+        minPrice: parseFloat(minPrice),
+        maxPrice: parseFloat(maxPrice)
+      }
+
+      const response = await AxiosInstance().post(`/filter/search?query=${preSearch}`, filterData);
+      if (response.status) {
+        setProducts(response.data);
+      } else {
+        console.log(error.message)
+      }
+      setFilterOpen(false);
+    } catch (error) {
+      console.log(error.message)
+
+    }
+  }
+
+  useEffect(() => {
+    getAllBrand();
+  }, []);
+
   return (
     <View style={searchResultStyle.container}>
       <ToolBar
+        autoFocus={true}
         value={searchText}
         handleSubmit={onSubmit}
         onChangeText={(txt) => setSearchText(txt)}
@@ -106,6 +149,8 @@ const SearchResult = ({ navigation }) => {
         style={searchResultStyle.flat}
       />
       <FilterPanel
+        onConfirmPress={onFilterPress}
+        listBrand={brands}
         minPrice={minPrice}
         maxPrice={maxPrice}
         onMaxPriceChange={onMaxPriceChange}

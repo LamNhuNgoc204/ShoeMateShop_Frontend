@@ -7,17 +7,20 @@ import { FlatList } from 'react-native-gesture-handler'
 import ProductItem from '../../items/ProductItem'
 import FilterPanel from '../../components/FilterPanel'
 import { getProductOfCategoryAction } from '../../redux/actions/categoriesAction'
+import AxiosInstance from '../../helpers/AxiosInstance'
 
 
 
-const CategoryDetail = ({route, navigation}) => {
+const CategoryDetail = ({ route, navigation }) => {
   const [filterOpen, setFilterOpen] = useState(false)
   const [listSelectedBrand, setListSelectedBrand] = useState([])
   const [listSelectedStar, setListSelectedStar] = useState([])
   const [minPrice, setMinPrice] = useState(0)
   const [maxPrice, setMaxPrice] = useState(0)
-  const {categoryId} = route.params;
+  const { categoryId, name } = route.params;
   const [products, setProducts] = useState([]);
+  const [brands, setBrands] = useState([]);
+  const [cateName, setCateName] = useState('');
 
   const getProductOfCategory = async () => {
     try {
@@ -25,16 +28,17 @@ const CategoryDetail = ({route, navigation}) => {
       setProducts(response)
     } catch (error) {
       console.log(error.message)
-      
+
     }
   }
 
   useEffect(() => {
-    if(categoryId) {
+    if (categoryId) {
       getProductOfCategory()
+      setCateName(name)
     }
-  }, [categoryId])
-  
+  }, [categoryId, name])
+
 
   const onOpenFilter = () => {
     setFilterOpen(true)
@@ -44,16 +48,16 @@ const CategoryDetail = ({route, navigation}) => {
     setFilterOpen(false)
   }
 
-  const onBrandPress = (index) => {
-    const newList = [...listSelectedBrand]
-    if (newList.includes(index)) {
-      newList.splice(newList.indexOf(index), 1)
+  const onBrandPress = brandId => {
+    let newList = [...listSelectedBrand];
+    if (newList.includes(brandId)) {
+      newList = newList.filter(e => brandId !== e);
     } else {
-      newList.push(index)
+      newList.push(brandId);
     }
-    console.log('newList: ', newList)
-    setListSelectedBrand(newList)
-  }
+    console.log('newList: ', newList);
+    setListSelectedBrand(newList);
+  };
 
   const onStarPress = (index) => {
     const newList = [...listSelectedStar]
@@ -80,7 +84,7 @@ const CategoryDetail = ({route, navigation}) => {
     try {
       if (parseFloat(price)) {
         setMaxPrice(parseFloat(price))
-      }
+      }``
     } catch (error) {
       setMaxPrice(maxPrice)
     }
@@ -89,12 +93,53 @@ const CategoryDetail = ({route, navigation}) => {
   const onBack = () => {
     navigation.goBack();
   }
+
+  const getAllBrand = async () => {
+    try {
+      const response = await AxiosInstance().get('/brands/get-all-brand');
+      if (response.status) {
+        setBrands(response.data);
+      }
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+
+  const onFilterPress = async () => {
+    try {
+      if(minPrice > maxPrice) {
+        return;
+      }
+      const filterData = {
+        brands: listSelectedBrand,
+        minPrice: parseFloat(minPrice),
+        maxPrice: parseFloat(maxPrice)
+      }
+
+      const response = await AxiosInstance().post(`/filter/get-products-of-catetory/${categoryId}`, filterData);
+      if (response.status) {
+        setProducts(response.data);
+      } else {
+        console.log(error.message)
+      }
+      setFilterOpen(false);
+    } catch (error) {
+      console.log(error.message)
+
+    }
+  }
+
+  useEffect(() => {
+    getAllBrand();
+  }, []);
+
+
   return (
     <View style={[categoryDetailStyle.container, appst.container]}>
-      <ToolBar iconLeft={require('../../assets/icons/ic_back.png')} onIconLeftPress={onBack}/>
+      <ToolBar iconLeft={require('../../assets/icons/ic_back.png')} onIconLeftPress={onBack} />
       <View style={[categoryDetailStyle.marginTop16, categoryDetailStyle.headerView]}>
         <Text style={categoryDetailStyle.textContainer}>
-          Hot {`\n`}
+          {cateName} {`\n`}
           <Text style={categoryDetailStyle.subContent}>{products.length} products found</Text>
         </Text>
 
@@ -111,8 +156,20 @@ const CategoryDetail = ({route, navigation}) => {
         numColumns={2}
         style={categoryDetailStyle.marginTop16}
       />
-      <FilterPanel minPrice={minPrice} maxPrice={maxPrice} onMaxPriceChange={onMaxPriceChange} onMinPriceChange={onMinChange} onStarPress={onStarPress} listSelectedStar={listSelectedStar} listSelectedBrand={listSelectedBrand} onBrandPress={onBrandPress} isOpen={filterOpen} onClosePress={onCloseFilterPress} />
-
+      <FilterPanel
+        onConfirmPress={onFilterPress}
+        listBrand={brands}
+        minPrice={minPrice}
+        maxPrice={maxPrice}
+        onMaxPriceChange={onMaxPriceChange}
+        onMinPriceChange={onMinChange}
+        onStarPress={onStarPress}
+        listSelectedStar={listSelectedStar}
+        listSelectedBrand={listSelectedBrand}
+        onBrandPress={onBrandPress}
+        isOpen={filterOpen}
+        onClosePress={onCloseFilterPress}
+      />
     </View>
   )
 }
