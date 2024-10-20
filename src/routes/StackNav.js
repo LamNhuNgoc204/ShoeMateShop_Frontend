@@ -33,6 +33,7 @@ import ProductDetail from '../screens/ProductDetail';
 import BottomNav from './BottomNav';
 import VoucherScreen from '../screens/VoucherScreen';
 import Notifycation from '../screens/Notifycation';
+import ShipScreen from '../screens/Shipping';
 
 const Stack = createNativeStackNavigator();
 
@@ -83,6 +84,7 @@ const StackNav = () => {
       <Stack.Screen name="ProductDetail" component={ProductDetail} />
       <Stack.Screen name="Voucher" component={VoucherScreen} />
       <Stack.Screen name="BottomNav" component={BottomNav} />
+      <Stack.Screen name="ShipScreen" component={ShipScreen} />
     </Stack.Navigator>
   );
 };

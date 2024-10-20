@@ -8,11 +8,14 @@ import appst from '../../constants/AppStyle';
 import {CustomedButton} from '../../components';
 import ItemCart from '../../items/CartItem/ItemCart';
 import {getUserCard} from '../../api/CartApi';
+import {useDispatch} from 'react-redux';
+import {setOrderData, setToltalPrice} from '../../redux/reducer/cartReducer';
 
 const CartScreen = ({navigation}) => {
   const {t} = useTranslation();
   const [currentlyOpenSwipeable, setCurrentlyOpenSwipeable] = useState(null);
   const [cards, setCards] = useState([]);
+  const dispatch = useDispatch();
   const [totalPrice, setTotalPrice] = useState(0);
   const [checkedProducts, setCheckedProducts] = useState([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
@@ -76,7 +79,13 @@ const CartScreen = ({navigation}) => {
     setTotalPrice(total);
   }, [checkedProducts]);
 
-  console.log('checkedProducts in cart =>  ', checkedProducts);
+  // console.log('checkedProducts in cart =>  ', checkedProducts);
+
+  const handleOrder = () => {
+    dispatch(setOrderData(checkedProducts));
+    dispatch(setToltalPrice(totalPrice));
+    navigation.navigate('CheckOutScreen');
+  };
 
   return (
     <View style={[appst.container, cartst.container]}>
@@ -140,12 +149,7 @@ const CartScreen = ({navigation}) => {
                 title={t('buttons.btn_checkout')}
                 style={cartst.btCheckout}
                 titleStyle={cartst.textTouch}
-                onPress={() =>
-                  navigation.navigate('CheckOutScreen', {
-                    checkedProducts,
-                    totalPrice,
-                  })
-                }
+                onPress={() => handleOrder()}
               />
             </View>
           </View>

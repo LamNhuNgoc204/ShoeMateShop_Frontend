@@ -4,14 +4,16 @@ import {c_outIt} from './style';
 
 const CheckOutItem = ({item}) => {
   console.log('item', item);
-  console.log('assets', item.product_id.assets[0]);
+  // console.log('assets', item.product_id.assets[0]);
 
   return (
     <View style={[c_outIt.container]}>
       <Image
         style={c_outIt.image}
         source={
-          item.product_id.assets && item.product_id.assets
+          item.product_id.assets &&
+          item.product_id.assets &&
+          item.product_id.assets.length > 0
             ? {uri: item.product_id.assets[0]}
             : require('../../assets/images/placeholder_image.jpg')
         }

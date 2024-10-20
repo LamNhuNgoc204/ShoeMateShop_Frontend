@@ -17,15 +17,30 @@ import Header from '../../components/Header';
 import {CustomedButton} from '../../components';
 import {useTranslation} from 'react-i18next';
 import AxiosInstance from '../../helpers/AxiosInstance';
+import {useSelector} from 'react-redux';
 
-const CheckOutScreen = ({navigation, route}) => {
-  const {checkedProducts, totalPrice} = route.params;
+const CheckOutScreen = ({navigation}) => {
+  // const {checkedProducts, totalPrice} = route.params;
+  // const {shippingName, shippingId, shippingCost} = route.params;
+  const state = useSelector(state => state.cart);
+  console.log('ỏder item --', state.productOrder, '-', state.ship);
+
+  // console.log('ship', shippingName, shippingId, shippingCost);
+
   const {t} = useTranslation();
   const [isswitch, setIsswitch] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [addressDefault, setAddressDefault] = useState({});
 
-  console.log('checkedProducts in checkout => ', checkedProducts, '-', totalPrice);
+  const ship = state.ship && state.ship.cost && state.ship.cost;
+  const tongchiphi = state.totalPrice + ship;
+
+  // console.log(
+  //   'checkedProducts in checkout => ',
+  //   checkedProducts,
+  //   '-',
+  //   totalPrice,
+  // );
   // console.log('addressDefault', addressDefault);
 
   useEffect(() => {
@@ -64,7 +79,6 @@ const CheckOutScreen = ({navigation, route}) => {
   return (
     <View style={[appst.container, c_outst.containerPosition]}>
       <View style={[appst.container]}>
-        {/* <View style={c_outst.viewHeader} /> */}
         <Header
           leftOnPress={() => navigation.goBack()}
           iconLeft={require('../../assets/icons/back.png')}
@@ -106,7 +120,7 @@ const CheckOutScreen = ({navigation, route}) => {
             <FlatList
               style={[c_outst.flat]}
               scrollEnabled={false}
-              data={checkedProducts}
+              data={state.productOrder}
               renderItem={({item}) => <CheckOutItem item={item} />}
               extraData={item => item._id}
               ItemSeparatorComponent={<View style={c_outst.borderBottom2} />}
@@ -155,6 +169,25 @@ const CheckOutScreen = ({navigation, route}) => {
                 source={require('../../assets/icons/arrow_right.png')}
               />
             </View>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('ShipScreen')}
+              style={[appst.rowCenter, {marginTop: 5}]}>
+              <View style={appst.rowCenter}>
+                <Image
+                  style={appst.icon24}
+                  source={require('../../assets/icons/shipment.png')}
+                />
+                <Text style={c_outst.text6}>
+                  {state.ship && state.ship.name
+                    ? state.ship.name
+                    : t('checkout.ship_option')}
+                </Text>
+              </View>
+              <Image
+                style={appst.icon24}
+                source={require('../../assets/icons/arrow_right.png')}
+              />
+            </TouchableOpacity>
             <View style={[appst.rowCenter, c_outst.body4]}>
               <View style={appst.rowCenter}>
                 <Image
@@ -166,26 +199,28 @@ const CheckOutScreen = ({navigation, route}) => {
             </View>
             <View style={[appst.rowCenter, c_outst.view4Text]}>
               <Text style={c_outst.textTitle}>{t('checkout.merchandise')}</Text>
-              <Text style={c_outst.textPrice}>$ 22</Text>
+              <Text style={c_outst.textPrice}>$ {state.totalPrice}</Text>
             </View>
             <View style={[appst.rowCenter, c_outst.view4Text]}>
               <Text style={c_outst.textTitle}>
                 {t('checkout.shipping_total')}
               </Text>
-              <Text style={c_outst.textPrice}>$ 17</Text>
+              <Text style={c_outst.textPrice}>
+                $ {state.ship && state.ship.cost ? state.ship.cost : '...'}
+              </Text>
             </View>
             <View style={[appst.rowCenter, c_outst.view4Text]}>
               <Text style={c_outst.textTitle}>
                 {t('checkout.shipping_discount')}
               </Text>
-              <Text style={c_outst.textPrice}>$ 8.5</Text>
+              <Text style={c_outst.textPrice}>$ 0</Text>
             </View>
             <View style={[appst.rowCenter, c_outst.view4Text]}>
               <Text style={[c_outst.textTitle, c_outst.textTitle1]}>
                 {t('checkout.payment')}
               </Text>
               <Text style={[c_outst.textPrice, c_outst.textPrice1]}>
-                $ 30.5
+                $ {tongchiphi || '...'}
               </Text>
             </View>
           </View>
@@ -207,7 +242,7 @@ const CheckOutScreen = ({navigation, route}) => {
           <View style={[appst.rowCenter, c_outst.borderTop]}>
             <Text style={c_outst.text4}>{t('home.total')}</Text>
             <Text style={c_outst.text5}>
-              ${totalPrice.toLocaleString('vi-VN')}
+              ${tongchiphi.toLocaleString('vi-VN') || '...'}
             </Text>
           </View>
           <CustomedButton
@@ -218,6 +253,7 @@ const CheckOutScreen = ({navigation, route}) => {
           />
         </View>
       </View>
+
       <CustomModal
         visible={modalVisible}
         closeModal={closeModal}

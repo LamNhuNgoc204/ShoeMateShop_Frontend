@@ -4,13 +4,34 @@ import {createSlice} from '@reduxjs/toolkit';
 const initialState = {
   items: [],
   totalAmount: 0,
+  productOrder: [],
+  totalPrice: 0,
+  ship: null,
+  address: null,
+  payment: null,
 };
 
 // Khởi tạo slice
 const CartSlice = createSlice({
   name: 'cart',
   initialState,
-  reducers: {},
+  reducers: {
+    setOrderData: (state, action) => {
+      state.productOrder = action.payload;
+    },
+    setShipping: (state, action) => {
+      state.ship = action.payload;
+    },
+    setAddress: (state, action) => {
+      state.address = action.payload;
+    },
+    setPaymentMethod: (state, action) => {
+      state.payment = action.payload;
+    },
+    setToltalPrice: (state, action) => {
+      state.totalPrice = action.payload;
+    },
+  },
   // extraReducers: builder => {
   //   builder
   //     .addCase(addItem.fulfilled, (state, action) => {
@@ -29,4 +50,11 @@ const CartSlice = createSlice({
   // },
 });
 
+export const {
+  setOrderData,
+  setShipping,
+  setAddress,
+  setToltalPrice,
+  setPaymentMethod,
+} = CartSlice.actions;
 export default CartSlice.reducer;
