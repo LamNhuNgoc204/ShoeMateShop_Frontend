@@ -68,7 +68,7 @@ const ProductItem = ({handleHeartPress, product, style}) => {
           <Text numberOfLines={1} ellipsizeMode="tail">
             <Text style={productStyle.dolar}>$</Text>{' '}
             <Text style={productStyle.text14}>
-              {product.price.toLocaleString('vi-VN')}
+              {/* {product.price.toLocaleString('vi-VN')} */}0
             </Text>
           </Text>
           <TouchableOpacity

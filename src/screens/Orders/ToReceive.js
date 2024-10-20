@@ -1,18 +1,22 @@
-import {View, Text, ScrollView, FlatList} from 'react-native';
 import React from 'react';
-import ProductItem from '../../items/ProductItem';
-import appst from '../../constants/AppStyle';
+import {View, Text, ScrollView, FlatList} from 'react-native';
+import {useSelector} from 'react-redux';
 import {odst} from './style';
+import appst from '../../constants/AppStyle';
+import ProductItem from '../../items/ProductItem';
 import OrderItem from '../../items/OrderItem/OrderItem';
 
 const ToReceive = () => {
+  const useAppSelector = useSelector;
+  const products = useAppSelector(state => state.products.products);
+
   return (
     <ScrollView style={appst.container}>
       <FlatList
         style={odst.flat1}
         data={[1, 2]}
-        renderItem={({item}) => <OrderItem item={item} receive={true} />}
-        extraData={item => item.id}
+        renderItem={({item, index}) => <OrderItem item={item} receive={true} />}
+        keyExtractor={(item, index) => (item._id ? item._id : index.toString())}
         scrollEnabled={false}
       />
       <View style={appst.rowCenter}>
@@ -23,7 +27,7 @@ const ToReceive = () => {
       <View style={[appst.center]}>
         <FlatList
           style={odst.flat2}
-          data={[3, 4, 5, 6, 7, 8]}
+          data={products}
           renderItem={({item, index}) => (
             <ProductItem product={item} index={index} />
           )}

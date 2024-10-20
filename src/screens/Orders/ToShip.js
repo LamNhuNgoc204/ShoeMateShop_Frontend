@@ -1,11 +1,15 @@
-import {View, Text, FlatList, ScrollView, Image} from 'react-native';
 import React from 'react';
-import appst from '../../constants/AppStyle';
+import {useSelector} from 'react-redux';
+import {View, Text, FlatList, ScrollView, Image} from 'react-native';
 import {odst} from './style';
+import appst from '../../constants/AppStyle';
 import ProductItem from '../../items/ProductItem/index.js';
 import OrderItem from '../../items/OrderItem/OrderItem.js';
 
 const ToShip = () => {
+  const useAppSelector = useSelector;
+  const products = useAppSelector(state => state.products.products);
+
   const data = [];
   return (
     <ScrollView style={appst.container}>
@@ -14,7 +18,9 @@ const ToShip = () => {
           style={odst.flat1}
           data={data}
           renderItem={({item}) => <OrderItem item={item} />}
-          extraData={item => item.id}
+          keyExtractor={(item, index) =>
+            item._id ? item._id : index.toString()
+          }
           scrollEnabled={false}
         />
       ) : (
@@ -34,11 +40,11 @@ const ToShip = () => {
       <View style={[appst.center]}>
         <FlatList
           style={odst.flat2}
-          data={[3, 4, 5, 6, 7, 8]}
+          data={products}
           renderItem={({item, index}) => (
             <ProductItem product={item} index={index} />
           )}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item._id}
           numColumns={2}
           scrollEnabled={false}
         />
