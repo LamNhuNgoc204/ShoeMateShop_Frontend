@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {fetchProductsThunk} from '../thunks/productThunks';
+import {fetchProductsThunk, fetchWishlist} from '../thunks/productThunks';
 import {getCategoryThunk} from '../thunks/categoryThunk';
 
 const initialState = {
@@ -14,12 +14,18 @@ const ProductSlice = createSlice({
   name: 'product',
   initialState,
   reducers: {
-    removeFromWishlist: (state, action) => {
+    removeFromWishlistLocal: (state, action) => {
       const productId = action.payload;
       state.wishlist = state.wishlist.filter(item => item._id !== productId);
     },
-    setWishlist: (state, action) => {
-      state.wishlist = action.payload;
+    setWishlistLocal: (state, action) => {
+      const product = action.payload;
+      const index = state.wishlist.findIndex((item) => item._id == product._id )
+      if(index == -1) {
+        state.wishlist = [...state.wishlist, action.payload];
+      } else {
+        state.wishlist = state.wishlist.filter(item =>  item._id !== product._id);
+      }
     },
   },
   extraReducers: builder => {
@@ -56,9 +62,12 @@ const ProductSlice = createSlice({
       .addCase(getCategoryThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-      });
+      })
+      .addCase(fetchWishlist.fulfilled, (state, action) => {
+        state.wishlist = action.payload;
+      })
   },
 });
 
-export const {setWishlist, removeFromWishlist} = ProductSlice.actions;
+export const {setWishlistLocal, removeFromWishlistLocal} = ProductSlice.actions;
 export default ProductSlice.reducer;

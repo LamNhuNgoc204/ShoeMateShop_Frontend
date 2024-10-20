@@ -1,39 +1,43 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
-import {useTranslation} from 'react-i18next';
-import {useDispatch, useSelector} from 'react-redux';
-import {FlatList, ScrollView} from 'react-native-gesture-handler';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, Text, Image } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { FlatList, ScrollView } from 'react-native-gesture-handler';
 
 import homeStyle from './style';
 import ToolBar from '../../components/ToolBar';
 import PagerView from 'react-native-pager-view';
 import ProductItem from '../../items/ProductItem';
 import appst from '../../constants/AppStyle';
-import {fetchProductsThunk} from '../../redux/thunks/productThunks';
-import {getCategoryThunk} from '../../redux/thunks/categoryThunk';
-import {BANNERS} from '../../api/mockData';
-import {addProductInWishlist} from '../../api/ProductApi';
+import { fetchProductsThunk, fetchWishlist } from '../../redux/thunks/productThunks';
+import { getCategoryThunk } from '../../redux/thunks/categoryThunk';
+import { BANNERS } from '../../api/mockData';
+import { addProductInWishlist, removeFromWishlist } from '../../api/ProductApi';
 import Category from '../../items/Category';
+import { removeFromWishlistLocal, setWishlistLocal } from '../../redux/reducer/productReducer';
 
-const HomeScreen = ({navigation}) => {
-  const {t} = useTranslation();
+const HomeScreen = ({ navigation }) => {
+  const { t } = useTranslation();
   const pagerRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [listProduct, setListProduct] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [wishList, setWishlist] = useState([]);
 
-  const useAppSelector = useSelector;
-  const state = useAppSelector(state => state.products);
+  const state = useSelector(state => state.products);
   const useAppDispatch = () => useDispatch();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      await dispatch(fetchProductsThunk());
-    };
+    dispatch(fetchProductsThunk())
     dispatch(getCategoryThunk());
-    fetchProduct();
+    dispatch(fetchWishlist())
   }, []);
+
+
+  useEffect(() => {
+    setWishlist(state.wishlist)
+  }, [state.wishlist])
 
   useEffect(() => {
     setListProduct(state.products);
@@ -53,7 +57,7 @@ const HomeScreen = ({navigation}) => {
   const onItemPress = category => {
     navigation.navigate('CategoryDetail', {
       categoryId: category._id,
-      name:  category.name
+      name: category.name
     });
   };
 
@@ -73,19 +77,17 @@ const HomeScreen = ({navigation}) => {
     navigation.navigate('SearchResult');
   };
 
-  const handleHeartPress = async (productId, isFavorite) => {
+  const handleHeartPress = async (product, isFavorite) => {
     try {
-      const response = await addProductInWishlist(productId);
-      // console.log('response', response);
+      var response;
+      if (isFavorite) {
+        response = await removeFromWishlist(product._id);
+      } else {
+        response = await addProductInWishlist(product._id);
+      }
 
       if (response.status) {
-        setListProduct(prevList =>
-          prevList.map(product =>
-            product._id === productId
-              ? {...product, isFavorite: !isFavorite}
-              : product,
-          ),
-        );
+        dispatch(setWishlistLocal(product))
         console.log(isFavorite ? 'Removed from wishlist' : 'Added to wishlist');
       }
     } catch (error) {
@@ -119,7 +121,7 @@ const HomeScreen = ({navigation}) => {
           </PagerView>
           <FlatList
             data={BANNERS}
-            renderItem={({item, index}) => (
+            renderItem={({ item, index }) => (
               <View
                 style={[
                   homeStyle.indicatorDot,
@@ -142,7 +144,7 @@ const HomeScreen = ({navigation}) => {
               scrollEnabled={false}
               style={homeStyle.marginTop15}
               data={categories}
-              renderItem={({item, index}) => {
+              renderItem={({ item, index }) => {
                 if (index % 2 === 0) {
                   return (
                     <Category
@@ -152,7 +154,7 @@ const HomeScreen = ({navigation}) => {
                       category={item}
                       style={[
                         index < categories.length - 2 &&
-                          homeStyle.marginRight30,
+                        homeStyle.marginRight30,
                         homeStyle.marginBottom15,
                       ]}
                     />
@@ -167,7 +169,7 @@ const HomeScreen = ({navigation}) => {
             <FlatList
               scrollEnabled={false}
               data={categories}
-              renderItem={({item, index}) => {
+              renderItem={({ item, index }) => {
                 if (index % 2 === 1) {
                   return (
                     <Category
@@ -177,7 +179,7 @@ const HomeScreen = ({navigation}) => {
                       category={item}
                       style={[
                         index < categories.length - 2 &&
-                          homeStyle.marginRight30,
+                        homeStyle.marginRight30,
                       ]}
                     />
                   );
@@ -194,14 +196,13 @@ const HomeScreen = ({navigation}) => {
 
         <FlatList
           data={listProduct}
-          renderItem={({item}) => (
-            <ProductItem handleHeartPress={handleHeartPress} product={item} />
+          renderItem={({ item }) => (
+            <ProductItem wishlist={wishList}  handleHeartPress={handleHeartPress} product={item} />
           )}
           keyExtractor={(item, index) => index.toString()}
           numColumns={2}
           showsVerticalScrollIndicator={false}
           scrollEnabled={false}
-          // ItemSeparatorComponent={() => <View style={homeStyle.separator}/>}
         />
       </ScrollView>
     </View>
