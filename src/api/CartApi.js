@@ -9,11 +9,14 @@ export const addItemToCartApi = async item => {
   return response;
 };
 
+// Hàm gọi API lấy giỏ hàng theo người dùng
 export const getUserCard = async () => {
-  const response = await AxiosInstance().get('/cart/get-user-card');
+  const response = await AxiosInstance().get(
+    '/cart/get-cart-by-user-id');
   return response;
 };
 
+// Hàm gọi API cập nhật số lượng giỏ hàng
 export const updateCartItem = async body => {
   const response = await AxiosInstance().put(
     '/cart/update-cart-quantity',
@@ -22,17 +25,17 @@ export const updateCartItem = async body => {
   return response;
 };
 
+// Hàm gọi API xóa tất cả sản phẩm khỏi giỏ hàng
 export const deleteAllCart = async () => {
-  const response = await AxiosInstance().delete('/cart/clear-cart');
+  const response = await AxiosInstance().delete(
+    '/cart/clear-cart');
   return response;
 };
 
 export const deleteOneItemCard = async body => {
-  const response = await AxiosInstance().delete(
+  const response = await AxiosInstance().post(
     '/cart/remove-product-from-cart',
-    {
-      data: body,
-    },
+    body,
   );
   return response;
 };
