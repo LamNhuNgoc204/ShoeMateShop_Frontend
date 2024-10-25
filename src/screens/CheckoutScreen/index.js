@@ -6,6 +6,7 @@ import {
   ScrollView,
   FlatList,
   Switch,
+  Pressable,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import appst from '../../constants/AppStyle';
@@ -15,30 +16,45 @@ import {spacing} from '../../constants';
 import CustomModal from '../../components/Modal';
 import Header from '../../components/Header';
 import {CustomedButton} from '../../components';
-import {useTranslation} from 'react-i18next';
+import {useSSR, useTranslation} from 'react-i18next';
 import AxiosInstance from '../../helpers/AxiosInstance';
 import {useDispatch, useSelector} from 'react-redux';
 import {setPriceToPay} from '../../redux/reducer/cartReducer';
-
-const CheckOutScreen = ({navigation}) => {
+import { useNavigation } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
+const CheckOutScreen = () => {
+  const route = useRoute();
   const state = useSelector(state => state.cart);
+  const navigation = useNavigation();
   const dispatch = useDispatch();
-  console.log(
-    'ỏder item:',
-    state.productOrder,
-    '-',
-    state.ship,
-    '_',
-    state.payment,
-  );
-
+ 
+  const [voucherData, setVoucherData] = useState({discountAmount: 0, discountedPrice: state.totalPrice + state.ship?.cost});
+  const [totalPrice, setTotalPrice] = useState(state.totalPrice + state.ship?.cost);
+  const [totalPriceProducts, setTotalPriceProducts] = useState(state.totalPrice)
+  const [totalPriceAfterVoucher, setTotalPriceAfterVoucher] = useState(state.totalPrice + state.ship?.cost)
   const {t} = useTranslation();
   const [isswitch, setIsswitch] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [addressDefault, setAddressDefault] = useState({});
 
-  const ship = state.ship && state.ship.cost && state.ship.cost;
-  const tongchiphi = state.totalPrice + ship;
+
+
+  useEffect(() => {
+
+    if (route.params?.response) {
+      const response = route.params.response;
+      setVoucherData({
+        discountAmount: response.discountAmount,
+        discountedPrice: response.discountedPrice,
+
+      });
+
+      
+      setTotalPriceAfterVoucher(voucherData.discountedPrice + state.ship?.cost);
+    }
+  }, [route.params?.response, state.ship]);
+ 
+
 
   useEffect(() => {
     const getAddresDefault = async () => {
@@ -60,7 +76,7 @@ const CheckOutScreen = ({navigation}) => {
     // setModalVisible(true);
     //check xem chon phuong thuc nao roi chuyen man hinh tuong ung
     if (state.payment && state.payment.payment_method === 'Zalo Pay') {
-      dispatch(setPriceToPay(tongchiphi));
+      dispatch(setPriceToPay(voucherData.discountedPrice));
       navigation.navigate('ZaloPayScreen');
     }
   };
@@ -74,7 +90,10 @@ const CheckOutScreen = ({navigation}) => {
   };
 
   const goToScreen = Screen => {
-    navigation.navigate(Screen);
+   
+    navigation.navigate(Screen, {
+      totalPrice: state.totalPrice,
+    });
   };
 
   return (
@@ -127,7 +146,8 @@ const CheckOutScreen = ({navigation}) => {
             />
           </View>
 
-          <View style={[appst.rowCenter, c_outst.body3, c_outst.borderBottom]}>
+         <Pressable onPress={() => goToScreen('Voucher', { totalPrice: state.totalPrice })}>
+         <View style={[appst.rowCenter, c_outst.body3, c_outst.borderBottom]} >
             <View style={appst.rowCenter}>
               <Image
                 style={appst.icon24}
@@ -136,13 +156,17 @@ const CheckOutScreen = ({navigation}) => {
               <Text style={c_outst.text6}>{t('checkout.vouchers')}</Text>
             </View>
             <View style={[appst.rowCenter]}>
-              <Text style={c_outst.text7}>Use 1 Voucher</Text>
+            {voucherData?.discountAmount ? (
+  <Text style={c_outst.text7}>Use 1 Voucher</Text>
+) : null}
+
               <Image
                 style={appst.icon24}
                 source={require('../../assets/icons/arrow_right.png')}
               />
             </View>
           </View>
+         </Pressable>
 
           <View style={[appst.rowCenter, c_outst.body3, c_outst.borderBottom]}>
             <View style={appst.rowCenter}>
@@ -219,14 +243,14 @@ const CheckOutScreen = ({navigation}) => {
               <Text style={c_outst.textTitle}>
                 {t('checkout.shipping_discount')}
               </Text>
-              <Text style={c_outst.textPrice}>$ 0</Text>
+              <Text style={c_outst.textPrice}>- ${voucherData.discountAmount}</Text>
             </View>
             <View style={[appst.rowCenter, c_outst.view4Text]}>
               <Text style={[c_outst.textTitle, c_outst.textTitle1]}>
                 {t('checkout.payment')}
               </Text>
               <Text style={[c_outst.textPrice, c_outst.textPrice1]}>
-                $ {tongchiphi || '...'}
+                $ {voucherData.discountedPrice || '...'}
               </Text>
             </View>
           </View>
@@ -248,7 +272,7 @@ const CheckOutScreen = ({navigation}) => {
           <View style={[appst.rowCenter, c_outst.borderTop]}>
             <Text style={c_outst.text4}>{t('home.total')}</Text>
             <Text style={c_outst.text5}>
-              ${tongchiphi.toLocaleString('vi-VN') || '...'}
+              ${voucherData.discountedPrice.toLocaleString('vi-VN') || '...'}
             </Text>
           </View>
           <CustomedButton
