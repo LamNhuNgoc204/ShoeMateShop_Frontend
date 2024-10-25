@@ -10,6 +10,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   removeFromWishlistLocal,
   setWishlist,
+  setWishlistLocal,
 } from '../../redux/reducer/productReducer';
 
 const FavoriteScreen = ({navigation}) => {
@@ -43,7 +44,7 @@ const FavoriteScreen = ({navigation}) => {
       }
 
       if (response.status) {
-        dispatch(setWishList(product));
+        dispatch(setWishlistLocal(product));
       }
     } catch (error) {
       console.log('Error removing item from wishlist:', error);
