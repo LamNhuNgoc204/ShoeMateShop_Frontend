@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {bottomSheetStyle} from './style';
 import appst from '../../constants/AppStyle';
 import {addItemToCartApi} from '../../api/CartApi';
+import {useNavigation} from '@react-navigation/native';
 
 const BottomSheetContent = ({
   product,
@@ -13,13 +14,14 @@ const BottomSheetContent = ({
   setQuantity,
   setSizeModalVisible,
 }) => {
+  const navigation = useNavigation();
   const [sizeId, setsizeId] = useState('');
-  const [sizeDetailId, setsizeDetailId] = useState('');
+  // const [sizeDetailId, setsizeDetailId] = useState('');
 
   useEffect(() => {
     if (sizes && sizes.length > 0 && !selectedSize) {
       setSelectedSize(sizes[0].sizeId.name);
-      setsizeDetailId(sizes[0].sizeId._id);
+      // setsizeDetailId(sizes[0].sizeId._id);
       setsizeId(sizes[0]._id);
     }
   }, [sizes, selectedSize, setSelectedSize, setsizeId]);
@@ -42,13 +44,13 @@ const BottomSheetContent = ({
     }
   };
 
-  console.log('body', product._id, ' ', sizeDetailId, '-', quantity);
+  console.log('body', product._id, ' ', selectedSize, ' ', quantity);
 
   const addToCart = async () => {
     try {
       const itemCart = {
         product_id: product._id,
-        size_id: sizeDetailId,
+        size_name: selectedSize,
         quantity: quantity,
       };
 
@@ -57,6 +59,7 @@ const BottomSheetContent = ({
         setSizeModalVisible(false);
         ToastAndroid.show('Thêm vào giỏ hàng thành công', ToastAndroid.SHORT);
         setSizeModalVisible(false);
+        navigation.goBack()
       } else {
         setSizeModalVisible(false);
         ToastAndroid.show(
@@ -70,6 +73,7 @@ const BottomSheetContent = ({
         'Lỗi trong quá trình thêm vào giỏ hàng',
         ToastAndroid.SHORT,
       );
+      // console.log("Error: ", error)
       setSizeModalVisible(false);
     }
   };
@@ -112,7 +116,7 @@ const BottomSheetContent = ({
               return (
                 <TouchableOpacity
                   onPress={() => {
-                    setsizeDetailId(size.sizeId._id);
+                    // setsizeDetailId(size.sizeId._id);
                     setSelectedSize(size.sizeId.name);
                     setsizeId(size._id);
                   }}
