@@ -6,6 +6,7 @@ import {
   ScrollView,
   FlatList,
   Switch,
+  ToastAndroid,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import appst from '../../constants/AppStyle';
@@ -18,19 +19,20 @@ import {CustomedButton} from '../../components';
 import {useTranslation} from 'react-i18next';
 import AxiosInstance from '../../helpers/AxiosInstance';
 import {useDispatch, useSelector} from 'react-redux';
-import {setPriceToPay} from '../../redux/reducer/cartReducer';
+import {setOrderId, setPriceToPay} from '../../redux/reducer/cartReducer';
+import {createOrder} from '../../api/OrderApi';
 
 const CheckOutScreen = ({navigation}) => {
   const state = useSelector(state => state.cart);
   const dispatch = useDispatch();
-  console.log(
-    'ỏder item:',
-    state.productOrder,
-    '-',
-    state.ship,
-    '_',
-    state.payment,
-  );
+  // console.log(
+  //   'order item:',
+  //   state.productOrder,
+  //   // '-',
+  //   // state.ship,
+  //   // '_',
+  //   // state.payment,
+  // );
 
   const {t} = useTranslation();
   const [isswitch, setIsswitch] = useState(false);
@@ -56,13 +58,46 @@ const CheckOutScreen = ({navigation}) => {
     getAddresDefault();
   }, []);
 
-  const handleOrder = () => {
-    // setModalVisible(true);
-    //check xem chon phuong thuc nao roi chuyen man hinh tuong ung
-    if (state.payment && state.payment.payment_method === 'Zalo Pay') {
-      dispatch(setPriceToPay(tongchiphi));
-      navigation.navigate('ZaloPayScreen');
+  const handleOrder = async () => {
+    const products = state.productOrder.map(item => ({
+      _id: item.product_id._id,
+      assets: item.product_id.assets,
+      name: item.product_id.name,
+      size_name: item.size_id.name,
+      price: item.product_id.price,
+      quantity: item.quantity,
+      size_id: item.size_id._id,
+    }));
+
+    const body = {
+      products: products,
+      method_id: state.payment && state.payment._id,
+      voucher_id: '',
+      shipping_id: state.ship && state.ship._id,
+      total_price: tongchiphi,
+      receiver: addressDefault.recieverName,
+      receiverPhone: addressDefault.recieverPhoneNumber,
+      address: addressDefault.address,
+    };
+
+    // console.log('body orrder: ', body);
+
+    const response = await createOrder(body);
+    if (response.status) {
+      if (state.payment && state.payment.payment_method === 'Zalo Pay') {
+        dispatch(setPriceToPay(tongchiphi));
+        dispatch(setOrderId(response.data.order._id));
+        navigation.navigate('ZaloPayScreen');
+      } else if (
+        state.payment &&
+        state.payment.payment_method === 'Thanh toán khi nhận hàng'
+      ) {
+        setModalVisible(true);
+        ToastAndroid.show('tao don thanh cong', ToastAndroid.show);
+      }
     }
+
+    //check xem chon phuong thuc nao roi chuyen man hinh tuong ung
   };
 
   const closeModal = () => {

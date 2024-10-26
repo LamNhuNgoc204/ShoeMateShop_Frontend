@@ -3,7 +3,7 @@ import {View, Text, Image} from 'react-native';
 import {c_outIt} from './style';
 
 const CheckOutItem = ({item}) => {
-  console.log('item', item);
+  // console.log('item', item);
   // console.log('assets', item.product_id.assets[0]);
 
   return (

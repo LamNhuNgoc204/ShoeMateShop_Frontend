@@ -17,7 +17,6 @@ import {
 } from '../../redux/actions/messageAction';
 import {useSelector} from 'react-redux';
 import io from 'socket.io-client';
-import {IPV4} from '@env';
 
 const renderToolbar = ({onBack, name, avatar}) => {
   return (
@@ -135,7 +134,7 @@ const MessageScreen = ({navigation}) => {
 
   // console.log('user', name, avatar);
 
-  const SOCKET_URL = `http://${IPV4}:3000/`;
+  const SOCKET_URL = `http://192.168.1.68:3000/`;
 
   const getConversation = async () => {
     try {

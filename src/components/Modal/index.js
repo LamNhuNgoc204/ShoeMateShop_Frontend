@@ -10,6 +10,7 @@ const CustomModal = ({
   title,
   textbutton,
   content,
+  navigation
 }) => {
   return (
     <Modal
@@ -29,7 +30,7 @@ const CustomModal = ({
             title={textbutton}
             titleStyle={modalst.closeButtonText}
             style={modalst.closeButton}
-            onPress={() => closeModal()}
+            // onPress={() => navigation.navigate()}
           />
         </View>
       </View>

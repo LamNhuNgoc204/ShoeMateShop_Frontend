@@ -9,15 +9,16 @@ import AxiosInstance from '../../../../helpers/AxiosInstance';
 
 const ZaloPayScreen = ({navigation}) => {
   const [paymentUrl, setPaymentUrl] = useState(null);
-  const user = useSelector(state => state.user.user);
-  const priceToPay = useSelector(state => state.cart.priceToPay);
+  // const user = useSelector(state => state.user.user);
+  const cartState = useSelector(state => state.cart);
   // console.log('user', user);
 
   const handlePayment = async () => {
     try {
       const body = {
-        username: user.name,
-        amount: priceToPay,
+        // userid: user._id,
+        orderId: cartState.orderId,
+        amount: cartState.priceToPay,
       };
       const response = await AxiosInstance().post('/payment', body);
       // console.log('payment -------', response);
