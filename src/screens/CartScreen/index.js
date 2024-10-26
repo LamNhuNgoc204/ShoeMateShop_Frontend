@@ -18,6 +18,7 @@ import {getUserCard} from '../../api/CartApi';
 import {useDispatch} from 'react-redux';
 import {setOrderData, setToltalPrice} from '../../redux/reducer/cartReducer';
 import Loading from '../../components/Loading';
+import { useFocusEffect } from '@react-navigation/native';
 
 const CartScreen = ({navigation}) => {
   const {t} = useTranslation();
@@ -27,26 +28,35 @@ const CartScreen = ({navigation}) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [checkedProducts, setCheckedProducts] = useState([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    const fetchCard = async () => {
-      try {
-        setLoading(false);
-        const response = await getUserCard();
-        if (response.status) {
-          setCards(response.data);
-          setCheckedProducts([]);
-          setIsAllChecked(false);
-          setLoading(true);
-        }
-      } catch (error) {
-        console.log('error', error);
+  const fetchCard = async () => {
+    try {
+      setRefreshing(true); // Bắt đầu refreshing
+      const response = await getUserCard();
+      if (response.status) {
+        setCards(response.data);
+        setCheckedProducts([]);
+        setIsAllChecked(false);
       }
-    };
+    } catch (error) {
+      console.log('error', error);
+    } finally {
+      setRefreshing(false); // Kết thúc refreshing
+    }
+  };
 
-    fetchCard();
-  }, []);
+  // useEffect(() => {
+  //   fetchCard();
+  // }, []);
+
+  // Sử dụng useFocusEffect để gọi lại API mỗi khi màn hình được lấy nét
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchCard();
+    }, [])
+  );
+
   // console.log('cards', cards);
 
   // Xử lý chọn hoặc bỏ chọn tất cả
@@ -117,8 +127,8 @@ const CartScreen = ({navigation}) => {
         <Text style={cartst.text1}>
           {cards && cards.length} {t('home.item')}
         </Text>
-        {!loading ? (
-          <Loading />
+        {cards.length === 0 ? (
+          <Text>Bắt đầu mua sắm ngay</Text>
         ) : (
           <FlatList
             style={cartst.flat}
@@ -140,6 +150,8 @@ const CartScreen = ({navigation}) => {
             extraData={item => item.id}
             ItemSeparatorComponent={<View style={{marginBottom: spacing.sm}} />}
             showsVerticalScrollIndicator={false}
+            onRefresh={fetchCard}
+            refreshing={refreshing}
           />
         )}
       </View>

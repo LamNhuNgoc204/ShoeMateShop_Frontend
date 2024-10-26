@@ -92,8 +92,9 @@ const CheckOutScreen = ({navigation}) => {
         state.payment &&
         state.payment.payment_method === 'Thanh toán khi nhận hàng'
       ) {
-        setModalVisible(true);
+        // setModalVisible(true);
         ToastAndroid.show('tao don thanh cong', ToastAndroid.show);
+        navigation.navigate('CheckoutSuccess');
       }
     }
 

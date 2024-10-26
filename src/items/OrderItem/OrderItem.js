@@ -5,31 +5,62 @@ import appst from '../../constants/AppStyle';
 import {CustomedButton} from '../../components';
 import {spacing} from '../../constants';
 
-const OrderItem = ({receive, cancel}) => {
+const OrderItem = ({item, receive, cancel}) => {
+  const orderDetail = item.orderDetails && item.orderDetails[0];
+  const product = orderDetail && orderDetail.product;
+
+  const quantities =
+    item.orderDetails &&
+    item.orderDetails.map(detail => detail.product.pd_quantity);
+  console.log('quantities', quantities);
+
+  const totalQuantity =
+    quantities && quantities.reduce((acc, detail) => acc + detail, 0);
+  console.log('totalQuantity', totalQuantity);
+
+  console.log('product order', product);
+
   return (
     <TouchableOpacity onPress={() => {}} style={odit.container}>
-      <Text style={odit.textCode}>Code orders: ExAmPlE123XYZ</Text>
+      <Text style={odit.textCode}>
+        Code orders: {item._id && item._id.slice(0, 10)}
+      </Text>
       <View style={[appst.rowStart, odit.itemContainer]}>
         <Image
           style={odit.img}
-          source={{
-            uri: 'https://i.pinimg.com/236x/e1/8a/7e/e18a7e2f5849a81c2829002440b0962f.jpg',
-          }}
+          source={
+            product && product.imageUrl && product.imageUrl[0]
+              ? {
+                  uri: product && product.imageUrl && product.imageUrl[0],
+                }
+              : require('../../assets/images/placeholder_image.jpg')
+          }
         />
         <View style={odit.viewContent}>
-          <Text style={odit.name}>Spring New Style Women Casual .....</Text>
-          <Text style={odit.text}>
-            Size: <Text style={odit.text1}>38</Text>
+          <Text numberOfLines={1} style={odit.name}>
+            {product && product.name}
           </Text>
           <Text style={odit.text}>
-            Price: <Text style={odit.text1}>3800000</Text>
+            Size: <Text style={odit.text1}>{product && product.size_name}</Text>
+          </Text>
+          <Text style={odit.text}>
+            Price:{' '}
+            <Text style={odit.text1}>
+              {product &&
+                product.price &&
+                product.price.toLocaleString('vi-VN')}
+              đ
+            </Text>
           </Text>
         </View>
       </View>
       <View style={[appst.rowCenter, odit.view1]}>
-        <Text style={odit.quatity}>1 item</Text>
+        <Text style={odit.quatity}>{totalQuantity} item(s)</Text>
         <Text style={odit.total}>
-          Total Price: <Text style={odit.price}>3800000</Text>
+          Total Price:{' '}
+          <Text style={odit.price}>
+            {item.total_price && item.total_price.toLocaleString('vi-VN')} đ
+          </Text>
         </Text>
       </View>
       {!receive && !cancel ? (

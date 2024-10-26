@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 import React from 'react';
 import Header from '../../components/Header';
 import appst from '../../constants/AppStyle';
@@ -20,7 +20,7 @@ const OrderScreen = ({navigation}) => {
     <View style={[appst.container]}>
       <Header
         iconLeft={require('../../assets/icons/back.png')}
-        leftOnPress={() => navigation.goBack()}
+        leftOnPress={() => navigation.navigate('BottomNav')}
         name={t('profiles.order_history')}
         iconRight={require('../../assets/icons/search.png')}
         rightOnPress={() => navigation.navigate('')}
@@ -42,7 +42,7 @@ const OrderScreen = ({navigation}) => {
         }}>
         <TopTab.Screen name={t('orders.pay')} component={ToPay} />
         <TopTab.Screen name={t('orders.ship')} component={ToShip} />
-        <TopTab.Screen name={t('orders.receive')} component={ToReceive} />
+        <TopTab.Screen name={'Đã giao'} component={ToReceive} />
         <TopTab.Screen name={t('orders.cancel')} component={Cancalled} />
       </TopTab.Navigator>
     </View>
