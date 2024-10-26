@@ -37,13 +37,14 @@ import ShipScreen from '../screens/Shipping';
 import ChoosePaymentScreen from '../screens/Payment/ChoosePayment';
 import ZaloPayScreen from '../screens/Payment/ZaloPay/Payment';
 import ZaloPayWebView from '../screens/Payment/ZaloPay/WebView';
+import CheckoutSuccess from '../screens/CheckoutScreen/CheckoutSuccess';
 
 const Stack = createNativeStackNavigator();
 
 const StackNav = () => {
   return (
     <Stack.Navigator
-      initialRouteName="SplashScreen"
+      initialRouteName="LoginScreen"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="SplashScreen" component={SplashScreen} />
       <Stack.Screen name="OnBoardScreen" component={OnBoardScreen} />
@@ -90,6 +91,7 @@ const StackNav = () => {
       <Stack.Screen name="ShipScreen" component={ShipScreen} />
       <Stack.Screen name="ZaloPayScreen" component={ZaloPayScreen} />
       <Stack.Screen name="ZaloPayWebView" component={ZaloPayWebView} />
+      <Stack.Screen name="CheckoutSuccess" component={CheckoutSuccess} />
       <Stack.Screen
         name="ChoosePaymentScreen"
         component={ChoosePaymentScreen}

@@ -1,6 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {IPV4} from '@env';
 
 const AxiosInstance = (contentType = 'application/json') => {
   const axiosInstance = axios.create({

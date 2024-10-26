@@ -10,6 +10,7 @@ const initialState = {
   address: null,
   payment: null,
   priceToPay: 0,
+  orderId: null,
 };
 
 // Khởi tạo slice
@@ -34,6 +35,9 @@ const CartSlice = createSlice({
     },
     setPriceToPay: (state, action) => {
       state.priceToPay = action.payload;
+    },
+    setOrderId: (state, action) => {
+      state.orderId = action.payload;
     },
   },
   // extraReducers: builder => {
@@ -61,5 +65,6 @@ export const {
   setToltalPrice,
   setPaymentMethod,
   setPriceToPay,
+  setOrderId,
 } = CartSlice.actions;
 export default CartSlice.reducer;

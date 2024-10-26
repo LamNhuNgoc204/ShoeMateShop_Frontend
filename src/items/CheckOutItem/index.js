@@ -2,10 +2,9 @@ import React from 'react';
 import { View, Text, Image, FlatList } from 'react-native';
 import { c_outIt } from './style';
 
-const CheckOutItem = ({ item }) => {
-  console.log('item', item);
-
-  const itemPrice = item?.price * item?.quantity || 0;
+const CheckOutItem = ({item}) => {
+  // console.log('item', item);
+  // console.log('assets', item.product_id.assets[0]);
 
   return (
     <View style={[c_outIt.container]}>

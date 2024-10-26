@@ -43,7 +43,7 @@ const ProductDetail = props => {
 
   const fetchProduct = async () => {
     try {
-      const response = await AxiosInstance().get(`/products//detail/${index}`);
+      const response = await AxiosInstance().get(`/products/detail/${index}`);
       if (response) {
         setProduct(response);
       }

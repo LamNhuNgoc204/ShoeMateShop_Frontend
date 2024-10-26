@@ -13,7 +13,9 @@ const ChoosePaymentScreen = ({navigation}) => {
 
   useEffect(() => {
     const fetchPayment = async () => {
-      const response = await AxiosInstance().get('/payment/getall-payment');
+      const response = await AxiosInstance().get(
+        '/payment-method/getall-payment',
+      );
       if (response.status) {
         setlistPayment(response.data);
       }
