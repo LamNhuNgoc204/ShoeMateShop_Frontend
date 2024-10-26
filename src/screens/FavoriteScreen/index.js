@@ -7,11 +7,7 @@ import appst from '../../constants/AppStyle';
 import ProductItem from '../../items/ProductItem';
 import {addProductInWishlist, removeFromWishlist} from '../../api/ProductApi';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  removeFromWishlistLocal,
-  setWishlist,
-  setWishlistLocal,
-} from '../../redux/reducer/productReducer';
+import {setWishlistLocal} from '../../redux/reducer/productReducer';
 
 const FavoriteScreen = ({navigation}) => {
   const {t} = useTranslation();
