@@ -37,6 +37,7 @@ const ToShip = () => {
             item._id ? item._id : index.toString()
           }
           scrollEnabled={false}
+          revert
         />
       ) : (
         <View style={[appst.center, odst.view]}>
