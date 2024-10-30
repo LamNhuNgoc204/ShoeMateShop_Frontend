@@ -63,4 +63,17 @@ export const cartst = StyleSheet.create({
     fontSize: sizes.size13,
     fontWeight: '650',
   },
+  placeholder: {
+    width: '100%',
+    height: 250,
+    justifyContent: 'flex-end',
+  },
+  text: {
+    color: 'black',
+    fontSize: 16,
+    textAlign: 'center',
+    fontFamily: fonts.rlw_bold,
+    marginTop: 10,
+    textDecorationLine: 'underline',
+  },
 });

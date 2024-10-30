@@ -169,8 +169,6 @@ const ItemCart = ({
     );
   };
 
-  console.log();
-
   return (
     <Swipeable
       ref={swipeableRef}
@@ -224,7 +222,7 @@ const ItemCart = ({
                 <Image source={require('../../assets/icons/increase.png')} />
               </TouchableOpacity>
               <Text style={itCart.quatity}>{productQuantity}</Text>
-              <TouchableOpacity onPress={giamSL}>
+              <TouchableOpacity style={{padding: 5}} onPress={giamSL}>
                 <Image source={require('../../assets/icons/decrease.png')} />
               </TouchableOpacity>
             </View>

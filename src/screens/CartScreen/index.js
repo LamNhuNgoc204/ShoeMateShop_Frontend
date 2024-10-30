@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   Image,
   ToastAndroid,
+  ImageBackground,
+  ScrollView,
 } from 'react-native';
 import {cartst} from './style';
 import {spacing} from '../../constants';
@@ -15,16 +17,18 @@ import appst from '../../constants/AppStyle';
 import {CustomedButton} from '../../components';
 import ItemCart from '../../items/CartItem/ItemCart';
 import {getUserCard} from '../../api/CartApi';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {setOrderData, setToltalPrice} from '../../redux/reducer/cartReducer';
 import Loading from '../../components/Loading';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
+import ProductItem from '../../items/ProductItem';
 
 const CartScreen = ({navigation}) => {
   const {t} = useTranslation();
-  const [currentlyOpenSwipeable, setCurrentlyOpenSwipeable] = useState(null);
   const [cards, setCards] = useState([]);
+  const [currentlyOpenSwipeable, setCurrentlyOpenSwipeable] = useState(null);
   const dispatch = useDispatch();
+  const productState = useSelector(state => state.products);
   const [totalPrice, setTotalPrice] = useState(0);
   const [checkedProducts, setCheckedProducts] = useState([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
@@ -32,7 +36,7 @@ const CartScreen = ({navigation}) => {
 
   const fetchCard = async () => {
     try {
-      setRefreshing(true); // Bắt đầu refreshing
+      setRefreshing(true);
       const response = await getUserCard();
       if (response.status) {
         setCards(response.data);
@@ -50,11 +54,11 @@ const CartScreen = ({navigation}) => {
   //   fetchCard();
   // }, []);
 
-  // Sử dụng useFocusEffect để gọi lại API mỗi khi màn hình được lấy nét
+  // Sử dụng useFocusEffect để gọi lại API mỗi khi màn hình được mount
   useFocusEffect(
     React.useCallback(() => {
       fetchCard();
-    }, [])
+    }, []),
   );
 
   // console.log('cards', cards);
@@ -128,7 +132,35 @@ const CartScreen = ({navigation}) => {
           {cards && cards.length} {t('home.item')}
         </Text>
         {cards.length === 0 ? (
-          <Text>Bắt đầu mua sắm ngay</Text>
+          <ScrollView>
+            <Image
+              style={cartst.placeholder}
+              source={require('../../assets/images/shopping.jpg')}
+            />
+            <TouchableOpacity
+              style={{marginBottom: 20}}
+              onPress={() =>
+                navigation.reset({
+                  index: 0,
+                  routes: [{name: 'BottomNav'}],
+                })
+              }>
+              <Text style={cartst.text}>Bat dau mua sam ngay</Text>
+            </TouchableOpacity>
+            <View style={appst.center}>
+              <FlatList
+                data={productState.products}
+                renderItem={({item, index}) => (
+                  <ProductItem product={item} index={index} />
+                )}
+                keyExtractor={(item, index) => index.toString()}
+                numColumns={2}
+                showsVerticalScrollIndicator={false}
+                scrollEnabled={false}
+                style={{marginLeft: 20}}
+              />
+            </View>
+          </ScrollView>
         ) : (
           <FlatList
             style={cartst.flat}

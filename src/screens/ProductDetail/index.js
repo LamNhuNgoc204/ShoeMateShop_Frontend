@@ -20,7 +20,6 @@ import {useSelector} from 'react-redux';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import BottomSheetContent from '../../items/Sizebottom';
 import ProductSkeleton from '../../placeholders/product/detail';
-import homeStyle from '../HomeScreen/style';
 
 const ProductDetail = props => {
   const navigation = useNavigation();
@@ -99,7 +98,7 @@ const ProductDetail = props => {
       {!loading ? (
         <ScrollView style={{flex: 1, marginBottom: spacing.md}}>
           <View>
-            {product && product.assets && product.assets.length > 0 && (
+            {product && product.assets && product.assets.length > 0 ? (
               <FlatList
                 horizontal
                 pagingEnabled
@@ -110,6 +109,11 @@ const ProductDetail = props => {
                   <Image style={pddt.pdImg} source={{uri: item}} />
                 )}
                 keyExtractor={(item, index) => index.toString()}
+              />
+            ) : (
+              <Image
+                style={pddt.pdImg}
+                source={require('../../assets/images/placeholder_image.jpg')}
               />
             )}
             {product && product.assets && product.assets.length > 0 && (
@@ -138,7 +142,9 @@ const ProductDetail = props => {
             <View style={[appst.rowCenter, pddt.body1]}>
               <View>
                 <Text style={pddt.name}>{product.name}</Text>
-                <Text style={pddt.price}>${product.price}</Text>
+                <Text style={pddt.price}>
+                  ${product.price && product.price.toLocaleString('vi-VN')}
+                </Text>
               </View>
               <View style={[pddt.iconfav, appst.center]}>
                 <Image source={require('../../assets/icons/favorite.png')} />
@@ -179,7 +185,7 @@ const ProductDetail = props => {
             </Text>
             {hasReviews ? (
               <View>
-                <FlatList 
+                <FlatList
                   data={product.reviewsOfProduct}
                   renderItem={({item}) => <ItemReview item={item} />}
                   extraData={item => item.id}
@@ -212,7 +218,7 @@ const ProductDetail = props => {
                 numColumns={2}
                 showsVerticalScrollIndicator={false}
                 scrollEnabled={false}
-                ItemSeparatorComponent={() => <View style={homeStyle.separator}/>}
+                style={{marginLeft: 20}}
               />
             </View>
           </View>
