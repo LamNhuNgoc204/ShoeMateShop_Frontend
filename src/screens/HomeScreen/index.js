@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {View, Text, Image, ActivityIndicator} from 'react-native';
+import {View, Text, Image} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {useDispatch, useSelector} from 'react-redux';
 import {FlatList, ScrollView} from 'react-native-gesture-handler';
@@ -18,7 +18,7 @@ import {BANNERS} from '../../api/mockData';
 import {addProductInWishlist, removeFromWishlist} from '../../api/ProductApi';
 import Category from '../../items/Category';
 import {setWishlistLocal} from '../../redux/reducer/productReducer';
-import Loading from '../../components/Loading';
+import HomeSkeleton from '../../placeholders/home';
 
 const HomeScreen = ({navigation}) => {
   const {t} = useTranslation();
@@ -117,7 +117,7 @@ const HomeScreen = ({navigation}) => {
         }}
       />
       {loading ? (
-        <Loading />
+        <HomeSkeleton />
       ) : (
         // <ActivityIndicator size="large" color="#0000ff" />
         <ScrollView
