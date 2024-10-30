@@ -54,7 +54,11 @@ const LoginScreen = () => {
       if (!user.isVerified) {
         navigation.navigate('OtpVerification', {email});
       } else {
-        navigation.navigate('BottomNav');
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'BottomNav'}],
+        });
+        // navigation.navigate('BottomNav');
       }
     } else {
       ToastAndroid.show('Đăng nhập thất bại', ToastAndroid.SHORT);
