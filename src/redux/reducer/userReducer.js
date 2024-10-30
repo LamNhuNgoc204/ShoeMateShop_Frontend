@@ -6,6 +6,7 @@ const initialState = {
   error: null,
   user: null,
   token: null,
+  avatar: null,
 };
 
 const UserSlice = createSlice({
@@ -15,6 +16,9 @@ const UserSlice = createSlice({
     logout: state => {
       state.user = null;
       state.token = null;
+    },
+    setAvatarUser: (state, action) => {
+      state.avatar = action.payload;
     },
   },
   extraReducers: builder => {
@@ -27,6 +31,7 @@ const UserSlice = createSlice({
         console.log('Login fulfilled');
         state.isLoading = false;
         state.user = action.payload.user;
+        state.avatar = action.payload.user.avatar;
         state.token = action.payload.token || null;
         state.error = null;
       })
@@ -71,5 +76,5 @@ const UserSlice = createSlice({
   },
 });
 
-export const {logout} = UserSlice.actions;
+export const {logout, setAvatarUser} = UserSlice.actions;
 export default UserSlice.reducer;
