@@ -147,7 +147,13 @@ const ProductDetail = props => {
                 </Text>
               </View>
               <View style={[pddt.iconfav, appst.center]}>
-                <Image source={require('../../assets/icons/favorite.png')} />
+                {product.isFavorite ? (
+                  <Image
+                    source={require('../../assets/icons/heart_select.png')}
+                  />
+                ) : (
+                  <Image source={require('../../assets/icons/favorite.png')} />
+                )}
               </View>
             </View>
             <View style={[appst.rowStart]}>
