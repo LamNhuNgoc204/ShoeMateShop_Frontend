@@ -38,7 +38,6 @@ const ChooseAddress = ({navigation}) => {
         name={t('home.address')}
       />
       <View style={c_adst.viewBody}>
-        <Text style={c_adst.text}>{t('titles.address')}:</Text>
         <View style={c_adst.body1}>
           {addresses && addresses.length > 0 ? (
             <FlatList

@@ -1,4 +1,9 @@
 import {createSlice} from '@reduxjs/toolkit';
+import {
+  getAdressDefault,
+  getPaymentDefault,
+  getShipDefault,
+} from '../thunks/CartThunks';
 // import {addItem, removeItem} from '../thunks/CartThunks';
 
 const initialState = {
@@ -40,22 +45,18 @@ const CartSlice = createSlice({
       state.orderId = action.payload;
     },
   },
-  // extraReducers: builder => {
-  //   builder
-  //     .addCase(addItem.fulfilled, (state, action) => {
-  //       const newItem = action.payload;
-  //       state.items.push(newItem);
-  //       state.totalAmount += newItem.price;
-  //     })
-  //     .addCase(removeItem.fulfilled, (state, action) => {
-  //       const id = action.payload.id;
-  //       const existingItem = state.items.find(item => item.id === id);
-  //       if (existingItem) {
-  //         state.items = state.items.filter(item => item.id !== id);
-  //         state.totalAmount -= existingItem.price;
-  //       }
-  //     });
-  // },
+  extraReducers: builder => {
+    builder
+      .addCase(getShipDefault.fulfilled, (state, action) => {
+        state.ship = action.payload;
+      })
+      .addCase(getAdressDefault.fulfilled, (state, action) => {
+        state.address = action.payload;
+      })
+      .addCase(getPaymentDefault.fulfilled, (state, action) => {
+        state.payment = action.payload;
+      });
+  },
 });
 
 export const {

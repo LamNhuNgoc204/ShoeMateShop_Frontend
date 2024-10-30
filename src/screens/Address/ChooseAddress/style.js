@@ -14,13 +14,6 @@ const c_adst = StyleSheet.create({
   viewBody: {
     flex: 1,
   },
-  text: {
-    marginHorizontal: spacing.md,
-    marginVertical: spacing.lg,
-    color: colors.black,
-    fontFamily: fonts.rlw_semibold,
-    fontSize: sizes.size16,
-  },
   body1: {
     backgroundColor: colors.background_primary,
   },

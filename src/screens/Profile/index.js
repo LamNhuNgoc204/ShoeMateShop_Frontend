@@ -14,7 +14,6 @@ import {handleNavigate} from '../../utils/functions/navigationHelper';
 const ProfileScreen = () => {
   const {t} = useTranslation();
   const navigation = useNavigation();
-
   const {user, avatar} = useSelector(state => state.user);
 
   const renderItem = ({item}) => (
