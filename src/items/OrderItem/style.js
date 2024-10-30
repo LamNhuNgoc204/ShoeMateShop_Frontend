@@ -10,6 +10,7 @@ const odit = StyleSheet.create({
     paddingTop: spacing.sm,
     marginBottom: spacing.sm,
     paddingBottom: spacing.xm,
+    backgroundColor: '#c3cee845',
   },
   textCode: {
     fontFamily: fonts.rlw_semibold,
@@ -30,6 +31,7 @@ const odit = StyleSheet.create({
   viewContent: {
     height: 70,
     justifyContent: 'space-between',
+    flex: 1,
   },
   name: {
     fontFamily: fonts.rlw_medium,
@@ -84,12 +86,12 @@ const odit = StyleSheet.create({
     color: '#fff',
     paddingVertical: spacing.sm,
     fontSize: sizes.size14,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   textCancel: {
     fontSize: sizes.size10,
     fontFamily: fonts.rlw_medium,
-    color: colors.color707070
+    color: colors.color707070,
   },
 });
 export default odit;

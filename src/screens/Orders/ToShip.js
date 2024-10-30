@@ -1,27 +1,43 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {View, Text, FlatList, ScrollView, Image} from 'react-native';
 import {odst} from './style';
 import appst from '../../constants/AppStyle';
 import ProductItem from '../../items/ProductItem/index.js';
 import OrderItem from '../../items/OrderItem/OrderItem.js';
+import {getOrderProcess} from '../../api/OrderApi.js';
 
 const ToShip = () => {
   const useAppSelector = useSelector;
   const products = useAppSelector(state => state.products.products);
+  const [processOrders, setProcessOrders] = useState([]);
 
-  const data = [];
+  useEffect(() => {
+    const fetchOrder = async () => {
+      try {
+        const response = await getOrderProcess();
+        if (response.status) {
+          setProcessOrders(response.data);
+        }
+      } catch (error) {
+        console.log('Get order error: ', error);
+      }
+    };
+    fetchOrder();
+  }, []);
+
   return (
     <ScrollView style={appst.container}>
-      {data.length != 0 ? (
+      {processOrders.length !== 0 ? (
         <FlatList
           style={odst.flat1}
-          data={data}
+          data={processOrders}
           renderItem={({item}) => <OrderItem item={item} />}
           keyExtractor={(item, index) =>
             item._id ? item._id : index.toString()
           }
           scrollEnabled={false}
+          revert
         />
       ) : (
         <View style={[appst.center, odst.view]}>
@@ -44,7 +60,9 @@ const ToShip = () => {
           renderItem={({item, index}) => (
             <ProductItem product={item} index={index} />
           )}
-          keyExtractor={item => item._id}
+          keyExtractor={(item, index) =>
+            item._id ? item._id : index.toString()
+          }
           numColumns={2}
           scrollEnabled={false}
         />

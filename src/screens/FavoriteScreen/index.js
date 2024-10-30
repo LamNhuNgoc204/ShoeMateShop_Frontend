@@ -7,10 +7,7 @@ import appst from '../../constants/AppStyle';
 import ProductItem from '../../items/ProductItem';
 import {addProductInWishlist, removeFromWishlist} from '../../api/ProductApi';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  removeFromWishlistLocal,
-  setWishlist,
-} from '../../redux/reducer/productReducer';
+import {setWishlistLocal} from '../../redux/reducer/productReducer';
 
 const FavoriteScreen = ({navigation}) => {
   const {t} = useTranslation();
@@ -43,7 +40,7 @@ const FavoriteScreen = ({navigation}) => {
       }
 
       if (response.status) {
-        dispatch(setWishList(product));
+        dispatch(setWishlistLocal(product));
       }
     } catch (error) {
       console.log('Error removing item from wishlist:', error);

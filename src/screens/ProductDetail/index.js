@@ -19,6 +19,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import BottomSheetContent from '../../items/Sizebottom';
+import ProductSkeleton from '../../placeholders/product/detail';
 
 const ProductDetail = props => {
   const navigation = useNavigation();
@@ -33,8 +34,9 @@ const ProductDetail = props => {
 
   const useAppSelector = useSelector;
   const productState = useAppSelector(state => state.products);
+  const [loading, setLoading] = useState(true);
 
-  const [product, setProduct] = useState([]);
+  const [product, setProduct] = useState({});
   const [sizeModalVisible, setSizeModalVisible] = useState(false);
   const [selectedSize, setSelectedSize] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -46,6 +48,7 @@ const ProductDetail = props => {
       const response = await AxiosInstance().get(`/products/detail/${index}`);
       if (response) {
         setProduct(response);
+        setLoading(false);
       }
       // console.log('data product detail', response);
     } catch (error) {
@@ -93,120 +96,121 @@ const ProductDetail = props => {
         iconRight={require('../../assets/icons/mycart.png')}
         backgroundColor={colors.background_secondary}
       />
-      <ScrollView style={{flex: 1, marginBottom: spacing.md}}>
-        <View>
-          {product && product.assets && product.assets.length > 0 ? (
-            <FlatList
-              horizontal
-              pagingEnabled
-              showsHorizontalScrollIndicator={false}
-              data={product.assets}
-              extraData={selectedImage}
-              renderItem={({item}) => (
-                <Image style={pddt.pdImg} source={{uri: item}} />
-              )}
-              keyExtractor={(item, index) => index.toString()}
-            />
-          ) : (
-            <Image
-              style={pddt.pdImg}
-              source={require('../../assets/images/placeholder_image.jpg')}
-            />
-          )}
-          {product && product.assets && product.assets.length > 0 && (
-            <FlatList
-              style={pddt.flatItem}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              data={product.assets}
-              extraData={selectedImage}
-              keyExtractor={(item, index) => index.toString()}
-              ItemSeparatorComponent={<View style={{marginHorizontal: 5}} />}
-              renderItem={({item, index}) => {
-                return (
-                  <TouchableOpacity onPress={() => setSelectedImage(item)}>
-                    <Image style={pddt.controlItem} source={{uri: item}} />
-                  </TouchableOpacity>
-                );
-              }}
-              contentContainerStyle={<View style={{marginHorizontal: 5}} />}
-            />
-          )}
-        </View>
-
-        <View style={pddt.body}>
-          <Text style={pddt.bestSl}>BEST SELLER</Text>
-          <View style={[appst.rowCenter, pddt.body1]}>
-            <View>
-              <Text style={pddt.name}>{product.name}</Text>
-              <Text style={pddt.price}>${product.price}</Text>
-            </View>
-            <View style={[pddt.iconfav, appst.center]}>
-              <Image source={require('../../assets/icons/favorite.png')} />
-            </View>
-          </View>
-          <View style={[appst.rowStart]}>
-            <Image
-              source={require('../../assets/icons/star.png')}
-              style={appst.icon20}
-            />
-            <Text style={pddt.textStar}>{product && product.avgRating}/5</Text>
-            <Text style={pddt.bought}>
-              Đã bán ({product && product.sold < 100 ? product.sold : '100+'})
-            </Text>
-          </View>
-          <View style={pddt.viewDes}>
-            <Text numberOfLines={3} style={pddt.des}>
-              {product.description}
-            </Text>
-            <Text style={pddt.readmore}>Read More</Text>
-          </View>
-        </View>
-
-        <View style={pddt.body2}>
-          <Text style={[pddt.reviewTitle, pddt.pdHorizon]}>
-            Product Reviews
-          </Text>
-          {hasReviews ? (
-            <View>
+      {!loading ? (
+        <ScrollView style={{flex: 1, marginBottom: spacing.md}}>
+          <View>
+            {product && product.assets && product.assets.length > 0 && (
               <FlatList
-                data={product.reviewsOfProduct}
-                renderItem={({item}) => <ItemReview item={item} />}
-                extraData={item => item.id}
-                scrollEnabled={false}
+                horizontal
+                pagingEnabled
+                showsHorizontalScrollIndicator={false}
+                data={product.assets}
+                extraData={selectedImage}
+                renderItem={({item}) => (
+                  <Image style={pddt.pdImg} source={{uri: item}} />
+                )}
+                keyExtractor={(item, index) => index.toString()}
               />
-              <Text style={pddt.text1}>
-                See All ({product.reviewsOfProduct.length})
+            )}
+            {product && product.assets && product.assets.length > 0 && (
+              <FlatList
+                style={pddt.flatItem}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={product.assets}
+                extraData={selectedImage}
+                keyExtractor={(item, index) => index.toString()}
+                ItemSeparatorComponent={<View style={{marginHorizontal: 5}} />}
+                renderItem={({item, index}) => {
+                  return (
+                    <TouchableOpacity onPress={() => setSelectedImage(item)}>
+                      <Image style={pddt.controlItem} source={{uri: item}} />
+                    </TouchableOpacity>
+                  );
+                }}
+                contentContainerStyle={<View style={{marginHorizontal: 5}} />}
+              />
+            )}
+          </View>
+
+          <View style={pddt.body}>
+            <Text style={pddt.bestSl}>BEST SELLER</Text>
+            <View style={[appst.rowCenter, pddt.body1]}>
+              <View>
+                <Text style={pddt.name}>{product.name}</Text>
+                <Text style={pddt.price}>${product.price}</Text>
+              </View>
+              <View style={[pddt.iconfav, appst.center]}>
+                <Image source={require('../../assets/icons/favorite.png')} />
+              </View>
+            </View>
+            <View style={[appst.rowStart]}>
+              <Image
+                source={require('../../assets/icons/star.png')}
+                style={appst.icon20}
+              />
+              <Text style={pddt.textStar}>
+                {product && product.avgRating}/5
+              </Text>
+              <Text style={pddt.bought}>
+                Đã bán ({product && product.sold < 100 ? product.sold : '100+'})
               </Text>
             </View>
-          ) : (
-            <Text style={{padding: 10, textAlign: 'center'}}>
-              Chua co danh gia
-            </Text>
-          )}
-        </View>
+            <View style={pddt.viewDes}>
+              <Text numberOfLines={3} style={pddt.des}>
+                {product.description}
+              </Text>
+              <Text style={pddt.readmore}>Read More</Text>
+            </View>
+          </View>
 
-        <View>
-          <View style={[appst.center, {flexDirection: 'row'}]}>
-            <View style={pddt.border} />
-            <Text style={pddt.text2}>Similar Product</Text>
-            <View style={pddt.border} />
+          <View style={pddt.body2}>
+            <Text style={[pddt.reviewTitle, pddt.pdHorizon]}>
+              Product Reviews
+            </Text>
+            {hasReviews ? (
+              <View>
+                <FlatList
+                  data={product.reviewsOfProduct}
+                  renderItem={({item}) => <ItemReview item={item} />}
+                  extraData={item => item.id}
+                  scrollEnabled={false}
+                />
+                <Text style={pddt.text1}>
+                  See All ({product.reviewsOfProduct.length})
+                </Text>
+              </View>
+            ) : (
+              <Text style={{padding: 10, textAlign: 'center'}}>
+                Chua co danh gia
+              </Text>
+            )}
           </View>
-          <View style={appst.center}>
-            <FlatList
-              data={productState.products}
-              renderItem={({item, index}) => (
-                <ProductItem product={item} index={index} />
-              )}
-              keyExtractor={(item, index) => index.toString()}
-              numColumns={2}
-              showsVerticalScrollIndicator={false}
-              scrollEnabled={false}
-              // ItemSeparatorComponent={() => <View style={homeStyle.separator}/>}
-            />
+
+          <View>
+            <View style={[appst.center, {flexDirection: 'row'}]}>
+              <View style={pddt.border} />
+              <Text style={pddt.text2}>Similar Product</Text>
+              <View style={pddt.border} />
+            </View>
+            <View style={appst.center}>
+              <FlatList
+                data={productState.products}
+                renderItem={({item, index}) => (
+                  <ProductItem product={item} index={index} />
+                )}
+                keyExtractor={(item, index) => index.toString()}
+                numColumns={2}
+                showsVerticalScrollIndicator={false}
+                scrollEnabled={false}
+                // ItemSeparatorComponent={() => <View style={homeStyle.separator}/>}
+              />
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      ) : (
+        <ProductSkeleton />
+      )}
 
       <View style={[pddt.footer, appst.rowCenter]}>
         <View style={[appst.rowCenter, pddt.footer1]}>

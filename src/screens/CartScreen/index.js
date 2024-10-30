@@ -7,9 +7,11 @@ import Header from '../../components/Header';
 import appst from '../../constants/AppStyle';
 import { CustomedButton } from '../../components';
 import ItemCart from '../../items/CartItem/ItemCart';
-import { getUserCard, deleteAllCart } from '../../api/CartApi';
-import { useDispatch } from 'react-redux';
-import { setOrderData, setToltalPrice } from '../../redux/reducer/cartReducer';
+import {getUserCard} from '../../api/CartApi';
+import {useDispatch} from 'react-redux';
+import {setOrderData, setToltalPrice} from '../../redux/reducer/cartReducer';
+import Loading from '../../components/Loading';
+import { useFocusEffect } from '@react-navigation/native';
 
 const CartScreen = ({ navigation }) => {
   const { t } = useTranslation();
@@ -20,27 +22,32 @@ const CartScreen = ({ navigation }) => {
   const [checkedProducts, setCheckedProducts] = useState([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+
 
   const fetchCard = async () => {
-    setRefreshing(true);
     try {
+      setRefreshing(true); // Bắt đầu refreshing
       const response = await getUserCard();
       if (response.status) {
-        setCards(response.cart);
+        setCards(response.data);
         setCheckedProducts([]);
         setIsAllChecked(false);
       }
     } catch (error) {
       console.log('error', error);
     } finally {
-      setRefreshing(false);
+      setRefreshing(false); // Kết thúc refreshing
     }
   };
 
-  useEffect(() => {
-    fetchCard();
-  }, []);
+  // Sử dụng useFocusEffect để gọi lại API mỗi khi màn hình được mount
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchCard();
+    }, [])
+  );
+  // console.log('cards', cards);
+
 
   const handleDeleteAllCart = async () => {
     try {
@@ -164,31 +171,33 @@ const CartScreen = ({ navigation }) => {
         <Text style={cartst.text1}>
           {cards.length} {t('home.item')}
         </Text>
-        <FlatList
-          style={cartst.flat}
-          data={cards}
-          renderItem={({ item }) => (
-            <ItemCart
-              item={item}
-              setCards={setCards}
-              cards={cards}
-              setTotalPrice={setTotalPrice}
-              checkedProducts={checkedProducts}
-              setCheckedProducts={setCheckedProducts}
-              currentlyOpenSwipeable={currentlyOpenSwipeable}
-              setCurrentlyOpenSwipeable={setCurrentlyOpenSwipeable}
-              isChecked={checkedProducts.some(cart => cart._id === item._id)}
-              onCheckedChange={handleCheckedChange}
-              refreshCart={fetchCard}
-            />
-          )}
-          keyExtractor={(item) => item._id}
-          extraData={checkedProducts}
-          ItemSeparatorComponent={<View style={{ marginBottom: spacing.sm }} />}
-          showsVerticalScrollIndicator={false}
-          refreshing={refreshing}
-          onRefresh={fetchCard}
-        />
+        {cards.length === 0 ? (
+          <Text>Bắt đầu mua sắm ngay</Text>
+        ) : (
+          <FlatList
+            style={cartst.flat}
+            data={cards}
+            renderItem={({item}) => (
+              <ItemCart
+                item={item}
+                setCards={setCards}
+                cards={cards}
+                setTotalPrice={setTotalPrice}
+                checkedProducts={checkedProducts}
+                setCheckedProducts={setCheckedProducts}
+                currentlyOpenSwipeable={currentlyOpenSwipeable}
+                setCurrentlyOpenSwipeable={setCurrentlyOpenSwipeable}
+                isChecked={checkedProducts.some(cart => cart._id === item._id)}
+                onCheckedChange={handleCheckedChange}
+              />
+            )}
+            extraData={item => item.id}
+            ItemSeparatorComponent={<View style={{marginBottom: spacing.sm}} />}
+            showsVerticalScrollIndicator={false}
+            onRefresh={fetchCard}
+            refreshing={refreshing}
+          />
+        )}
       </View>
       <View style={cartst.viewFooter}>
         <View style={[appst.rowCenter]}>
