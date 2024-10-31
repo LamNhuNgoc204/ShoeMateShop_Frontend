@@ -9,7 +9,7 @@ export const PROFILE = [
     id: '1',
     iconSource: require('../assets/icons/ic_recently.png'),
     text: 'Recently Viewed',
-    navigateTo: 'RecentlyViewed',
+    navigateTo: 'RecentlyViewedScreen',
   },
   {
     id: '2',

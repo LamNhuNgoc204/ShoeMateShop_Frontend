@@ -37,3 +37,27 @@ export const removeFromWishlist = async productId => {
     console.log('delete product in wishlist error: ', error);
   }
 };
+
+export const addRecentView = async productId => {
+  try {
+    const response = await AxiosInstance().post(`/recent-views/${productId}`);
+    if (response.status) {
+      return response;
+    }
+  } catch (error) {
+    console.log('add recent view err: ', error);
+  }
+};
+
+export const getRecentViews = async () => {
+  try {
+    const response = await AxiosInstance().get(
+      '/recent-views/get-recent-views',
+    );
+    if (response.status) {
+      return response;
+    }
+  } catch (error) {
+    console.log('get recent view err: ', error);
+  }
+};

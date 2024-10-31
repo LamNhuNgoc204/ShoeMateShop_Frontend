@@ -19,7 +19,7 @@ import OrderDetail from '../screens/OrderDetail';
 import Profile from '../screens/Profile';
 import EditProfile from '../screens/EditProfile';
 import SettingScreen from '../screens/SettingScreen';
-import RecentViewed from '../screens/RecentlyViewedScreen';
+import RecentlyViewedScreen from '../screens/RecentlyViewedScreen';
 import ResetPasswordScreen from '../screens/ResetPasswordScreen';
 import MyRating from '../screens/Rating';
 import Review from '../screens/Review';
@@ -67,7 +67,7 @@ const StackNav = () => {
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="SettingScreen" component={SettingScreen} />
-      <Stack.Screen name="RecentViewed" component={RecentViewed} />
+      <Stack.Screen name="RecentlyViewedScreen" component={RecentlyViewedScreen} />
       <Stack.Screen
         name="ResetPasswordScreen"
         component={ResetPasswordScreen}

@@ -20,6 +20,7 @@ import {useSelector} from 'react-redux';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import BottomSheetContent from '../../items/Sizebottom';
 import ProductSkeleton from '../../placeholders/product/detail';
+import {addRecentView} from '../../api/ProductApi';
 
 const ProductDetail = props => {
   const navigation = useNavigation();
@@ -44,7 +45,12 @@ const ProductDetail = props => {
 
   const fetchProduct = async () => {
     try {
-      const response = await AxiosInstance().get(`/products/detail/${index}`);
+      const [addpdView, response] = await Promise.all([
+        addRecentView(index),
+        AxiosInstance().get(`/products/detail/${index}`),
+      ]);
+
+      console.log('Thêm sản phẩm vào danh sách xem gần đây:', addpdView);
       if (response) {
         setProduct(response);
         setLoading(false);
