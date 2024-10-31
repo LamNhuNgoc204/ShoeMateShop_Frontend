@@ -7,7 +7,7 @@ import ProductItem from '../../items/ProductItem/index.js';
 import OrderItem from '../../items/OrderItem/OrderItem.js';
 import {getOrderPending} from '../../api/OrderApi.js';
 
-const ToPay = () => {
+const ToPay = ({navigation}) => {
   const useAppSelector = useSelector;
   const products = useAppSelector(state => state.products.products);
   const [pendingOrders, setPendingOrders] = useState([]);
@@ -26,7 +26,7 @@ const ToPay = () => {
     fetchOrder();
   }, []);
 
-  console.log('initialParams={{ orders }} ', pendingOrders);
+  // console.log('initialParams={{ orders }} ', pendingOrders);
 
   return (
     <ScrollView style={appst.container}>
@@ -34,7 +34,9 @@ const ToPay = () => {
         <FlatList
           style={odst.flat1}
           data={pendingOrders}
-          renderItem={({item}) => <OrderItem item={item} />}
+          renderItem={({item}) => (
+            <OrderItem navigation={navigation} item={item} />
+          )}
           keyExtractor={(item, index) =>
             item._id ? item._id : index.toString()
           }

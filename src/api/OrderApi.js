@@ -55,3 +55,16 @@ export const getOrderCancell = async () => {
     console.log(' Loi lay don hang');
   }
 };
+
+export const getOrderDetail = async orderId => {
+  try {
+    const response = await AxiosInstance().get(
+      `/orders/get-order-detail/${orderId}`,
+    );
+    if (response.status) {
+      return response.data
+    }
+  } catch (error) {
+    console.log('get order detail error: ', error);
+  }
+};

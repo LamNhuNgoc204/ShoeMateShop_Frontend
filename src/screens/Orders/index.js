@@ -11,6 +11,7 @@ import {colors} from '../../constants/colors';
 import {sizes} from '../../constants';
 import {fonts} from '../../constants/fonts';
 import {useTranslation} from 'react-i18next';
+import ToReturn from './ToReturn';
 
 const OrderScreen = ({navigation}) => {
   const {t} = useTranslation();
@@ -39,11 +40,14 @@ const OrderScreen = ({navigation}) => {
           tabBarPressColor: colors.primary,
           tabBarActiveTintColor: colors.primary,
           tabBarInactiveTintColor: colors.black,
+          tabBarScrollEnabled: true,
+          tabBarItemStyle: {width: 'auto'},
         }}>
         <TopTab.Screen name={t('orders.pay')} component={ToPay} />
         <TopTab.Screen name={t('orders.ship')} component={ToShip} />
         <TopTab.Screen name={'Đã giao'} component={ToReceive} />
         <TopTab.Screen name={t('orders.cancel')} component={Cancalled} />
+        <TopTab.Screen name={'Da tra'} component={ToReturn} />
       </TopTab.Navigator>
     </View>
   );

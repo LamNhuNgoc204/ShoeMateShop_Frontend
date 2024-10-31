@@ -99,7 +99,8 @@
     "brand": "Thương hiệu",
     "price": "Giá",
     "rate": "Đánh giá",
-    "total": "Tổng giá"
+    "total": "Tổng giá",
+    "quantity": "Số lượng"
   },
   "form_input": {
     "name": "Tên của bạn",
@@ -185,11 +186,15 @@
     "order_total": "Tổng đơn hàng",
     "fees": "Áp dụng phí",
     "total": "Tổng cộng",
-    "accumulated": "Điểm thưởng tích lũy",
+    "shipprice": "Phí vận chuyển",
     "time": "Thời gian đặt hàng",
     "payment": "Thời gian thanh toán",
     "shipping": "Thời gian giao hàng",
-    "complete": "Thời gian hoàn tất"
+    "complete": "Thời gian hoàn tất",
+    "timeCancel": "Thời gian hủy đơn hàng",
+    "cancelled": "Hủy đơn hàng",
+    "order_detail": "Chi tiết đơn hàng",
+    "pending": "Chờ xử lý"
   },
   "rating": {
     "review": "Đánh giá của tôi",

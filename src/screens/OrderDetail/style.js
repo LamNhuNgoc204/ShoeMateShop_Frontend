@@ -11,7 +11,7 @@ export const oddt = StyleSheet.create({
     backgroundColor: colors.background_primary,
     paddingVertical: spacing.lg,
     flex: 1,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   row: {
     flexDirection: 'row',
@@ -52,8 +52,8 @@ export const oddt = StyleSheet.create({
     color: colors.black,
   },
   img: {
-    width: 70,
-    height: 70,
+    width: 80,
+    height: 80,
     borderRadius: 5,
     marginRight: spacing.sm,
     resizeMode: 'cover',
@@ -105,32 +105,32 @@ export const oddt = StyleSheet.create({
     fontFamily: fonts.rlw_bold,
     fontSize: sizes.size14,
     color: colors.black,
-    marginBottom: spacing.sm
+    marginBottom: spacing.sm,
   },
   text10: {
     fontFamily: fonts.pp_semibold,
     fontSize: sizes.size14,
     color: colors.black,
   },
-  text11:{
+  text11: {
     fontFamily: fonts.pp_medium,
     fontSize: sizes.size12,
-    color: '#202020'
+    color: '#202020',
   },
-  text12:{
+  text12: {
     fontFamily: fonts.rlw_semibold,
     fontSize: sizes.size12,
     color: colors.black,
   },
-  press:{
-     backgroundColor: colors.primary,
-     borderRadius: 8,
-     marginVertical: spacing.lg,
-     marginHorizontal: spacing.lg,
-     width: '90%'
+  press: {
+    backgroundColor: colors.primary,
+    borderRadius: 8,
+    marginVertical: spacing.lg,
+    marginHorizontal: spacing.lg,
+    width: '90%',
   },
-  titleStyle:{
+  titleStyle: {
     color: '#fff',
-    fontSize: sizes.size18
-  }
+    fontSize: sizes.size18,
+  },
 });

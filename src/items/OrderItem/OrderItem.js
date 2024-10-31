@@ -2,26 +2,30 @@ import {View, Text, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
 import odit from './style';
 import appst from '../../constants/AppStyle';
-import {CustomedButton} from '../../components';
 import {spacing} from '../../constants';
+import {gotoOrderDetail} from '../../utils/functions/handleOrder';
 
-const OrderItem = ({item, receive, cancel}) => {
+const OrderItem = ({item, receive, cancel, navigation}) => {
+  // console.log('item order: ', item);
+
   const orderDetail = item.orderDetails && item.orderDetails[0];
   const product = orderDetail && orderDetail.product;
 
   const quantities =
     item.orderDetails &&
     item.orderDetails.map(detail => detail.product.pd_quantity);
-  console.log('quantities', quantities);
+  // console.log('quantities', quantities);
 
   const totalQuantity =
     quantities && quantities.reduce((acc, detail) => acc + detail, 0);
-  console.log('totalQuantity', totalQuantity);
+  // console.log('totalQuantity', totalQuantity);
 
-  console.log('product order', product);
+  // console.log('product order', product);
 
   return (
-    <TouchableOpacity onPress={() => {}} style={odit.container}>
+    <TouchableOpacity
+      onPress={() => gotoOrderDetail(navigation, item._id)}
+      style={odit.container}>
       <Text style={odit.textCode}>
         Code orders: {item._id && item._id.slice(0, 10)}
       </Text>
