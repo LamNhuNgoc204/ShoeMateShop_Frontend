@@ -1,4 +1,11 @@
-import {View, Text, Image, FlatList, ScrollView} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  ScrollView,
+  ToastAndroid,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import appst from '../../constants/AppStyle';
 import {oddt} from './style';
@@ -7,7 +14,7 @@ import {spacing} from '../../constants';
 import {CustomedButton} from '../../components';
 import {useTranslation} from 'react-i18next';
 import OrderDetailSkeleton from '../../placeholders/product/order/OrderDetail';
-import {getOrderDetail} from '../../api/OrderApi';
+import {cancelOrder, getOrderDetail} from '../../api/OrderApi';
 import OrderItemDetail from '../../items/OrderItem/OrderItemDetail';
 import {formatDate} from '../../utils/functions/formatData';
 
@@ -16,8 +23,9 @@ const OrderDetail = ({route, navigation}) => {
   const {t} = useTranslation();
   const [loading, setLoading] = useState(false);
   const [orderDetail, setOrderDetail] = useState({});
+  const [titleButton, setTitleButton] = useState('');
 
-  console.log('orderDetail => ', orderDetail);
+  // console.log('orderDetail => ', orderDetail);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,6 +33,9 @@ const OrderDetail = ({route, navigation}) => {
       const response = await getOrderDetail(index);
       if (response) {
         setOrderDetail(response);
+        if (orderDetail.orderStatus === 'pending') {
+          setTitleButton('orders.cancelled');
+        }
         setLoading(true);
       }
     };
@@ -48,6 +59,15 @@ const OrderDetail = ({route, navigation}) => {
         <Text style={oddt.text11}>{content2}</Text>
       </View>
     );
+  };
+
+  const handleOrderDetail = async () => {
+    if (orderDetail.orderStatus === 'pending') {
+      const response = await cancelOrder(index);
+      if (response.status) {
+        ToastAndroid.show(t('toast.cancel_order', ToastAndroid.SHORT));
+      }
+    }
   };
 
   return (
@@ -195,13 +215,10 @@ const OrderDetail = ({route, navigation}) => {
               </View>
             </ScrollView>
             <CustomedButton
-              title={
-                orderDetail.orderStatus === 'pending'
-                  ? t('orders.cancelled')
-                  : t('buttons.btn_buy_again')
-              }
+              title={t(titleButton)}
               style={oddt.press}
               titleStyle={oddt.titleStyle}
+              onPress={handleOrderDetail}
             />
           </View>
         ) : (

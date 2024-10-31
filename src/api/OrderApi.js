@@ -62,7 +62,20 @@ export const getOrderDetail = async orderId => {
       `/orders/get-order-detail/${orderId}`,
     );
     if (response.status) {
-      return response.data
+      return response.data;
+    }
+  } catch (error) {
+    console.log('get order detail error: ', error);
+  }
+};
+
+export const cancelOrder = async orderId => {
+  try {
+    const response = await AxiosInstance().put(
+      `/orders/cancel-order/${orderId}`,
+    );
+    if (response.status) {
+      return response
     }
   } catch (error) {
     console.log('get order detail error: ', error);

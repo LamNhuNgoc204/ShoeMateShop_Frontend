@@ -231,5 +231,8 @@
     "history": "Chưa có lịch sử",
     "sub_history": "Nhấn nút màu xanh bên dưới để tạo đơn hàng",
     "order": "Chưa có đơn hàng"
+  },
+  "toast": {
+    "cancel_order": "Đơn hàng đã bị hủy"
   }
 }
