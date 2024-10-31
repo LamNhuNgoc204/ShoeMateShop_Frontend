@@ -24,10 +24,10 @@ const ChooseAddress = ({navigation, route}) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      if (route.params?.updatedAddresses) {
-        setAddresses(route.params.updatedAddresses);
+      if (route.params?.newAddressItem) {
+        setAddresses(ad => [...ad, route.params.newAddressItem]);
       }
-    }, [route.params?.updatedAddresses]),
+    }, [route.params?.newAddressItem]),
   );
 
   useEffect(() => {
