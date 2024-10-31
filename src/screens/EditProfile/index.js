@@ -1,15 +1,68 @@
-import {Image, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
-import {useNavigation} from '@react-navigation/native';
-import appst from '../../constants/AppStyle';
-import CustomTextInput from '../../components/Input';
-import {CustomedButton} from '../../components';
-import styles from './style';
+import React, {useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
+import {
+  Alert,
+  Image,
+  Text,
+  ToastAndroid,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import styles from './style';
+import appst from '../../constants/AppStyle';
+import {CustomedButton} from '../../components';
+import {updateInformation} from '../../api/UserApi';
+import CustomTextInput from '../../components/Input';
+import {chooseAvatar} from '../../utils/functions/uploadImage';
+import {isValidPhoneNumber} from '../../utils/validate/ValidNumber';
+import {setAvatarUser} from '../../redux/reducer/userReducer';
 
 const EditProfile = () => {
   const {t} = useTranslation();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const {user} = useSelector(state => state.user);
+  const [avatar, setAvatar] = useState(user && user.avatar);
+  const [name, setName] = useState(user && user.name);
+  const [phoneNumber, setPhoneNumber] = useState(user && user.phoneNumber);
+  const [errorName, setErrorName] = useState('');
+  const [errorPhone, setErrorPhone] = useState('');
+
+  const updateInfor = async () => {
+    setErrorName('');
+    setErrorPhone('');
+
+    if (!name) {
+      setErrorName('Thong tin nay la bat buoc');
+      return;
+    }
+
+    if (phoneNumber && !isValidPhoneNumber(phoneNumber)) {
+      setErrorPhone('Số điện thoại không hợp lệ');
+      return;
+    }
+
+    try {
+      const body = {
+        name,
+        avatar,
+        phoneNumber,
+      };
+
+      const response = await updateInformation(body);
+      if (response) {
+        dispatch(setAvatarUser(avatar));
+        ToastAndroid.show('Cap nhat thanh cong', ToastAndroid.SHORT);
+        navigation.goBack();
+      } else {
+        Alert.alert('Thu lai');
+      }
+    } catch (error) {
+      console.log('Update error: ', error);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -23,36 +76,47 @@ const EditProfile = () => {
         <Text style={styles.title}>{t('home.profile')}</Text>
         <View style={{width: 40}} />
       </View>
-      <View style={appst.center}>
-        <Image
-          style={styles.avatar}
-          source={require('../../assets/images/avatar.png')}
-        />
-        <Text style={styles.text}>{t('buttons.btn_change_img_profile')}</Text>
+      <View>
+        <View style={appst.center}>
+          <Image
+            style={styles.avatar}
+            source={{
+              uri: avatar
+                ? avatar
+                : 'https://i.pinimg.com/enabled_hi/564x/d4/35/42/d435423c9386e708c678b7663656b9c0.jpg',
+            }}
+          />
+          <TouchableOpacity onPress={() => chooseAvatar(setAvatar)}>
+            <Text style={styles.text}>
+              {t('buttons.btn_change_img_profile')}
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.ViewInput}>
+          <CustomTextInput
+            label={t('form_input.name')}
+            placeholder={t('form_input.placeholder_name')}
+            value={name}
+            onChangeText={setName}
+          />
+          {errorName ? <Text style={styles.errorText}>{errorName}</Text> : null}
+          <CustomTextInput
+            label={t('form_input.phone')}
+            placeholder={t('form_input.placeholder_phone')}
+            value={phoneNumber}
+            keyboardtype="numeric"
+            onChangeText={setPhoneNumber}
+          />
+          {errorPhone ? (
+            <Text style={styles.errorText}>{errorPhone}</Text>
+          ) : null}
+        </View>
       </View>
-      <View style={styles.ViewInput}>
-        <CustomTextInput
-          label={t('form_input.name')}
-          placeholder={t('form_input.placeholder_name')}
-          value="Nguyen Van A"
-        />
-        <CustomTextInput
-          label={t('form_input.email')}
-          placeholder={t('form_input.placeholder_email')}
-          value="xyyz@gmail"
-        />
-        <CustomTextInput
-          label={t('form_input.phone')}
-          placeholder={t('form_input.placeholder_phone')}
-          value="0987654321"
-          keyboardtype="numeric"
-        />
-      </View>
-      <View style={styles.button}>
+      <View>
         <CustomedButton
           title={t('buttons.btn_save_now')}
           titleStyle={styles.textPress}
-          onPress={() => navigation.navigate('HomeScreen')}
+          onPress={() => updateInfor()}
           style={styles.press}
         />
       </View>

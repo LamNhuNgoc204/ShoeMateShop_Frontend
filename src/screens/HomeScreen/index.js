@@ -3,12 +3,12 @@ import {View, Text, Image} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {useDispatch, useSelector} from 'react-redux';
 import {FlatList, ScrollView} from 'react-native-gesture-handler';
+import PagerView from 'react-native-pager-view';
 
 import homeStyle from './style';
-import ToolBar from '../../components/ToolBar';
-import PagerView from 'react-native-pager-view';
-import ProductItem from '../../items/ProductItem';
 import appst from '../../constants/AppStyle';
+import ToolBar from '../../components/ToolBar';
+import ProductItem from '../../items/ProductItem';
 import {
   fetchProductsThunk,
   fetchWishlist,
@@ -35,13 +35,19 @@ const HomeScreen = ({navigation}) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
-      await Promise.all([
-        dispatch(fetchProductsThunk()),
-        dispatch(getCategoryThunk()),
-        dispatch(fetchWishlist()),
-      ]);
-      setLoading(false);
+      if (
+        !state.products.length ||
+        !state.categories.length ||
+        !state.wishlist.length
+      ) {
+        setLoading(true);
+        await Promise.all([
+          dispatch(fetchProductsThunk()),
+          dispatch(getCategoryThunk()),
+          dispatch(fetchWishlist()),
+        ]);
+        setLoading(false);
+      }
     };
     fetchData();
   }, []);

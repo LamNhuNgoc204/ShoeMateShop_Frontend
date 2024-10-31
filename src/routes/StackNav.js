@@ -19,7 +19,7 @@ import OrderDetail from '../screens/OrderDetail';
 import Profile from '../screens/Profile';
 import EditProfile from '../screens/EditProfile';
 import SettingScreen from '../screens/SettingScreen';
-import RecentViewed from '../screens/RecentlyViewedScreen';
+import RecentlyViewedScreen from '../screens/RecentlyViewedScreen';
 import ResetPasswordScreen from '../screens/ResetPasswordScreen';
 import MyRating from '../screens/Rating';
 import Review from '../screens/Review';
@@ -38,6 +38,7 @@ import ChoosePaymentScreen from '../screens/Payment/ChoosePayment';
 import ZaloPayScreen from '../screens/Payment/ZaloPay/Payment';
 import ZaloPayWebView from '../screens/Payment/ZaloPay/WebView';
 import CheckoutSuccess from '../screens/CheckoutScreen/CheckoutSuccess';
+import ChooseLanguage from '../screens/Languages';
 
 const Stack = createNativeStackNavigator();
 
@@ -66,7 +67,7 @@ const StackNav = () => {
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="SettingScreen" component={SettingScreen} />
-      <Stack.Screen name="RecentViewed" component={RecentViewed} />
+      <Stack.Screen name="RecentlyViewedScreen" component={RecentlyViewedScreen} />
       <Stack.Screen
         name="ResetPasswordScreen"
         component={ResetPasswordScreen}
@@ -92,6 +93,7 @@ const StackNav = () => {
       <Stack.Screen name="ZaloPayScreen" component={ZaloPayScreen} />
       <Stack.Screen name="ZaloPayWebView" component={ZaloPayWebView} />
       <Stack.Screen name="CheckoutSuccess" component={CheckoutSuccess} />
+      <Stack.Screen name="ChooseLanguage" component={ChooseLanguage} />
       <Stack.Screen
         name="ChoosePaymentScreen"
         component={ChoosePaymentScreen}

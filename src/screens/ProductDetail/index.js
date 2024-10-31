@@ -20,10 +20,14 @@ import {useSelector} from 'react-redux';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import BottomSheetContent from '../../items/Sizebottom';
 import ProductSkeleton from '../../placeholders/product/detail';
+import {addRecentView} from '../../api/ProductApi';
 
 const ProductDetail = props => {
   const navigation = useNavigation();
   const {index} = props.route.params;
+  const useAppSelector = useSelector;
+  const bottomSheetRef = useRef(null);
+  const productState = useAppSelector(state => state.products);
   const [selectedImage, setSelectedImage] = useState(
     product && product.assets[0],
   );
@@ -32,20 +36,21 @@ const ProductDetail = props => {
     Array.isArray(product.reviewsOfProduct) &&
     product.reviewsOfProduct.length > 0;
 
-  const useAppSelector = useSelector;
-  const productState = useAppSelector(state => state.products);
-  const [loading, setLoading] = useState(true);
-
   const [product, setProduct] = useState({});
-  const [sizeModalVisible, setSizeModalVisible] = useState(false);
-  const [selectedSize, setSelectedSize] = useState(null);
   const [quantity, setQuantity] = useState(1);
-
-  const bottomSheetRef = useRef(null);
+  const [loading, setLoading] = useState(true);
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [sizeModalVisible, setSizeModalVisible] = useState(false);
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
   const fetchProduct = async () => {
     try {
-      const response = await AxiosInstance().get(`/products/detail/${index}`);
+      const [addpdView, response] = await Promise.all([
+        addRecentView(index),
+        AxiosInstance().get(`/products/detail/${index}`),
+      ]);
+
+      console.log('Thêm sản phẩm vào danh sách xem gần đây:', addpdView);
       if (response) {
         setProduct(response);
         setLoading(false);
@@ -61,7 +66,7 @@ const ProductDetail = props => {
     return () => {};
   }, []);
 
-  console.log(product);
+  // console.log(product);
 
   const handleSheetChanges = useCallback(index => {
     console.log('handleSheetChanges', index);
@@ -99,7 +104,7 @@ const ProductDetail = props => {
       {!loading ? (
         <ScrollView style={{flex: 1, marginBottom: spacing.md}}>
           <View>
-            {product && product.assets && product.assets.length > 0 && (
+            {product && product.assets && product.assets.length > 0 ? (
               <FlatList
                 horizontal
                 pagingEnabled
@@ -110,6 +115,11 @@ const ProductDetail = props => {
                   <Image style={pddt.pdImg} source={{uri: item}} />
                 )}
                 keyExtractor={(item, index) => index.toString()}
+              />
+            ) : (
+              <Image
+                style={pddt.pdImg}
+                source={require('../../assets/images/placeholder_image.jpg')}
               />
             )}
             {product && product.assets && product.assets.length > 0 && (
@@ -138,10 +148,18 @@ const ProductDetail = props => {
             <View style={[appst.rowCenter, pddt.body1]}>
               <View>
                 <Text style={pddt.name}>{product.name}</Text>
-                <Text style={pddt.price}>${product.price}</Text>
+                <Text style={pddt.price}>
+                  ${product.price && product.price.toLocaleString('vi-VN')}
+                </Text>
               </View>
               <View style={[pddt.iconfav, appst.center]}>
-                <Image source={require('../../assets/icons/favorite.png')} />
+                {product.isFavorite ? (
+                  <Image
+                    source={require('../../assets/icons/heart_select.png')}
+                  />
+                ) : (
+                  <Image source={require('../../assets/icons/favorite.png')} />
+                )}
               </View>
             </View>
             <View style={[appst.rowStart]}>
@@ -157,10 +175,19 @@ const ProductDetail = props => {
               </Text>
             </View>
             <View style={pddt.viewDes}>
-              <Text numberOfLines={3} style={pddt.des}>
+              <Text
+                numberOfLines={isDescriptionExpanded ? undefined : 3}
+                style={pddt.des}>
                 {product.description}
               </Text>
-              <Text style={pddt.readmore}>Read More</Text>
+              <TouchableOpacity
+                onPress={() =>
+                  setIsDescriptionExpanded(!isDescriptionExpanded)
+                }>
+                <Text style={pddt.readmore}>
+                  {isDescriptionExpanded ? 'Read Less' : 'Read More'}
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
 
@@ -203,7 +230,7 @@ const ProductDetail = props => {
                 numColumns={2}
                 showsVerticalScrollIndicator={false}
                 scrollEnabled={false}
-                // ItemSeparatorComponent={() => <View style={homeStyle.separator}/>}
+                style={{marginLeft: 20}}
               />
             </View>
           </View>

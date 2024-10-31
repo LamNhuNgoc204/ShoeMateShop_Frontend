@@ -17,21 +17,21 @@ export default styles = StyleSheet.create({
     paddingVertical: 8,
   },
   avatar: {
-    width: 65,
-    height: 65,
+    width: 60,
+    height: 60,
     borderRadius: 50,
   },
   info: {
     marginLeft: 10,
   },
   name: {
-    fontSize: sizes.size18,
+    fontSize: sizes.size16,
     fontFamily: fonts.rlw_semibold,
     color: colors.color001560,
     marginBottom: 5,
   },
   email: {
-    fontSize: sizes.size14,
+    fontSize: sizes.size12,
     fontFamily: fonts.pp_medium,
     color: colors.color001560,
   },

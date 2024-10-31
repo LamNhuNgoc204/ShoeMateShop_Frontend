@@ -1,8 +1,6 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { sizes, spacing } from '../../../constants';
-import { fonts } from '../../../constants/fonts';
-import { colors } from '../../../constants/colors';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { sizes } from '../../../constants';
 import appst from '../../../constants/AppStyle';
 import { useNavigation } from '@react-navigation/native';
 import styles from './style';

@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import appst from '../../constants/AppStyle';
 import {spacing} from '../../constants';
 import {colors} from '../../constants/colors';
@@ -14,11 +14,30 @@ import {fonts} from '../../constants/fonts';
 import {useNavigation} from '@react-navigation/native';
 import ProductItem from '../../items/ProductItem';
 import {useTranslation} from 'react-i18next';
+import {getRecentViews} from '../../api/ProductApi';
+import st from './style';
+import RecentlySkeleton from '../../placeholders/product/recently';
 
 const RecentlyViewedScreen = () => {
   const {t} = useTranslation();
-  const products = new Array(10).fill(1);
   const navigation = useNavigation();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(false);
+      const response = await getRecentViews();
+      if (response) {
+        setProducts(response.data);
+        setLoading(true);
+      }
+    };
+    setLoading(true);
+    fetchData();
+  }, []);
+
+  // console.log('product', products);
 
   return (
     <View style={styles.container}>
@@ -32,17 +51,31 @@ const RecentlyViewedScreen = () => {
         <Text style={styles.title}>{t('profiles.viewed')}</Text>
         <View style={{width: 40}} />
       </View>
-      <View>
-        <FlatList
-          data={products}
-          renderItem={({item, index}) => (
-            <ProductItem product={item} index={index} />
-          )}
-          keyExtractor={(item, index) => index.toString()}
-          numColumns={2}
-          showsVerticalScrollIndicator={false}
-          scrollEnabled={false}
-        />
+      <View style={{flex: 1, marginTop: 10}}>
+        {loading ? (
+          products.length > 0 ? (
+            <FlatList
+              data={products}
+              renderItem={({item, index}) => (
+                <ProductItem product={item.productId} index={index} />
+              )}
+              keyExtractor={(item, index) => index.toString()}
+              numColumns={2}
+              showsVerticalScrollIndicator={false}
+              scrollEnabled={false}
+            />
+          ) : (
+            <View style={[appst.container, appst.center]}>
+              <Image
+                style={st.img}
+                source={require('../../assets/images/no_recent.png')}
+              />
+              <Text style={st.text}>Khong co san pham da xem gan day</Text>
+            </View>
+          )
+        ) : (
+          <RecentlySkeleton />
+        )}
       </View>
     </View>
   );

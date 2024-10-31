@@ -14,8 +14,7 @@ import {handleNavigate} from '../../utils/functions/navigationHelper';
 const ProfileScreen = () => {
   const {t} = useTranslation();
   const navigation = useNavigation();
-
-  const {user} = useSelector(state => state.user);
+  const {user, avatar} = useSelector(state => state.user);
 
   const renderItem = ({item}) => (
     <ChildItem
@@ -32,10 +31,9 @@ const ProfileScreen = () => {
           <Image
             style={styles.avatar}
             source={{
-              uri:
-                user && user.avatar
-                  ? user.avatar
-                  : 'https://i.pinimg.com/enabled_hi/564x/d4/35/42/d435423c9386e708c678b7663656b9c0.jpg',
+              uri: avatar
+                ? avatar
+                : 'https://i.pinimg.com/enabled_hi/564x/d4/35/42/d435423c9386e708c678b7663656b9c0.jpg',
             }}
           />
           <View style={styles.info}>

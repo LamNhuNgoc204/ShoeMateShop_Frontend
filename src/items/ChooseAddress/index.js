@@ -3,9 +3,13 @@ import React from 'react';
 import {c_adrIt} from './style';
 import appst from '../../constants/AppStyle';
 
-const ChooseAddressItem = ({item}) => {
+const ChooseAddressItem = ({item, deleteAddress}) => {
+  // console.log('address id', item._id);
+
   return (
-    <View style={[c_adrIt.container, appst.rowCenter]}>
+    <TouchableOpacity
+      onLongPress={() => deleteAddress(item._id)}
+      style={[c_adrIt.container, appst.rowCenter]}>
       {item.isDefault ? (
         <TouchableOpacity style={c_adrIt.icon}>
           <Image
@@ -39,7 +43,7 @@ const ChooseAddressItem = ({item}) => {
           source={require('../../assets/icons/edit_adr.png')}
         />
       </TouchableOpacity>
-    </View>
+    </TouchableOpacity>
   );
 };
 

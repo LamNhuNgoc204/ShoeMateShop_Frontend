@@ -94,6 +94,10 @@ const AddNewAddress = () => {
         setSelectedWard('');
         setSelectedDistrict('');
         ToastAndroid.show('Theem address thanh cong', ToastAndroid.SHORT);
+
+        navigation.navigate('ChooseAddress', {
+          newAddressItem: response.data,
+        });
       } else {
         console.log('loi server');
       }

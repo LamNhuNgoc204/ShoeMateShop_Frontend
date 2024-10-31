@@ -21,41 +21,41 @@ import AxiosInstance from '../../helpers/AxiosInstance';
 import {useDispatch, useSelector} from 'react-redux';
 import {setOrderId, setPriceToPay} from '../../redux/reducer/cartReducer';
 import {createOrder} from '../../api/OrderApi';
+import {
+  getAdressDefault,
+  getPaymentDefault,
+  getShipDefault,
+} from '../../redux/thunks/CartThunks';
 
 const CheckOutScreen = ({navigation}) => {
   const state = useSelector(state => state.cart);
   const dispatch = useDispatch();
   // console.log(
-  //   'order item:',
-  //   state.productOrder,
-  //   // '-',
-  //   // state.ship,
-  //   // '_',
-  //   // state.payment,
+  //   'address - ',
+  //   state.address,
+  //   ' ship - ',
+  //   state.ship,
+  //   ' payment - ',
+  //   state.payment,
   // );
 
   const {t} = useTranslation();
   const [isswitch, setIsswitch] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [addressDefault, setAddressDefault] = useState({});
+  const [addressDefault] = useState(state.address);
 
   const ship = state.ship && state.ship.cost && state.ship.cost;
   const tongchiphi = state.totalPrice + ship;
 
   useEffect(() => {
-    const getAddresDefault = async () => {
-      try {
-        const response = await AxiosInstance().get(
-          '/addresses/default-address',
-        );
-        if (response.status) {
-          setAddressDefault(response.data);
-        }
-      } catch (error) {
-        console.log('Error get address default: ', error);
-      }
+    const getInforDefault = async () => {
+      await Promise.all([
+        dispatch(getShipDefault()),
+        dispatch(getAdressDefault()),
+        dispatch(getPaymentDefault()),
+      ]);
     };
-    getAddresDefault();
+    getInforDefault();
   }, []);
 
   const handleOrder = async () => {

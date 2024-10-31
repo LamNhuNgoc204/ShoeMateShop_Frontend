@@ -1,22 +1,39 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, FlatList, Image, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  ToastAndroid,
+} from 'react-native';
 import appst from '../../../constants/AppStyle';
 import c_adst from './style';
 import ChooseAddressItem from '../../../items/ChooseAddress';
 import Header from '../../../components/Header';
 import {useTranslation} from 'react-i18next';
-import AxiosInstance from '../../../helpers/AxiosInstance';
+import {deleteUserAdress, getAllAddress} from '../../../api/UserApi';
+import {useSelector} from 'react-redux';
+import SweetAlert from 'react-native-sweet-alert';
+import {useFocusEffect} from '@react-navigation/native';
 
-const ChooseAddress = ({navigation}) => {
+const ChooseAddress = ({navigation, route}) => {
   const {t} = useTranslation();
-  const [addresses, setAddresses] = useState([]);
+  const state = useSelector(state => state.user);
+  const [addresses, setAddresses] = useState(state.listAddress);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (route.params?.newAddressItem) {
+        setAddresses(ad => [...ad, route.params.newAddressItem]);
+      }
+    }, [route.params?.newAddressItem]),
+  );
 
   useEffect(() => {
     const fetchAddress = async () => {
       try {
-        const response = await AxiosInstance().get(
-          '/addresses/get-all-address',
-        );
+        const response = await getAllAddress();
         if (response.status) {
           setAddresses(response.data);
         }
@@ -27,8 +44,41 @@ const ChooseAddress = ({navigation}) => {
     fetchAddress();
   }, []);
 
-  console.log('addresses', addresses);
+  // console.log('addresses', addresses);
   // console.log('c_adst', c_adst);
+
+  const deleteAddress = async id => {
+    try {
+      SweetAlert.showAlertWithOptions(
+        {
+          title: 'Remove Item?',
+          subTitle: `Oops. Bạn có chắc chắn muốn xóa địa chỉ này không?`,
+          confirmButtonTitle: 'OK',
+          confirmButtonColor: '#000',
+          style: 'error',
+          cancellable: true,
+        },
+        async () => {
+          try {
+            const response = await deleteUserAdress(id);
+
+            if (response.status) {
+              const updatedAddresses = addresses.filter(
+                item => item._id !== id,
+              );
+              setAddresses(updatedAddresses);
+
+              ToastAndroid.show('Xóa địa chỉ thành công', ToastAndroid.SHORT);
+            }
+          } catch (error) {
+            console.log('Error removing item from address:', error);
+          }
+        },
+      );
+    } catch (error) {
+      console.log('Error displaying alert:', error);
+    }
+  };
 
   return (
     <View style={[appst.container]}>
@@ -38,13 +88,14 @@ const ChooseAddress = ({navigation}) => {
         name={t('home.address')}
       />
       <View style={c_adst.viewBody}>
-        <Text style={c_adst.text}>{t('titles.address')}:</Text>
         <View style={c_adst.body1}>
           {addresses && addresses.length > 0 ? (
             <FlatList
               style={c_adst.flat}
               data={addresses}
-              renderItem={({item}) => <ChooseAddressItem item={item} />}
+              renderItem={({item}) => (
+                <ChooseAddressItem item={item} deleteAddress={deleteAddress} />
+              )}
               extraData={item => item.id}
               ItemSeparatorComponent={<View style={c_adst.borderBottom} />}
             />

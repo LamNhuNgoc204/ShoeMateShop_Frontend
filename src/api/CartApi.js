@@ -39,3 +39,38 @@ export const deleteOneItemCard = async body => {
   );
   return response;
 };
+
+export const getShippingDefault = async () => {
+  try {
+    const response = await AxiosInstance().get('/ship/ship-default');
+    if (response.status) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log(' Get ship default err: ', error);
+  }
+};
+
+export const getAddressDefault = async () => {
+  try {
+    const response = await AxiosInstance().get('/addresses/default-address');
+    if (response.status) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log(' Get ship default err: ', error);
+  }
+};
+
+export const getPaymentMethodDefault = async () => {
+  try {
+    const response = await AxiosInstance().get(
+      '/payment-method/payment-default',
+    );
+    if (response.status) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log(' Get ship default err: ', error);
+  }
+};

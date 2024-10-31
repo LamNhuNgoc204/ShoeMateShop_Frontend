@@ -15,6 +15,7 @@ import {useTranslation} from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {logout} from '../../redux/reducer/userReducer';
 import {useDispatch} from 'react-redux';
+import {SETTING} from '../../api/mockData';
 
 const SettingScreen = () => {
   const {t} = useTranslation();
@@ -31,25 +32,6 @@ const SettingScreen = () => {
     }
   };
 
-  const data = [
-    {
-      id: '1',
-      text: 'Change Profile Picture',
-      navigateTo: 'ChangeProfilePicture',
-    },
-    {id: '2', text: 'Shipping Address', navigateTo: 'ChooseAddress'},
-    {id: '3', text: 'Payment Method', navigateTo: 'PaymentMethod'},
-    {id: '4', text: 'Password', navigateTo: 'Password'},
-    {
-      id: '5',
-      text: 'Country',
-      navigateTo: 'Country',
-      additionalInfo: 'Vietnam',
-    },
-    {id: '6', text: 'Size', navigateTo: 'Size', additionalInfo: 'UK'},
-    {id: '7', text: 'Terms and Conditions', navigateTo: 'TermsAndConditions'},
-  ];
-
   return (
     <View style={styles.container}>
       <View style={appst.rowCenter}>
@@ -64,7 +46,7 @@ const SettingScreen = () => {
       </View>
       <View style={styles.viewBody}>
         <FlatList
-          data={data}
+          data={SETTING}
           renderItem={({item}) => <RenderSettingItem item={item} />}
           keyExtractor={item => item.id}
         />
