@@ -35,13 +35,19 @@ const HomeScreen = ({navigation}) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
-      await Promise.all([
-        dispatch(fetchProductsThunk()),
-        dispatch(getCategoryThunk()),
-        dispatch(fetchWishlist()),
-      ]);
-      setLoading(false);
+      if (
+        !state.products.length ||
+        !state.categories.length ||
+        !state.wishlist.length
+      ) {
+        setLoading(true);
+        await Promise.all([
+          dispatch(fetchProductsThunk()),
+          dispatch(getCategoryThunk()),
+          dispatch(fetchWishlist()),
+        ]);
+        setLoading(false);
+      }
     };
     fetchData();
   }, []);

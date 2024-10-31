@@ -21,13 +21,12 @@ const DropdownComponent = memo(() => {
     loadLanguage();
   }, []);
 
-  useEffect(() => {
-    const setLanguages = async () => {
-      await AsyncStorage.setItem('language', value);
-      i18next.changeLanguage(value);
-    };
-    setLanguages();
-  }, [value]);
+  const handleChangeLanguage = async item => {
+    setValue(item.value);
+    await AsyncStorage.setItem('language', item.value);
+    i18next.changeLanguage(item.value);
+    setIsFocus(false);
+  };
 
   return (
     <View style={styles.container}>
@@ -43,10 +42,7 @@ const DropdownComponent = memo(() => {
         value={value}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
-        onChange={item => {
-          setValue(item.value);
-          setIsFocus(false);
-        }}
+        onChange={handleChangeLanguage}
       />
     </View>
   );

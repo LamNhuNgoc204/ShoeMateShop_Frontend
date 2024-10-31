@@ -8,10 +8,13 @@ import {useTranslation} from 'react-i18next';
 import styles from './style';
 import {useNavigation} from '@react-navigation/native';
 import AxiosInstance from '../../../helpers/AxiosInstance';
+import {useDispatch} from 'react-redux';
+import {getAllAddress} from '../../../api/UserApi';
 
 const AddNewAddress = () => {
   const navigation = useNavigation();
   const {t} = useTranslation();
+  const dispatch = useDispatch();
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);
@@ -94,6 +97,11 @@ const AddNewAddress = () => {
         setSelectedWard('');
         setSelectedDistrict('');
         ToastAndroid.show('Theem address thanh cong', ToastAndroid.SHORT);
+
+        const updatedAddresses = await dispatch(getAllAddress());
+        navigation.navigate('ChooseAddress', {
+          updatedAddresses: updatedAddresses,
+        });
       } else {
         console.log('loi server');
       }

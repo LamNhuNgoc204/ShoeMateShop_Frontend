@@ -51,7 +51,7 @@ export const PROFILE = [
     id: '8',
     iconSource: require('../assets/icons/language.png'),
     text: 'ChangeLanguage',
-    navigateTo: 'ChangeLanguages',
+    navigateTo: 'ChooseLanguage',
   },
 ];
 
