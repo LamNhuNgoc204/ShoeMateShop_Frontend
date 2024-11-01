@@ -214,7 +214,8 @@
     "order": "Thông báo đơn hàng",
     "promotion": "Khuyến mãi",
     "message": "Tin nhắn",
-    "system": "Hệ thống"
+    "system": "Hệ thống",
+    "sub_title": "Bạn không có thông báo"
   },
   "messages": {
     "title": "Tin nhắn",
