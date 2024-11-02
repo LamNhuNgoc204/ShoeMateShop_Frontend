@@ -195,7 +195,11 @@
     "code_order": "Code order",
     "success_delivery": "Successful Delivery",
     "unit": "item(s)",
-    "processing": "Đang xử lý"
+    "processing": "Đang xử lý",
+    "wait_confirm": "Wait for confirmation",
+    "proccessed_status": "Order is being processed",
+    "no_order": "You don't have any orders yet",
+    "watch_order_detail": "View order details"
   },
   "rating": {
     "review": "My Reviews",
@@ -209,7 +213,8 @@
     "photo": "Add photos",
     "video": "Add video",
     "placeholder": "Enter your review here...",
-    "to_review": "To Review"
+    "to_review": "To Review",
+    "see": "See review"
   },
   "nothing": {
     "internet": "No internet Connection",

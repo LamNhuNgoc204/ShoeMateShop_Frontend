@@ -198,7 +198,15 @@
     "code": "Mã đơn",
     "unit": "sản phẩm",
     "completed": "Đã giao",
-    "return": "Đã trả"
+    "return": "Trả hàng",
+    "wait_confirm": "Chờ xác nhận",
+    "proccessed_status": "Đơn hàng đang được xử lý",
+    "no_order": "Bạn chưa có đơn đặt hàng nào",
+    "watch_order_detail": "Xem chi tiết đơn hàng",
+    "Canceler": "Đã hủy bởi",
+    "cancel_detail": "Chi tiết đơn hủy",
+    "complete_cancel": "Đã hủy đơn hàng",
+    "in": "vào"
   },
   "rating": {
     "review": "Đánh giá của tôi",

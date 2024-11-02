@@ -7,7 +7,7 @@ import ProductItem from '../../items/ProductItem';
 import OrderItem from '../../items/OrderItem/OrderItem';
 import {getOrderCancell} from '../../api/OrderApi';
 
-const Cancalled = () => {
+const Cancalled = ({navigation}) => {
   const useAppSelector = useSelector;
   const products = useAppSelector(state => state.products.products);
   const [cancelOrders, setCancelOrders] = useState([]);
@@ -32,7 +32,9 @@ const Cancalled = () => {
         <FlatList
           style={odst.flat1}
           data={cancelOrders}
-          renderItem={({item}) => <OrderItem item={item} cancel={true} />}
+          renderItem={({item}) => (
+            <OrderItem item={item} cancel={true} navigation={navigation} />
+          )}
           keyExtractor={(item, index) =>
             item._id ? item._id : index.toString()
           }

@@ -8,7 +8,7 @@ import {useTranslation} from 'react-i18next';
 
 const OrderItem = ({item, receive, cancel, navigation}) => {
   const {t} = useTranslation();
-  // console.log('item order: ', item);
+  console.log('item order: ', item);
 
   const orderDetail = item.orderDetails && item.orderDetails[0];
   const product = orderDetail && orderDetail.product;
@@ -26,7 +26,7 @@ const OrderItem = ({item, receive, cancel, navigation}) => {
 
   return (
     <TouchableOpacity
-      onPress={() => gotoOrderDetail(navigation, item._id)}
+      onPress={() => gotoOrderDetail('OrderDetail', navigation, item._id)}
       style={odit.container}>
       <Text style={odit.textCode}>
         {t('orders.code')}: {item._id && item._id.slice(0, 10)}
@@ -74,7 +74,13 @@ const OrderItem = ({item, receive, cancel, navigation}) => {
       </View>
       {!receive && !cancel ? (
         <View style={[appst.rowCenter, odit.view2]}>
-          <Text style={odit.textWait}>Wait for confirmation</Text>
+          <Text style={odit.textWait}>
+            {item.status === 'pending'
+              ? t('orders.wait_confirm')
+              : item.status === 'processing'
+              ? t('orders.proccessed_status')
+              : ''}
+          </Text>
           <Image
             style={appst.icon24}
             source={require('../../assets/icons/chevron_right.png')}
@@ -87,10 +93,41 @@ const OrderItem = ({item, receive, cancel, navigation}) => {
             cancel && appst.rowCenter,
             {paddingHorizontal: spacing.lg},
           ]}>
-          {cancel && <Text style={odit.textCancel}>Canceled by you</Text>}
-          <TouchableOpacity style={[odit.press, {width: '50%'}]}>
-            <Text style={odit.textTouch}>Buy this product again</Text>
-          </TouchableOpacity>
+          {cancel && (
+            <Text style={odit.textCancel}>{t('orders.Canceler')} you</Text>
+          )}
+          {!cancel && (
+            <View style={appst.rowEnd}>
+              <TouchableOpacity style={[odit.press, {paddingHorizontal: 10}]}>
+                <Text style={odit.textTouch}>
+                  {true ? t('orders.return') : t('buttons.btn_buy_again')}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[odit.press, {paddingHorizontal: 5, marginLeft: 10}]}>
+                <Text style={odit.textTouch}>
+                  {true ? t('review.review') : t('review.see')}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          {cancel && (
+            <View style={appst.rowEnd}>
+              <TouchableOpacity
+                onPress={() =>
+                  gotoOrderDetail('CancelDetail', navigation, item._id)
+                }
+                style={[odit.press, odit.press1, {paddingHorizontal: 10}]}>
+                <Text style={[odit.textTouch, odit.textTouch1]}>
+                  {t('orders.watch_order_detail')}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[odit.press, {paddingHorizontal: 5, marginLeft: 10}]}>
+                <Text style={odit.textTouch}>{t('buttons.btn_buy_again')}</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
       )}
     </TouchableOpacity>

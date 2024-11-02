@@ -1,5 +1,4 @@
 import {StyleSheet} from 'react-native';
-import {withDecay} from 'react-native-reanimated';
 import {sizes, spacing} from '../../constants';
 import {fonts} from '../../constants/fonts';
 import {colors} from '../../constants/colors';
@@ -79,14 +78,21 @@ const odit = StyleSheet.create({
   press: {
     marginVertical: spacing.sm,
     justifyContent: 'center',
-    backgroundColor: colors.primary,
+    borderColor: colors.primary,
+    borderWidth: 1,
     borderRadius: 5,
   },
+  press1: {
+    borderColor: 'gray',
+  },
   textTouch: {
-    color: '#fff',
-    paddingVertical: spacing.sm,
+    color: colors.primary,
+    paddingVertical: 5,
     fontSize: sizes.size14,
     textAlign: 'center',
+  },
+  textTouch1: {
+    color: 'gray',
   },
   textCancel: {
     fontSize: sizes.size10,
