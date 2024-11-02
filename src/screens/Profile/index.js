@@ -20,7 +20,7 @@ const ProfileScreen = () => {
     <ChildItem
       onPress={() => navigation.navigate(item.navigateTo)}
       iconSource={item.iconSource}
-      text={item.text}
+      text={t(item.text)}
     />
   );
 

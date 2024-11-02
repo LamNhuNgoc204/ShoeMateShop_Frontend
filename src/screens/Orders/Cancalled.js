@@ -7,8 +7,10 @@ import ProductItem from '../../items/ProductItem';
 import OrderItem from '../../items/OrderItem/OrderItem';
 import {getOrderCancell} from '../../api/OrderApi';
 import OrderHistorySkeleton from '../../placeholders/product/order/OrderHistory';
+import {useTranslation} from 'react-i18next';
 
 const Cancalled = ({navigation}) => {
+  const {t} = useTranslation();
   const useAppSelector = useSelector;
   const products = useAppSelector(state => state.products.products);
   const [cancelOrders, setCancelOrders] = useState([]);
@@ -53,13 +55,13 @@ const Cancalled = ({navigation}) => {
                 style={odst.img}
                 source={require('../../assets/images/order.png')}
               />
-              <Text style={odst.text1}>You don't have any orders yet</Text>
+              <Text style={odst.text1}>{t('orders.no_order')}</Text>
             </View>
           )}
 
           <View style={appst.rowCenter}>
             <View style={odst.border} />
-            <Text style={odst.text}>You May Also Like</Text>
+            <Text style={odst.text}>{t('products.similar_product')}</Text>
             <View style={odst.border} />
           </View>
           <View style={[appst.center]}>

@@ -7,8 +7,10 @@ import ProductItem from '../../items/ProductItem/index.js';
 import OrderItem from '../../items/OrderItem/OrderItem.js';
 import {getOrderProcess} from '../../api/OrderApi.js';
 import OrderHistorySkeleton from '../../placeholders/product/order/OrderHistory.js';
+import { useTranslation } from 'react-i18next';
 
 const ToShip = ({navigation}) => {
+  const {t} = useTranslation();
   const useAppSelector = useSelector;
   const products = useAppSelector(state => state.products.products);
   const [processOrders, setProcessOrders] = useState([]);
@@ -54,12 +56,12 @@ const ToShip = ({navigation}) => {
                 style={odst.img}
                 source={require('../../assets/images/order.png')}
               />
-              <Text style={odst.text1}>You don't have any orders yet</Text>
+              <Text style={odst.text1}>{t('orders.no_order')}</Text>
             </View>
           )}
           <View style={appst.rowCenter}>
             <View style={odst.border} />
-            <Text style={odst.text}>You May Also Like</Text>
+            <Text style={odst.text}>{t('products.similar_product')}</Text>
             <View style={odst.border} />
           </View>
           <View style={[appst.center]}>

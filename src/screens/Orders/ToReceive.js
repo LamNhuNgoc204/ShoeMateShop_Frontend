@@ -7,8 +7,10 @@ import ProductItem from '../../items/ProductItem';
 import OrderItem from '../../items/OrderItem/OrderItem';
 import {getOrderCompeleted} from '../../api/OrderApi';
 import OrderHistorySkeleton from '../../placeholders/product/order/OrderHistory';
+import { useTranslation } from 'react-i18next';
 
 const ToReceive = ({navigation}) => {
+  const {t} = useTranslation();
   const useAppSelector = useSelector;
   const products = useAppSelector(state => state.products.products);
   const [completedOrders, setCompletedOrders] = useState([]);
@@ -59,7 +61,7 @@ const ToReceive = ({navigation}) => {
 
           <View style={appst.rowCenter}>
             <View style={odst.border} />
-            <Text style={odst.text}>You May Also Like</Text>
+            <Text style={odst.text}>{t('products.similar_product')}</Text>
             <View style={odst.border} />
           </View>
           <View style={[appst.center]}>

@@ -7,8 +7,10 @@ import ProductItem from '../../items/ProductItem/index.js';
 import OrderItem from '../../items/OrderItem/OrderItem.js';
 import {getOrderPending} from '../../api/OrderApi.js';
 import OrderHistorySkeleton from '../../placeholders/product/order/OrderHistory.js';
+import {useTranslation} from 'react-i18next';
 
 const ToPay = ({navigation}) => {
+  const {t} = useTranslation();
   const useAppSelector = useSelector;
   const products = useAppSelector(state => state.products.products);
   const [pendingOrders, setPendingOrders] = useState([]);
@@ -55,13 +57,13 @@ const ToPay = ({navigation}) => {
                 style={odst.img}
                 source={require('../../assets/images/order.png')}
               />
-              <Text style={odst.text1}>You don't have any orders yet</Text>
+              <Text style={odst.text1}>{t('orders.no_order')}</Text>
             </View>
           )}
 
           <View style={appst.rowCenter}>
             <View style={odst.border} />
-            <Text style={odst.text}>You May Also Like</Text>
+            <Text style={odst.text}>{t('products.similar_product')}</Text>
             <View style={odst.border} />
           </View>
           <View style={{marginLeft: 20}}>

@@ -84,7 +84,7 @@ export const cancelOrder = async orderId => {
 
 export const getOrderReturn = async () => {
   try {
-    const response = await AxiosInstance().put(
+    const response = await AxiosInstance().get(
       `/orders/get-user-order-refunded`,
     );
     if (response.status) {

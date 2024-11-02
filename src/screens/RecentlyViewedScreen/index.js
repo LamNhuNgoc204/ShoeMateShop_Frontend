@@ -17,6 +17,7 @@ import {useTranslation} from 'react-i18next';
 import {getRecentViews} from '../../api/ProductApi';
 import st from './style';
 import RecentlySkeleton from '../../placeholders/product/recently';
+import Header from '../../components/Header';
 
 const RecentlyViewedScreen = () => {
   const {t} = useTranslation();
@@ -41,16 +42,12 @@ const RecentlyViewedScreen = () => {
 
   return (
     <View style={styles.container}>
-      <View style={appst.rowCenter}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image
-            style={appst.icon40}
-            source={require('../../assets/icons/ic_back.png')}
-          />
-        </TouchableOpacity>
-        <Text style={styles.title}>{t('profiles.viewed')}</Text>
-        <View style={{width: 40}} />
-      </View>
+      <Header
+        name={t('profiles.viewed')}
+        iconLeft={require('../../assets/icons/back.png')}
+        leftOnPress={() => navigation.goBack()}
+      />
+
       <View style={{flex: 1, marginTop: 10}}>
         {loading ? (
           products.length > 0 ? (
@@ -87,7 +84,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: spacing.lg,
+    paddingHorizontal: 20,
+    paddingTop: 5
   },
   title: {
     fontSize: 20,
