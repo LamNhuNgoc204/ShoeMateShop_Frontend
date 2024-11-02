@@ -129,8 +129,19 @@ export const oddt = StyleSheet.create({
     marginHorizontal: spacing.lg,
     width: '90%',
   },
+  disable: {
+    backgroundColor: '#ccc',
+    borderRadius: 8,
+    marginVertical: spacing.lg,
+    marginHorizontal: spacing.lg,
+    width: '90%',
+  },
   titleStyle: {
     color: '#fff',
+    fontSize: sizes.size18,
+  },
+  titleDisable: {
+    color: '#000',
     fontSize: sizes.size18,
   },
 });

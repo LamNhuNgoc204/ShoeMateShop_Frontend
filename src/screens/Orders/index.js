@@ -45,9 +45,9 @@ const OrderScreen = ({navigation}) => {
         }}>
         <TopTab.Screen name={t('orders.pay')} component={ToPay} />
         <TopTab.Screen name={t('orders.ship')} component={ToShip} />
-        <TopTab.Screen name={'Đã giao'} component={ToReceive} />
+        <TopTab.Screen name={t('orders.completed')} component={ToReceive} />
         <TopTab.Screen name={t('orders.cancel')} component={Cancalled} />
-        <TopTab.Screen name={'Da tra'} component={ToReturn} />
+        <TopTab.Screen name={t('orders.return')} component={ToReturn} />
       </TopTab.Navigator>
     </View>
   );

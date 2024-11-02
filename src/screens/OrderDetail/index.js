@@ -14,9 +14,10 @@ import {spacing} from '../../constants';
 import {CustomedButton} from '../../components';
 import {useTranslation} from 'react-i18next';
 import OrderDetailSkeleton from '../../placeholders/product/order/OrderDetail';
-import {cancelOrder, getOrderDetail} from '../../api/OrderApi';
+import {getOrderDetail} from '../../api/OrderApi';
 import OrderItemDetail from '../../items/OrderItem/OrderItemDetail';
 import {formatDate} from '../../utils/functions/formatData';
+import {handleOrderDetail} from '../../utils/functions/order';
 
 const OrderDetail = ({route, navigation}) => {
   const {index} = route.params;
@@ -25,7 +26,7 @@ const OrderDetail = ({route, navigation}) => {
   const [orderDetail, setOrderDetail] = useState({});
   const [titleButton, setTitleButton] = useState('');
 
-  // console.log('orderDetail => ', orderDetail);
+  console.log('orderDetail => ', orderDetail);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,13 +34,17 @@ const OrderDetail = ({route, navigation}) => {
       const response = await getOrderDetail(index);
       if (response) {
         setOrderDetail(response);
-        if (orderDetail.orderStatus === 'pending') {
+        if (response.orderStatus === 'pending') {
           setTitleButton('orders.cancelled');
+        } else if (response.orderStatus === 'processing') {
+          setTitleButton('orders.processing');
+        } else if (response.orderStatus === 'shipped') {
+          setTitleButton('orders.track');
         }
         setLoading(true);
       }
     };
-    setLoading(true);
+
     fetchData();
   }, []);
 
@@ -59,15 +64,6 @@ const OrderDetail = ({route, navigation}) => {
         <Text style={oddt.text11}>{content2}</Text>
       </View>
     );
-  };
-
-  const handleOrderDetail = async () => {
-    if (orderDetail.orderStatus === 'pending') {
-      const response = await cancelOrder(index);
-      if (response.status) {
-        ToastAndroid.show(t('toast.cancel_order', ToastAndroid.SHORT));
-      }
-    }
   };
 
   return (
@@ -106,7 +102,7 @@ const OrderDetail = ({route, navigation}) => {
 
                 <View style={[oddt.body]}>
                   <View style={[appst.rowCenter, oddt.view]}>
-                    <Text style={oddt.text4}>{t('orders.code_order')}</Text>
+                    <Text style={oddt.text4}>{t('orders.code')}</Text>
                     <Text style={oddt.text4}>
                       {orderDetail.orderCode &&
                         orderDetail.orderCode.slice(0, 10)}
@@ -169,7 +165,11 @@ const OrderDetail = ({route, navigation}) => {
                   />
                   <Item
                     content1={t('setting.payment')}
-                    content2={orderDetail.payment_method}
+                    content2={
+                      orderDetail.payment_method === 'Thanh toán khi nhận hàng'
+                        ? 'COD'
+                        : orderDetail.payment_method
+                    }
                   />
                   <Item
                     content1={t('orders.shipprice')}
@@ -215,10 +215,21 @@ const OrderDetail = ({route, navigation}) => {
               </View>
             </ScrollView>
             <CustomedButton
+              disabled={orderDetail.orderStatus === 'processing' && true}
               title={t(titleButton)}
-              style={oddt.press}
-              titleStyle={oddt.titleStyle}
-              onPress={handleOrderDetail}
+              style={
+                orderDetail.orderStatus === 'processing'
+                  ? oddt.disable
+                  : oddt.press
+              }
+              titleStyle={
+                orderDetail.orderStatus === 'processing'
+                  ? oddt.titleDisable
+                  : oddt.titleStyle
+              }
+              onPress={() =>
+                handleOrderDetail(orderDetail, ToastAndroid, index)
+              }
             />
           </View>
         ) : (

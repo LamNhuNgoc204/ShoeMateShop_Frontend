@@ -194,7 +194,11 @@
     "timeCancel": "Thời gian hủy đơn hàng",
     "cancelled": "Hủy đơn hàng",
     "order_detail": "Chi tiết đơn hàng",
-    "pending": "Chờ xử lý"
+    "pending": "Chờ xử lý",
+    "code": "Mã đơn",
+    "unit": "sản phẩm",
+    "completed": "Đã giao",
+    "return": "Đã trả"
   },
   "rating": {
     "review": "Đánh giá của tôi",

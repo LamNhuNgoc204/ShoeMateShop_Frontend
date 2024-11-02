@@ -4,8 +4,10 @@ import odit from './style';
 import appst from '../../constants/AppStyle';
 import {spacing} from '../../constants';
 import {gotoOrderDetail} from '../../utils/functions/handleOrder';
+import {useTranslation} from 'react-i18next';
 
 const OrderItem = ({item, receive, cancel, navigation}) => {
+  const {t} = useTranslation();
   // console.log('item order: ', item);
 
   const orderDetail = item.orderDetails && item.orderDetails[0];
@@ -27,15 +29,15 @@ const OrderItem = ({item, receive, cancel, navigation}) => {
       onPress={() => gotoOrderDetail(navigation, item._id)}
       style={odit.container}>
       <Text style={odit.textCode}>
-        Code orders: {item._id && item._id.slice(0, 10)}
+        {t('orders.code')}: {item._id && item._id.slice(0, 10)}
       </Text>
       <View style={[appst.rowStart, odit.itemContainer]}>
         <Image
           style={odit.img}
           source={
-            product && product.imageUrl && product.imageUrl[0]
+            product && product.pd_image && product.pd_image[0]
               ? {
-                  uri: product && product.imageUrl && product.imageUrl[0],
+                  uri: product && product.pd_image && product.pd_image[0],
                 }
               : require('../../assets/images/placeholder_image.jpg')
           }
@@ -45,10 +47,11 @@ const OrderItem = ({item, receive, cancel, navigation}) => {
             {product && product.name}
           </Text>
           <Text style={odit.text}>
-            Size: <Text style={odit.text1}>{product && product.size_name}</Text>
+            {t('products.size')}:{' '}
+            <Text style={odit.text1}>{product && product.size_name}</Text>
           </Text>
           <Text style={odit.text}>
-            Price:{' '}
+            {t('products.price')}:{' '}
             <Text style={odit.text1}>
               {product &&
                 product.price &&
@@ -59,7 +62,9 @@ const OrderItem = ({item, receive, cancel, navigation}) => {
         </View>
       </View>
       <View style={[appst.rowCenter, odit.view1]}>
-        <Text style={odit.quatity}>{totalQuantity} item(s)</Text>
+        <Text style={odit.quatity}>
+          {totalQuantity} {t('orders.unit')}
+        </Text>
         <Text style={odit.total}>
           Total Price:{' '}
           <Text style={odit.price}>

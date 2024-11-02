@@ -193,7 +193,9 @@
     "complete": "Completed Time",
     "order_detail": "Order Detail",
     "code_order": "Code order",
-    "success_delivery": "Successful Delivery"
+    "success_delivery": "Successful Delivery",
+    "unit": "item(s)",
+    "processing": "Đang xử lý"
   },
   "rating": {
     "review": "My Reviews",
