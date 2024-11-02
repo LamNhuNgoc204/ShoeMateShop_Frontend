@@ -2,18 +2,36 @@ import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import appst from '../../constants/AppStyle';
 import {colors} from '../../constants/colors';
+import {useTranslation} from 'react-i18next';
 
-const CancelItem = item => {
+const CancelItem = ({item}) => {
+  const {t} = useTranslation();
+  const data = item.item && item.item.product;
+  console.log('CancelItem ==> ', data);
+
   return (
     <View style={[appst.rowStart, st.container]}>
       <Image
-        source={require('../../assets/images/placeholder_image.jpg')}
+        source={
+          data.pd_image && data.pd_image[0]
+            ? {uri: data.pd_image && data.pd_image[0]}
+            : require('../../assets/images/placeholder_image.jpg')
+        }
         style={st.img}
       />
       <View style={st.view1}>
-        <Text style={st.text}>name</Text>
-        <Text style={st.text}>proce</Text>
-        <Text style={st.text}>size</Text>
+        <Text numberOfLines={1} style={st.text}>
+          {data.name}
+        </Text>
+        <Text style={st.text}>
+          {t('products.price')}: {data.price}
+        </Text>
+        <Text style={st.text}>
+          {t('products.size')}: {data.size_name}
+        </Text>
+        <Text style={st.text}>
+          {t('products.quantity')}: {data.pd_quantity}
+        </Text>
       </View>
     </View>
   );

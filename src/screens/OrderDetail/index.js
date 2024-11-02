@@ -20,7 +20,7 @@ import {formatDate} from '../../utils/functions/formatData';
 import {handleOrderDetail} from '../../utils/functions/order';
 
 const OrderDetail = ({route, navigation}) => {
-  const {index} = route.params;
+  const {item} = route.params;
   const {t} = useTranslation();
   const [loading, setLoading] = useState(false);
   const [orderDetail, setOrderDetail] = useState({});
@@ -31,7 +31,7 @@ const OrderDetail = ({route, navigation}) => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(false);
-      const response = await getOrderDetail(index);
+      const response = await getOrderDetail(item._id);
       if (response) {
         setOrderDetail(response);
         if (response.orderStatus === 'pending') {

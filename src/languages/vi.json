@@ -206,7 +206,11 @@
     "Canceler": "Đã hủy bởi",
     "cancel_detail": "Chi tiết đơn hủy",
     "complete_cancel": "Đã hủy đơn hàng",
-    "in": "vào"
+    "in": "vào",
+    "create_at": "Thời gian đặt hàng",
+    "creater_by": "Yêu cầu bởi",
+    "requested_by": "Yêu cầu vào ",
+    "reason": "Lý do"
   },
   "rating": {
     "review": "Đánh giá của tôi",
@@ -247,5 +251,8 @@
   },
   "toast": {
     "cancel_order": "Đơn hàng đã bị hủy"
+  },
+  "ship": {
+    "infor": "Thông tin vận chuyển"
   }
 }

@@ -8,7 +8,7 @@ import {useTranslation} from 'react-i18next';
 
 const OrderItem = ({item, receive, cancel, navigation}) => {
   const {t} = useTranslation();
-  console.log('item order: ', item);
+  // console.log('item order: ', item);
 
   const orderDetail = item.orderDetails && item.orderDetails[0];
   const product = orderDetail && orderDetail.product;
@@ -26,7 +26,7 @@ const OrderItem = ({item, receive, cancel, navigation}) => {
 
   return (
     <TouchableOpacity
-      onPress={() => gotoOrderDetail('OrderDetail', navigation, item._id)}
+      onPress={() => gotoOrderDetail('OrderDetail', navigation, item)}
       style={odit.container}>
       <Text style={odit.textCode}>
         {t('orders.code')}: {item._id && item._id.slice(0, 10)}
@@ -115,7 +115,7 @@ const OrderItem = ({item, receive, cancel, navigation}) => {
             <View style={appst.rowEnd}>
               <TouchableOpacity
                 onPress={() =>
-                  gotoOrderDetail('CancelDetail', navigation, item._id)
+                  gotoOrderDetail('CancelDetail', navigation, item)
                 }
                 style={[odit.press, odit.press1, {paddingHorizontal: 10}]}>
                 <Text style={[odit.textTouch, odit.textTouch1]}>

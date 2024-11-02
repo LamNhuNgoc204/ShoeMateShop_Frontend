@@ -1,3 +1,3 @@
-export const gotoOrderDetail = async (name, navigation, index) => {
-  navigation.navigate(name, (index && {index: index}));
+export const gotoOrderDetail = async (name, navigation, item) => {
+  navigation.navigate(name, (item && {item: item}));
 };
