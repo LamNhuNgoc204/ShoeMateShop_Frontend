@@ -225,7 +225,11 @@
     "sub_title": "Đánh giá giúp sản phẩm phát triển hơn",
     "product": "Sản phẩm",
     "describe": "Mô tả",
-    "choose_file": "Chọn tệp đính kèm"
+    "choose_file": "Chọn tệp đính kèm",
+    "see": "Xem đánh giá",
+    "to_review": "Đã đánh giá",
+    "rating": "Chưa đánh giá",
+    "not_found": "Không tìm thấy đánh giá nào nữa."
   },
   "notifications": {
     "title": "Thông báo",

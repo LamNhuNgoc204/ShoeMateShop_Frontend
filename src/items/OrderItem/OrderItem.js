@@ -8,7 +8,7 @@ import {useTranslation} from 'react-i18next';
 
 const OrderItem = ({item, receive, cancel, refunded, navigation}) => {
   const {t} = useTranslation();
-  // console.log('item order: ', item);
+  console.log('item order: ', item);
 
   const orderDetail = item.orderDetails && item.orderDetails[0];
   const product = orderDetail && orderDetail.product;
@@ -96,6 +96,8 @@ const OrderItem = ({item, receive, cancel, refunded, navigation}) => {
           {cancel && (
             <Text style={odit.textCancel}>{t('orders.Canceler')} you</Text>
           )}
+
+          {/* ĐƠN ĐÃ HOÀN THÀNH */}
           {!cancel && (
             <View style={appst.rowEnd}>
               <TouchableOpacity style={[odit.press, {paddingHorizontal: 10}]}>
@@ -106,11 +108,12 @@ const OrderItem = ({item, receive, cancel, refunded, navigation}) => {
               <TouchableOpacity
                 style={[odit.press, {paddingHorizontal: 5, marginLeft: 10}]}>
                 <Text style={odit.textTouch}>
-                  {true ? t('review.review') : t('review.see')}
+                  {!item.isReviewed ? t('review.review') : t('review.see')}
                 </Text>
               </TouchableOpacity>
             </View>
           )}
+
           {cancel && (
             <View style={appst.rowEnd}>
               <TouchableOpacity

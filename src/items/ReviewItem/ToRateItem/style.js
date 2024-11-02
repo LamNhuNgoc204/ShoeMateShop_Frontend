@@ -6,12 +6,14 @@ import {fonts} from '../../../constants/fonts';
 export const rtit = StyleSheet.create({
   container: {
     backgroundColor: colors.colorF3F6FF,
-    width: '100%',
+    // width: '100%',
     paddingVertical: spacing.sm,
+    marginBottom: 10,
+    marginHorizontal: 10,
+    borderRadius: 10,
   },
   code: {
     paddingHorizontal: spacing.sm,
-
     fontFamily: fonts.rlw_regular,
     fonts: sizes.size12,
     color: colors.black,
@@ -22,6 +24,7 @@ export const rtit = StyleSheet.create({
     borderBottomColor: colors.color7D848D,
     borderBottomWidth: 0.5,
     paddingVertical: spacing.sm,
+    flex: 1,
   },
   img: {
     width: 50,
@@ -30,9 +33,10 @@ export const rtit = StyleSheet.create({
     marginRight: spacing.sm,
   },
   name: {
-    fontFamily: fonts.rlw_bold,
-    fontSize: sizes.size12,
+    fontFamily: fonts.rlw_medium,
+    fontSize: 14,
     color: colors.black,
+    flex: 1,
   },
   view: {
     marginHorizontal: spacing.lg,

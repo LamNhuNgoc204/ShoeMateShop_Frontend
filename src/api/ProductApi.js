@@ -61,3 +61,14 @@ export const getRecentViews = async () => {
     console.log('get recent view err: ', error);
   }
 };
+
+export const getUnreviewedProductsInOrder = async () => {
+  try {
+    const response = await AxiosInstance().get('/reviews/product-unreview');
+    if (response.status) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log('getUnreviewedProductsInOrder err: ', error);
+  }
+};

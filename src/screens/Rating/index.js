@@ -11,7 +11,7 @@ import {sizes} from '../../constants';
 import {fonts} from '../../constants/fonts';
 import {useTranslation} from 'react-i18next';
 
-const MyRating = () => {
+const MyRating = ({navigation}) => {
   const {t} = useTranslation();
   const TopTab = createMaterialTopTabNavigator();
 
@@ -20,7 +20,7 @@ const MyRating = () => {
       <Header
         name={t('profiles.rating')}
         iconLeft={require('../../assets/icons/back.png')}
-        leftOnPress={() => {}}
+        leftOnPress={() => navigation.goBack()}
       />
       <TopTab.Navigator
         screenOptions={{
@@ -33,8 +33,6 @@ const MyRating = () => {
           tabBarInactiveTintColor: colors.black,
           tabBarIndicatorStyle: {
             backgroundColor: 'blue',
-            width: '25%',
-            marginHorizontal: '13%',
           },
           tabBarStyle: {
             backgroundColor: colors.colorF3F6FF,
@@ -42,7 +40,7 @@ const MyRating = () => {
             margin: 0,
           },
         }}>
-        <TopTab.Screen name={t('profiles.rate')} component={ToRate} />
+        <TopTab.Screen name={t('review.rating')} component={ToRate} />
         <TopTab.Screen name={t('review.to_review')} component={MyReviews} />
       </TopTab.Navigator>
     </View>

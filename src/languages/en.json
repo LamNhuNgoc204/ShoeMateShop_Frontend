@@ -215,7 +215,9 @@
     "video": "Add video",
     "placeholder": "Enter your review here...",
     "to_review": "To Review",
-    "see": "See review"
+    "see": "See review",
+    "rating": "To Rating",
+    "not_found": "No more ratings found."
   },
   "nothing": {
     "internet": "No internet Connection",

@@ -13,8 +13,9 @@ import Header from '../../components/Header';
 import StarRating from '../../items/StarRating';
 import {useTranslation} from 'react-i18next';
 
-const Review = ({navitaion}) => {
+const Review = ({navigation, route}) => {
   const {t} = useTranslation();
+  const {product} = route.params;
 
   const [rating, setRating] = useState(0);
 
@@ -29,16 +30,27 @@ const Review = ({navitaion}) => {
       <Header
         name={t('review.review')}
         iconLeft={require('../../assets/icons/back.png')}
+        leftOnPress={() => navigation.goBack()}
+        iconRight={require('../../assets/icons/check.png')}
+        rightOnPress={() => {}}
       />
       <View style={[rvst.itemPd]}>
         <Image
           style={rvst.imgPd}
-          source={require('../../assets/images/banner3.jpg')}
+          source={
+            product.pd_image && product.pd_image[0]
+              ? {uri: product.pd_image[0]}
+              : require('../../assets/images/placeholder_image.jpg')
+          }
         />
-        <View>
+        <View style={{marginLeft: 5}}>
           <View style={rvst.viewContent}>
-            <Text style={rvst.name}>Nike Aiforce I</Text>
-            <Text style={rvst.size}>Size: 32</Text>
+            <Text numberOfLines={1} style={rvst.name}>
+              {product.name}
+            </Text>
+            <Text style={rvst.size}>
+              {t('products.size')}: {product.size_name}
+            </Text>
           </View>
         </View>
       </View>
