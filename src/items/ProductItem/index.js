@@ -5,6 +5,7 @@ import productStyle from './style';
 
 const ProductItem = ({handleHeartPress, product, style, wishlist = []}) => {
 
+
   const getIsFavorite = () => {
     const index = wishlist.findIndex((e) => e._id == product._id);
     return index !== -1;

@@ -99,8 +99,7 @@
     "brand": "Thương hiệu",
     "price": "Giá",
     "rate": "Đánh giá",
-    "total": "Tổng giá",
-    "quantity": "Số lượng"
+    "total": "Tổng giá"
   },
   "form_input": {
     "name": "Tên của bạn",
@@ -186,7 +185,7 @@
     "order_total": "Tổng đơn hàng",
     "fees": "Áp dụng phí",
     "total": "Tổng cộng",
-    "shipprice": "Phí vận chuyển",
+    "accumulated": "Điểm thưởng tích lũy",
     "time": "Thời gian đặt hàng",
     "payment": "Thời gian thanh toán",
     "shipping": "Thời gian giao hàng",
@@ -199,6 +198,7 @@
     "unit": "sản phẩm",
     "completed": "Đã giao",
     "return": "Đã trả"
+    "complete": "Thời gian hoàn tất"
   },
   "rating": {
     "review": "Đánh giá của tôi",
@@ -218,8 +218,7 @@
     "order": "Thông báo đơn hàng",
     "promotion": "Khuyến mãi",
     "message": "Tin nhắn",
-    "system": "Hệ thống",
-    "sub_title": "Bạn không có thông báo"
+    "system": "Hệ thống"
   },
   "messages": {
     "title": "Tin nhắn",
@@ -236,8 +235,5 @@
     "history": "Chưa có lịch sử",
     "sub_history": "Nhấn nút màu xanh bên dưới để tạo đơn hàng",
     "order": "Chưa có đơn hàng"
-  },
-  "toast": {
-    "cancel_order": "Đơn hàng đã bị hủy"
   }
 }

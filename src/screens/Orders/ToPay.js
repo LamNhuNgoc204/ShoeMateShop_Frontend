@@ -8,7 +8,7 @@ import OrderItem from '../../items/OrderItem/OrderItem.js';
 import {getOrderPending} from '../../api/OrderApi.js';
 import OrderHistorySkeleton from '../../placeholders/product/order/OrderHistory.js';
 
-const ToPay = ({navigation}) => {
+const ToPay = () => {
   const useAppSelector = useSelector;
   const products = useAppSelector(state => state.products.products);
   const [pendingOrders, setPendingOrders] = useState([]);
@@ -31,7 +31,7 @@ const ToPay = ({navigation}) => {
     fetchOrder();
   }, []);
 
-  // console.log('initialParams={{ orders }} ', pendingOrders);
+  console.log('initialParams={{ orders }} ', pendingOrders);
 
   return (
     <View style={appst.container}>

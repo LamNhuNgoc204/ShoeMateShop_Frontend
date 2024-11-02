@@ -219,13 +219,5 @@
     "history": "No history yet",
     "sub_history": "Hit the blue button down below to Create an order",
     "order": "No orders yet"
-  },
-  "notifications": {
-    "title": "Notifications",
-    "order": "Order Notifications",
-    "promotion": "Promotion",
-    "message": "Message",
-    "system": "System",
-    "sub_title": "You have no notifications"
   }
 }
