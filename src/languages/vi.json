@@ -31,7 +31,8 @@
     "btn_send": "Gửi",
     "btn_next": "Tiếp theo",
     "btn_try_again": "Thử lại",
-    "btn_start_order": "Bắt đầu đặt hàng"
+    "btn_start_order": "Bắt đầu đặt hàng",
+    "read_more": "Xem thêm"
   },
   "home": {
     "list_product": "Sản phẩm dành cho bạn",
@@ -91,7 +92,7 @@
   },
   "products": {
     "best_seller": "BÁN CHẠY",
-    "sold": "đã bán",
+    "sold": "Đã bán",
     "see_more": "Xem thêm",
     "reviews": "Đánh giá sản phẩm",
     "similar_product": "Bạn có thể thích",

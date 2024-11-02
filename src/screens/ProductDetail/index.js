@@ -21,8 +21,10 @@ import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import BottomSheetContent from '../../items/Sizebottom';
 import ProductSkeleton from '../../placeholders/product/detail';
 import {addRecentView} from '../../api/ProductApi';
+import {useTranslation} from 'react-i18next';
 
 const ProductDetail = props => {
+  const {t} = useTranslation();
   const navigation = useNavigation();
   const {index} = props.route.params;
   const useAppSelector = useSelector;
@@ -144,7 +146,7 @@ const ProductDetail = props => {
           </View>
 
           <View style={pddt.body}>
-            <Text style={pddt.bestSl}>BEST SELLER</Text>
+            <Text style={pddt.bestSl}>{t('products.best_seller')}</Text>
             <View style={[appst.rowCenter, pddt.body1]}>
               <View>
                 <Text style={pddt.name}>{product.name}</Text>
@@ -171,7 +173,8 @@ const ProductDetail = props => {
                 {product && product.avgRating}/5
               </Text>
               <Text style={pddt.bought}>
-                Đã bán ({product && product.sold < 100 ? product.sold : '100+'})
+                {t('products.sold')} (
+                {product && product.sold < 100 ? product.sold : '100+'})
               </Text>
             </View>
             <View style={pddt.viewDes}>
@@ -185,7 +188,7 @@ const ProductDetail = props => {
                   setIsDescriptionExpanded(!isDescriptionExpanded)
                 }>
                 <Text style={pddt.readmore}>
-                  {isDescriptionExpanded ? 'Read Less' : 'Read More'}
+                  {isDescriptionExpanded ? 'Read Less' : t('buttons.read_more')}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -193,7 +196,7 @@ const ProductDetail = props => {
 
           <View style={pddt.body2}>
             <Text style={[pddt.reviewTitle, pddt.pdHorizon]}>
-              Product Reviews
+              {t('products.reviews')}
             </Text>
             {hasReviews ? (
               <View>
@@ -217,7 +220,7 @@ const ProductDetail = props => {
           <View>
             <View style={[appst.center, {flexDirection: 'row'}]}>
               <View style={pddt.border} />
-              <Text style={pddt.text2}>Similar Product</Text>
+              <Text style={pddt.text2}>{t('products.similar_product')}</Text>
               <View style={pddt.border} />
             </View>
             <View style={appst.center}>
@@ -240,7 +243,7 @@ const ProductDetail = props => {
       )}
 
       <View style={[pddt.footer, appst.rowCenter]}>
-        <View style={[appst.rowCenter, pddt.footer1]}>
+        <View style={[appst.rowCenter]}>
           <TouchableOpacity>
             <Image
               source={require('../../assets/icons/chatwithshop.png')}
@@ -250,11 +253,11 @@ const ProductDetail = props => {
           <TouchableOpacity
             onPress={() => onOpenSheet()}
             style={[pddt.pressAddtocart, appst.center]}>
-            <Text style={pddt.txtPress}>Add to cart</Text>
+            <Text style={pddt.txtPress}>{t('buttons.btn_addtocart')}</Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity style={[pddt.pressBuynow, appst.center]}>
-          <Text style={pddt.txtPress}>Buy now</Text>
+          <Text style={pddt.txtPress}>{t('buttons.btn_buynow')}</Text>
         </TouchableOpacity>
       </View>
 
