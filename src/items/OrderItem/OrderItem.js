@@ -6,7 +6,7 @@ import {spacing} from '../../constants';
 import {gotoOrderDetail} from '../../utils/functions/handleOrder';
 import {useTranslation} from 'react-i18next';
 
-const OrderItem = ({item, receive, cancel, navigation}) => {
+const OrderItem = ({item, receive, cancel, refunded, navigation}) => {
   const {t} = useTranslation();
   // console.log('item order: ', item);
 
@@ -127,6 +127,14 @@ const OrderItem = ({item, receive, cancel, navigation}) => {
                 <Text style={odit.textTouch}>{t('buttons.btn_buy_again')}</Text>
               </TouchableOpacity>
             </View>
+          )}
+          {refunded && (
+            <TouchableOpacity
+              style={[odit.press, odit.press1, {paddingHorizontal: 10}]}>
+              <Text style={[odit.textTouch, odit.textTouch1]}>
+                {t('orders.watch_order_detail')}
+              </Text>
+            </TouchableOpacity>
           )}
         </View>
       )}

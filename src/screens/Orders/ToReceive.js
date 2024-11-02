@@ -74,6 +74,7 @@ const ToReceive = ({navigation}) => {
               }
               numColumns={2}
               scrollEnabled={false}
+              contentContainerStyle={{padding: 20}}
             />
           </View>
         </ScrollView>
