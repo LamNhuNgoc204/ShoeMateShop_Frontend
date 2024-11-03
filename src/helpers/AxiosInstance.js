@@ -3,12 +3,13 @@ import axios from 'axios';
 
 const AxiosInstance = (contentType = 'application/json') => {
   const axiosInstance = axios.create({
-    baseURL: `http://192.168.1.93:3000/`,
+    baseURL: `http://192.168.1.32:3000/`,
   });
 
   axiosInstance.interceptors.request.use(
     async config => {
       const token = await AsyncStorage.getItem('token');
+      console.log('token: ', token)
       // const token = '';
       config.headers = {
         Authorization: `Bearer ${token}`,

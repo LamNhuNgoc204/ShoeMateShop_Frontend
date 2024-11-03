@@ -18,7 +18,6 @@ const CartScreen = ({ navigation }) => {
   const { t } = useTranslation();
   const [currentlyOpenSwipeable, setCurrentlyOpenSwipeable] = useState(null);
   const [cards, setCards] = useState([]);
-  const [currentlyOpenSwipeable, setCurrentlyOpenSwipeable] = useState(null);
   const dispatch = useDispatch();
   const productState = useSelector(state => state.products);
   const [totalPrice, setTotalPrice] = useState(0);

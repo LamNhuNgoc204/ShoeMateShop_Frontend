@@ -64,7 +64,8 @@ const messageScreenStyle = StyleSheet.create({
         color: 'white',
         fontFamily: fonts.rlw_medium,
         fontSize: 12,
-        lineHeight:  19
+        lineHeight:  19,
+        fontSize: 16
     },
     marginTop10:{
         marginTop:0,
