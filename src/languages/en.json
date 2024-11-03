@@ -77,7 +77,8 @@
     "setting": "Account Setting",
     "security": "Information Security",
     "help": "Help",
-    "chat": "Chat with Shop"
+    "chat": "Chat with Shop",
+    "language": "Change Language"
   },
   "setting": {
     "setting": "Setting",
@@ -193,7 +194,13 @@
     "complete": "Completed Time",
     "order_detail": "Order Detail",
     "code_order": "Code order",
-    "success_delivery": "Successful Delivery"
+    "success_delivery": "Successful Delivery",
+    "unit": "item(s)",
+    "processing": "Đang xử lý",
+    "wait_confirm": "Wait for confirmation",
+    "proccessed_status": "Order is being processed",
+    "no_order": "You don't have any orders yet",
+    "watch_order_detail": "View order details"
   },
   "rating": {
     "review": "My Reviews",
@@ -207,7 +214,10 @@
     "photo": "Add photos",
     "video": "Add video",
     "placeholder": "Enter your review here...",
-    "to_review": "To Review"
+    "to_review": "To Review",
+    "see": "See review",
+    "rating": "To Rating",
+    "not_found": "No more ratings found."
   },
   "nothing": {
     "internet": "No internet Connection",
@@ -217,5 +227,13 @@
     "history": "No history yet",
     "sub_history": "Hit the blue button down below to Create an order",
     "order": "No orders yet"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "order": "Order Notifications",
+    "promotion": "Promotion",
+    "message": "Message",
+    "system": "System",
+    "sub_title": "You have no notifications"
   }
 }

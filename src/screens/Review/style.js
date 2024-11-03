@@ -8,8 +8,8 @@ const rvst = StyleSheet.create({
     backgroundColor: colors.background_primary,
   },
   imgPd: {
-    width: 30,
-    height: 30,
+    width: 50,
+    height: 50,
     borderRadius: 3,
     resizeMode: 'cover',
     marginRight: spacing.xm,
@@ -25,13 +25,13 @@ const rvst = StyleSheet.create({
   },
   name: {
     fontFamily: fonts.rlw_medium,
-    fontSize: sizes.size12,
+    fontSize: 14,
     color: colors.black,
   },
   size: {
     fontFamily: fonts.pp_light,
-    fontSize: sizes.size10,
-    color: '#a0a0a0',
+    fontSize: 12,
+    color: '#010101',
   },
   viewStar: {
     margin: spacing.sm,
@@ -87,12 +87,12 @@ const rvst = StyleSheet.create({
     right: 1,
     top: 1,
   },
-  input:{
+  input: {
     marginHorizontal: spacing.sm,
     backgroundColor: colors.colorF3F6FF,
     padding: spacing.sm,
-    borderRadius: 10
-  }
+    borderRadius: 10,
+  },
 });
 
 export default rvst;

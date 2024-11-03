@@ -1,33 +1,32 @@
+import {View, Text, FlatList, Image, ScrollView} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {useSelector} from 'react-redux';
-import {View, Text, FlatList, ScrollView, Image} from 'react-native';
-import {odst} from './style';
 import appst from '../../constants/AppStyle';
-import ProductItem from '../../items/ProductItem/index.js';
-import OrderItem from '../../items/OrderItem/OrderItem.js';
-import {getOrderProcess} from '../../api/OrderApi.js';
-import OrderHistorySkeleton from '../../placeholders/product/order/OrderHistory.js';
-import { useTranslation } from 'react-i18next';
+import {getOrderReturn} from '../../api/OrderApi';
+import OrderHistorySkeleton from '../../placeholders/product/order/OrderHistory';
+import {odst} from './style';
+import {useSelector} from 'react-redux';
+import OrderItem from '../../items/OrderItem/OrderItem';
+import {useTranslation} from 'react-i18next';
+import ProductItem from '../../items/ProductItem';
 
-const ToShip = ({navigation}) => {
+const ToReturn = ({navigation}) => {
   const {t} = useTranslation();
-  const useAppSelector = useSelector;
-  const products = useAppSelector(state => state.products.products);
-  const [processOrders, setProcessOrders] = useState([]);
+  const products = useSelector(state => state.products.products);
+  const [returnOrder, setReturnOrder] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchOrder = async () => {
       setLoading(false);
       try {
-        const response = await getOrderProcess();
+        const response = await getOrderReturn();
         if (response.status) {
-          setProcessOrders(response.data);
+          setReturnOrder(response.data);
           setLoading(true);
         }
       } catch (error) {
-        console.log('Get order error: ', error);
         setLoading(true);
+        console.log('Get order error: ', error);
       }
     };
     fetchOrder();
@@ -37,18 +36,17 @@ const ToShip = ({navigation}) => {
     <View style={appst.container}>
       {loading ? (
         <ScrollView style={appst.container}>
-          {processOrders.length !== 0 ? (
+          {returnOrder.length !== 0 ? (
             <FlatList
               style={odst.flat1}
-              data={processOrders}
+              data={returnOrder}
               renderItem={({item}) => (
-                <OrderItem item={item} navigation={navigation} />
+                <OrderItem item={item} refunded={true} navigation={navigation} />
               )}
               keyExtractor={(item, index) =>
                 item._id ? item._id : index.toString()
               }
               scrollEnabled={false}
-              revert
             />
           ) : (
             <View style={[appst.center, odst.view]}>
@@ -56,9 +54,12 @@ const ToShip = ({navigation}) => {
                 style={odst.img}
                 source={require('../../assets/images/order.png')}
               />
-              <Text style={odst.text1}>{t('orders.no_order')}</Text>
+              <Text style={[odst.text1, {marginTop: 5}]}>
+                {t('orders.no_order')}
+              </Text>
             </View>
           )}
+
           <View style={appst.rowCenter}>
             <View style={odst.border} />
             <Text style={odst.text}>{t('products.similar_product')}</Text>
@@ -87,4 +88,4 @@ const ToShip = ({navigation}) => {
   );
 };
 
-export default ToShip;
+export default ToReturn;

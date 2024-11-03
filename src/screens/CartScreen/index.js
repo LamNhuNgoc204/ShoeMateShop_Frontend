@@ -13,6 +13,7 @@ import {setOrderData, setToltalPrice} from '../../redux/reducer/cartReducer';
 import Loading from '../../components/Loading';
 import {useFocusEffect} from '@react-navigation/native';
 import ProductItem from '../../items/ProductItem';
+import CartPlaceholder from '../../placeholders/product/cart';
 
 const CartScreen = ({ navigation }) => {
   const { t } = useTranslation();
@@ -24,21 +25,26 @@ const CartScreen = ({ navigation }) => {
   const [checkedProducts, setCheckedProducts] = useState([]);
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(false);
 
 
   const fetchCard = async () => {
     try {
+      setLoading(false);
       setRefreshing(true);
       const response = await getUserCard();
       if (response.status) {
         setCards(response.data);
         setCheckedProducts([]);
         setIsAllChecked(false);
+        setLoading(true);
       }
     } catch (error) {
       console.log('error', error);
+      setLoading(true);
     } finally {
-      setRefreshing(false); // Kết thúc refreshing
+      setRefreshing(false);
+      setLoading(true);
     }
   };
 
@@ -169,66 +175,74 @@ const CartScreen = ({ navigation }) => {
           rightOnPress={showDeleteModal}
         />
       </View>
-      <View style={cartst.viewBody}>
-        <Text style={cartst.text1}>
-          {cards.length} {t('home.item')}
-        </Text>
-        {cards.length === 0 ? (
-          <ScrollView>
-            <Image
-              style={cartst.placeholder}
-              source={require('../../assets/images/shopping.jpg')}
+      {loading ? (
+        <View style={[cartst.viewBody, {flex: 1}]}>
+          <Text style={cartst.text1}>
+            {cards && cards.length} {t('home.item')}
+          </Text>
+          {cards.length === 0 ? (
+            <ScrollView>
+              <Image
+                style={cartst.placeholder}
+                source={require('../../assets/images/shopping.jpg')}
+              />
+              <TouchableOpacity
+                style={{marginBottom: 20}}
+                onPress={() =>
+                  navigation.reset({
+                    index: 0,
+                    routes: [{name: 'BottomNav'}],
+                  })
+                }>
+                <Text style={cartst.text}>Bat dau mua sam ngay</Text>
+              </TouchableOpacity>
+              <View style={appst.center}>
+                <FlatList
+                  data={productState.products}
+                  renderItem={({item, index}) => (
+                    <ProductItem product={item} index={index} />
+                  )}
+                  keyExtractor={(item, index) => index.toString()}
+                  numColumns={2}
+                  showsVerticalScrollIndicator={false}
+                  scrollEnabled={false}
+                  style={{marginLeft: 20}}
+                />
+              </View>
+            </ScrollView>
+          ) : (
+            <FlatList
+              style={cartst.flat}
+              data={cards}
+              renderItem={({item}) => (
+                <ItemCart
+                  item={item}
+                  setCards={setCards}
+                  cards={cards}
+                  setTotalPrice={setTotalPrice}
+                  checkedProducts={checkedProducts}
+                  setCheckedProducts={setCheckedProducts}
+                  currentlyOpenSwipeable={currentlyOpenSwipeable}
+                  setCurrentlyOpenSwipeable={setCurrentlyOpenSwipeable}
+                  isChecked={checkedProducts.some(
+                    cart => cart._id === item._id,
+                  )}
+                  onCheckedChange={handleCheckedChange}
+                />
+              )}
+              extraData={item => item.id}
+              ItemSeparatorComponent={
+                <View style={{marginBottom: spacing.sm}} />
+              }
+              showsVerticalScrollIndicator={false}
+              onRefresh={fetchCard}
+              refreshing={refreshing}
             />
-            <TouchableOpacity
-              style={{marginBottom: 20}}
-              onPress={() =>
-                navigation.reset({
-                  index: 0,
-                  routes: [{name: 'BottomNav'}],
-                })
-              }>
-              <Text style={cartst.text}>Bat dau mua sam ngay</Text>
-            </TouchableOpacity>
-            <View style={appst.center}>
-              <FlatList
-                data={productState.products}
-                renderItem={({item, index}) => (
-                  <ProductItem product={item} index={index} />
-                )}
-                keyExtractor={(item, index) => index.toString()}
-                numColumns={2}
-                showsVerticalScrollIndicator={false}
-                scrollEnabled={false}
-                style={{marginLeft: 20}}
-              />
-            </View>
-          </ScrollView>
-        ) : (
-          <FlatList
-            style={cartst.flat}
-            data={cards}
-            renderItem={({item}) => (
-              <ItemCart
-                item={item}
-                setCards={setCards}
-                cards={cards}
-                setTotalPrice={setTotalPrice}
-                checkedProducts={checkedProducts}
-                setCheckedProducts={setCheckedProducts}
-                currentlyOpenSwipeable={currentlyOpenSwipeable}
-                setCurrentlyOpenSwipeable={setCurrentlyOpenSwipeable}
-                isChecked={checkedProducts.some(cart => cart._id === item._id)}
-                onCheckedChange={handleCheckedChange}
-              />
-            )}
-            extraData={item => item.id}
-            ItemSeparatorComponent={<View style={{marginBottom: spacing.sm}} />}
-            showsVerticalScrollIndicator={false}
-            onRefresh={fetchCard}
-            refreshing={refreshing}
-          />
-        )}
-      </View>
+          )}
+        </View>
+      ) : (
+        <CartPlaceholder />
+      )}
       <View style={cartst.viewFooter}>
         <View style={[appst.rowCenter]}>
           <View style={appst.rowCenter}>

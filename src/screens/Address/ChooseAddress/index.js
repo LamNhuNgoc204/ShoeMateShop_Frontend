@@ -13,14 +13,12 @@ import ChooseAddressItem from '../../../items/ChooseAddress';
 import Header from '../../../components/Header';
 import {useTranslation} from 'react-i18next';
 import {deleteUserAdress, getAllAddress} from '../../../api/UserApi';
-import {useSelector} from 'react-redux';
 import SweetAlert from 'react-native-sweet-alert';
 import {useFocusEffect} from '@react-navigation/native';
 
 const ChooseAddress = ({navigation, route}) => {
   const {t} = useTranslation();
-  const state = useSelector(state => state.user);
-  const [addresses, setAddresses] = useState(state.listAddress);
+  const [addresses, setAddresses] = useState([]);
 
   useFocusEffect(
     React.useCallback(() => {

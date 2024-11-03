@@ -39,6 +39,7 @@ import ZaloPayScreen from '../screens/Payment/ZaloPay/Payment';
 import ZaloPayWebView from '../screens/Payment/ZaloPay/WebView';
 import CheckoutSuccess from '../screens/CheckoutScreen/CheckoutSuccess';
 import ChooseLanguage from '../screens/Languages';
+import CancelDetail from '../screens/Orders/CancelDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -67,7 +68,10 @@ const StackNav = () => {
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="SettingScreen" component={SettingScreen} />
-      <Stack.Screen name="RecentlyViewedScreen" component={RecentlyViewedScreen} />
+      <Stack.Screen
+        name="RecentlyViewedScreen"
+        component={RecentlyViewedScreen}
+      />
       <Stack.Screen
         name="ResetPasswordScreen"
         component={ResetPasswordScreen}
@@ -94,6 +98,7 @@ const StackNav = () => {
       <Stack.Screen name="ZaloPayWebView" component={ZaloPayWebView} />
       <Stack.Screen name="CheckoutSuccess" component={CheckoutSuccess} />
       <Stack.Screen name="ChooseLanguage" component={ChooseLanguage} />
+      <Stack.Screen name="CancelDetail" component={CancelDetail} />
       <Stack.Screen
         name="ChoosePaymentScreen"
         component={ChoosePaymentScreen}

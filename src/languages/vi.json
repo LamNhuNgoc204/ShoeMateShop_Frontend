@@ -31,7 +31,8 @@
     "btn_send": "Gửi",
     "btn_next": "Tiếp theo",
     "btn_try_again": "Thử lại",
-    "btn_start_order": "Bắt đầu đặt hàng"
+    "btn_start_order": "Bắt đầu đặt hàng",
+    "read_more": "Xem thêm"
   },
   "home": {
     "list_product": "Sản phẩm dành cho bạn",
@@ -78,7 +79,8 @@
     "setting": "Cài đặt tài khoản",
     "security": "Bảo mật thông tin",
     "help": "Trợ giúp",
-    "chat": "Chat với cửa hàng"
+    "chat": "Chat với cửa hàng",
+    "language": "Đổi ngôn ngữ"
   },
   "setting": {
     "setting": "Cài đặt",
@@ -90,7 +92,7 @@
   },
   "products": {
     "best_seller": "BÁN CHẠY",
-    "sold": "đã bán",
+    "sold": "Đã bán",
     "see_more": "Xem thêm",
     "reviews": "Đánh giá sản phẩm",
     "similar_product": "Bạn có thể thích",
@@ -99,7 +101,8 @@
     "brand": "Thương hiệu",
     "price": "Giá",
     "rate": "Đánh giá",
-    "total": "Tổng giá"
+    "total": "Tổng giá",
+    "quantity": "Số lượng"
   },
   "form_input": {
     "name": "Tên của bạn",
@@ -185,11 +188,31 @@
     "order_total": "Tổng đơn hàng",
     "fees": "Áp dụng phí",
     "total": "Tổng cộng",
-    "accumulated": "Điểm thưởng tích lũy",
+    "shipprice": "Phí vận chuyển",
     "time": "Thời gian đặt hàng",
     "payment": "Thời gian thanh toán",
     "shipping": "Thời gian giao hàng",
-    "complete": "Thời gian hoàn tất"
+    "complete": "Thời gian hoàn tất",
+    "timeCancel": "Thời gian hủy đơn hàng",
+    "cancelled": "Hủy đơn hàng",
+    "order_detail": "Chi tiết đơn hàng",
+    "pending": "Chờ xử lý",
+    "code": "Mã đơn",
+    "unit": "sản phẩm",
+    "completed": "Đã giao",
+    "return": "Trả hàng",
+    "wait_confirm": "Chờ xác nhận",
+    "proccessed_status": "Đơn hàng đang được xử lý",
+    "no_order": "Bạn chưa có đơn đặt hàng nào",
+    "watch_order_detail": "Xem chi tiết đơn hàng",
+    "Canceler": "Đã hủy bởi",
+    "cancel_detail": "Chi tiết đơn hủy",
+    "complete_cancel": "Đã hủy đơn hàng",
+    "in": "vào",
+    "create_at": "Thời gian đặt hàng",
+    "creater_by": "Yêu cầu bởi",
+    "requested_by": "Yêu cầu vào ",
+    "reason": "Lý do"
   },
   "rating": {
     "review": "Đánh giá của tôi",
@@ -202,14 +225,19 @@
     "sub_title": "Đánh giá giúp sản phẩm phát triển hơn",
     "product": "Sản phẩm",
     "describe": "Mô tả",
-    "choose_file": "Chọn tệp đính kèm"
+    "choose_file": "Chọn tệp đính kèm",
+    "see": "Xem đánh giá",
+    "to_review": "Đã đánh giá",
+    "rating": "Chưa đánh giá",
+    "not_found": "Không tìm thấy đánh giá nào nữa."
   },
   "notifications": {
     "title": "Thông báo",
     "order": "Thông báo đơn hàng",
     "promotion": "Khuyến mãi",
     "message": "Tin nhắn",
-    "system": "Hệ thống"
+    "system": "Hệ thống",
+    "sub_title": "Bạn không có thông báo"
   },
   "messages": {
     "title": "Tin nhắn",
@@ -226,5 +254,11 @@
     "history": "Chưa có lịch sử",
     "sub_history": "Nhấn nút màu xanh bên dưới để tạo đơn hàng",
     "order": "Chưa có đơn hàng"
+  },
+  "toast": {
+    "cancel_order": "Đơn hàng đã bị hủy"
+  },
+  "ship": {
+    "infor": "Thông tin vận chuyển"
   }
 }

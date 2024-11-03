@@ -129,23 +129,22 @@ const pddt = StyleSheet.create({
     width: width,
   },
   pressBuynow: {
-    width: '45%',
+    flex: 1,
     height: 50,
     backgroundColor: '#0159A6',
     borderRadius: 12,
-  },
-  footer1: {
-    width: '50%',
+    paddingHorizontal: 20,
+    marginLeft: 10,
   },
   chat: {
     width: 70,
     height: 70,
   },
   pressAddtocart: {
-    width: '70%',
     height: 50,
     backgroundColor: colors.primary,
     borderRadius: 12,
+    paddingHorizontal: 10,
   },
   txtPress: {
     color: '#fff',
