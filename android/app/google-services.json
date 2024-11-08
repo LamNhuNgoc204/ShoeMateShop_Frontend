@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "755579771692",
+    "project_id": "messagemate-b212b",
+    "storage_bucket": "messagemate-b212b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:755579771692:android:a11cadd92ae72c78a6aa89",
+        "android_client_info": {
+          "package_name": "com.bdnteam.mateshoe"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOjLdRWYyxYaBws7DCw96h-L85IjQoff8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
