@@ -49,9 +49,8 @@ const App = () => {
   const getFCMtoken = async () => {
     try {
       console.log('get token..')
-      await firebase.messaging().registerDeviceForRemoteMessages();
-      const fcmToken = await firebase.messaging().getToken();
-      console.log('token: ', fcmToken);
+      const fcmToken = await messaging().getToken();
+      console.log('FCM token: ', fcmToken);
     } catch (error) {
       console.log('error: ', error);
     }
