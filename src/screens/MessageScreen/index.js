@@ -225,7 +225,7 @@ const MessageScreen = ({ navigation }) => {
 
   // console.log('user', name, avatar);
 
-  const SOCKET_URL = `http://192.168.1.32:3000/`;
+  const SOCKET_URL = `http://192.168.9.22:3000/`;
 
   const getConversation = async () => {
     try {
