@@ -1,4 +1,5 @@
 import AxiosInstance from '../helpers/AxiosInstance';
+
 export const createMultipleReviews = async reviews => {
   try {
     const response = await AxiosInstance().post(`/reviews`, reviews);

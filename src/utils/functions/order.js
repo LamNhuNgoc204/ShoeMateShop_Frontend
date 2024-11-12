@@ -8,11 +8,3 @@ export const handleOrderDetail = async (orderDetail, ToastAndroid, index) => {
     }
   }
 };
-
-export const handleMultipleReviews = async () => {
-  try {
-    const response = 's';
-  } catch (error) {
-    console.log('Review failed: ', error);
-  }
-};

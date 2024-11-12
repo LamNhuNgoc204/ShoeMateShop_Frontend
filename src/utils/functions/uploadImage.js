@@ -1,5 +1,6 @@
 const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/dt7755ppx/upload`;
 const cloudinaryUploadPreset = 'shoe_mate_shop';
+import axios from 'axios';
 import {launchImageLibrary} from 'react-native-image-picker';
 
 export const chooseAvatar = async setAvatar => {
@@ -43,4 +44,22 @@ export const chooseAvatar = async setAvatar => {
       }
     }
   });
+};
+
+export const uploadMediaToCloudinary = async (media, type) => {
+  const formData = new FormData();
+  formData.append('file', {
+    uri: media.uri,
+    type: media.type,
+    name: media.fileName,
+  });
+  formData.append('upload_preset', 'shoe_mate_shop');
+  const response = await axios.post(
+    `https://api.cloudinary.com/v1_1/dt7755ppx/${type}/upload`,
+    formData,
+    {
+      headers: {'Content-Type': 'multipart/form-data'},
+    },
+  );
+  return response.data.secure_url;
 };

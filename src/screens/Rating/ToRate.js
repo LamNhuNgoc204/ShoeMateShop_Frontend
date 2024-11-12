@@ -27,7 +27,7 @@ const ToRate = ({navigation}) => {
     fetchData();
   }, []);
 
-  // console.log('data: ', rating);
+  console.log('data: ', rating);
 
   return (
     <View style={appst.container}>

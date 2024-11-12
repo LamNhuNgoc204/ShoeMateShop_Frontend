@@ -12,9 +12,9 @@ const RatingItem = ({item}) => {
   const pd = product.product;
   // const productPreview = item && item.product;
 
-  // console.log('item rating', product);
-  // console.log('item rating', pd);
-  // console.log('productPreview =>', item.product);
+  // console.log('product rating', product);
+  // console.log('pd rating', pd);
+  console.log('productPreview =>', item.product);
 
   return (
     <View style={rtit.container}>

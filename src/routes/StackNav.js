@@ -104,7 +104,7 @@ const StackNav = () => {
         name="ChoosePaymentScreen"
         component={ChoosePaymentScreen}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="MultiProductReviewForm"
         component={MultiProductReviewForm}
       />

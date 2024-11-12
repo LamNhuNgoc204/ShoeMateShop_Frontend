@@ -82,6 +82,15 @@ const rvst = StyleSheet.create({
     borderRadius: 5,
     resizeMode: 'cover',
   },
+  rate: {
+    width: 50,
+    height: 50,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: 'gray',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   pressImg: {
     position: 'absolute',
     right: 1,
@@ -96,6 +105,7 @@ const rvst = StyleSheet.create({
     marginHorizontal: spacing.sm,
     marginBottom: 5,
     minHeight: 100,
+    marginTop: 10,
   },
   thumbnailImage: {
     width: 100,
