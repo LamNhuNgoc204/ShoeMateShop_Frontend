@@ -144,7 +144,9 @@ const HomeScreen = ({navigation, route}) => {
         editable={false}
         iconRight={require('../../assets/icons/message.png')}
         onIconRightPress={() => {
-          navigation.navigate('MessageScreen');
+          navigation.navigate('MessageScreen', {
+            product: null
+          });
         }}
       />
       {route?.params?.reload ? (

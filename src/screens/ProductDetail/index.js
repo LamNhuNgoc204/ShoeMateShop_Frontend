@@ -244,7 +244,11 @@ const ProductDetail = props => {
 
       <View style={[pddt.footer, appst.rowCenter]}>
         <View style={[appst.rowCenter]}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => {
+            navigation.navigate('MessageScreen', {
+              product: product
+            })
+          }}>
             <Image
               source={require('../../assets/icons/chatwithshop.png')}
               style={pddt.chat}
