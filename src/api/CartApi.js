@@ -48,7 +48,7 @@ export const getShippingDefault = async () => {
   }
 };
 
-export const getAddressDefault = async () => {
+export const getUserAddressDefault = async () => {
   try {
     const response = await AxiosInstance().get('/addresses/default-address');
     if (response.status) {

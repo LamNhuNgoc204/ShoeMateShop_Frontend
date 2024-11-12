@@ -82,9 +82,15 @@ const HomeScreen = ({navigation, route}) => {
   }, [state.wishlist]);
 
   useEffect(() => {
-    setListProduct(shuffleArray([...state.products]));
+    // setListProduct([...state.products]);
     setCategories(state.categories);
   }, [state]);
+
+  useEffect(() => {
+    if (state.products.length) {
+      setListProduct(shuffleArray([...state.products]));
+    }
+  }, [state.products]);
 
   // console.log('product data', state, '-----', listProduct);
   // console.log('listProduct===========', listProduct);
