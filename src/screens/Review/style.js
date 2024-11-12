@@ -88,10 +88,18 @@ const rvst = StyleSheet.create({
     top: 1,
   },
   input: {
-    marginHorizontal: spacing.sm,
-    backgroundColor: colors.colorF3F6FF,
     padding: spacing.sm,
+  },
+  view1: {
     borderRadius: 10,
+    backgroundColor: colors.colorF3F6FF,
+    marginHorizontal: spacing.sm,
+    marginBottom: 5,
+    minHeight: 100,
+  },
+  thumbnailImage: {
+    width: 100,
+    height: 100,
   },
 });
 

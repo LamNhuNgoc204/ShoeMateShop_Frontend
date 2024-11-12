@@ -16,9 +16,9 @@ const StarRating = ({maxStars, rating, onStarPress}) => {
       <TouchableOpacity
         key={i}
         onPress={() => handleStarPress(i)}
-        style={{marginRight: spacing.sm}}>
+        style={{marginVertical: 4, marginRight: spacing.sm}}>
         <Image
-          style={{width: 20, height:20}}
+          style={{width: 20, height: 20}}
           source={
             i <= selectedStars
               ? require('../../assets/icons/stars.png')

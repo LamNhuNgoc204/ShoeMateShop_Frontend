@@ -15,15 +15,15 @@ import {useTranslation} from 'react-i18next';
 
 const Review = ({navigation, route}) => {
   const {t} = useTranslation();
-  const {product} = route.params;
-
+  const {product} = route?.params;
   const [rating, setRating] = useState(0);
+  const [text, setText] = useState('');
 
   const handleStarPress = rating => {
     setRating(rating);
   };
 
-  const [text, setText] = useState('');
+  console.log('product', product);
 
   return (
     <View style={[appst.container, rvst.container]}>
@@ -34,6 +34,7 @@ const Review = ({navigation, route}) => {
         iconRight={require('../../assets/icons/check.png')}
         rightOnPress={() => {}}
       />
+
       <View style={[rvst.itemPd]}>
         <Image
           style={rvst.imgPd}
@@ -55,7 +56,7 @@ const Review = ({navigation, route}) => {
         </View>
       </View>
 
-      <View style={[rvst.viewStar, appst.rowStart]}>
+      <View style={[rvst.viewStar]}>
         <Text style={rvst.quality}>{t('review.sub_title')}:</Text>
         <StarRating
           maxStars={5}
@@ -97,13 +98,15 @@ const Review = ({navigation, route}) => {
         />
       </View>
 
-      <TextInput
-        style={rvst.input}
-        multiline={true}
-        onChangeText={e => setText(e)}
-        value={text}
-        placeholder={t('review.placeholder')}
-      />
+      <View style={rvst.view1}>
+        <TextInput
+          style={rvst.input}
+          multiline={true}
+          onChangeText={e => setText(e)}
+          value={text}
+          placeholder={t('review.placeholder')}
+        />
+      </View>
     </View>
   );
 };

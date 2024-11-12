@@ -27,7 +27,7 @@ const ToRate = ({navigation}) => {
     fetchData();
   }, []);
 
-  console.log('data: ', rating);
+  // console.log('data: ', rating);
 
   return (
     <View style={appst.container}>
@@ -36,7 +36,7 @@ const ToRate = ({navigation}) => {
           style={ratingst.flatRate}
           data={rating}
           renderItem={({item}) => <RatingItem item={item} />}
-          extraData={item => item._id.toString()}
+          keyExtractor={item => item._id.toString()}
           scrollEnabled={false}
         />
       </View>

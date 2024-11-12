@@ -8,10 +8,10 @@ import {useTranslation} from 'react-i18next';
 
 const OrderItem = ({item, receive, cancel, refunded, navigation}) => {
   const {t} = useTranslation();
-  console.log('item order: ', item);
 
   const orderDetail = item.orderDetails && item.orderDetails[0];
   const product = orderDetail && orderDetail.product;
+  // console.log('item orderDetail: ', item.orderDetails);
 
   const quantities =
     item.orderDetails &&
@@ -106,6 +106,11 @@ const OrderItem = ({item, receive, cancel, refunded, navigation}) => {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('MultiProductReviewForm', {
+                    products: item.orderDetails,
+                  })
+                }
                 style={[odit.press, {paddingHorizontal: 5, marginLeft: 10}]}>
                 <Text style={odit.textTouch}>
                   {!item.isReviewed ? t('review.review') : t('review.see')}

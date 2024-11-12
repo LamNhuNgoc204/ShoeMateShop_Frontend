@@ -40,6 +40,7 @@ import ZaloPayWebView from '../screens/Payment/ZaloPay/WebView';
 import CheckoutSuccess from '../screens/CheckoutScreen/CheckoutSuccess';
 import ChooseLanguage from '../screens/Languages';
 import CancelDetail from '../screens/Orders/CancelDetail';
+import MultiProductReviewForm from '../screens/Review/MultiProductReviewForm';
 
 const Stack = createNativeStackNavigator();
 
@@ -102,6 +103,10 @@ const StackNav = () => {
       <Stack.Screen
         name="ChoosePaymentScreen"
         component={ChoosePaymentScreen}
+      />
+       <Stack.Screen
+        name="MultiProductReviewForm"
+        component={MultiProductReviewForm}
       />
     </Stack.Navigator>
   );
