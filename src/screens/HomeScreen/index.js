@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {View, Text, Image} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {useDispatch, useSelector} from 'react-redux';
@@ -19,8 +19,10 @@ import {addProductInWishlist, removeFromWishlist} from '../../api/ProductApi';
 import Category from '../../items/Category';
 import {setWishlistLocal} from '../../redux/reducer/productReducer';
 import HomeSkeleton from '../../placeholders/home';
+import {useFocusEffect} from '@react-navigation/native';
+import Loading from '../../components/Loading';
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({navigation, route}) => {
   const {t} = useTranslation();
   const pagerRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
@@ -29,9 +31,32 @@ const HomeScreen = ({navigation}) => {
   const [wishList, setWishlist] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  // Tron mang
+  const shuffleArray = array => array.sort(() => Math.random() - 0.5);
+
   const state = useSelector(state => state.products);
   const useAppDispatch = () => useDispatch();
   const dispatch = useAppDispatch();
+
+  useFocusEffect(
+    useCallback(() => {
+      if (route?.params?.reload) {
+        console.log('Reload dữ liệu trên HomeScreen');
+        const fetchData = async () => {
+          setLoading(true);
+          await Promise.all([
+            dispatch(fetchProductsThunk()),
+            dispatch(getCategoryThunk()),
+            dispatch(fetchWishlist()),
+          ]);
+          setLoading(false);
+        };
+        fetchData();
+        // Đặt lại params để không reload liên tục
+        route.params.reload = false;
+      }
+    }, [route?.params?.reload]),
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,7 +82,7 @@ const HomeScreen = ({navigation}) => {
   }, [state.wishlist]);
 
   useEffect(() => {
-    setListProduct(state.products);
+    setListProduct(shuffleArray([...state.products]));
     setCategories(state.categories);
   }, [state]);
 
@@ -122,116 +147,122 @@ const HomeScreen = ({navigation}) => {
           navigation.navigate('MessageScreen');
         }}
       />
-      {loading ? (
-        <HomeSkeleton />
+      {route?.params?.reload ? (
+        <Loading />
       ) : (
-        // <ActivityIndicator size="large" color="#0000ff" />
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={appst.container}>
-          <View style={homeStyle.bannerContainer}>
-            <PagerView
-              onPageSelected={e => {
-                goToPage(e.nativeEvent.position);
-              }}
-              initialPage={0}
-              ref={pagerRef}>
-              {BANNERS.map((item, index) => (
-                <View key={index}>
-                  <Image source={item} style={homeStyle.banner} />
+        <View style={{flex: 1}}>
+          {loading ? (
+            <HomeSkeleton />
+          ) : (
+            // <ActivityIndicator size="large" color="#0000ff" />
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              style={appst.container}>
+              <View style={homeStyle.bannerContainer}>
+                <PagerView
+                  onPageSelected={e => {
+                    goToPage(e.nativeEvent.position);
+                  }}
+                  initialPage={0}
+                  ref={pagerRef}>
+                  {BANNERS.map((item, index) => (
+                    <View key={index}>
+                      <Image source={item} style={homeStyle.banner} />
+                    </View>
+                  ))}
+                </PagerView>
+                <FlatList
+                  data={BANNERS}
+                  renderItem={({item, index}) => (
+                    <View
+                      style={[
+                        homeStyle.indicatorDot,
+                        index === currentPage && homeStyle.indicatorActiveDot,
+                        index !== BANNERS.length - 1 && homeStyle.marginRight12,
+                      ]}></View>
+                  )}
+                  keyExtractor={(item, index) => index.toString()}
+                  horizontal
+                  style={homeStyle.indicator}
+                />
+              </View>
+
+              <ScrollView
+                showsHorizontalScrollIndicator={false}
+                style={homeStyle.scrollContainer}
+                horizontal>
+                <View>
+                  <FlatList
+                    scrollEnabled={false}
+                    style={homeStyle.marginTop15}
+                    data={categories}
+                    renderItem={({item, index}) => {
+                      if (index % 2 === 0) {
+                        return (
+                          <Category
+                            onItemPress={() => {
+                              onItemPress(item);
+                            }}
+                            category={item}
+                            style={[
+                              index < categories.length - 2 &&
+                                homeStyle.marginRight30,
+                              homeStyle.marginBottom15,
+                            ]}
+                          />
+                        );
+                      }
+                    }}
+                    horizontal
+                    keyExtractor={(item, index) => index.toString()}
+                    showsHorizontalScrollIndicator={false}
+                  />
+
+                  <FlatList
+                    scrollEnabled={false}
+                    data={categories}
+                    renderItem={({item, index}) => {
+                      if (index % 2 === 1) {
+                        return (
+                          <Category
+                            onItemPress={() => {
+                              onItemPress(item);
+                            }}
+                            category={item}
+                            style={[
+                              index < categories.length - 2 &&
+                                homeStyle.marginRight30,
+                            ]}
+                          />
+                        );
+                      }
+                    }}
+                    horizontal
+                    keyExtractor={(item, index) => index.toString()}
+                    showsHorizontalScrollIndicator={false}
+                  />
                 </View>
-              ))}
-            </PagerView>
-            <FlatList
-              data={BANNERS}
-              renderItem={({item, index}) => (
-                <View
-                  style={[
-                    homeStyle.indicatorDot,
-                    index === currentPage && homeStyle.indicatorActiveDot,
-                    index !== BANNERS.length - 1 && homeStyle.marginRight12,
-                  ]}></View>
-              )}
-              keyExtractor={(item, index) => index.toString()}
-              horizontal
-              style={homeStyle.indicator}
-            />
-          </View>
+              </ScrollView>
 
-          <ScrollView
-            showsHorizontalScrollIndicator={false}
-            style={homeStyle.scrollContainer}
-            horizontal>
-            <View>
-              <FlatList
-                scrollEnabled={false}
-                style={homeStyle.marginTop15}
-                data={categories}
-                renderItem={({item, index}) => {
-                  if (index % 2 === 0) {
-                    return (
-                      <Category
-                        onItemPress={() => {
-                          onItemPress(item);
-                        }}
-                        category={item}
-                        style={[
-                          index < categories.length - 2 &&
-                            homeStyle.marginRight30,
-                          homeStyle.marginBottom15,
-                        ]}
-                      />
-                    );
-                  }
-                }}
-                horizontal
-                keyExtractor={(item, index) => index.toString()}
-                showsHorizontalScrollIndicator={false}
-              />
+              <Text style={homeStyle.pfyText}>{t('home.list_product')}</Text>
 
               <FlatList
-                scrollEnabled={false}
-                data={categories}
-                renderItem={({item, index}) => {
-                  if (index % 2 === 1) {
-                    return (
-                      <Category
-                        onItemPress={() => {
-                          onItemPress(item);
-                        }}
-                        category={item}
-                        style={[
-                          index < categories.length - 2 &&
-                            homeStyle.marginRight30,
-                        ]}
-                      />
-                    );
-                  }
-                }}
-                horizontal
+                data={listProduct}
+                renderItem={({item}) => (
+                  <ProductItem
+                    wishlist={wishList}
+                    handleHeartPress={handleHeartPress}
+                    product={item}
+                  />
+                )}
                 keyExtractor={(item, index) => index.toString()}
-                showsHorizontalScrollIndicator={false}
+                numColumns={2}
+                showsVerticalScrollIndicator={false}
+                scrollEnabled={false}
               />
-            </View>
-          </ScrollView>
-
-          <Text style={homeStyle.pfyText}>{t('home.list_product')}</Text>
-
-          <FlatList
-            data={listProduct}
-            renderItem={({item}) => (
-              <ProductItem
-                wishlist={wishList}
-                handleHeartPress={handleHeartPress}
-                product={item}
-              />
-            )}
-            keyExtractor={(item, index) => index.toString()}
-            numColumns={2}
-            showsVerticalScrollIndicator={false}
-            scrollEnabled={false}
-          />
-        </ScrollView>
+            </ScrollView>
+          )}
+        </View>
       )}
     </View>
   );

@@ -25,6 +25,7 @@ const TabBarComponent = ({onPress, isCartScreen, children}) => {
 
 const BottomNav = () => {
   const [activeTab, setActiveTab] = useState('Home');
+  const [homeKey, setHomeKey] = useState(0);
 
   const AnimatedTabBar = ({
     state: {index: activeIndex, routes},
@@ -39,6 +40,7 @@ const BottomNav = () => {
         <View style={style.tabBarContainer}>
           {routes.map((route, index) => {
             const isCartScreen = route.name === 'CartScreen';
+            const isHomeScreen = route.name === 'Home';
 
             let iconImage;
             if (route.name === 'Home') {
@@ -69,9 +71,19 @@ const BottomNav = () => {
                 )}
                 <TabBarComponent
                   onPress={() => {
-                    navigation.navigate(route.name);
-                    setActiveTab(route.name);
+                    if (isHomeScreen && activeTab === 'Home') {
+                      // Khi nhấn vào icon `Home` đã active
+                      navigation.navigate('Home', {reload: true}); // truyền biến để reload
+                    } else {
+                      // Khi nhấn vào tab khác
+                      navigation.navigate(route.name);
+                      setActiveTab(route.name);
+                    }
                   }}
+                  // onPress={() => {
+                  //   navigation.navigate(route.name);
+                  //   setActiveTab(route.name);
+                  // }}
                   isCartScreen={isCartScreen}>
                   {isCartScreen ? (
                     <Image
