@@ -60,6 +60,11 @@ const CheckOutScreen = ({navigation}) => {
   }, []);
 
   const handleOrder = async () => {
+    if (!addressDefault) {
+      ToastAndroid.show(`${t('nothing.adress_war')}`, ToastAndroid.SHORT);
+      return;
+    }
+
     const products = state.productOrder.map(item => ({
       _id: item.product_id._id,
       assets: item.product_id.assets,
@@ -125,32 +130,43 @@ const CheckOutScreen = ({navigation}) => {
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={c_outst.viewBody}>
-          <View style={[appst.rowCenter, c_outst.body1, c_outst.borderBottom]}>
-            <TouchableOpacity
-              style={c_outst.view1}
-              onPress={() => goToScreen('ChooseAddress')}>
+          {!addressDefault ? (
+            <View style={[appst.rowStart, c_outst.wrapaddress]}>
               <Image
-                style={appst.icon24}
-                source={require('../../assets/icons/address.png')}
+                style={c_outst.address}
+                source={require('../../assets/icons/add_adr.png')}
               />
-              <View style={c_outst.body1Text}>
-                <Text style={c_outst.text1}>{t('checkout.address')}:</Text>
-                <Text style={c_outst.text2}>
-                  {addressDefault.recieverName} |{' '}
-                  <Text style={c_outst.text3}>
-                    (+84) {addressDefault.recieverPhoneNumber}
-                  </Text>{' '}
-                  {addressDefault.address}
-                </Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => goToScreen('ChooseAddress')}>
-              <Image
-                style={appst.icon24}
-                source={require('../../assets/icons/arrow_right.png')}
-              />
-            </TouchableOpacity>
-          </View>
+              <Text style={c_outst.textAdress}>Thêm địa chỉ giao hàng</Text>
+            </View>
+          ) : (
+            <View
+              style={[appst.rowCenter, c_outst.body1, c_outst.borderBottom]}>
+              <TouchableOpacity
+                style={c_outst.view1}
+                onPress={() => goToScreen('ChooseAddress')}>
+                <Image
+                  style={appst.icon24}
+                  source={require('../../assets/icons/address.png')}
+                />
+                <View style={c_outst.body1Text}>
+                  <Text style={c_outst.text1}>{t('checkout.address')}:</Text>
+                  <Text style={c_outst.text2}>
+                    {addressDefault.recieverName} |{' '}
+                    <Text style={c_outst.text3}>
+                      (+84) {addressDefault.recieverPhoneNumber}
+                    </Text>{' '}
+                    {addressDefault.address}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => goToScreen('ChooseAddress')}>
+                <Image
+                  style={appst.icon24}
+                  source={require('../../assets/icons/arrow_right.png')}
+                />
+              </TouchableOpacity>
+            </View>
+          )}
 
           <View style={[c_outst.borderBottom, c_outst.body2]}>
             <Text style={c_outst.bd2Text1}>{t('checkout.your_product')}</Text>

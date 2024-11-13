@@ -39,7 +39,7 @@ const MultiProductReviewForm = ({route, navigation}) => {
   const submitAllReviews = async () => {
     console.log('Submit review');
     try {
-      const response = await createMultipleReviews(data);
+      const response = await createMultipleReviews({reviews: data});
       if (response) {
         Alert.alert('Bạn đã đánh giá sản phẩm');
         navigation.goBack();

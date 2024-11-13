@@ -78,7 +78,16 @@
     "security": "Information Security",
     "help": "Help",
     "chat": "Chat with Shop",
-    "language": "Change Language"
+    "language": "Change Language",
+    "update_profile": "Update Profile",
+    "ship_address": "Shipping Address",
+    "change_email": "Change Email",
+    "change_pass": "Change Password",
+    "term": "Terms and Conditions",
+    "about": "About",
+    "delete_acc": "Request Account Deletion",
+    "standards": "Community Standards",
+    "buy_again": "Buy Again"
   },
   "setting": {
     "setting": "Setting",
@@ -226,7 +235,8 @@
     "sub_item": "Try searching the item with a different keyword",
     "history": "No history yet",
     "sub_history": "Hit the blue button down below to Create an order",
-    "order": "No orders yet"
+    "order": "No orders yet",
+    "adress_war": "Please add a shipping address!"
   },
   "notifications": {
     "title": "Notifications",

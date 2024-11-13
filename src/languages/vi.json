@@ -263,7 +263,8 @@
     "sub_item": "Hãy thử tìm kiếm sản phẩm bằng từ khóa khác",
     "history": "Chưa có lịch sử",
     "sub_history": "Nhấn nút màu xanh bên dưới để tạo đơn hàng",
-    "order": "Chưa có đơn hàng"
+    "order": "Chưa có đơn hàng",
+    "adress_war":"Vui lòng thêm địa chỉ giao hàng!"
   },
   "toast": {
     "cancel_order": "Đơn hàng đã bị hủy"

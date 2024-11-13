@@ -4,6 +4,21 @@ import {sizes, spacing} from '../../constants';
 import {fonts} from '../../constants/fonts';
 
 export const c_outst = StyleSheet.create({
+  wrapaddress: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 7,
+    justifyContent: 'center',
+  },
+  address: {
+    paddingVertical: 10,
+    marginRight: 4,
+  },
+  textAdress: {
+    color: 'black',
+    fontFamily: fonts.rlw_medium,
+  },
   containerPosition: {
     position: 'relative',
     top: 0,
@@ -39,8 +54,7 @@ export const c_outst = StyleSheet.create({
     backgroundColor: colors.background_primary,
     borderRadius: 20,
     marginHorizontal: spacing.sm,
-    marginVertical: spacing.md,
-    paddingVertical: spacing.md,
+    paddingTop: 10,
   },
   body1: {},
   view1: {
@@ -79,7 +93,7 @@ export const c_outst = StyleSheet.create({
     marginTop: spacing.sm,
     marginBottom: spacing.xm,
     backgroundColor: colors.colorF3F6FF,
-    borderRadius: 10
+    borderRadius: 10,
   },
   body3: {
     marginTop: spacing.sm,
@@ -124,13 +138,13 @@ export const c_outst = StyleSheet.create({
     marginTop: spacing.sm,
     marginRight: spacing.md,
     width: '100%',
-    paddingBottom:spacing.xl
+    paddingBottom: spacing.xl,
   },
   textTerm: {
     marginLeft: spacing.xm,
     fontSize: sizes.size10,
     color: colors.black,
-    flex:1,
+    flex: 1,
     fontFamily: fonts.rlw_regular,
   },
   textTerm1: {color: colors.primary},
