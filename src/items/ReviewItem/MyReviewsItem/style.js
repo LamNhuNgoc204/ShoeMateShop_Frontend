@@ -4,8 +4,8 @@ import {sizes, spacing} from '../../../constants';
 import {fonts} from '../../../constants/fonts';
 
 const mrvit = StyleSheet.create({
-  flat:{
-    flex: 1
+  flat: {
+    flex: 1,
   },
   container: {
     backgroundColor: colors.background_primary,
@@ -114,6 +114,7 @@ const mrvit = StyleSheet.create({
     backgroundColor: colors.background_primary,
     padding: spacing.xm,
     marginTop: spacing.md,
+    flex: 1,
   },
   pdName: {
     marginLeft: spacing.sm,

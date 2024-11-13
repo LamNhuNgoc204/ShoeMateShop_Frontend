@@ -226,7 +226,8 @@
     "to_review": "To Review",
     "see": "See review",
     "rating": "To Rating",
-    "not_found": "No more ratings found."
+    "not_found": "No more ratings found.",
+    "response": "Seller response:"
   },
   "nothing": {
     "internet": "No internet Connection",

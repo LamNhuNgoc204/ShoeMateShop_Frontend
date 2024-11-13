@@ -239,7 +239,8 @@
     "see": "Xem đánh giá",
     "to_review": "Đã đánh giá",
     "rating": "Chưa đánh giá",
-    "not_found": "Không tìm thấy đánh giá nào nữa."
+    "not_found": "Không tìm thấy đánh giá nào nữa.",
+    "response": "Phản hồi của người bán:"
   },
   "notifications": {
     "title": "Thông báo",
@@ -264,7 +265,7 @@
     "history": "Chưa có lịch sử",
     "sub_history": "Nhấn nút màu xanh bên dưới để tạo đơn hàng",
     "order": "Chưa có đơn hàng",
-    "adress_war":"Vui lòng thêm địa chỉ giao hàng!"
+    "adress_war": "Vui lòng thêm địa chỉ giao hàng!"
   },
   "toast": {
     "cancel_order": "Đơn hàng đã bị hủy"

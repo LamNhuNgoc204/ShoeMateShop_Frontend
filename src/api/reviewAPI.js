@@ -10,3 +10,14 @@ export const createMultipleReviews = async reviews => {
     console.log('get order detail error: ', error);
   }
 };
+
+export const getAllUserReview = async () => {
+  try {
+    const response = await AxiosInstance().get(`/reviews/get-user-reviews`);
+    if (response.status) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log('getAllUserReview: ', error);
+  }
+};

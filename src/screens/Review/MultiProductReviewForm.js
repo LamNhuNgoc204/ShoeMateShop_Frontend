@@ -29,6 +29,7 @@ const MultiProductReviewForm = ({route, navigation}) => {
       comment: '',
       images: [],
       video: null,
+      size: product.product.size_name,
     })),
   );
 
