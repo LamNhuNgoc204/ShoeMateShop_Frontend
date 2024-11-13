@@ -1,10 +1,7 @@
-import { View, Text, Image, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import toolBarStyle from './style'
-import appst from '../../constants/AppStyle'
 import SearchInput from '../SearchInput'
-
-
 
 const ToolBar = ({ iconRight, iconLeft, style, onIconRightPress, onIconLeftPress, title, onChangeText, placeholder, editable = true, onEditPress, handleSubmit, value, autoFocus }) => {
     return (

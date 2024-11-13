@@ -3,7 +3,7 @@
   "menu": {},
   "buttons": {
     "default": "Default",
-    "btn_signin": "Sign In",
+    "btn_signin": " Sign In",
     "btn_signup": "Sign Up",
     "btn_signin_gg": "Sign In With Google",
     "btn_signup_gg": "Sign Up With Google",
@@ -11,8 +11,8 @@
     "btn_confirm": "Confirm",
     "btn_ok": "OK",
     "btn_verify": "Verify",
-    "btn_create_account": "Create Account",
-    "btn_login": "Log In",
+    "btn_create_account": " Create Account",
+    "btn_login": "Sign In",
     "btn_addtocart": "Add To Card",
     "btn_buynow": "Buy Now",
     "btn_checkout": "Checkout",
@@ -21,7 +21,7 @@
     "btn_back_to_shop": "Back To Shopping",
     "btn_change_img_profile": "Change Profile Picture",
     "btn_save_now": "Save Now",
-    "btn_signout": "Sign Out",
+    "btn_signout": "Log Out",
     "btn_save_change": "Save Changes",
     "btn_top_up_now": "To Up Now",
     "btn_tranfer": "Transfer",
@@ -235,5 +235,14 @@
     "message": "Message",
     "system": "System",
     "sub_title": "You have no notifications"
+  },
+  "search": {
+    "product": " products found",
+    "filter": "Filter",
+    "brand": "Brand",
+    "price": "Price",
+    "rate": "Rate",
+    "min_price": "Min",
+    "max_price": "Max"
   }
 }

@@ -1,33 +1,32 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
-import { sizes } from '../../../constants';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import appst from '../../../constants/AppStyle';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import styles from './style';
-const RenderSettingItem = ({ item }) => {
+import {useTranslation} from 'react-i18next';
+const RenderSettingItem = ({item}) => {
   const navigation = useNavigation();
+  const {t} = useTranslation();
 
   return (
     <View>
-      <TouchableOpacity 
-        style={[appst.rowCenter, { marginTop: sizes.size24 }]}
+      <TouchableOpacity
+        style={[appst.rowCenter, styles.container]}
         onPress={() => navigation.navigate(item.navigateTo)}>
-        <Text style={styles.text}>{item.text}</Text>
+        <Text style={styles.text}>{t(item.text)}</Text>
         <View style={appst.rowCenter}>
-          {item.additionalInfo && <Text style={styles.text1}>{item.additionalInfo}</Text>}
+          {/* {item.additionalInfo && (
+            <Text style={styles.text1}>{t(item.additionalInfo)}</Text>
+          )} */}
           <Image
             style={styles.rightArrow}
             source={require('../../../assets/icons/right-arrow.png')}
           />
         </View>
       </TouchableOpacity>
-      <Image
-        style={styles.line}
-        source={require('../../../assets/icons/linesetting.png')}
-      />
+      <View style={styles.line} />
     </View>
   );
 };
-
 
 export default RenderSettingItem;

@@ -29,29 +29,18 @@ export const PROFILE = [
     text: 'profiles.setting',
     navigateTo: 'SettingScreen',
   },
-  {
-    id: '5',
-    iconSource: require('../assets/icons/ic_informationsecurity.png'),
-    text: 'profiles.security',
-    navigateTo: 'InformationSecurity',
-  },
+
   {
     id: '6',
-    iconSource: require('../assets/icons/ic_help.png'),
-    text: 'profiles.help',
-    navigateTo: 'Help',
+    iconSource: require('../assets/icons/shopping_bag.png'),
+    text: 'profiles.buy_again',
+    navigateTo: 'InformationSecurity',
   },
   {
     id: '7',
     iconSource: require('../assets/icons/ic_chatwithshop.png'),
     text: 'profiles.chat',
     navigateTo: 'MessageScreen',
-  },
-  {
-    id: '8',
-    iconSource: require('../assets/icons/language.png'),
-    text: 'profiles.language',
-    navigateTo: 'ChooseLanguage',
   },
 ];
 
@@ -64,19 +53,31 @@ export const BANNERS = [
 export const SETTING = [
   {
     id: '1',
-    text: 'Change Profile Picture',
+    text: 'profiles.update_prodile',
     navigateTo: 'EditProfile',
   },
-  {id: '2', text: 'Shipping Address', navigateTo: 'ChooseAddress'},
-  {id: '8', text: 'Change email', navigateTo: 'ChangeEmail'},
-  {id: '3', text: 'Payment Method', navigateTo: 'PaymentMethod'},
-  {id: '4', text: 'Password', navigateTo: 'Password'},
+  {id: '2', text: 'profiles.ship_address', navigateTo: 'ChooseAddress'},
+  {id: '4', text: 'profiles.change_pass', navigateTo: 'Password'},
   {
     id: '5',
-    text: 'Country',
-    navigateTo: 'Country',
-    additionalInfo: 'Vietnam',
+    // iconSource: require('../assets/icons/language.png'),
+    text: 'profiles.language',
+    navigateTo: 'ChooseLanguage',
   },
-  {id: '6', text: 'Size', navigateTo: 'Size', additionalInfo: 'UK'},
-  {id: '7', text: 'Terms and Conditions', navigateTo: 'TermsAndConditions'},
+  {
+    id: '9',
+    // iconSource: require('../assets/icons/ic_help.png'),
+    text: 'profiles.help',
+    navigateTo: 'Help',
+  },
+  {id: '6', text: 'profiles.about', navigateTo: 'Size'},
+  {
+    id: '10',
+    // iconSource: require('../assets/icons/ic_informationsecurity.png'),
+    text: 'profiles.security',
+    navigateTo: 'InformationSecurity',
+  },
+  {id: '3', text: 'profiles.standards', navigateTo: 'PaymentMethod'},
+  {id: '7', text: 'profiles.term', navigateTo: 'TermsAndConditions'},
+  {id: '8', text: 'profiles.delete_acc', navigateTo: 'TermsAndConditions'},
 ];

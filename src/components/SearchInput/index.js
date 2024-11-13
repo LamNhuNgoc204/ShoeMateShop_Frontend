@@ -1,6 +1,5 @@
 import { View, Text, Image, TextInput } from 'react-native'
 import React from 'react'
-import toolBarStyle from '../ToolBar/style'
 import searchInputStyle from './style'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
