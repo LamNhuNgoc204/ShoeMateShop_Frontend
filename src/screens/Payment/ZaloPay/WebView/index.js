@@ -7,7 +7,6 @@ const ZaloPayWebView = ({route, navigation}) => {
   const {paymentUrl} = route.params;
 
   const handleNavigationChange = navState => {
-    // Kiểm tra URL trong navState để xác định thành công hay thất bại
     if (navState.url.includes('success')) {
       // Nếu URL có chứa 'success', nghĩa là thanh toán thành công
       navigation.navigate('CheckoutSuccess');

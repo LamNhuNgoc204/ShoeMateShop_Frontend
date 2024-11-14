@@ -3,6 +3,7 @@ import {
   getAddressDefault,
   getPaymentMethodDefault,
   getShippingDefault,
+  getUserAddressDefault,
 } from '../../api/CartApi';
 
 export const getShipDefault = createAsyncThunk(
@@ -21,7 +22,7 @@ export const getAdressDefault = createAsyncThunk(
   'cart/getAdressDefault',
   async (_, {rejectWithValue}) => {
     try {
-      const response = await getAddressDefault();
+      const response = await getUserAddressDefault();
       return response;
     } catch (error) {
       return rejectWithValue(error.response.data);

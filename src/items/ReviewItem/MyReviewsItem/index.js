@@ -1,16 +1,20 @@
-import {
-  View,
-  Text,
-  Image,
-  FlatList,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, Image, ScrollView, TouchableOpacity} from 'react-native';
 import React from 'react';
 import mrvit from './style';
 import appst from '../../../constants/AppStyle';
+import {useTranslation} from 'react-i18next';
+import {useNavigation} from '@react-navigation/native';
+import {formatDate} from '../../../utils/functions/formatData';
 
-const MyReviewItem = () => {
+const MyReviewItem = ({item}) => {
+  const {t} = useTranslation();
+  const navigation = useNavigation();
+  const reviewer = item.reviewer_id;
+  const product = item.product_id;
+
+  console.log('item user review', item);
+  console.log('product', product);
+
   const ArrayRating = length => {
     let arr = [];
     for (let i = 0; i < length; i++) {
@@ -40,13 +44,17 @@ const MyReviewItem = () => {
     <View style={[mrvit.itemContainer]}>
       <Image
         style={mrvit.avatar}
-        source={require('../../../assets/images/onboard2.png')}
+        source={
+          reviewer && reviewer.avatar
+            ? {uri: reviewer.avatar}
+            : require('../../../assets/images/placeholder_image.jpg')
+        }
       />
       <View style={mrvit.body}>
         <View style={mrvit.viewInf}>
-          <Text style={mrvit.name}>User 1</Text>
+          <Text style={mrvit.name}>{reviewer && reviewer.name}</Text>
           <View style={mrvit.viewRate}>
-            {ArrayRating(4).map(index => (
+            {ArrayRating(item.rating).map(index => (
               <Image
                 key={index}
                 style={mrvit.icon}
@@ -56,13 +64,12 @@ const MyReviewItem = () => {
           </View>
         </View>
 
-        <Text style={mrvit.time}>12/03/2024 12:40</Text>
-        <Text style={mrvit.time}>Size: 32</Text>
-        <Text style={mrvit.content}>
-          It is a long established fact that a reader will be distracted by the
-          readable content of a page when looking at its layout. The point of
-          using Lorem Ipsum is that it has a more-or-less normal distribution
-          of......
+        <Text style={mrvit.time}>{formatDate(item.createdAt)}</Text>
+        <Text style={mrvit.time}>
+          {t('products.size')}: {item.size}
+        </Text>
+        <Text numberOfLines={3} style={mrvit.content}>
+          {item.comment}
         </Text>
         <ScrollView
           horizontal
@@ -80,23 +87,30 @@ const MyReviewItem = () => {
           ))}
         </ScrollView>
 
-        <View style={mrvit.viewRp}>
-          <Text style={mrvit.response}>Seller Response:</Text>
-          <Text style={mrvit.rpContent}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book.
-          </Text>
-        </View>
+        {item.response && item.response.content && (
+          <View style={mrvit.viewRp}>
+            <Text style={mrvit.response}>{t('review.response')}</Text>
+            <Text style={mrvit.rpContent}>
+              {item.response && item.response.content}
+            </Text>
+          </View>
+        )}
 
-        <TouchableOpacity style={[appst.rowStart, mrvit.item]}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('ProductDetail', {index: product._id})
+          }
+          style={[appst.rowStart, mrvit.item]}>
           <Image
             style={mrvit.imageRv}
-            source={require('../../../assets/images/onboard3.png')}
+            source={
+              product && product.assets[0]
+                ? {uri: product.assets[0]}
+                : require('../../../assets/images/onboard3.png')
+            }
           />
-          <Text style={mrvit.pdName}>
-            Neque porro quisquam est qui dolorem ipsum quia dolor sit amet
+          <Text numberOfLines={1} style={mrvit.pdName}>
+            {product && product.name}
           </Text>
         </TouchableOpacity>
       </View>

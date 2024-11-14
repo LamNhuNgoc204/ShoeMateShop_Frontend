@@ -6,6 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
   ToastAndroid,
+  ScrollView,
 } from 'react-native';
 import appst from '../../constants/AppStyle';
 import {useNavigation} from '@react-navigation/native';
@@ -16,6 +17,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {logout} from '../../redux/reducer/userReducer';
 import {useDispatch} from 'react-redux';
 import {SETTING} from '../../api/mockData';
+import Header from '../../components/Header';
 
 const SettingScreen = () => {
   const {t} = useTranslation();
@@ -33,28 +35,30 @@ const SettingScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={appst.rowCenter}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image
-            style={appst.icon40}
-            source={require('../../assets/icons/ic_back.png')}
-          />
-        </TouchableOpacity>
-        <Text style={styles.title}>{t('home.profile')}</Text>
-        <View style={{width: 40}} />
-      </View>
-      <View style={styles.viewBody}>
+    <View style={[appst.container, appst.columnSb]}>
+      <View style={{marginTop: 5}}>
+        <Header
+          backgroundColor={'white'}
+          name={t('home.profile')}
+          iconLeft={require('../../assets/icons/back.png')}
+          leftOnPress={() => navigation.goBack()}
+          iconRight={require('../../assets/icons/mesage.png')}
+          rightOnPress={() => {
+            navigation.navigate('MessageScreen');
+          }}
+        />
         <FlatList
+          scrollEnabled={false}
           data={SETTING}
           renderItem={({item}) => <RenderSettingItem item={item} />}
           keyExtractor={item => item.id}
         />
       </View>
-      <View style={appst.center}>
-        <TouchableOpacity onPress={Logout}>
+      <View style={{marginBottom: 20}}>
+        <TouchableOpacity style={styles.button} onPress={Logout}>
           <Text style={styles.signOut}>{t('buttons.btn_signout')}</Text>
         </TouchableOpacity>
+        <Text style={styles.text1}>Shoe Mate v 1.0.0</Text>
       </View>
     </View>
   );

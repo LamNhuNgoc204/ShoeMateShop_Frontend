@@ -8,7 +8,6 @@ export const rtit = StyleSheet.create({
     backgroundColor: colors.colorF3F6FF,
     // width: '100%',
     paddingVertical: spacing.sm,
-    marginBottom: 10,
     marginHorizontal: 10,
     borderRadius: 10,
   },

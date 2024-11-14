@@ -1,5 +1,5 @@
 import 'intl-pluralrules';
-import {KeyboardAvoidingView, PermissionsAndroid} from 'react-native';
+import {Alert, KeyboardAvoidingView, PermissionsAndroid} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import appst from './src/constants/AppStyle';
@@ -56,6 +56,14 @@ const App = () => {
     }
   }
 
+  useEffect(() => {
+    // Xử lý thông báo khi ứng dụng đang mở
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      console.log('A new FCM message arrived!', remoteMessage);
+    });
+
+    return unsubscribe;
+  }, []);
   useEffect(() => {
     checkPermission()
   }, []);

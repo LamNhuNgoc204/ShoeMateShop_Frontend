@@ -18,7 +18,7 @@ export const hdst = StyleSheet.create({
     // elevation: 5
   },
   name: {
-    fontSize: sizes.size16,
+    fontSize: sizes.size20,
     fontFamily: fonts.rlw_semibold,
     color: colors.text_black2B,
     flex: 1,

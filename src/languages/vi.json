@@ -32,7 +32,8 @@
     "btn_next": "Tiếp theo",
     "btn_try_again": "Thử lại",
     "btn_start_order": "Bắt đầu đặt hàng",
-    "read_more": "Xem thêm"
+    "read_more": "Xem thêm",
+    "close": "Đóng"
   },
   "home": {
     "list_product": "Sản phẩm dành cho bạn",
@@ -45,7 +46,7 @@
     "all_product": "Tất cả",
     "checkout": "Thanh toán",
     "address": "Chọn địa chỉ",
-    "profile": "Hồ sơ",
+    "profile": "Thiết lập tài khoản",
     "reset_pass": "Đặt lại mật khẩu",
     "noti": "Thông báo",
     "filter": "Bộ lọc",
@@ -80,7 +81,16 @@
     "security": "Bảo mật thông tin",
     "help": "Trợ giúp",
     "chat": "Chat với cửa hàng",
-    "language": "Đổi ngôn ngữ"
+    "language": "Đổi ngôn ngữ",
+    "update_prodile": "Cập nhật thông tin",
+    "ship_address": "Địa chỉ giao hàng",
+    "change_email": "Đổi email",
+    "change_pass": "Đổi mật khẩu",
+    "term": "Quy định và điều khoảng",
+    "about": "Giới thiệu",
+    "delete_acc": "Yêu cầu xóa tài khoản",
+    "standards": "Tiêu chuẩn cộng đồng",
+    "buy_again": "Mua lại"
   },
   "setting": {
     "setting": "Cài đặt",
@@ -107,7 +117,7 @@
   "form_input": {
     "name": "Tên của bạn",
     "placeholder_name": "Nhập tên của bạn",
-    "email": "Địa chỉ email",
+    "email": "Email",
     "placeholder_email": "Nhập email của bạn",
     "password": "Mật khẩu",
     "placeholder_password": "Nhập mật khẩu của bạn",
@@ -229,7 +239,8 @@
     "see": "Xem đánh giá",
     "to_review": "Đã đánh giá",
     "rating": "Chưa đánh giá",
-    "not_found": "Không tìm thấy đánh giá nào nữa."
+    "not_found": "Không tìm thấy đánh giá nào nữa.",
+    "response": "Phản hồi của người bán:"
   },
   "notifications": {
     "title": "Thông báo",
@@ -253,12 +264,22 @@
     "sub_item": "Hãy thử tìm kiếm sản phẩm bằng từ khóa khác",
     "history": "Chưa có lịch sử",
     "sub_history": "Nhấn nút màu xanh bên dưới để tạo đơn hàng",
-    "order": "Chưa có đơn hàng"
+    "order": "Chưa có đơn hàng",
+    "adress_war": "Vui lòng thêm địa chỉ giao hàng!"
   },
   "toast": {
     "cancel_order": "Đơn hàng đã bị hủy"
   },
   "ship": {
     "infor": "Thông tin vận chuyển"
+  },
+  "search": {
+    "product": " sản phẩm được tìm thấy",
+    "filter": "Bộ lọc tìm kiếm",
+    "brand": "Thương hiệu",
+    "price": "Giá sản phẩm",
+    "rate": "Đánh giá",
+    "min_price": "Tối thiểu",
+    "max_price": "Tối đa"
   }
 }

@@ -17,7 +17,6 @@ import CustomModal from '../../components/Modal';
 import Header from '../../components/Header';
 import {CustomedButton} from '../../components';
 import {useTranslation} from 'react-i18next';
-import AxiosInstance from '../../helpers/AxiosInstance';
 import {useDispatch, useSelector} from 'react-redux';
 import {setOrderId, setPriceToPay} from '../../redux/reducer/cartReducer';
 import {createOrder} from '../../api/OrderApi';
@@ -44,6 +43,8 @@ const CheckOutScreen = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [addressDefault] = useState(state.address);
 
+  // console.log('addressDefault', addressDefault);
+
   const ship = state.ship && state.ship.cost && state.ship.cost;
   const tongchiphi = state.totalPrice + ship;
 
@@ -59,6 +60,11 @@ const CheckOutScreen = ({navigation}) => {
   }, []);
 
   const handleOrder = async () => {
+    if (!addressDefault) {
+      ToastAndroid.show(`${t('nothing.adress_war')}`, ToastAndroid.SHORT);
+      return;
+    }
+
     const products = state.productOrder.map(item => ({
       _id: item.product_id._id,
       assets: item.product_id.assets,
@@ -124,32 +130,43 @@ const CheckOutScreen = ({navigation}) => {
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={c_outst.viewBody}>
-          <View style={[appst.rowCenter, c_outst.body1, c_outst.borderBottom]}>
-            <TouchableOpacity
-              style={c_outst.view1}
-              onPress={() => goToScreen('ChooseAddress')}>
+          {!addressDefault ? (
+            <View style={[appst.rowStart, c_outst.wrapaddress]}>
               <Image
-                style={appst.icon24}
-                source={require('../../assets/icons/address.png')}
+                style={c_outst.address}
+                source={require('../../assets/icons/add_adr.png')}
               />
-              <View style={c_outst.body1Text}>
-                <Text style={c_outst.text1}>{t('checkout.address')}:</Text>
-                <Text style={c_outst.text2}>
-                  {addressDefault.recieverName} |{' '}
-                  <Text style={c_outst.text3}>
-                    (+84) {addressDefault.recieverPhoneNumber}
-                  </Text>{' '}
-                  {addressDefault.address}
-                </Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => goToScreen('ChooseAddress')}>
-              <Image
-                style={appst.icon24}
-                source={require('../../assets/icons/arrow_right.png')}
-              />
-            </TouchableOpacity>
-          </View>
+              <Text style={c_outst.textAdress}>Thêm địa chỉ giao hàng</Text>
+            </View>
+          ) : (
+            <View
+              style={[appst.rowCenter, c_outst.body1, c_outst.borderBottom]}>
+              <TouchableOpacity
+                style={c_outst.view1}
+                onPress={() => goToScreen('ChooseAddress')}>
+                <Image
+                  style={appst.icon24}
+                  source={require('../../assets/icons/address.png')}
+                />
+                <View style={c_outst.body1Text}>
+                  <Text style={c_outst.text1}>{t('checkout.address')}:</Text>
+                  <Text style={c_outst.text2}>
+                    {addressDefault.recieverName} |{' '}
+                    <Text style={c_outst.text3}>
+                      (+84) {addressDefault.recieverPhoneNumber}
+                    </Text>{' '}
+                    {addressDefault.address}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => goToScreen('ChooseAddress')}>
+                <Image
+                  style={appst.icon24}
+                  source={require('../../assets/icons/arrow_right.png')}
+                />
+              </TouchableOpacity>
+            </View>
+          )}
 
           <View style={[c_outst.borderBottom, c_outst.body2]}>
             <Text style={c_outst.bd2Text1}>{t('checkout.your_product')}</Text>
@@ -241,14 +258,19 @@ const CheckOutScreen = ({navigation}) => {
             </View>
             <View style={[appst.rowCenter, c_outst.view4Text]}>
               <Text style={c_outst.textTitle}>{t('checkout.merchandise')}</Text>
-              <Text style={c_outst.textPrice}>$ {state.totalPrice}</Text>
+              <Text style={c_outst.textPrice}>
+                $ {state.totalPrice && state.totalPrice.toLocaleString('vi-VN')}
+              </Text>
             </View>
             <View style={[appst.rowCenter, c_outst.view4Text]}>
               <Text style={c_outst.textTitle}>
                 {t('checkout.shipping_total')}
               </Text>
               <Text style={c_outst.textPrice}>
-                $ {state.ship && state.ship.cost ? state.ship.cost : '...'}
+                ${' '}
+                {state.ship && state.ship.cost
+                  ? state.ship.cost.toLocaleString('vi-VN')
+                  : '...'}
               </Text>
             </View>
             <View style={[appst.rowCenter, c_outst.view4Text]}>
@@ -262,7 +284,7 @@ const CheckOutScreen = ({navigation}) => {
                 {t('checkout.payment')}
               </Text>
               <Text style={[c_outst.textPrice, c_outst.textPrice1]}>
-                $ {tongchiphi || '...'}
+                $ {(tongchiphi && tongchiphi.toLocaleString('vi-VN')) || '...'}
               </Text>
             </View>
           </View>

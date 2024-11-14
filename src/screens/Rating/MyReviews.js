@@ -1,12 +1,35 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, Image, Text, View} from 'react-native';
 import appst from '../../constants/AppStyle';
 import MyReviewItem from '../../items/ReviewItem/MyReviewsItem';
 import mrvit from '../../items/ReviewItem/MyReviewsItem/style';
 import ratingst from './style';
+import {getAllUserReview} from '../../api/reviewAPI';
 
 const MyReviews = () => {
-  const data = [1, 2, 3, 4, 5, 6];
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await getAllUserReview();
+        if (response) {
+          setData(response);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.log('Không lấy được dữ liệu: ', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // console.log('user reiew', data);
 
   return (
     <View style={[appst.container, mrvit.container]}>
@@ -16,7 +39,7 @@ const MyReviews = () => {
             <FlatList
               data={data}
               renderItem={({item}) => <MyReviewItem item={item} />}
-              extraData={item => item.id}
+              keyExtractor={item => item._id.toString()}
             />
           </View>
         </View>
