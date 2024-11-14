@@ -21,6 +21,9 @@ import {setWishlistLocal} from '../../redux/reducer/productReducer';
 import HomeSkeleton from '../../placeholders/home';
 import {useFocusEffect} from '@react-navigation/native';
 import Loading from '../../components/Loading';
+import messaging from '@react-native-firebase/messaging';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AxiosInstance from '../../helpers/AxiosInstance';
 
 const HomeScreen = ({navigation, route}) => {
   const {t} = useTranslation();
@@ -37,6 +40,53 @@ const HomeScreen = ({navigation, route}) => {
   const state = useSelector(state => state.products);
   const useAppDispatch = () => useDispatch();
   const dispatch = useAppDispatch();
+
+
+  const uploadFCMToken = async () => {
+    console.log('upload token....');
+    const fcmToken = await messaging().getToken();
+    const preToken = await AsyncStorage.getItem('fcm_token');
+    if (preToken !== fcmToken) {
+      await AsyncStorage.setItem('fcm_token', fcmToken);
+      const response = await AxiosInstance().post('/users/refresh-fcm', {
+        token: fcmToken
+      })
+      if (response.status) {
+        console.log('refresh token thành công');
+      } else {
+        console.log('refresh token thất bại');
+      }
+    }
+  }
+
+
+  useEffect(() => {
+    uploadFCMToken();
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = messaging().onTokenRefresh(async fcmToken => {
+      console.log('New fcmToken:', fcmToken);
+      const preToken = await AsyncStorage.getItem('fcm_token');
+      if (preToken !== fcmToken) {
+        await AsyncStorage.setItem('fcm_token', fcmToken);
+        const response = await AxiosInstance().post('/users/refresh-fcm', {
+          token: fcmToken
+        })
+        if (response.status === 200) {
+          console.log('refresh token thành công');
+        } else {
+          console.log('refresh token thất bại');
+        }
+      }
+
+    });
+
+    // Cleanup khi component unmount
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   useFocusEffect(
     useCallback(() => {

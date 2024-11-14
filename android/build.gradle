@@ -1,5 +1,10 @@
 buildscript {
     ext {
+        // firebase 
+
+        googlePlayServicesVersion = "+" // default: "+"
+        firebaseMessagingVersion = "+" 
+
         buildToolsVersion = "34.0.0"
         minSdkVersion = 23
         compileSdkVersion = 34

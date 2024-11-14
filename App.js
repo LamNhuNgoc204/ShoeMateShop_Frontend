@@ -1,16 +1,17 @@
 import 'intl-pluralrules';
-import {Alert, KeyboardAvoidingView, PermissionsAndroid} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import { Alert, KeyboardAvoidingView, PermissionsAndroid } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import appst from './src/constants/AppStyle';
 import MainNav from './src/routes';
 import i18next from './src/services/i18next';
-import {I18nextProvider} from 'react-i18next';
-import {Provider} from 'react-redux';
-import {PersistGate} from 'redux-persist/integration/react';
-import {persistor, store} from './src/redux/store/store';
+import { I18nextProvider } from 'react-i18next';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistor, store } from './src/redux/store/store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging, { firebase } from '@react-native-firebase/messaging';
+import AxiosInstance from './src/helpers/AxiosInstance';
 const App = () => {
   useEffect(() => {
     const getLanguage = async () => {
@@ -38,6 +39,7 @@ const App = () => {
           getFCMtoken();
         } else {
           console.log('Quyền bị từ chối.');
+          getFCMtoken()
         }
       }
     } catch (err) {
@@ -57,6 +59,30 @@ const App = () => {
   }
 
   useEffect(() => {
+    const unsubscribe = messaging().onTokenRefresh(async fcmToken => {
+      console.log('New fcmToken:', fcmToken);
+      const preToken = await AsyncStorage.getItem('fcm_token');
+      if (preToken !== fcmToken) {
+        await AsyncStorage.setItem('fcm_token', fcmToken);
+        const response = await AxiosInstance().post('/users/refresh-fcm', {
+          token: fcmToken
+        })
+        if (response.status === 200) {
+          console.log('refresh token thành công');
+        } else {
+          console.log('refresh token thất bại');
+        }
+      }
+
+    });
+
+    // Cleanup khi component unmount
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
     // Xử lý thông báo khi ứng dụng đang mở
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       console.log('A new FCM message arrived!', remoteMessage);
@@ -71,7 +97,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor} loading={null}>
-        <GestureHandlerRootView style={{flex: 1}}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
           <KeyboardAvoidingView style={appst.container}>
             <I18nextProvider i18n={i18next}>
               <MainNav />
