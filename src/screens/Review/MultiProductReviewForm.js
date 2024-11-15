@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {View, FlatList, Alert} from 'react-native';
-import axios from 'axios';
 import Header from '../../components/Header';
 import {useTranslation} from 'react-i18next';
 import appst from '../../constants/AppStyle';

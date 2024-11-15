@@ -7,7 +7,7 @@ import ProductItem from '../../items/ProductItem/index.js';
 import OrderItem from '../../items/OrderItem/OrderItem.js';
 import {getOrderProcess} from '../../api/OrderApi.js';
 import OrderHistorySkeleton from '../../placeholders/product/order/OrderHistory.js';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 const ToShip = ({navigation}) => {
   const {t} = useTranslation();
@@ -33,6 +33,8 @@ const ToShip = ({navigation}) => {
     fetchOrder();
   }, []);
 
+  console.log('processOrders', processOrders);
+
   return (
     <View style={appst.container}>
       {loading ? (
@@ -42,7 +44,7 @@ const ToShip = ({navigation}) => {
               style={odst.flat1}
               data={processOrders}
               renderItem={({item}) => (
-                <OrderItem item={item} navigation={navigation} />
+                <OrderItem item={item} navigation={navigation} ship={true} />
               )}
               keyExtractor={(item, index) =>
                 item._id ? item._id : index.toString()
@@ -59,11 +61,13 @@ const ToShip = ({navigation}) => {
               <Text style={odst.text1}>{t('orders.no_order')}</Text>
             </View>
           )}
+
           <View style={appst.rowCenter}>
             <View style={odst.border} />
             <Text style={odst.text}>{t('products.similar_product')}</Text>
             <View style={odst.border} />
           </View>
+
           <View style={[appst.center]}>
             <FlatList
               style={odst.flat2}

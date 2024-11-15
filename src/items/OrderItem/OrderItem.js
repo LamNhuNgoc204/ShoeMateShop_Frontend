@@ -5,13 +5,14 @@ import appst from '../../constants/AppStyle';
 import {spacing} from '../../constants';
 import {gotoOrderDetail} from '../../utils/functions/handleOrder';
 import {useTranslation} from 'react-i18next';
+import {updateOrderStatus} from '../../api/OrderApi';
 
-const OrderItem = ({item, receive, cancel, refunded, navigation}) => {
+const OrderItem = ({item, receive, ship, cancel, refunded, navigation}) => {
   const {t} = useTranslation();
 
   const orderDetail = item.orderDetails && item.orderDetails[0];
   const product = orderDetail && orderDetail.product;
-  // console.log('item orderDetail: ', item.orderDetails);
+  // console.log('item orderDetail: ', item);
 
   const quantities =
     item.orderDetails &&
@@ -29,7 +30,7 @@ const OrderItem = ({item, receive, cancel, refunded, navigation}) => {
       onPress={() => gotoOrderDetail('OrderDetail', navigation, item)}
       style={odit.container}>
       <Text style={odit.textCode}>
-        {t('orders.code')}: {item._id && item._id.slice(0, 10)}
+        {t('orders.code')}: {item._id && item._id.toUpperCase()}
       </Text>
       <View style={[appst.rowStart, odit.itemContainer]}>
         <Image
@@ -61,6 +62,7 @@ const OrderItem = ({item, receive, cancel, refunded, navigation}) => {
           </Text>
         </View>
       </View>
+
       <View style={[appst.rowCenter, odit.view1]}>
         <Text style={odit.quatity}>
           {totalQuantity} {t('orders.unit')}
@@ -68,24 +70,60 @@ const OrderItem = ({item, receive, cancel, refunded, navigation}) => {
         <Text style={odit.total}>
           Total Price:{' '}
           <Text style={odit.price}>
-            {item.total_price && item.total_price.toLocaleString('vi-VN')} đ
+            {item.total_price && item.total_price.toLocaleString('vi-VN')}đ
           </Text>
         </Text>
       </View>
+
       {!receive && !cancel ? (
-        <View style={[appst.rowCenter, odit.view2]}>
-          <Text style={odit.textWait}>
-            {item.status === 'pending'
-              ? t('orders.wait_confirm')
-              : item.status === 'processing'
-              ? t('orders.proccessed_status')
-              : ''}
-          </Text>
-          <Image
-            style={appst.icon24}
-            source={require('../../assets/icons/chevron_right.png')}
-          />
-        </View>
+        <>
+          {ship ? (
+            <View>
+              <View style={[appst.rowCenter, odit.view2]}>
+                <Text style={odit.textWait}>
+                  {item.status === 'pending'
+                    ? t('orders.wait_confirm')
+                    : item.status === 'processing'
+                    ? t('orders.proccessed_status')
+                    : ''}
+                </Text>
+                <Image
+                  style={appst.icon24}
+                  source={require('../../assets/icons/chevron_right.png')}
+                />
+              </View>
+              {/* Cập nhật status khi đơn hàng đã được giao */}
+              {item.status === 'delivered' && (
+                <View style={[appst.rowEnd, {paddingHorizontal: 10}]}>
+                  <TouchableOpacity
+                    onPress={() => updateOrderStatus(item._id, 'completed')}
+                    style={[odit.press, odit.press1, {paddingHorizontal: 10}]}>
+                    <Text style={[odit.textTouch, odit.textTouch1]}>
+                      {t('orders.return')}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      odit.press,
+                      {paddingHorizontal: 5, marginLeft: 10},
+                    ]}>
+                    <Text style={odit.textTouch}>{t('orders.received')}</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
+          ) : (
+            <View style={[appst.rowCenter, odit.view2]}>
+              <Text style={odit.textWait}>
+                {item.status === 'pending' && t('orders.wait_confirm')}
+              </Text>
+              <Image
+                style={appst.icon24}
+                source={require('../../assets/icons/chevron_right.png')}
+              />
+            </View>
+          )}
+        </>
       ) : (
         <View
           style={[
@@ -105,17 +143,23 @@ const OrderItem = ({item, receive, cancel, refunded, navigation}) => {
                   {true ? t('orders.return') : t('buttons.btn_buy_again')}
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate('MultiProductReviewForm', {
-                    products: item.orderDetails,
-                  })
-                }
-                style={[odit.press, {paddingHorizontal: 5, marginLeft: 10}]}>
-                <Text style={odit.textTouch}>
-                  {!item.isReviewed ? t('review.review') : t('review.see')}
-                </Text>
-              </TouchableOpacity>
+              {item.isReviewed ? (
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('')}
+                  style={[odit.press, {paddingHorizontal: 5, marginLeft: 10}]}>
+                  <Text style={odit.textTouch}>{t('review.see')}</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('MultiProductReviewForm', {
+                      products: item.orderDetails,
+                    })
+                  }
+                  style={[odit.press, {paddingHorizontal: 5, marginLeft: 10}]}>
+                  <Text style={odit.textTouch}>{t('review.review')}</Text>
+                </TouchableOpacity>
+              )}
             </View>
           )}
 

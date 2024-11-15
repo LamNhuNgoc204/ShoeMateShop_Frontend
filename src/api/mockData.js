@@ -6,6 +6,12 @@ export const LANGUAGES = [
 
 export const PROFILE = [
   {
+    id: '3',
+    iconSource: require('../assets/icons/ic_orderhistory.png'),
+    text: 'profiles.order_history',
+    navigateTo: 'OrderScreen',
+  },
+  {
     id: '1',
     iconSource: require('../assets/icons/ic_recently.png'),
     text: 'profiles.viewed',
@@ -17,12 +23,7 @@ export const PROFILE = [
     text: 'profiles.rate',
     navigateTo: 'MyRating',
   },
-  {
-    id: '3',
-    iconSource: require('../assets/icons/ic_orderhistory.png'),
-    text: 'profiles.order_history',
-    navigateTo: 'OrderScreen',
-  },
+
   {
     id: '4',
     iconSource: require('../assets/icons/ic_accountsettings.png'),
