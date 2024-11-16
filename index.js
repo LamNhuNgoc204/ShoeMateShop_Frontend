@@ -4,7 +4,7 @@ import { name as appName } from './app.json';
 import messaging from '@react-native-firebase/messaging';
 import PushNotification from "react-native-push-notification";
 
-// Tạo channel với importance cao nhất
+// Tạo channel với importance cao nhất và tắt badge
 PushNotification.createChannel(
   {
     channelId: "fcm_fallback_notification_channel",
@@ -16,12 +16,12 @@ PushNotification.createChannel(
     soundName: "default",
     enableVibrate: true,
     enableLights: true,
-    showBadge: true
+    showBadge: false // Tắt badge trên channel
   },
   (created) => console.log(`Channel created: ${created}`)
 );
 
-// Cấu hình push notification
+// Cấu hình push notification với tắt badge cho iOS
 PushNotification.configure({
   onRegister: function (token) {
     console.log("TOKEN:", token);
@@ -29,8 +29,6 @@ PushNotification.configure({
 
   onNotification: function (notification) {
     console.log("NOTIFICATION:", notification);
-    // Không tạo notification mới ở đây
-    // Chỉ xử lý khi người dùng tương tác với notification
   },
 
   onAction: function (notification) {
@@ -38,45 +36,56 @@ PushNotification.configure({
     console.log("NOTIFICATION:", notification);
   },
 
+  // Tắt badge cho iOS
+  permissions: {
+    badge: false,
+    alert: true,
+    sound: true,
+  },
+
   popInitialNotification: true,
-  requestPermissions: true, // Nên để true để xin quyền
+  requestPermissions: true,
 });
+
+// Reset badge number về 0
+PushNotification.setApplicationIconBadgeNumber(0);
+
+// Cấu hình notification chung
+const notificationConfig = {
+  channelId: "fcm_fallback_notification_channel",
+  priority: "max",
+  importance: "max",
+  autoCancel: true,
+  ongoing: false,
+  visibility: "public",
+  vibrate: true,
+  vibration: 1000,
+  playSound: true,
+  soundName: "default",
+  showWhen: true,
+  invokeApp: true,
+  color: "#FFFFFF",
+  ignoreInForeground: false,
+  alertAction: "view",
+  category: "notification",
+  userInteraction: false,
+  
+  // Tắt badges và icons
+  badge: 0,
+  number: 0,
+  smallIcon: "",
+  largeIcon: "",
+};
 
 // Xử lý foreground messages
 messaging().onMessage(async remoteMessage => {
   console.log('Received foreground message:', remoteMessage);
   
   PushNotification.localNotification({
-    channelId: "fcm_fallback_notification_channel",
-    smallIcon: "ic_notification",
+    ...notificationConfig,
     title: remoteMessage.notification?.title,
     message: remoteMessage.notification?.body,
-    
-    // Thay đổi các thuộc tính quan trọng
-    priority: "max",
-    importance: "max",
-    
-    // Các thuộc tính khác
-    autoCancel: true,
-    ongoing: false,
-    visibility: "public",
-    vibrate: true,
-    vibration: 1000,
-    playSound: true,
-    soundName: "default",
-    showWhen: true,
-    invokeApp: true,
-    
-    // Thêm các thuộc tính mới
-    largeIcon: "ic_launcher",
     bigText: remoteMessage.notification?.body,
-    color: "#FF0000",
-    ignoreInForeground: false,
-    alertAction: "view",
-    category: "notification",
-    
-    // Data từ notification
-    userInteraction: false,
     data: remoteMessage.data,
   });
 });
@@ -86,29 +95,10 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
   console.log('Message handled in the background!', remoteMessage);
   
   PushNotification.localNotification({
-    // Cấu hình giống như trên
-    channelId: "fcm_fallback_notification_channel",
-    smallIcon: "ic_notification",
+    ...notificationConfig,
     title: remoteMessage.notification?.title,
     message: remoteMessage.notification?.body,
-    priority: "max",
-    importance: "max",
-    autoCancel: true,
-    ongoing: false,
-    visibility: "public",
-    vibrate: true,
-    vibration: 1000,
-    playSound: true,
-    soundName: "default",
-    showWhen: true,
-    invokeApp: true,
-    largeIcon: "ic_launcher",
     bigText: remoteMessage.notification?.body,
-    color: "#FF0000",
-    ignoreInForeground: false,
-    alertAction: "view",
-    category: "notification",
-    userInteraction: false,
     data: remoteMessage.data,
   });
 });
