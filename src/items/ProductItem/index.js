@@ -4,11 +4,10 @@ import {View, Text, Image, TouchableOpacity} from 'react-native';
 import productStyle from './style';
 
 const ProductItem = ({handleHeartPress, product, style, wishlist = []}) => {
-
   const getIsFavorite = () => {
-    const index = wishlist.findIndex((e) => e._id == product._id);
+    const index = wishlist.findIndex(e => e._id == product._id);
     return index !== -1;
-  }
+  };
 
   const navigation = useNavigation();
   const imageAssets =

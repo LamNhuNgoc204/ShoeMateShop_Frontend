@@ -209,7 +209,8 @@
     "wait_confirm": "Wait for confirmation",
     "proccessed_status": "Order is being processed",
     "no_order": "You don't have any orders yet",
-    "watch_order_detail": "View order details"
+    "watch_order_detail": "View order details",
+    "received": "Order received"
   },
   "rating": {
     "review": "My Reviews",

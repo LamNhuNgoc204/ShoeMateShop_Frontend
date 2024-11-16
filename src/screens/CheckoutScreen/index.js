@@ -131,13 +131,15 @@ const CheckOutScreen = ({navigation}) => {
           showsVerticalScrollIndicator={false}
           style={c_outst.viewBody}>
           {!addressDefault ? (
-            <View style={[appst.rowStart, c_outst.wrapaddress]}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('AddNewAddress')}
+              style={[appst.rowStart, c_outst.wrapaddress]}>
               <Image
                 style={c_outst.address}
                 source={require('../../assets/icons/add_adr.png')}
               />
               <Text style={c_outst.textAdress}>Thêm địa chỉ giao hàng</Text>
-            </View>
+            </TouchableOpacity>
           ) : (
             <View
               style={[appst.rowCenter, c_outst.body1, c_outst.borderBottom]}>

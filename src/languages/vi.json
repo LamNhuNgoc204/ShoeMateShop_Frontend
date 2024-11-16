@@ -210,7 +210,7 @@
     "code": "Mã đơn",
     "unit": "sản phẩm",
     "completed": "Đã giao",
-    "return": "Trả hàng",
+    "return": "Trả hàng/Hoàn tiền",
     "wait_confirm": "Chờ xác nhận",
     "proccessed_status": "Đơn hàng đang được xử lý",
     "no_order": "Bạn chưa có đơn đặt hàng nào",
@@ -222,7 +222,8 @@
     "create_at": "Thời gian đặt hàng",
     "creater_by": "Yêu cầu bởi",
     "requested_by": "Yêu cầu vào ",
-    "reason": "Lý do"
+    "reason": "Lý do",
+    "received": "Đã nhận được hàng"
   },
   "rating": {
     "review": "Đánh giá của tôi",
