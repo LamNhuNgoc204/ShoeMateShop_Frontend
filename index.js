@@ -73,7 +73,7 @@ const notificationConfig = {
   // Tắt badges và icons
   badge: 0,
   number: 0,
-  smallIcon: "",
+  smallIcon: "image",
   largeIcon: "",
 };
 

@@ -16,7 +16,7 @@
         <!-- firebase -->
         <meta-data  
                     android:name="com.google.firebase.messaging.default_notification_icon"
-                    android:resource="@mipmap/image" />
+                    android:resource="@drawable/image" />
         <meta-data  
                     android:name="com.dieam.reactnativepushnotification.notification_icon"
                     android:resource="@mipmap/image" />

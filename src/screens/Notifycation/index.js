@@ -20,15 +20,15 @@ const Notifycation = () => {
   const { t } = useTranslation();
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(false);
-  
-  const getNotifications =async () =>{
+
+  const getNotifications = async () => {
     try {
       setLoading(true);
       const response = await AxiosInstance().get('/notifications/notifications-user')
       console.log('noti response: ', response.data)
-      if(response.status) {
+      if (response.status) {
         setNotifications(response.data)
-      }else {
+      } else {
         console.log('errr: ', response.message)
       }
       setLoading(false);
@@ -46,7 +46,7 @@ const Notifycation = () => {
       <Header name={t('notifications.title')} />
       <View style={{ flex: 1 }}>
         {!loading ? (
-          <View style={{ flex: 1 }}>
+          notifications.length == 0 ? <View style={{ flex: 1 }}>
             {notifications.length > 0 ? (
               <FlatList data={notifications} />
             ) : (
@@ -58,16 +58,18 @@ const Notifycation = () => {
                 <Text style={st.text}>{t('notifications.sub_title')}!</Text>
               </View>
             )}
-          </View>
+          </View> : (
+            <FlatList
+              data={notifications}
+              renderItem={({ item }) => <NotificationItem noti={item} />}
+              showsVerticalScrollIndicator={false}
+              keyExtractor={(item, id) => id.toString()}
+              style={{ flex: 1 }} />
+          )
         ) : (
           <NotiMainSkeleton />
         )}
-        <FlatList
-        data={notifications}
-        renderItem={({item}) => <NotificationItem noti={item}/>}
-        showsVerticalScrollIndicator={false}
-        keyExtractor={(item, id) => id.toString()}
-        style={{flex: 1}}/>
+
 
       </View>
     </View>
