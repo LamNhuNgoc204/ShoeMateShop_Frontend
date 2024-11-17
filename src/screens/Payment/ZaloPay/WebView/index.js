@@ -7,12 +7,16 @@ const ZaloPayWebView = ({route, navigation}) => {
   const {paymentUrl} = route.params;
 
   const handleNavigationChange = navState => {
+    // Kiểm tra nếu URL có chứa 'success' hoặc 'fail'
     if (navState.url.includes('success')) {
-      // Nếu URL có chứa 'success', nghĩa là thanh toán thành công
+      // Nếu thanh toán thành công, quay lại ứng dụng thông qua deep link
       navigation.navigate('CheckoutSuccess');
     } else if (navState.url.includes('fail')) {
-      // Nếu URL có chứa 'fail', nghĩa là thanh toán thất bại
+      // Nếu thanh toán thất bại, quay lại màn hình trước
       navigation.goBack();
+    } else if (navState.url.includes('shoeMate://callback')) {
+      // Xử lý khi nhận được callback từ Zalo Pay (deep link)
+      navigation.navigate('CheckoutSuccess'); // Hoặc xử lý theo cách bạn muốn
     }
   };
 

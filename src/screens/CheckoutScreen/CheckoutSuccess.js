@@ -90,7 +90,7 @@ const CheckoutSuccess = ({navigation}) => {
             keyExtractor={(item, index) => index.toString()}
             numColumns={2}
             showsVerticalScrollIndicator={false}
-            scrollEnabled={true}
+            scrollEnabled={false}
           />
         </View>
       </ScrollView>

@@ -25,6 +25,7 @@ import {
   getPaymentDefault,
   getShipDefault,
 } from '../../redux/thunks/CartThunks';
+import LoadingModal from '../../components/Modal/LoadingModal';
 
 const CheckOutScreen = ({navigation}) => {
   const state = useSelector(state => state.cart);
@@ -37,11 +38,12 @@ const CheckOutScreen = ({navigation}) => {
   //   ' payment - ',
   //   state.payment,
   // );
-
+  const [isLoading, setIsLoading] = useState(false);
   const {t} = useTranslation();
   const [isswitch, setIsswitch] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [addressDefault] = useState(state.address);
+  const [isComplete, setisComplete] = useState(false);
 
   // console.log('addressDefault', addressDefault);
 
@@ -64,6 +66,9 @@ const CheckOutScreen = ({navigation}) => {
       ToastAndroid.show(`${t('nothing.adress_war')}`, ToastAndroid.SHORT);
       return;
     }
+
+    setIsLoading(true);
+    setisComplete(false);
 
     const products = state.productOrder.map(item => ({
       _id: item.product_id._id,
@@ -89,22 +94,44 @@ const CheckOutScreen = ({navigation}) => {
     // console.log('body orrder: ', body);
 
     const response = await createOrder(body);
+    setIsLoading(false);
+    setisComplete(false);
     if (response.status) {
-      if (state.payment && state.payment.payment_method === 'Zalo Pay') {
-        dispatch(setPriceToPay(tongchiphi));
-        dispatch(setOrderId(response.data.order._id));
-        navigation.navigate('ZaloPayScreen');
-      } else if (
-        state.payment &&
-        state.payment.payment_method === 'Thanh toán khi nhận hàng'
-      ) {
-        // setModalVisible(true);
-        ToastAndroid.show('tao don thanh cong', ToastAndroid.show);
-        navigation.navigate('CheckoutSuccess');
-      }
+      setIsLoading(true);
+      setisComplete(true);
+      // if (state.payment && state.payment.payment_method === 'Zalo Pay') {
+      //   dispatch(setPriceToPay(tongchiphi));
+      //   dispatch(setOrderId(response.data.order._id));
+      //   setisComplete(true);
+      //   navigation.navigate('ZaloPayScreen');
+      // } else if (
+      //   state.payment &&
+      //   state.payment.payment_method === 'Thanh toán khi nhận hàng'
+      // ) {
+      //   // setModalVisible(true);
+      //   ToastAndroid.show('tao don thanh cong', ToastAndroid.show);
+      //   setisComplete(true);
+      //   navigation.navigate('CheckoutSuccess');
+      // }
     }
 
     //check xem chon phuong thuc nao roi chuyen man hinh tuong ung
+  };
+
+  const onLoadingComplete = () => {
+    setIsLoading(false); // Hide the loading modal
+    if (state.payment && state.payment.payment_method === 'Zalo Pay') {
+      dispatch(setPriceToPay(tongchiphi));
+      dispatch(setOrderId(response.data.order._id));
+      navigation.navigate('ZaloPayScreen');
+    } else if (
+      state.payment &&
+      state.payment.payment_method === 'Thanh toán khi nhận hàng'
+    ) {
+      // setModalVisible(true);
+      ToastAndroid.show('tao don thanh cong', ToastAndroid.show);
+      navigation.navigate('CheckoutSuccess');
+    }
   };
 
   const closeModal = () => {
@@ -327,6 +354,13 @@ const CheckOutScreen = ({navigation}) => {
         title={t('modals.title_payment')}
         content={t('modals.sub_title_mail')}
         textbutton={t('buttons.btn_back_to_shop')}
+      />
+
+      <LoadingModal
+        isComplete={isComplete}
+        visible={isLoading}
+        message={t('orders.creating_order')}
+        onLoadingComplete={onLoadingComplete}
       />
     </View>
   );

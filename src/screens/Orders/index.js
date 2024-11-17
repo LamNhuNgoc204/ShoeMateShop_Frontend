@@ -28,6 +28,7 @@ const OrderScreen = ({navigation}) => {
       />
       <TopTab.Navigator
         screenOptions={{
+          lazy: true,
           tabBarStyle: {
             backgroundColor: colors.background_secondary,
             paddingVertical: 0,

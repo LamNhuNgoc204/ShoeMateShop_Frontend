@@ -223,7 +223,8 @@
     "creater_by": "Yêu cầu bởi",
     "requested_by": "Yêu cầu vào ",
     "reason": "Lý do",
-    "received": "Đã nhận được hàng"
+    "received": "Đã nhận được hàng",
+    "creating_order": "Đang tạo đơn hàng"
   },
   "rating": {
     "review": "Đánh giá của tôi",
