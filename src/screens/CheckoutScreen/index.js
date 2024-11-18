@@ -30,14 +30,7 @@ import LoadingModal from '../../components/Modal/LoadingModal';
 const CheckOutScreen = ({navigation}) => {
   const state = useSelector(state => state.cart);
   const dispatch = useDispatch();
-  // console.log(
-  //   'address - ',
-  //   state.address,
-  //   ' ship - ',
-  //   state.ship,
-  //   ' payment - ',
-  //   state.payment,
-  // );
+
   const [isLoading, setIsLoading] = useState(false);
   const {t} = useTranslation();
   const [isswitch, setIsswitch] = useState(false);
@@ -104,16 +97,17 @@ const CheckOutScreen = ({navigation}) => {
         dispatch(setPriceToPay(tongchiphi));
         dispatch(setOrderId(response.data.order._id));
         setisComplete(true);
-        navigation.navigate('ZaloPayScreen');
-      } else if (
-        state.payment &&
-        state.payment.payment_method === 'Thanh toán khi nhận hàng'
-      ) {
-        // setModalVisible(true);
-        ToastAndroid.show('tao don thanh cong', ToastAndroid.show);
-        setisComplete(true);
-        navigation.navigate('CheckoutSuccess');
+        // navigation.navigate('ZaloPayScreen');
       }
+      // else if (
+      //   state.payment &&
+      //   state.payment.payment_method === 'Thanh toán khi nhận hàng'
+      // ) {
+      //   // setModalVisible(true);
+      //   ToastAndroid.show('tao don thanh cong', ToastAndroid.show);
+      //   setisComplete(true);
+      //   navigation.navigate('CheckoutSuccess');
+      // }
     }
 
     //check xem chon phuong thuc nao roi chuyen man hinh tuong ung
@@ -122,29 +116,16 @@ const CheckOutScreen = ({navigation}) => {
   const onLoadingComplete = () => {
     setIsLoading(false); // Hide the loading modal
     if (state.payment && state.payment.payment_method === 'Zalo Pay') {
-      dispatch(setPriceToPay(tongchiphi));
-      dispatch(setOrderId(response.data.order._id));
+      // dispatch(setPriceToPay(tongchiphi));
+      // dispatch(setOrderId(response.data.order._id));
       navigation.navigate('ZaloPayScreen');
     } else if (
       state.payment &&
       state.payment.payment_method === 'Thanh toán khi nhận hàng'
     ) {
-      // setModalVisible(true);
       ToastAndroid.show('tao don thanh cong', ToastAndroid.show);
       navigation.navigate('CheckoutSuccess');
     }
-  };
-
-  const closeModal = () => {
-    setModalVisible(false);
-  };
-
-  const handleToggle = value => {
-    setIsswitch(value);
-  };
-
-  const goToScreen = Screen => {
-    navigation.navigate(Screen);
   };
 
   return (
@@ -194,7 +175,8 @@ const CheckOutScreen = ({navigation}) => {
                   </Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => goToScreen('ChooseAddress')}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('ChooseAddress')}>
                 <Image
                   style={appst.icon24}
                   source={require('../../assets/icons/arrow_right.png')}
@@ -240,12 +222,15 @@ const CheckOutScreen = ({navigation}) => {
               />
               <Text style={c_outst.text6}>Redeem 3500 Points</Text>
             </View>
-            <Switch onValueChange={handleToggle} value={isswitch} />
+            <Switch
+              onValueChange={value => setIsswitch(value)}
+              value={isswitch}
+            />
           </View>
 
           <View style={[c_outst.body3, c_outst.borderBottom]}>
             <TouchableOpacity
-              onPress={() => goToScreen('ChoosePaymentScreen')}
+              onPress={() => navigation.navigate('ChoosePaymentScreen')}
               style={[appst.rowCenter]}>
               <View style={appst.rowCenter}>
                 <Image
@@ -360,19 +345,19 @@ const CheckOutScreen = ({navigation}) => {
 
       <CustomModal
         visible={modalVisible}
-        closeModal={closeModal}
+        closeModal={() => setModalVisible(false)}
         image={require('../../assets/images/img_success.png')}
         title={t('modals.title_payment')}
         content={t('modals.sub_title_mail')}
         textbutton={t('buttons.btn_back_to_shop')}
       />
 
-      {/* <LoadingModal
+      <LoadingModal
         isComplete={isComplete}
         visible={isLoading}
         message={t('orders.creating_order')}
         onLoadingComplete={onLoadingComplete}
-      /> */}
+      />
     </View>
   );
 };

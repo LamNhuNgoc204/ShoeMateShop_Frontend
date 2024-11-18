@@ -40,7 +40,7 @@ export const deleteUserAdress = async addressId => {
   }
 };
 
-export const setAddressDefault = async addressId => {
+export const setUserAddressDefault = async addressId => {
   try {
     const response = await AxiosInstance().put(
       `/addresses/set-default-address/${addressId}`,

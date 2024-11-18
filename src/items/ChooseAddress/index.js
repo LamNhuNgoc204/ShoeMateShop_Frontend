@@ -2,6 +2,7 @@ import {View, Text, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
 import {c_adrIt} from './style';
 import appst from '../../constants/AppStyle';
+import {useTranslation} from 'react-i18next';
 
 const ChooseAddressItem = ({
   item,
@@ -10,6 +11,7 @@ const ChooseAddressItem = ({
   addressDefault,
   setAddressDefault,
 }) => {
+  const {t} = useTranslation();
   // console.log('address id', item._id);
 
   return (
@@ -39,7 +41,7 @@ const ChooseAddressItem = ({
         </Text>
         {item.isDefault && (
           <View style={c_adrIt.viewDefault}>
-            <Text style={c_adrIt.textDefault}>Default</Text>
+            <Text style={c_adrIt.textDefault}>{t('address.default')}</Text>
           </View>
         )}
       </View>

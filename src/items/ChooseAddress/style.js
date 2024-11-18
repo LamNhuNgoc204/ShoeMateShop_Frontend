@@ -1,7 +1,7 @@
 import {StyleSheet} from 'react-native';
 import {sizes, spacing} from '../../constants';
-import { colors } from '../../constants/colors';
-import { fonts } from '../../constants/fonts';
+import {colors} from '../../constants/colors';
+import {fonts} from '../../constants/fonts';
 
 export const c_adrIt = StyleSheet.create({
   container: {
@@ -10,32 +10,33 @@ export const c_adrIt = StyleSheet.create({
   },
   viewContent: {
     flex: 1,
-    marginHorizontal: spacing.sm
+    marginHorizontal: spacing.sm,
   },
   icon: {
     width: 30,
   },
-  text:{
+  text: {
     fontSize: sizes.size14,
     color: colors.color95989A,
-    fontFamily: fonts.rlw_regular
+    fontFamily: fonts.rlw_regular,
   },
-  textName:{
+  textName: {
     color: colors.black,
   },
-  textPhone:{
-    fontFamily: fonts.pp_regular
+  textPhone: {
+    fontFamily: fonts.pp_regular,
   },
-  textDefault:{
+  textDefault: {
     color: colors.primary,
     fontSize: sizes.size10,
     fontFamily: fonts.rlw_medium,
-    padding: spacing.xm
+    padding: spacing.xm,
+    textAlign: 'center',
   },
-  viewDefault:{
+  viewDefault: {
     borderWidth: 1,
     borderColor: colors.primary,
     marginTop: spacing.xm,
-    width: 50
-  }
+    width: 60,
+  },
 });

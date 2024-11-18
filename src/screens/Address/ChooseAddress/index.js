@@ -12,11 +12,17 @@ import c_adst from './style';
 import ChooseAddressItem from '../../../items/ChooseAddress';
 import Header from '../../../components/Header';
 import {useTranslation} from 'react-i18next';
-import {deleteUserAdress, getAllAddress} from '../../../api/UserApi';
+import {
+  deleteUserAdress,
+  getAllAddress,
+  setUserAddressDefault,
+} from '../../../api/UserApi';
 import SweetAlert from 'react-native-sweet-alert';
 import {useFocusEffect} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import {setAddress} from '../../../redux/reducer/cartReducer';
+import SkeletonLoader from '../../../placeholders/addresses/AddressSkeleton';
+import Loading from '../../../components/Loading';
 
 const ChooseAddress = ({navigation, route}) => {
   const {t} = useTranslation();
@@ -24,6 +30,8 @@ const ChooseAddress = ({navigation, route}) => {
   const {isChoose, addressDefault} = route.params || false;
   const [idAddressDefault, setIdaddressDefault] = useState(addressDefault);
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const [isSetDefault, setIsSetDefault] = useState(false);
 
   // console.log('------------', isChoose, '---------', addressDefault);
 
@@ -37,10 +45,12 @@ const ChooseAddress = ({navigation, route}) => {
 
   useEffect(() => {
     const fetchAddress = async () => {
+      setLoading(true);
       try {
         const response = await getAllAddress();
         if (response.status) {
           setAddresses(response.data);
+          setLoading(false);
         }
       } catch (error) {
         console.log('error address===', error);
@@ -86,14 +96,31 @@ const ChooseAddress = ({navigation, route}) => {
   };
 
   const setAddressDefault = async address => {
-    console.log('set dèault');
+    console.log('set default');
     if (isChoose && addressDefault) {
       setIdaddressDefault(address._id);
       dispatch(setAddress(address));
     } else {
       try {
+        setIsSetDefault(true);
+        const response = await setUserAddressDefault(address._id);
+        if (response.status) {
+          // Đánh dấu địa chỉ mặc định local
+          const updatedAddresses = addresses.map(item =>
+            item._id === address._id
+              ? {...item, isDefault: true}
+              : {...item, isDefault: false},
+          );
+          setAddresses(updatedAddresses);
+          ToastAndroid.show(
+            'Đổi địa chỉ mặc định thành công',
+            ToastAndroid.SHORT,
+          );
+          setIsSetDefault(false);
+        }
       } catch (error) {
         console.log('Error set default address:', error);
+        setIsSetDefault(false);
       }
     }
   };
@@ -105,41 +132,57 @@ const ChooseAddress = ({navigation, route}) => {
         leftOnPress={() => navigation.goBack()}
         name={t('home.address')}
       />
-      <View style={c_adst.viewBody}>
-        <View style={c_adst.body1}>
-          {addresses && addresses.length > 0 ? (
-            <FlatList
-              style={c_adst.flat}
-              data={addresses}
-              renderItem={({item}) => (
-                <ChooseAddressItem
-                  item={item}
-                  setAddressDefault={setAddressDefault}
-                  deleteAddress={deleteAddress}
-                  isChoose={isChoose}
-                  addressDefault={idAddressDefault}
-                />
-              )}
-              extraData={item => item.id}
-              ItemSeparatorComponent={<View style={c_adst.borderBottom} />}
-            />
-          ) : (
-            <Text style={{textAlign: 'center', paddingBottom: 10}}>
-              Ban chua co dia chi nao. Vui long them dia chi moi
-            </Text>
-          )}
+      <View style={{flex: 1}}>
+        {isSetDefault ? (
+          <Loading />
+        ) : (
+          <View style={{flex: 1}}>
+            {loading ? (
+              <SkeletonLoader />
+            ) : (
+              <View style={c_adst.viewBody}>
+                <View style={c_adst.body1}>
+                  {addresses && addresses.length > 0 ? (
+                    <FlatList
+                      style={c_adst.flat}
+                      data={addresses}
+                      renderItem={({item}) => (
+                        <ChooseAddressItem
+                          item={item}
+                          setAddressDefault={setAddressDefault}
+                          deleteAddress={deleteAddress}
+                          isChoose={isChoose}
+                          addressDefault={idAddressDefault}
+                        />
+                      )}
+                      extraData={item => item.id}
+                      ItemSeparatorComponent={
+                        <View style={c_adst.borderBottom} />
+                      }
+                    />
+                  ) : (
+                    <Text style={{textAlign: 'center', paddingBottom: 10}}>
+                      Ban chua co dia chi nao. Vui long them dia chi moi
+                    </Text>
+                  )}
 
-          <View style={c_adst.borderBottom} />
-          <TouchableOpacity
-            style={[c_adst.viewFooter, appst.center]}
-            onPress={() => navigation.navigate('AddNewAddress')}>
-            <Image
-              style={appst.icon30}
-              source={require('../../../assets/icons/add_adr.png')}
-            />
-            <Text style={c_adst.textAdd}>{t('buttons.btn_new_address')}</Text>
-          </TouchableOpacity>
-        </View>
+                  <View style={c_adst.borderBottom} />
+                  <TouchableOpacity
+                    style={[c_adst.viewFooter, appst.center]}
+                    onPress={() => navigation.navigate('AddNewAddress')}>
+                    <Image
+                      style={appst.icon30}
+                      source={require('../../../assets/icons/add_adr.png')}
+                    />
+                    <Text style={c_adst.textAdd}>
+                      {t('buttons.btn_new_address')}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+          </View>
+        )}
       </View>
     </View>
   );

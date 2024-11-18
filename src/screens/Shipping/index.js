@@ -31,7 +31,7 @@ const ShipScreen = ({navigation, route}) => {
     fetchShipData();
   }, []);
 
-  console.log('ships', ships);
+  // console.log('ships', ships);
   const handleSelectShipping = shipping => {
     setSelectedShipping(shipping);
   };
@@ -40,13 +40,6 @@ const ShipScreen = ({navigation, route}) => {
     // Cập nhật trạng thái local
     setId(shipping._id);
     dispatch(setShipping(shipping));
-    setships(prevShips =>
-      prevShips.map(ship =>
-        ship._id === shipping._id
-          ? {...ship, trackingAvailable: true}
-          : {...ship, trackingAvailable: false},
-      ),
-    );
     handleSelectShipping(shipping);
   };
 
@@ -66,9 +59,9 @@ const ShipScreen = ({navigation, route}) => {
       <Header
         leftOnPress={() => navigation.goBack()}
         iconLeft={require('../../assets/icons/back.png')}
-        name={'Phương thức vận chuyển'}
+        name={t('ship.method')}
       />
-      <Text style={ship.text1}>Cac phuong thuc van chuyen cua shop</Text>
+      <Text style={ship.text1}>{t('ship.shipments')}</Text>
       <FlatList
         style={ship.flat}
         data={ships}
@@ -85,7 +78,7 @@ const ShipScreen = ({navigation, route}) => {
       <CustomedButton
         style={ship.button}
         titleStyle={ship.titleButton}
-        title={'Xac nhan'}
+        title={t('buttons.btn_confirm')}
         onPress={handleConfirm}
       />
     </View>

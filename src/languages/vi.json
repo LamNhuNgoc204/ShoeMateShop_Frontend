@@ -141,7 +141,8 @@
     "commune": "Xã",
     "sub_commune": "Chọn xã",
     "detail": "Đường/Thôn",
-    "required": "Bắt buộc"
+    "required": "Bắt buộc",
+    "default": "Mặc định"
   },
   "titles": {
     "signin": "Chào mừng trở lại!",
@@ -273,7 +274,9 @@
     "cancel_order": "Đơn hàng đã bị hủy"
   },
   "ship": {
-    "infor": "Thông tin vận chuyển"
+    "infor": "Thông tin vận chuyển",
+    "shipments": "Các phương thức vận chuyển của shop",
+    "method": "Phương thức vận chuyển"
   },
   "search": {
     "product": " sản phẩm được tìm thấy",
