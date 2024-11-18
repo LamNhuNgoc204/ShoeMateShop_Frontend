@@ -54,16 +54,18 @@ const messageScreenStyle = StyleSheet.create({
         resizeMode: 'contain'
     },
     messageItem: {
-        backgroundColor: colors.blue004BFE,
+        backgroundColor: 'white',
         maxWidth:  220,
         padding: 10,
         borderRadius: 10,
         alignSelf: 'baseline',
+        borderWidth: 0.3,
+        borderColor: colors.primary
     },
     messageContent: {
-        color: 'white',
+        color: 'black',
         fontFamily: fonts.rlw_medium,
-        fontSize: 12,
+        fontSize: 16,
         lineHeight:  19
     },
     marginTop10:{
@@ -71,7 +73,7 @@ const messageScreenStyle = StyleSheet.create({
         marginBottom: 10,
     },
     customerMessageItem: {
-        backgroundColor: "#FFFFFF",
+        backgroundColor: "#b0ceff",
         alignSelf: 'flex-end'
         
     },

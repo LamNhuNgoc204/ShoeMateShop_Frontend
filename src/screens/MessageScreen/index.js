@@ -21,11 +21,12 @@ import io from 'socket.io-client';
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import AxiosInstance from '../../helpers/AxiosInstance';
 import { Axios } from 'axios';
+import { formatCurrency } from '../../utils/functions/formatCurrency';
 
 
 const ProductMessageItem = ({ product, isMessage, onSend, onClose }) => {
 
-  if(!product) {
+  if (!product) {
     return <View />;
   }
 
@@ -34,12 +35,12 @@ const ProductMessageItem = ({ product, isMessage, onSend, onClose }) => {
       <Image source={{ uri: product.assets[0] || "https://via.placeholder.com/60" }} style={styles.image} />
       <View style={styles.details}>
         <Text style={styles.name} numberOfLines={1} ellipsizeMode='tail'>{product.name}</Text>
-        <Text style={styles.price}>{product.price} đ</Text>
+        <Text style={styles.price}>{formatCurrency(product.price)} đ</Text>
         <Text style={styles.description} numberOfLines={2}>
           {product.description}
         </Text>
       </View>
-      <View style={[{alignItems: 'flex-end', justifyContent: 'space-between', paddingLeft: 5}, isMessage && { display: 'none' }]}>
+      <View style={[{ alignItems: 'flex-end', justifyContent: 'space-between', paddingLeft: 5 }, isMessage && { display: 'none' }]}>
         <TouchableOpacity onPress={onClose}>
           <Text style={{ fontSize: 16, fontWeight: '700', color: colors.black }}>X</Text>
         </TouchableOpacity>
@@ -158,7 +159,10 @@ const MessageItem = ({ message, user }) => {
         ]}>
         {message.text}
       </Text>
-      <Text>{formatDate(message.createdAt)}</Text>
+      <Text style={{
+        fontSize: 12,
+        marginTop: 5
+      }}>{formatDate(message.createdAt)}</Text>
     </View>
   );
 };
@@ -237,9 +241,9 @@ const OrderItem = ({ order, isMessage = false, isSelected, onSelect }) => {
       }}>
       <Image
         source={{
-          uri: 'https://c8.alamy.com/comp/2H0ME7K/issuing-an-order-icon-outline-issuing-an-order-vector-icon-color-flat-isolated-2H0ME7K.jpg',
+          uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNOfRQ6Of1RQUHmzbfpCaYYzU0fOFqzQFEgw&s',
         }}
-        style={{ width: 100, height: 100, borderRadius: 8 }}
+        style={{ width: 60, height: 60, borderRadius: 8 }}
       />
       <View style={{ flex: 1, paddingHorizontal: 10 }}>
         <Text
@@ -252,7 +256,7 @@ const OrderItem = ({ order, isMessage = false, isSelected, onSelect }) => {
         <View style={{ flex: 1 }} />
         <Text
           style={[{ fontWeight: '700', color: colors.primary, fontSize: 14 }]}>
-          Total: ${order.order.total_price}
+          Total: ${formatCurrency(order.order.total_price)}
         </Text>
       </View>
       <View style={{ justifyContent: 'space-between' }}>
@@ -262,6 +266,7 @@ const OrderItem = ({ order, isMessage = false, isSelected, onSelect }) => {
             padding: 3,
             borderRadius: 10,
             color: '#fff',
+            textAlign: 'center'
           }}>
           {countItem()} items
         </Text>
@@ -269,10 +274,11 @@ const OrderItem = ({ order, isMessage = false, isSelected, onSelect }) => {
           onPress={onSelect}
           style={[
             {
-              padding: 10,
+              paddingHorizontal: 10,
+              paddingVertical: 5,
               borderRadius: 16,
               borderWidth: 1,
-              borderColor: colors.primary,
+              borderColor: '#2d5430',
             },
             isSelected && { backgroundColor: colors.primary },
             isMessage && { display: 'none' },
@@ -357,6 +363,44 @@ const BottomSheetMenu = ({
   );
 };
 
+
+const groupDate = (messages) => {
+  if (messages.length === 0) return [];
+
+  messages = messages.reverse();
+
+  // Helper function to format date in DD/MM/YYYY format
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  let lastDate = null;
+
+  // Iterate over messages and mark `isShowDate` when the date changes
+  return messages.map((message) => {
+    const messageDate = formatDate(message.createdAt);
+
+    const isShowDate = messageDate !== lastDate; // Show date only if it's different from the last one
+    lastDate = messageDate; // Update lastDate for next comparison
+
+    return { ...message, isShowDate };
+  }).reverse();;
+};
+
+
+function formatDate(isoString) {
+  const date = new Date(isoString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+}
+
 const MessageScreen = ({ navigation, route }) => {
   const [conversation, setConversation] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -373,17 +417,18 @@ const MessageScreen = ({ navigation, route }) => {
   const [curProduct, setCurProduct] = useState(null);
   const [orderSelected, setOrderSelected] = useState();
 
+  console.log('message length: ' + messages.length)
+
   // console.log('user', name, avatar);
 
-  const SOCKET_URL = `http://1192.168.9.41:3000/`;
+  const SOCKET_URL = `http://192.168.1.82:3000/`;
 
   const getConversation = async () => {
     try {
       const conversation = await getConversationAction();
-      const messages = await getMessagesAction(conversation._id);
-      console.log('messages...: ', messages);
-      console.log('getConversation...: ', conversation);
-      setMessages(messages);
+      const messagesResponse = await getMessagesAction(conversation._id);
+      const newMessage = groupDate(messagesResponse)
+      setMessages(newMessage);
       setConversation(conversation);
     } catch (error) {
       console.error('Error getting conversation:', error);
@@ -428,19 +473,19 @@ const MessageScreen = ({ navigation, route }) => {
 
   const sendProduct = async () => {
     try {
-    if(!curProduct) {
-      return
-    }
-    const response = await AxiosInstance().post('/messages/send-message', {
-      conversationId: conversation._id,
-      senderId: user._id,
-      text: 'send product',
-      productId: curProduct._id,
-    })
-    if (response.status) {
-      console.log('send product success');
-      setCurProduct(null);
-    }
+      if (!curProduct) {
+        return
+      }
+      const response = await AxiosInstance().post('/messages/send-message', {
+        conversationId: conversation._id,
+        senderId: user._id,
+        text: 'send product',
+        productId: curProduct._id,
+      })
+      if (response.status) {
+        console.log('send product success');
+        setCurProduct(null);
+      }
     } catch (error) {
       console.log('Error sending product');
     }
@@ -497,7 +542,7 @@ const MessageScreen = ({ navigation, route }) => {
     // Lắng nghe sự kiện 'newMessage' để nhận tin nhắn mới
     socket.on('sendMessage', data => {
       console.log('Received message:', data.message);
-      setMessages(prevMessages => [data.message, ...prevMessages]);
+      setMessages([data.message, ...messages])
     });
 
     // Lắng nghe sự kiện 'disconnect'
@@ -538,6 +583,13 @@ const MessageScreen = ({ navigation, route }) => {
     setCurProduct(product)
   }, [product])
 
+  const newDate = () => {
+    const date = new Date();
+    const utcOffsetInMs = 7 * 60 * 60 * 1000; // UTC+7 trong milliseconds
+    const newDate = new Date(date.getTime() + utcOffsetInMs);
+    return newDate;
+  }
+
   return conversation ? (
     <View style={[appst.container, messageScreenStyle.container]}>
       {renderToolbar({ onBack, name, avatar })}
@@ -546,20 +598,35 @@ const MessageScreen = ({ navigation, route }) => {
         inverted={true}
         ref={messagesRef}
         data={messages}
-        renderItem={({ item }) => {
-          if (item.type == 'text') {
-            return <MessageItem user={user} message={item} />;
-          } else if (item.type == 'order') {
-            return <OrderItem order={item.order} isMessage={true} />;
-          } else if (item.type == 'product') {
-            return <ProductMessageItem product={item.product} isMessage={true}/>;
-          }
-        }}
+        renderItem={({ item }) => (
+          <>
+
+            {item.type === 'text' && <MessageItem user={user} message={item} />}
+            {item.type === 'order' && <OrderItem order={item.order} isMessage={true} />}
+            {item.type === 'product' && <ProductMessageItem product={item.product} isMessage={true} />}
+            {item.isShowDate && (
+              <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontSize: 12, color: '#999', marginBottom: 5, marginVertical: 10 }}>
+                  {formatDate(item.createdAt) == formatDate(newDate()) ? 'Hôm nay' : formatDate(item.createdAt)}
+                </Text>
+              </View>
+            )}
+          </>
+        )}
+        ListHeaderComponent={messages.length > 0 && <View style={{
+          paddingVertical: 5, paddingHorizontal: 10, justifyContent: 'center', alignItems: 'center', marginVertical: 5,
+          borderRadius: 16,
+          backgroundColor: "#cdcdcd",
+          alignSelf: 'flex-end'
+        }}>
+          <Text style={{ fontSize: 14, fontWeight: '500', color: 'white' }}>{messages[0].isStaffRead ? "Đã xem" : "Đã gửi"}</Text>
+        </View>}
         keyExtractor={(item, index) => index.toString()}
         style={{ paddingHorizontal: 20, flex: 1 }}
         contentContainerStyle={{ paddingTop: 10 }}
       />
-      <ProductMessageItem product={curProduct} onClose={() => {setCurProduct(null)}} onSend={sendProduct}/>
+
+      <ProductMessageItem product={curProduct} onClose={() => { setCurProduct(null) }} onSend={sendProduct} />
       {renderBottom({
         focused,
         onFocused,
