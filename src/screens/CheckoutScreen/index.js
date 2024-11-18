@@ -99,20 +99,20 @@ const CheckOutScreen = ({navigation}) => {
     if (response.status) {
       setIsLoading(true);
       setisComplete(true);
-      // if (state.payment && state.payment.payment_method === 'Zalo Pay') {
-      //   dispatch(setPriceToPay(tongchiphi));
-      //   dispatch(setOrderId(response.data.order._id));
-      //   setisComplete(true);
-      //   navigation.navigate('ZaloPayScreen');
-      // } else if (
-      //   state.payment &&
-      //   state.payment.payment_method === 'Thanh toán khi nhận hàng'
-      // ) {
-      //   // setModalVisible(true);
-      //   ToastAndroid.show('tao don thanh cong', ToastAndroid.show);
-      //   setisComplete(true);
-      //   navigation.navigate('CheckoutSuccess');
-      // }
+      if (state.payment && state.payment.payment_method === 'Zalo Pay') {
+        dispatch(setPriceToPay(tongchiphi));
+        dispatch(setOrderId(response.data.order._id));
+        setisComplete(true);
+        navigation.navigate('ZaloPayScreen');
+      } else if (
+        state.payment &&
+        state.payment.payment_method === 'Thanh toán khi nhận hàng'
+      ) {
+        // setModalVisible(true);
+        ToastAndroid.show('tao don thanh cong', ToastAndroid.show);
+        setisComplete(true);
+        navigation.navigate('CheckoutSuccess');
+      }
     }
 
     //check xem chon phuong thuc nao roi chuyen man hinh tuong ung
@@ -356,12 +356,12 @@ const CheckOutScreen = ({navigation}) => {
         textbutton={t('buttons.btn_back_to_shop')}
       />
 
-      <LoadingModal
+      {/* <LoadingModal
         isComplete={isComplete}
         visible={isLoading}
         message={t('orders.creating_order')}
         onLoadingComplete={onLoadingComplete}
-      />
+      /> */}
     </View>
   );
 };

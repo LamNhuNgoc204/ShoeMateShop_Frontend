@@ -12,6 +12,7 @@ const CheckoutSuccess = ({navigation}) => {
   return (
     <View>
       <Header
+        name={'Dat hang thanh cong'}
         iconLeft={require('../../assets/icons/back.png')}
         leftOnPress={() => {}}
         iconRight={require('../../assets/icons/bag_icon.png')}
@@ -29,7 +30,7 @@ const CheckoutSuccess = ({navigation}) => {
           ]}>
           <Text style={{alignItems: 'center'}}>
             <Image
-              style={appst.icon40}
+              style={appst.icon50}
               source={require('../../assets/icons/checkout_success.png')}
             />
             <Text style={{fontSize: 24, color: 'white'}}>
@@ -73,23 +74,12 @@ const CheckoutSuccess = ({navigation}) => {
             </TouchableOpacity>
           </View>
         </View>
-        {/* <View style={{alignItems: 'center', marginTop: 20, marginLeft: 20}}>
-          <Text style={{color: 'black', paddingBottom: 20, fontSize: 20}}>
-            San pham danh cho ban
-          </Text>
-          <FlatList
-            data={productState}
-            renderItem={({item}) => <ProductItem product={item} />}
-            keyExtractor={(item, index) => index.toString()}
-            numColumns={2}
-            showsVerticalScrollIndicator={false}
-            scrollEnabled={false}
+        <View style={{marginTop: 20, marginBottom: 20}}>
+          <ProductList
+            listProduct={productState.products}
+            wishList={productState.wishList}
           />
-        </View> */}
-        <ProductList
-          listProduct={productState.products}
-          wishList={productState.wishList}
-        />
+        </View>
       </ScrollView>
     </View>
   );
