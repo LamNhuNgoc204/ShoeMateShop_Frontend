@@ -27,6 +27,7 @@ const OrderDetail = ({route, navigation}) => {
   const [titleButton, setTitleButton] = useState('');
 
   console.log('orderDetail => ', orderDetail);
+  console.log(item._id);
 
   useEffect(() => {
     const fetchData = async () => {

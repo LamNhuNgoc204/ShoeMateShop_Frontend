@@ -16,7 +16,7 @@ import NotificationItem from '../../components/NotificationItem';
 import OrderNotification from '../../components/NotificationItem';
 import AxiosInstance from '../../helpers/AxiosInstance';
 
-const Notifycation = () => {
+const Notifycation = ({navigation}) => {
   const { t } = useTranslation();
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -34,6 +34,27 @@ const Notifycation = () => {
       setLoading(false);
     } catch (error) {
       console.log(error.message);
+    }
+  }
+
+  const onNotiPress = async (item) => {
+    try {
+      const response = await AxiosInstance().put('/notifications/read-notification/' +item._id)
+      if(response.status) {
+        const index = notifications.findIndex((noti) => noti._id === item._id)
+        let newNotification = [...notifications]
+        newNotification[index].isRead = true
+        setNotifications(newNotification)
+      } else {
+        console.log('errr: ', response.message)
+      } 
+      navigation.navigate('OrderDetail', {
+        item: {
+          _id: item.order_id
+        }
+      })
+    } catch (error) {
+      console.log('errr: ', error)
     }
   }
 
@@ -61,7 +82,7 @@ const Notifycation = () => {
           </View> : (
             <FlatList
               data={notifications}
-              renderItem={({ item }) => <NotificationItem noti={item} />}
+              renderItem={({ item }) => <NotificationItem onPress={() => {onNotiPress(item)}} noti={item} />}
               showsVerticalScrollIndicator={false}
               keyExtractor={(item, id) => id.toString()}
               style={{ flex: 1 }} />

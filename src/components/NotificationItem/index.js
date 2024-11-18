@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
-const OrderNotification = ({ noti }) => {
+const OrderNotification = ({ noti, onPress }) => {
     function formatISOString(isoString) {
         const date = new Date(isoString);
         
@@ -16,7 +16,7 @@ const OrderNotification = ({ noti }) => {
       }
 
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity onPress={onPress} style={[styles.container, !noti.isRead && {backgroundColor: "#d5e1f5"}]}>
       <View style={styles.header}>
         <View style={styles.headerLeft}>
           <Image
@@ -60,7 +60,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
     padding: 16,
-    margin: 16,
+    marginVertical: 5,
+    marginHorizontal: 16,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
