@@ -104,7 +104,7 @@ const CartScreen = ({navigation}) => {
     setTotalPrice(total);
   }, [checkedProducts]);
 
-  console.log('checkedProducts in cart =>  ', checkedProducts);
+  // console.log('checkedProducts in cart =>  ', checkedProducts);
 
   const handleOrder = () => {
     if (checkedProducts.length == 0) {

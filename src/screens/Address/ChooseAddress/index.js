@@ -15,10 +15,17 @@ import {useTranslation} from 'react-i18next';
 import {deleteUserAdress, getAllAddress} from '../../../api/UserApi';
 import SweetAlert from 'react-native-sweet-alert';
 import {useFocusEffect} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {setAddress} from '../../../redux/reducer/cartReducer';
 
 const ChooseAddress = ({navigation, route}) => {
   const {t} = useTranslation();
   const [addresses, setAddresses] = useState([]);
+  const {isChoose, addressDefault} = route.params || false;
+  const [idAddressDefault, setIdaddressDefault] = useState(addressDefault);
+  const dispatch = useDispatch();
+
+  // console.log('------------', isChoose, '---------', addressDefault);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -78,6 +85,19 @@ const ChooseAddress = ({navigation, route}) => {
     }
   };
 
+  const setAddressDefault = async address => {
+    console.log('set dèault');
+    if (isChoose && addressDefault) {
+      setIdaddressDefault(address._id);
+      dispatch(setAddress(address));
+    } else {
+      try {
+      } catch (error) {
+        console.log('Error set default address:', error);
+      }
+    }
+  };
+
   return (
     <View style={[appst.container]}>
       <Header
@@ -92,7 +112,13 @@ const ChooseAddress = ({navigation, route}) => {
               style={c_adst.flat}
               data={addresses}
               renderItem={({item}) => (
-                <ChooseAddressItem item={item} deleteAddress={deleteAddress} />
+                <ChooseAddressItem
+                  item={item}
+                  setAddressDefault={setAddressDefault}
+                  deleteAddress={deleteAddress}
+                  isChoose={isChoose}
+                  addressDefault={idAddressDefault}
+                />
               )}
               extraData={item => item.id}
               ItemSeparatorComponent={<View style={c_adst.borderBottom} />}

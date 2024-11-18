@@ -4,12 +4,12 @@ import itship from './style';
 import appst from '../../constants/AppStyle';
 import {colors} from '../../constants/colors';
 
-const ShipItem = ({item, onSelect}) => {
+const ShipItem = ({item, id, isDefault, onSelect}) => {
   return (
     <TouchableOpacity
       onPress={() => onSelect(item.item)}
       style={itship.container}>
-      <View style={item.item.trackingAvailable && itship.border}>
+      <View style={isDefault && id === item?.item?._id && itship.border}>
         <View style={itship.view1}>
           <Text style={itship.text1}>
             {item.item.name}{' '}
@@ -24,7 +24,7 @@ const ShipItem = ({item, onSelect}) => {
         </View>
       </View>
 
-      {item.item.trackingAvailable && (
+      {isDefault && id === item?.item?._id && (
         <Image
           style={[appst.icon24]}
           source={require('../../assets/icons/check.png')}

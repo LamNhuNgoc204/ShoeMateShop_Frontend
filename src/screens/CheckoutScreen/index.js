@@ -46,6 +46,7 @@ const CheckOutScreen = ({navigation}) => {
   const [isComplete, setisComplete] = useState(false);
 
   // console.log('addressDefault', addressDefault);
+  // console.log('state.ship', state.ship);
 
   const ship = state.ship && state.ship.cost && state.ship.cost;
   const tongchiphi = state.totalPrice + ship;
@@ -172,7 +173,12 @@ const CheckOutScreen = ({navigation}) => {
               style={[appst.rowCenter, c_outst.body1, c_outst.borderBottom]}>
               <TouchableOpacity
                 style={c_outst.view1}
-                onPress={() => goToScreen('ChooseAddress')}>
+                onPress={() =>
+                  navigation.navigate('ChooseAddress', {
+                    isChoose: true,
+                    addressDefault: addressDefault._id,
+                  })
+                }>
                 <Image
                   style={appst.icon24}
                   source={require('../../assets/icons/address.png')}
@@ -258,7 +264,12 @@ const CheckOutScreen = ({navigation}) => {
               />
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => goToScreen('ShipScreen')}
+              onPress={() =>
+                navigation.navigate('ShipScreen', {
+                  shipId: state?.ship?._id,
+                  isDefault: true,
+                })
+              }
               style={[appst.rowCenter, {marginTop: 5}]}>
               <View style={appst.rowCenter}>
                 <Image

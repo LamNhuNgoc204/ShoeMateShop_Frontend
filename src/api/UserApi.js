@@ -19,8 +19,8 @@ export const updateInformation = async body => {
 export const getAllAddress = async () => {
   try {
     const response = await AxiosInstance().get('/addresses/get-all-address');
-    if(response.status){
-      return response
+    if (response.status) {
+      return response;
     }
   } catch (error) {
     console.log('Get adrress err: ', error);
@@ -31,6 +31,19 @@ export const deleteUserAdress = async addressId => {
   try {
     const response = await AxiosInstance().delete(
       `/addresses/delete-address/${addressId}`,
+    );
+    if (response.status) {
+      return response;
+    }
+  } catch (error) {
+    console.log('Delete address failed: ', error);
+  }
+};
+
+export const setAddressDefault = async addressId => {
+  try {
+    const response = await AxiosInstance().put(
+      `/addresses/set-default-address/${addressId}`,
     );
     if (response.status) {
       return response;

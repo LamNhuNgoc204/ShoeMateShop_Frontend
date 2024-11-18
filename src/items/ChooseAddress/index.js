@@ -3,14 +3,21 @@ import React from 'react';
 import {c_adrIt} from './style';
 import appst from '../../constants/AppStyle';
 
-const ChooseAddressItem = ({item, deleteAddress}) => {
+const ChooseAddressItem = ({
+  item,
+  deleteAddress,
+  isChoose,
+  addressDefault,
+  setAddressDefault,
+}) => {
   // console.log('address id', item._id);
 
   return (
     <TouchableOpacity
+      onPress={() => setAddressDefault(item)}
       onLongPress={() => deleteAddress(item._id)}
       style={[c_adrIt.container, appst.rowCenter]}>
-      {item.isDefault ? (
+      {isChoose && addressDefault == item._id ? (
         <TouchableOpacity style={c_adrIt.icon}>
           <Image
             style={appst.icon30}

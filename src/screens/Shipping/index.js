@@ -10,11 +10,14 @@ import AxiosInstance from '../../helpers/AxiosInstance';
 import {useDispatch} from 'react-redux';
 import {setShipping} from '../../redux/reducer/cartReducer';
 
-const ShipScreen = ({navigation}) => {
+const ShipScreen = ({navigation, route}) => {
   const {t} = useTranslation();
   const dispatch = useDispatch();
   const [selectedShipping, setSelectedShipping] = useState(null);
   const [ships, setships] = useState([]);
+
+  const {shipId, isDefault} = route.params;
+  const [id, setId] = useState(shipId);
 
   useEffect(() => {
     const fetchShipData = async () => {
@@ -35,6 +38,8 @@ const ShipScreen = ({navigation}) => {
 
   const handleToggleTracking = shipping => {
     // Cập nhật trạng thái local
+    setId(shipping._id);
+    dispatch(setShipping(shipping));
     setships(prevShips =>
       prevShips.map(ship =>
         ship._id === shipping._id
@@ -69,7 +74,12 @@ const ShipScreen = ({navigation}) => {
         data={ships}
         keyExtractor={item => item._id}
         renderItem={item => (
-          <ShipItem item={item} onSelect={handleToggleTracking} />
+          <ShipItem
+            item={item}
+            id={id}
+            isDefault={isDefault}
+            onSelect={handleToggleTracking}
+          />
         )}
       />
       <CustomedButton
