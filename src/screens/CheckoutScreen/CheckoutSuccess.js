@@ -1,20 +1,13 @@
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  FlatList,
-  ScrollView,
-} from 'react-native';
+import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
 import React from 'react';
 import Header from '../../components/Header';
 import appst from '../../constants/AppStyle';
 import {useSelector} from 'react-redux';
-import ProductItem from '../../items/ProductItem';
+import ProductList from '../Product/ProductList';
 
 const CheckoutSuccess = ({navigation}) => {
-  const productState = useSelector(state => state.products.products);
-  console.log('productState', productState);
+  const productState = useSelector(state => state.products);
+  // console.log('productState', productState);
 
   return (
     <View>
@@ -80,7 +73,7 @@ const CheckoutSuccess = ({navigation}) => {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{alignItems: 'center', marginTop: 20, marginLeft: 20}}>
+        {/* <View style={{alignItems: 'center', marginTop: 20, marginLeft: 20}}>
           <Text style={{color: 'black', paddingBottom: 20, fontSize: 20}}>
             San pham danh cho ban
           </Text>
@@ -92,7 +85,11 @@ const CheckoutSuccess = ({navigation}) => {
             showsVerticalScrollIndicator={false}
             scrollEnabled={false}
           />
-        </View>
+        </View> */}
+        <ProductList
+          listProduct={productState.products}
+          wishList={productState.wishList}
+        />
       </ScrollView>
     </View>
   );

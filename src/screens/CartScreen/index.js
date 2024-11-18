@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   Image,
   ToastAndroid,
-  ImageBackground,
   ScrollView,
 } from 'react-native';
 import {cartst} from './style';
@@ -19,10 +18,10 @@ import ItemCart from '../../items/CartItem/ItemCart';
 import {getUserCard} from '../../api/CartApi';
 import {useDispatch, useSelector} from 'react-redux';
 import {setOrderData, setToltalPrice} from '../../redux/reducer/cartReducer';
-import Loading from '../../components/Loading';
 import {useFocusEffect} from '@react-navigation/native';
 import ProductItem from '../../items/ProductItem';
 import CartPlaceholder from '../../placeholders/product/cart';
+import ProductList from '../Product/ProductList';
 
 const CartScreen = ({navigation}) => {
   const {t} = useTranslation();
@@ -55,10 +54,6 @@ const CartScreen = ({navigation}) => {
       setLoading(true);
     }
   };
-
-  // useEffect(() => {
-  //   fetchCard();
-  // }, []);
 
   // Sử dụng useFocusEffect để gọi lại API mỗi khi màn hình được mount
   useFocusEffect(
@@ -154,7 +149,12 @@ const CartScreen = ({navigation}) => {
                 }>
                 <Text style={cartst.text}>Bat dau mua sam ngay</Text>
               </TouchableOpacity>
-              <View style={appst.center}>
+
+              <ProductList
+                listProduct={productState.products}
+                wishList={productState.wishList}
+              />
+              {/* <View style={appst.center}>
                 <FlatList
                   data={productState.products}
                   renderItem={({item, index}) => (
@@ -166,7 +166,7 @@ const CartScreen = ({navigation}) => {
                   scrollEnabled={false}
                   style={{marginLeft: 20}}
                 />
-              </View>
+              </View> */}
             </ScrollView>
           ) : (
             <FlatList

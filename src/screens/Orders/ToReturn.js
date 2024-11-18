@@ -8,12 +8,21 @@ import {useSelector} from 'react-redux';
 import OrderItem from '../../items/OrderItem/OrderItem';
 import {useTranslation} from 'react-i18next';
 import ProductItem from '../../items/ProductItem';
+import ProductList from '../Product/ProductList';
+import { shuffleArray } from '../../utils/functions/formatData';
 
 const ToReturn = ({navigation}) => {
   const {t} = useTranslation();
-  const products = useSelector(state => state.products.products);
+  const products = useSelector(state => state.products);
   const [returnOrder, setReturnOrder] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [listProduct, setListProduct] = useState([]);
+
+  useEffect(() => {
+    if (products.products && products.products.length) {
+      setListProduct(shuffleArray([...products.products]));
+    }
+  }, []);
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -41,7 +50,11 @@ const ToReturn = ({navigation}) => {
               style={odst.flat1}
               data={returnOrder}
               renderItem={({item}) => (
-                <OrderItem item={item} refunded={true} navigation={navigation} />
+                <OrderItem
+                  item={item}
+                  refunded={true}
+                  navigation={navigation}
+                />
               )}
               keyExtractor={(item, index) =>
                 item._id ? item._id : index.toString()
@@ -60,26 +73,10 @@ const ToReturn = ({navigation}) => {
             </View>
           )}
 
-          <View style={appst.rowCenter}>
-            <View style={odst.border} />
-            <Text style={odst.text}>{t('products.similar_product')}</Text>
-            <View style={odst.border} />
-          </View>
-          <View style={[appst.center]}>
-            <FlatList
-              style={odst.flat2}
-              data={products}
-              renderItem={({item, index}) => (
-                <ProductItem product={item} index={index} />
-              )}
-              keyExtractor={(item, index) =>
-                item._id ? item._id : index.toString()
-              }
-              numColumns={2}
-              scrollEnabled={false}
-              contentContainerStyle={{padding: 20}}
-            />
-          </View>
+          <ProductList
+            listProduct={listProduct}
+            wishList={products.wishList}
+          />
         </ScrollView>
       ) : (
         <OrderHistorySkeleton />

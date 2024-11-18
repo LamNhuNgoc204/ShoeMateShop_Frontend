@@ -8,13 +8,24 @@ import OrderItem from '../../items/OrderItem/OrderItem.js';
 import {getOrderPending} from '../../api/OrderApi.js';
 import OrderHistorySkeleton from '../../placeholders/product/order/OrderHistory.js';
 import {useTranslation} from 'react-i18next';
+import ProductList from '../Product/ProductList.js';
+import {shuffleArray} from '../../utils/functions/formatData.js';
 
 const ToPay = ({navigation}) => {
   const {t} = useTranslation();
   const useAppSelector = useSelector;
-  const products = useAppSelector(state => state.products.products);
+  const products = useAppSelector(state => state.products);
   const [pendingOrders, setPendingOrders] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [listProduct, setListProduct] = useState([]);
+
+  useEffect(() => {
+    if (products.products && products.products.length) {
+      setListProduct(shuffleArray([...products.products]));
+    }
+  }, []);
+
+  console.log(listProduct);
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -61,12 +72,12 @@ const ToPay = ({navigation}) => {
             </View>
           )}
 
-          <View style={appst.rowCenter}>
+          {/* <View style={appst.rowCenter}>
             <View style={odst.border} />
             <Text style={odst.text}>{t('products.similar_product')}</Text>
             <View style={odst.border} />
-          </View>
-          <View style={{marginLeft: 20}}>
+          </View> */}
+          {/* <View style={{marginLeft: 20}}>
             <FlatList
               style={odst.flat2}
               data={products}
@@ -84,7 +95,8 @@ const ToPay = ({navigation}) => {
                 paddingBottom: 20,
               }}
             />
-          </View>
+          </View> */}
+          <ProductList listProduct={listProduct} wishList={products.wishList} />
         </ScrollView>
       ) : (
         <OrderHistorySkeleton />

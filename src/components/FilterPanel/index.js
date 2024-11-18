@@ -28,8 +28,8 @@ const FilterPanel = ({
   onBrandPress,
   onStarPress,
 }) => {
-  console.log('listSelectedBrand', listSelectedBrand);
-  console.log('listSelectedStar', listSelectedStar);
+  // console.log('listSelectedBrand', listSelectedBrand);
+  // console.log('listSelectedStar', listSelectedStar);
   const {t} = useTranslation();
 
   return (

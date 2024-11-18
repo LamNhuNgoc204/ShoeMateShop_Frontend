@@ -8,13 +8,22 @@ import OrderItem from '../../items/OrderItem/OrderItem';
 import {getOrderCancell} from '../../api/OrderApi';
 import OrderHistorySkeleton from '../../placeholders/product/order/OrderHistory';
 import {useTranslation} from 'react-i18next';
+import ProductList from '../Product/ProductList';
+import {shuffleArray} from '../../utils/functions/formatData';
 
 const Cancalled = ({navigation}) => {
   const {t} = useTranslation();
   const useAppSelector = useSelector;
-  const products = useAppSelector(state => state.products.products);
+  const products = useAppSelector(state => state.products);
   const [cancelOrders, setCancelOrders] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [listProduct, setListProduct] = useState([]);
+
+  useEffect(() => {
+    if (products.products && products.products.length) {
+      setListProduct(shuffleArray([...products.products]));
+    }
+  }, []);
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -59,26 +68,7 @@ const Cancalled = ({navigation}) => {
             </View>
           )}
 
-          <View style={appst.rowCenter}>
-            <View style={odst.border} />
-            <Text style={odst.text}>{t('products.similar_product')}</Text>
-            <View style={odst.border} />
-          </View>
-          <View style={[appst.center]}>
-            <FlatList
-              style={odst.flat2}
-              data={products}
-              renderItem={({item, index}) => (
-                <ProductItem product={item} index={index} />
-              )}
-              keyExtractor={(item, index) =>
-                item._id ? item._id : index.toString()
-              }
-              numColumns={2}
-              scrollEnabled={false}
-              contentContainerStyle={{padding: 20}}
-            />
-          </View>
+          <ProductList listProduct={listProduct} wishList={products.wishList} />
         </ScrollView>
       ) : (
         <OrderHistorySkeleton />
