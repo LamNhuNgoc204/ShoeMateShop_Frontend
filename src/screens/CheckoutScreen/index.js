@@ -42,7 +42,7 @@ const CheckOutScreen = ({navigation}) => {
   const {t} = useTranslation();
   const [isswitch, setIsswitch] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [addressDefault] = useState(state.address);
+  const addressDefault = state.address;
   const [isComplete, setisComplete] = useState(false);
 
   // console.log('addressDefault', addressDefault);

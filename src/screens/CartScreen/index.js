@@ -19,7 +19,6 @@ import {getUserCard} from '../../api/CartApi';
 import {useDispatch, useSelector} from 'react-redux';
 import {setOrderData, setToltalPrice} from '../../redux/reducer/cartReducer';
 import {useFocusEffect} from '@react-navigation/native';
-import ProductItem from '../../items/ProductItem';
 import CartPlaceholder from '../../placeholders/product/cart';
 import ProductList from '../Product/ProductList';
 
@@ -105,7 +104,7 @@ const CartScreen = ({navigation}) => {
     setTotalPrice(total);
   }, [checkedProducts]);
 
-  // console.log('checkedProducts in cart =>  ', checkedProducts);
+  console.log('checkedProducts in cart =>  ', checkedProducts);
 
   const handleOrder = () => {
     if (checkedProducts.length == 0) {
@@ -154,19 +153,6 @@ const CartScreen = ({navigation}) => {
                 listProduct={productState.products}
                 wishList={productState.wishList}
               />
-              {/* <View style={appst.center}>
-                <FlatList
-                  data={productState.products}
-                  renderItem={({item, index}) => (
-                    <ProductItem product={item} index={index} />
-                  )}
-                  keyExtractor={(item, index) => index.toString()}
-                  numColumns={2}
-                  showsVerticalScrollIndicator={false}
-                  scrollEnabled={false}
-                  style={{marginLeft: 20}}
-                />
-              </View> */}
             </ScrollView>
           ) : (
             <FlatList

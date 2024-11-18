@@ -83,8 +83,7 @@ export const bottomSheetStyle = StyleSheet.create({
     borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 40,
-    paddingVertical: 10,
+    width:'48%'
   },
   bottomContainer: {
     flex: 1,

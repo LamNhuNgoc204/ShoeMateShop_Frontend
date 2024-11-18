@@ -16,12 +16,13 @@ import {spacing} from '../../constants';
 import ProductItem from '../../items/ProductItem';
 import AxiosInstance from '../../helpers/AxiosInstance';
 import {useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import BottomSheetContent from '../../items/Sizebottom';
 import ProductSkeleton from '../../placeholders/product/detail';
 import {addRecentView} from '../../api/ProductApi';
 import {useTranslation} from 'react-i18next';
+import ProductList from '../Product/ProductList';
 
 const ProductDetail = props => {
   const {t} = useTranslation();
@@ -44,6 +45,8 @@ const ProductDetail = props => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [sizeModalVisible, setSizeModalVisible] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+
+  const dispatch = useDispatch()
 
   const fetchProduct = async () => {
     try {
@@ -93,6 +96,15 @@ const ProductDetail = props => {
     }
   }, []);
 
+  //Lay anh trong asset
+  const imageAssets =
+    product?.assets?.filter(asset => {
+      const fileExtension = asset.split('.').pop().toLowerCase();
+      return ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(
+        fileExtension,
+      );
+    }) || [];
+
   return (
     <View style={[appst.container, pddt.container]}>
       <Header
@@ -106,7 +118,7 @@ const ProductDetail = props => {
       {!loading ? (
         <ScrollView style={{flex: 1, marginBottom: spacing.md}}>
           <View>
-            {product && product.assets && product.assets.length > 0 ? (
+            {imageAssets.length > 0 ? (
               <FlatList
                 horizontal
                 pagingEnabled
@@ -217,25 +229,11 @@ const ProductDetail = props => {
             )}
           </View>
 
-          <View>
-            <View style={[appst.center, {flexDirection: 'row'}]}>
-              <View style={pddt.border} />
-              <Text style={pddt.text2}>{t('products.similar_product')}</Text>
-              <View style={pddt.border} />
-            </View>
-            <View style={appst.center}>
-              <FlatList
-                data={productState.products}
-                renderItem={({item, index}) => (
-                  <ProductItem product={item} index={index} />
-                )}
-                keyExtractor={(item, index) => index.toString()}
-                numColumns={2}
-                showsVerticalScrollIndicator={false}
-                scrollEnabled={false}
-                style={{marginLeft: 20}}
-              />
-            </View>
+          <View style={{marginTop: 15}}>
+            <ProductList
+              listProduct={productState.products}
+              wishList={productState.wishList}
+            />
           </View>
         </ScrollView>
       ) : (
@@ -256,7 +254,9 @@ const ProductDetail = props => {
             <Text style={pddt.txtPress}>{t('buttons.btn_addtocart')}</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={[pddt.pressBuynow, appst.center]}>
+        <TouchableOpacity
+          onPress={() => onOpenSheet()}
+          style={[pddt.pressBuynow, appst.center]}>
           <Text style={pddt.txtPress}>{t('buttons.btn_buynow')}</Text>
         </TouchableOpacity>
       </View>
@@ -271,6 +271,8 @@ const ProductDetail = props => {
         enablePanDownToClose={true}>
         <BottomSheetView style={{flex: 1}}>
           <BottomSheetContent
+          dispatch={dispatch}
+            img={imageAssets}
             product={product}
             sizes={product.size}
             selectedSize={selectedSize}
