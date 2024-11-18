@@ -3,7 +3,6 @@ import {View, Text, ScrollView, FlatList, Image} from 'react-native';
 import {useSelector} from 'react-redux';
 import {odst} from './style';
 import appst from '../../constants/AppStyle';
-import ProductItem from '../../items/ProductItem';
 import OrderItem from '../../items/OrderItem/OrderItem';
 import {getOrderCompeleted} from '../../api/OrderApi';
 import OrderHistorySkeleton from '../../placeholders/product/order/OrderHistory';
@@ -49,7 +48,7 @@ const ToReceive = ({navigation}) => {
           {completedOrders.length !== 0 ? (
             <FlatList
               style={odst.flat1}
-              data={completedOrders}
+              data={completedOrders.slice().reverse()}
               renderItem={({item, index}) => (
                 <OrderItem item={item} receive={true} navigation={navigation} />
               )}

@@ -48,7 +48,7 @@ const ToReturn = ({navigation}) => {
           {returnOrder.length !== 0 ? (
             <FlatList
               style={odst.flat1}
-              data={returnOrder}
+              data={returnOrder.slice().reverse()}
               renderItem={({item}) => (
                 <OrderItem
                   item={item}

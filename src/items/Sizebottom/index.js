@@ -5,6 +5,7 @@ import appst from '../../constants/AppStyle';
 import {addItemToCartApi} from '../../api/CartApi';
 import {useNavigation} from '@react-navigation/native';
 import {setOrderData, setToltalPrice} from '../../redux/reducer/cartReducer';
+import {useTranslation} from 'react-i18next';
 
 const BottomSheetContent = ({
   dispatch,
@@ -20,6 +21,7 @@ const BottomSheetContent = ({
   const [sizeId, setsizeId] = useState('');
   const [sizeDetailId, setsizeDetailId] = useState('');
   const navigation = useNavigation();
+  const {t} = useTranslation();
 
   useEffect(() => {
     if (sizes && sizes.length > 0 && !selectedSize) {
@@ -169,12 +171,16 @@ const BottomSheetContent = ({
           <TouchableOpacity
             onPress={() => addToCart()}
             style={bottomSheetStyle.buyButton}>
-            <Text style={bottomSheetStyle.txtPress}>Add To Card</Text>
+            <Text style={bottomSheetStyle.txtPress}>
+              {t('buttons.btn_addtocart')}
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => buyNow()}
             style={bottomSheetStyle.buyButton}>
-            <Text style={bottomSheetStyle.txtPress}>Buy Now</Text>
+            <Text style={bottomSheetStyle.txtPress}>
+              {t('buttons.btn_buynow')}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>

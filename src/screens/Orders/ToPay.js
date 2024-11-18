@@ -3,7 +3,6 @@ import {useSelector} from 'react-redux';
 import {ScrollView, FlatList, View, Text, Image} from 'react-native';
 import {odst} from './style.js';
 import appst from '../../constants/AppStyle';
-import ProductItem from '../../items/ProductItem/index.js';
 import OrderItem from '../../items/OrderItem/OrderItem.js';
 import {getOrderPending} from '../../api/OrderApi.js';
 import OrderHistorySkeleton from '../../placeholders/product/order/OrderHistory.js';
@@ -25,7 +24,7 @@ const ToPay = ({navigation}) => {
     }
   }, []);
 
-  console.log(listProduct);
+  // console.log(listProduct);
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -53,7 +52,7 @@ const ToPay = ({navigation}) => {
           {pendingOrders.length !== 0 ? (
             <FlatList
               style={odst.flat1}
-              data={pendingOrders}
+              data={pendingOrders.slice().reverse()}
               renderItem={({item}) => (
                 <OrderItem navigation={navigation} item={item} />
               )}

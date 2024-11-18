@@ -3,13 +3,12 @@ import {useSelector} from 'react-redux';
 import {View, Text, FlatList, ScrollView, Image} from 'react-native';
 import {odst} from './style';
 import appst from '../../constants/AppStyle';
-import ProductItem from '../../items/ProductItem/index.js';
 import OrderItem from '../../items/OrderItem/OrderItem.js';
 import {getOrderProcess} from '../../api/OrderApi.js';
 import OrderHistorySkeleton from '../../placeholders/product/order/OrderHistory.js';
 import {useTranslation} from 'react-i18next';
 import ProductList from '../Product/ProductList.js';
-import { shuffleArray } from '../../utils/functions/formatData.js';
+import {shuffleArray} from '../../utils/functions/formatData.js';
 
 const ToShip = ({navigation}) => {
   const {t} = useTranslation();
@@ -42,7 +41,7 @@ const ToShip = ({navigation}) => {
     fetchOrder();
   }, []);
 
-  console.log('processOrders', processOrders);
+  // console.log('processOrders', processOrders);
 
   return (
     <View style={appst.container}>
@@ -51,7 +50,7 @@ const ToShip = ({navigation}) => {
           {processOrders.length !== 0 ? (
             <FlatList
               style={odst.flat1}
-              data={processOrders}
+              data={processOrders.slice().reverse()}
               renderItem={({item}) => (
                 <OrderItem item={item} navigation={navigation} ship={true} />
               )}
@@ -71,10 +70,7 @@ const ToShip = ({navigation}) => {
             </View>
           )}
 
-          <ProductList
-            listProduct={listProduct}
-            wishList={products.wishList}
-          />
+          <ProductList listProduct={listProduct} wishList={products.wishList} />
         </ScrollView>
       ) : (
         <OrderHistorySkeleton />

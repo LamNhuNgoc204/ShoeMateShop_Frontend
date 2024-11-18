@@ -3,7 +3,6 @@ import {useSelector} from 'react-redux';
 import {View, Text, ScrollView, FlatList, Image} from 'react-native';
 import {odst} from './style';
 import appst from '../../constants/AppStyle';
-import ProductItem from '../../items/ProductItem';
 import OrderItem from '../../items/OrderItem/OrderItem';
 import {getOrderCancell} from '../../api/OrderApi';
 import OrderHistorySkeleton from '../../placeholders/product/order/OrderHistory';
@@ -31,7 +30,7 @@ const Cancalled = ({navigation}) => {
       try {
         const response = await getOrderCancell();
         if (response.status) {
-          setCancelOrders(response.data);
+          setCancelOrders(response?.data);
           setLoading(true);
         }
       } catch (error) {
@@ -49,7 +48,7 @@ const Cancalled = ({navigation}) => {
           {cancelOrders.length !== 0 ? (
             <FlatList
               style={odst.flat1}
-              data={cancelOrders}
+              data={cancelOrders.slice().reverse()}
               renderItem={({item}) => (
                 <OrderItem item={item} cancel={true} navigation={navigation} />
               )}
