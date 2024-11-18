@@ -17,6 +17,7 @@ const BottomSheetContent = ({
   setQuantity,
   setSizeModalVisible,
   img,
+  closeBottomSheet,
 }) => {
   const [sizeId, setsizeId] = useState('');
   const [sizeDetailId, setsizeDetailId] = useState('');
@@ -64,6 +65,7 @@ const BottomSheetContent = ({
         setSizeModalVisible(false);
         ToastAndroid.show('Thêm vào giỏ hàng thành công', ToastAndroid.SHORT);
         setSizeModalVisible(false);
+        closeBottomSheet();
       } else {
         setSizeModalVisible(false);
         ToastAndroid.show(
@@ -71,6 +73,7 @@ const BottomSheetContent = ({
           ToastAndroid.SHORT,
         );
         setSizeModalVisible(false);
+        closeBottomSheet();
       }
     } catch (error) {
       ToastAndroid.show(
@@ -98,9 +101,10 @@ const BottomSheetContent = ({
       },
     ];
 
-    console.log('productOrder', productOrder);
+    // console.log('productOrder', productOrder);
     dispatch(setOrderData(productOrder));
     dispatch(setToltalPrice(product.price * quantity));
+    closeBottomSheet();
     navigation.navigate('CheckOutScreen');
   };
 

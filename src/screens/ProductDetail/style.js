@@ -11,7 +11,8 @@ const pddt = StyleSheet.create({
   },
   pdImg: {
     width: width,
-    height: 200,
+    height: 250,
+    resizeMode: 'cover',
   },
   controlItem: {
     width: 40,
@@ -47,6 +48,7 @@ const pddt = StyleSheet.create({
     color: colors.text_black1A,
     fontSize: sizes.size24,
     fontFamily: fonts.rlw_bold,
+    flex: 1,
   },
   price: {
     marginTop: spacing.xm,

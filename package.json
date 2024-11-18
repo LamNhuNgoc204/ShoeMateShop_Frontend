@@ -42,6 +42,7 @@
     "react-native-screens": "^3.32.0",
     "react-native-simple-dialogs": "^2.1.0",
     "react-native-skeleton-placeholder": "^5.2.4",
+    "react-native-snap-carousel": "^3.9.1",
     "react-native-svg": "^15.6.0",
     "react-native-sweet-alert": "^3.5.0",
     "react-native-tab-view": "^3.5.2",

@@ -46,7 +46,7 @@ const ProductDetail = props => {
   const [sizeModalVisible, setSizeModalVisible] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const fetchProduct = async () => {
     try {
@@ -128,7 +128,7 @@ const ProductDetail = props => {
                 renderItem={({item}) => (
                   <Image style={pddt.pdImg} source={{uri: item}} />
                 )}
-                keyExtractor={(item, index) => index.toString()}
+                keyExtractor={(item, index) => item._id || index.toString()}
               />
             ) : (
               <Image
@@ -160,8 +160,10 @@ const ProductDetail = props => {
           <View style={pddt.body}>
             <Text style={pddt.bestSl}>{t('products.best_seller')}</Text>
             <View style={[appst.rowCenter, pddt.body1]}>
-              <View>
-                <Text style={pddt.name}>{product.name}</Text>
+              <View style={{flex: 1}}>
+                <Text numberOfLines={1} style={pddt.name}>
+                  {product.name}
+                </Text>
                 <Text style={pddt.price}>
                   ${product.price && product.price.toLocaleString('vi-VN')}
                 </Text>
@@ -176,6 +178,7 @@ const ProductDetail = props => {
                 )}
               </View>
             </View>
+
             <View style={[appst.rowStart]}>
               <Image
                 source={require('../../assets/icons/star.png')}
@@ -189,6 +192,7 @@ const ProductDetail = props => {
                 {product && product.sold < 100 ? product.sold : '100+'})
               </Text>
             </View>
+
             <View style={pddt.viewDes}>
               <Text
                 numberOfLines={isDescriptionExpanded ? undefined : 3}
@@ -264,6 +268,7 @@ const ProductDetail = props => {
       {/* Modal for selecting size */}
       <BottomSheet
         ref={bottomSheetRef}
+        closeOnTouchOutside={true}
         onChange={handleSheetChanges}
         onClose={closeBottomSheet}
         snapPoints={[380]}
@@ -271,7 +276,7 @@ const ProductDetail = props => {
         enablePanDownToClose={true}>
         <BottomSheetView style={{flex: 1}}>
           <BottomSheetContent
-          dispatch={dispatch}
+            dispatch={dispatch}
             img={imageAssets}
             product={product}
             sizes={product.size}
@@ -280,6 +285,7 @@ const ProductDetail = props => {
             quantity={quantity}
             setQuantity={setQuantity}
             setSizeModalVisible={setSizeModalVisible}
+            closeBottomSheet={closeBottomSheet}
           />
         </BottomSheetView>
       </BottomSheet>
