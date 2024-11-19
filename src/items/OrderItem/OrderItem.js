@@ -145,7 +145,7 @@ const OrderItem = ({item, receive, ship, cancel, refunded, navigation}) => {
               </TouchableOpacity>
               {item.isReviewed ? (
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('')}
+                  onPress={() => navigation.navigate('ProductReviews')}
                   style={[odit.press, {paddingHorizontal: 5, marginLeft: 10}]}>
                   <Text style={odit.textTouch}>{t('review.see')}</Text>
                 </TouchableOpacity>

@@ -243,7 +243,8 @@
     "to_review": "Đã đánh giá",
     "rating": "Chưa đánh giá",
     "not_found": "Không tìm thấy đánh giá nào nữa.",
-    "response": "Phản hồi của người bán:"
+    "response": "Phản hồi của người bán:",
+    "review_order": "Đánh giá đơn hàng"
   },
   "notifications": {
     "title": "Thông báo",
