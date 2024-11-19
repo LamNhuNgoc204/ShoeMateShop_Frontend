@@ -48,7 +48,7 @@ const ToPay = ({navigation}) => {
     try {
       const response = await getOrderPending();
       if (response.status) {
-        setPendingOrders(response.data);
+        setPendingOrders(response?.data?.reverse());
         setLoading(true);
       }
     } catch (error) {
@@ -75,10 +75,10 @@ const ToPay = ({navigation}) => {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }>
-          {pendingOrders.length !== 0 ? (
+          {pendingOrders?.length !== 0 ? (
             <FlatList
               style={odst.flat1}
-              data={pendingOrders.slice().reverse()}
+              data={pendingOrders}
               renderItem={({item}) => (
                 <OrderItem navigation={navigation} item={item} />
               )}

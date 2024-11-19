@@ -48,7 +48,7 @@ const Cancalled = ({navigation}) => {
     try {
       const response = await getOrderCancell();
       if (response.status) {
-        setCancelOrders(response?.data);
+        setCancelOrders(response?.data?.reverse());
         setLoading(true);
       }
     } catch (error) {
@@ -78,7 +78,7 @@ const Cancalled = ({navigation}) => {
           {cancelOrders.length !== 0 ? (
             <FlatList
               style={odst.flat1}
-              data={cancelOrders.reverse()}
+              data={cancelOrders}
               renderItem={({item}) => (
                 <OrderItem item={item} cancel={true} navigation={navigation} />
               )}

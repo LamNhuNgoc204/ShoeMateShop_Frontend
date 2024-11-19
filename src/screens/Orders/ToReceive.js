@@ -48,7 +48,7 @@ const ToReceive = ({navigation}) => {
     try {
       const response = await getOrderCompeleted();
       if (response.status) {
-        setCompletedOrders(response.data);
+        setCompletedOrders(response?.data?.reverse());
         setLoading(true);
       }
     } catch (error) {
@@ -78,7 +78,7 @@ const ToReceive = ({navigation}) => {
           {completedOrders.length !== 0 ? (
             <FlatList
               style={odst.flat1}
-              data={completedOrders.slice().reverse()}
+              data={completedOrders}
               renderItem={({item, index}) => (
                 <OrderItem item={item} receive={true} navigation={navigation} />
               )}
