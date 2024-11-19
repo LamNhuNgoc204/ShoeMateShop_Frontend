@@ -66,7 +66,8 @@ const OrderDetail = ({route, navigation}) => {
     const response = await cancelOrder(item._id);
     if (response.status) {
       ToastAndroid.show(t('toast.cancel_order'), ToastAndroid.SHORT);
-      navigation.goBack();
+      // navigation.goBack();
+      navigation.navigate('OrderScreen', {initialRoute: t('orders.cancel')});
     }
     setModalVisible(false);
   };

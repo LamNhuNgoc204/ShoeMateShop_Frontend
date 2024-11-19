@@ -19,11 +19,12 @@ import odit from '../../items/OrderItem/style';
 import {useSelector} from 'react-redux';
 import {odst} from './style';
 import ProductItem from '../../items/ProductItem';
+import ProductList from '../Product/ProductList';
 
 const CancelDetail = ({navigation, route}) => {
   const {t} = useTranslation();
   const {item} = route.params;
-  const products = useSelector(state => state.products.products);
+  const products = useSelector(state => state.products);
 
   //   console.log('cancel item', item);
   //   console.log(
@@ -71,10 +72,6 @@ const CancelDetail = ({navigation, route}) => {
               </Text>
             </View>
           </View>
-
-          <View>
-            <FlatList />
-          </View>
         </View>
 
         <View style={st.view2}>
@@ -89,11 +86,7 @@ const CancelDetail = ({navigation, route}) => {
         <View style={st.view4}>
           <View style={st.viewSB}>
             <Text>{t('orders.code')}</Text>
-            <Text>
-              {item._id &&
-                item._id.slice(0, 10) &&
-                item._id.slice(0, 10).toUpperCase()}
-            </Text>
+            <Text>{item._id && item._id.toUpperCase()}</Text>
           </View>
 
           <View style={st.viewSB}>
@@ -139,23 +132,9 @@ const CancelDetail = ({navigation, route}) => {
         </View>
 
         <View style={st.view5}>
-          <View style={[appst.rowCenter, {marginHorizontal: 20}]}>
-            <View style={odst.border} />
-            <Text style={st.text5}>{t('products.similar_product')}</Text>
-            <View style={odst.border} />
-          </View>
-          <FlatList
-            style={odst.flat2}
-            data={products}
-            renderItem={({item, index}) => (
-              <ProductItem product={item} index={index} />
-            )}
-            keyExtractor={(item, index) =>
-              item._id ? item._id : index.toString()
-            }
-            numColumns={2}
-            scrollEnabled={false}
-            contentContainerStyle={{padding: 20}}
+          <ProductList
+            listProduct={products.products}
+            wishList={products.wishList}
           />
         </View>
       </ScrollView>

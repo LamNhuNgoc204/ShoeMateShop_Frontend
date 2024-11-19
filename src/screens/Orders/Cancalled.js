@@ -78,7 +78,7 @@ const Cancalled = ({navigation}) => {
           {cancelOrders.length !== 0 ? (
             <FlatList
               style={odst.flat1}
-              data={cancelOrders.slice().reverse()}
+              data={cancelOrders.reverse()}
               renderItem={({item}) => (
                 <OrderItem item={item} cancel={true} navigation={navigation} />
               )}

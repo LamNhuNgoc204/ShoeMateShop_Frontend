@@ -225,7 +225,8 @@
     "requested_by": "Yêu cầu vào ",
     "reason": "Lý do",
     "received": "Đã nhận được hàng",
-    "creating_order": "Đang tạo đơn hàng"
+    "creating_order": "Đang tạo đơn hàng",
+    "delivered":"Đơn hàng đã được giao thành công"
   },
   "rating": {
     "review": "Đánh giá của tôi",

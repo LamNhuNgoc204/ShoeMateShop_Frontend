@@ -7,11 +7,12 @@ import {
   ScrollView,
   Image,
   RefreshControl,
+  ToastAndroid,
 } from 'react-native';
 import {odst} from './style';
 import appst from '../../constants/AppStyle';
 import OrderItem from '../../items/OrderItem/OrderItem.js';
-import {getOrderProcess} from '../../api/OrderApi.js';
+import {getOrderProcess, updateOrderStatus} from '../../api/OrderApi.js';
 import OrderHistorySkeleton from '../../placeholders/product/order/OrderHistory.js';
 import {useTranslation} from 'react-i18next';
 import ProductList from '../Product/ProductList.js';
@@ -67,6 +68,20 @@ const ToShip = ({navigation}) => {
     fetchOrder().then(() => setRefreshing(false));
   }, []);
 
+  const cofirmOrder = async id => {
+    try {
+      const response = await updateOrderStatus(id, 'completed');
+      if (response.status) {
+        ToastAndroid.show('Đã xác nhận nhận hàng', ToastAndroid.SHORT);
+        navigation.navigate('OrderScreen', {
+          initialRoute: t('orders.completed'),
+        });
+      }
+    } catch (error) {
+      console.log('update status order error: ', error);
+    }
+  };
+
   return (
     <View style={appst.container}>
       {loading ? (
@@ -81,7 +96,12 @@ const ToShip = ({navigation}) => {
               style={odst.flat1}
               data={processOrders.slice().reverse()}
               renderItem={({item}) => (
-                <OrderItem item={item} navigation={navigation} ship={true} />
+                <OrderItem
+                  item={item}
+                  navigation={navigation}
+                  ship={true}
+                  updateOrderStatus={cofirmOrder}
+                />
               )}
               keyExtractor={(item, index) =>
                 item._id ? item._id : index.toString()
