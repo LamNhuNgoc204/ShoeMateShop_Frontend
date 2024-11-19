@@ -268,7 +268,8 @@
     "history": "Chưa có lịch sử",
     "sub_history": "Nhấn nút màu xanh bên dưới để tạo đơn hàng",
     "order": "Chưa có đơn hàng",
-    "adress_war": "Vui lòng thêm địa chỉ giao hàng!"
+    "adress_war": "Vui lòng thêm địa chỉ giao hàng!",
+    "cancel_order": "Bạn có chắc chắn muốn hủy đơn hàng này không?"
   },
   "toast": {
     "cancel_order": "Đơn hàng đã bị hủy"
@@ -286,5 +287,8 @@
     "rate": "Đánh giá",
     "min_price": "Tối thiểu",
     "max_price": "Tối đa"
+  },
+  "common": {
+    "warning": "Cảnh báo"
   }
 }
