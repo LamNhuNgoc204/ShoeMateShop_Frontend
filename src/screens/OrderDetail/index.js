@@ -5,6 +5,7 @@ import {
   FlatList,
   ScrollView,
   ToastAndroid,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import appst from '../../constants/AppStyle';
@@ -14,7 +15,7 @@ import {spacing} from '../../constants';
 import {CustomedButton} from '../../components';
 import {useTranslation} from 'react-i18next';
 import OrderDetailSkeleton from '../../placeholders/product/order/OrderDetail';
-import {getOrderDetail} from '../../api/OrderApi';
+import {cancelOrder, getOrderDetail} from '../../api/OrderApi';
 import OrderItemDetail from '../../items/OrderItem/OrderItemDetail';
 import {formatDate} from '../../utils/functions/formatData';
 import {handleOrderDetail} from '../../utils/functions/order';
@@ -26,7 +27,7 @@ const OrderDetail = ({route, navigation}) => {
   const [orderDetail, setOrderDetail] = useState({});
   const [titleButton, setTitleButton] = useState('');
 
-  console.log('orderDetail => ', orderDetail);
+  // console.log('orderDetail => ', item);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,12 +58,12 @@ const OrderDetail = ({route, navigation}) => {
     );
   };
 
-  const Item2 = ({contetn1, content2}) => {
+  const Item2 = ({contetn1, content2, onPress}) => {
     return (
-      <View style={appst.rowCenter}>
+      <TouchableOpacity onPress={onPress} View style={appst.rowCenter}>
         <Text style={oddt.text12}>{contetn1}</Text>
         <Text style={oddt.text11}>{content2}</Text>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -228,7 +229,13 @@ const OrderDetail = ({route, navigation}) => {
                   : oddt.titleStyle
               }
               onPress={() =>
-                handleOrderDetail(orderDetail, ToastAndroid, index)
+                handleOrderDetail(
+                  navigation,
+                  t,
+                  orderDetail,
+                  ToastAndroid,
+                  item._id,
+                )
               }
             />
           </View>

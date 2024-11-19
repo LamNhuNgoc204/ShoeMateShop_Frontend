@@ -1,5 +1,12 @@
-import {View, Text, FlatList, Image, ScrollView} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  ScrollView,
+  RefreshControl,
+} from 'react-native';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import appst from '../../constants/AppStyle';
 import {getOrderReturn} from '../../api/OrderApi';
 import OrderHistorySkeleton from '../../placeholders/product/order/OrderHistory';
@@ -9,7 +16,7 @@ import OrderItem from '../../items/OrderItem/OrderItem';
 import {useTranslation} from 'react-i18next';
 import ProductItem from '../../items/ProductItem';
 import ProductList from '../Product/ProductList';
-import { shuffleArray } from '../../utils/functions/formatData';
+import {shuffleArray} from '../../utils/functions/formatData';
 
 const ToReturn = ({navigation}) => {
   const {t} = useTranslation();
@@ -17,6 +24,18 @@ const ToReturn = ({navigation}) => {
   const [returnOrder, setReturnOrder] = useState([]);
   const [loading, setLoading] = useState(false);
   const [listProduct, setListProduct] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const scrollViewRef = useRef(null);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('tabPress', () => {
+      if (scrollViewRef.current) {
+        scrollViewRef.current.scrollTo({y: 0, animated: true});
+      }
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     if (products.products && products.products.length) {
@@ -24,27 +43,38 @@ const ToReturn = ({navigation}) => {
     }
   }, []);
 
-  useEffect(() => {
-    const fetchOrder = async () => {
-      setLoading(false);
-      try {
-        const response = await getOrderReturn();
-        if (response.status) {
-          setReturnOrder(response.data);
-          setLoading(true);
-        }
-      } catch (error) {
+  const fetchOrder = async () => {
+    setLoading(false);
+    try {
+      const response = await getOrderReturn();
+      if (response.status) {
+        setReturnOrder(response.data);
         setLoading(true);
-        console.log('Get order error: ', error);
       }
-    };
+    } catch (error) {
+      setLoading(true);
+      console.log('Get order error: ', error);
+    }
+  };
+
+  useEffect(() => {
     fetchOrder();
+  }, []);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    fetchOrder().then(() => setRefreshing(false));
   }, []);
 
   return (
     <View style={appst.container}>
       {loading ? (
-        <ScrollView style={appst.container}>
+        <ScrollView
+          ref={scrollViewRef}
+          style={appst.container}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }>
           {returnOrder.length !== 0 ? (
             <FlatList
               style={odst.flat1}
@@ -73,10 +103,7 @@ const ToReturn = ({navigation}) => {
             </View>
           )}
 
-          <ProductList
-            listProduct={listProduct}
-            wishList={products.wishList}
-          />
+          <ProductList listProduct={listProduct} wishList={products.wishList} />
         </ScrollView>
       ) : (
         <OrderHistorySkeleton />

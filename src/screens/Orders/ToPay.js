@@ -1,6 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useSelector} from 'react-redux';
-import {ScrollView, FlatList, View, Text, Image} from 'react-native';
+import {
+  ScrollView,
+  FlatList,
+  View,
+  Text,
+  Image,
+  RefreshControl,
+} from 'react-native';
 import {odst} from './style.js';
 import appst from '../../constants/AppStyle';
 import OrderItem from '../../items/OrderItem/OrderItem.js';
@@ -17,6 +24,18 @@ const ToPay = ({navigation}) => {
   const [pendingOrders, setPendingOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [listProduct, setListProduct] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const scrollViewRef = useRef(null);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('tabPress', () => {
+      if (scrollViewRef.current) {
+        scrollViewRef.current.scrollTo({y: 0, animated: true});
+      }
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     if (products.products && products.products.length) {
@@ -24,31 +43,38 @@ const ToPay = ({navigation}) => {
     }
   }, []);
 
-  // console.log(listProduct);
-
-  useEffect(() => {
-    const fetchOrder = async () => {
-      setLoading(false);
-      try {
-        const response = await getOrderPending();
-        if (response.status) {
-          setPendingOrders(response.data);
-          setLoading(true);
-        }
-      } catch (error) {
-        console.log('Get order error: ', error);
+  const fetchOrder = async () => {
+    setLoading(false);
+    try {
+      const response = await getOrderPending();
+      if (response.status) {
+        setPendingOrders(response.data);
         setLoading(true);
       }
-    };
+    } catch (error) {
+      console.log('Get order error: ', error);
+      setLoading(true);
+    }
+  };
+
+  useEffect(() => {
     fetchOrder();
   }, []);
 
-  // console.log('initialParams={{ orders }} ', pendingOrders);
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    fetchOrder().then(() => setRefreshing(false));
+  }, []);
 
   return (
     <View style={appst.container}>
       {loading ? (
-        <ScrollView style={appst.container}>
+        <ScrollView
+          ref={scrollViewRef}
+          style={appst.container}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }>
           {pendingOrders.length !== 0 ? (
             <FlatList
               style={odst.flat1}

@@ -14,7 +14,7 @@ const CheckoutSuccess = ({navigation}) => {
       <Header
         name={'Dat hang thanh cong'}
         iconLeft={require('../../assets/icons/back.png')}
-        leftOnPress={() => {}}
+        leftOnPress={() => navigation.replace('BottomNav')}
         iconRight={require('../../assets/icons/bag_icon.png')}
         rightOnPress={() => {}}
       />

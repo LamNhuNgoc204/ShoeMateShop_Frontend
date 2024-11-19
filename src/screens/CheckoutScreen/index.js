@@ -98,16 +98,15 @@ const CheckOutScreen = ({navigation}) => {
         dispatch(setOrderId(response.data.order._id));
         setisComplete(true);
         // navigation.navigate('ZaloPayScreen');
+      } else if (
+        state.payment &&
+        state.payment.payment_method === 'Thanh toán khi nhận hàng'
+      ) {
+        // setModalVisible(true);
+        ToastAndroid.show('tao don thanh cong', ToastAndroid.show);
+        setisComplete(true);
+        navigation.navigate('CheckoutSuccess');
       }
-      // else if (
-      //   state.payment &&
-      //   state.payment.payment_method === 'Thanh toán khi nhận hàng'
-      // ) {
-      //   // setModalVisible(true);
-      //   ToastAndroid.show('tao don thanh cong', ToastAndroid.show);
-      //   setisComplete(true);
-      //   navigation.navigate('CheckoutSuccess');
-      // }
     }
 
     //check xem chon phuong thuc nao roi chuyen man hinh tuong ung
@@ -115,17 +114,18 @@ const CheckOutScreen = ({navigation}) => {
 
   const onLoadingComplete = () => {
     setIsLoading(false); // Hide the loading modal
-    if (state.payment && state.payment.payment_method === 'Zalo Pay') {
-      // dispatch(setPriceToPay(tongchiphi));
-      // dispatch(setOrderId(response.data.order._id));
-      navigation.navigate('ZaloPayScreen');
-    } else if (
-      state.payment &&
-      state.payment.payment_method === 'Thanh toán khi nhận hàng'
-    ) {
-      ToastAndroid.show('tao don thanh cong', ToastAndroid.show);
-      navigation.navigate('CheckoutSuccess');
-    }
+    // if (state.payment && state.payment.payment_method === 'Zalo Pay') {
+    //   // dispatch(setPriceToPay(tongchiphi));
+    //   // dispatch(setOrderId(response.data.order._id));
+    //   navigation.navigate('ZaloPayScreen');
+    // }
+    //  else if (
+    //   state.payment &&
+    //   state.payment.payment_method === 'Thanh toán khi nhận hàng'
+    // ) {
+    //   ToastAndroid.show('tao don thanh cong', ToastAndroid.show);
+    //   navigation.navigate('CheckoutSuccess');
+    // }
   };
 
   return (

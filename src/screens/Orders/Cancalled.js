@@ -1,6 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useSelector} from 'react-redux';
-import {View, Text, ScrollView, FlatList, Image} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  FlatList,
+  Image,
+  RefreshControl,
+} from 'react-native';
 import {odst} from './style';
 import appst from '../../constants/AppStyle';
 import OrderItem from '../../items/OrderItem/OrderItem';
@@ -17,6 +24,18 @@ const Cancalled = ({navigation}) => {
   const [cancelOrders, setCancelOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [listProduct, setListProduct] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const scrollViewRef = useRef(null);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('tabPress', () => {
+      if (scrollViewRef.current) {
+        scrollViewRef.current.scrollTo({y: 0, animated: true});
+      }
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     if (products.products && products.products.length) {
@@ -24,27 +43,38 @@ const Cancalled = ({navigation}) => {
     }
   }, []);
 
-  useEffect(() => {
-    const fetchOrder = async () => {
-      setLoading(false);
-      try {
-        const response = await getOrderCancell();
-        if (response.status) {
-          setCancelOrders(response?.data);
-          setLoading(true);
-        }
-      } catch (error) {
+  const fetchOrder = async () => {
+    setLoading(false);
+    try {
+      const response = await getOrderCancell();
+      if (response.status) {
+        setCancelOrders(response?.data);
         setLoading(true);
-        console.log('Get order error: ', error);
       }
-    };
+    } catch (error) {
+      setLoading(true);
+      console.log('Get order error: ', error);
+    }
+  };
+
+  useEffect(() => {
     fetchOrder();
+  }, []);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    fetchOrder().then(() => setRefreshing(false));
   }, []);
 
   return (
     <View style={appst.container}>
       {loading ? (
-        <ScrollView style={appst.container}>
+        <ScrollView
+          ref={scrollViewRef}
+          style={appst.container}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }>
           {cancelOrders.length !== 0 ? (
             <FlatList
               style={odst.flat1}

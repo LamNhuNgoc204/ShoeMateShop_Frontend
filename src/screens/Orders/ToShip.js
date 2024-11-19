@@ -1,6 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useSelector} from 'react-redux';
-import {View, Text, FlatList, ScrollView, Image} from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  ScrollView,
+  Image,
+  RefreshControl,
+} from 'react-native';
 import {odst} from './style';
 import appst from '../../constants/AppStyle';
 import OrderItem from '../../items/OrderItem/OrderItem.js';
@@ -17,6 +24,18 @@ const ToShip = ({navigation}) => {
   const [processOrders, setProcessOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [listProduct, setListProduct] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const scrollViewRef = useRef(null);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('tabPress', () => {
+      if (scrollViewRef.current) {
+        scrollViewRef.current.scrollTo({y: 0, animated: true});
+      }
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     if (products.products && products.products.length) {
@@ -24,29 +43,39 @@ const ToShip = ({navigation}) => {
     }
   }, []);
 
-  useEffect(() => {
-    const fetchOrder = async () => {
-      setLoading(false);
-      try {
-        const response = await getOrderProcess();
-        if (response.status) {
-          setProcessOrders(response.data);
-          setLoading(true);
-        }
-      } catch (error) {
-        console.log('Get order error: ', error);
+  const fetchOrder = async () => {
+    setLoading(false);
+    try {
+      const response = await getOrderProcess();
+      if (response.status) {
+        setProcessOrders(response.data);
         setLoading(true);
       }
-    };
+    } catch (error) {
+      console.log('Get order error: ', error);
+      setLoading(true);
+    }
+  };
+
+  useEffect(() => {
     fetchOrder();
   }, []);
 
   // console.log('processOrders', processOrders);
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    fetchOrder().then(() => setRefreshing(false));
+  }, []);
 
   return (
     <View style={appst.container}>
       {loading ? (
-        <ScrollView style={appst.container}>
+        <ScrollView
+          ref={scrollViewRef}
+          style={appst.container}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }>
           {processOrders.length !== 0 ? (
             <FlatList
               style={odst.flat1}
