@@ -5,6 +5,9 @@ import {
   FlatList,
   ScrollView,
   ToastAndroid,
+  TouchableOpacity,
+  Modal,
+  Button,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import appst from '../../constants/AppStyle';
@@ -14,7 +17,7 @@ import {spacing} from '../../constants';
 import {CustomedButton} from '../../components';
 import {useTranslation} from 'react-i18next';
 import OrderDetailSkeleton from '../../placeholders/product/order/OrderDetail';
-import {getOrderDetail} from '../../api/OrderApi';
+import {cancelOrder, getOrderDetail} from '../../api/OrderApi';
 import OrderItemDetail from '../../items/OrderItem/OrderItemDetail';
 import {formatDate} from '../../utils/functions/formatData';
 import {handleOrderDetail} from '../../utils/functions/order';
@@ -25,9 +28,8 @@ const OrderDetail = ({route, navigation}) => {
   const [loading, setLoading] = useState(false);
   const [orderDetail, setOrderDetail] = useState({});
   const [titleButton, setTitleButton] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
 
-  console.log('orderDetail => ', orderDetail);
-  console.log(item._id);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,6 +51,32 @@ const OrderDetail = ({route, navigation}) => {
     fetchData();
   }, []);
 
+  // const handleOrderDetail = async () => {
+  //   if (orderDetail.orderStatus === 'pending') {
+  //     const response = await cancelOrder(item._id);
+  //     if (response.status) {
+  //       ToastAndroid.show(t('toast.cancel_order'), ToastAndroid.SHORT);
+  //       navigation.goBack();
+  //     }
+  //   }
+  // };
+
+  const confirmCancelOrder = async () => {
+    const response = await cancelOrder(item._id);
+    if (response.status) {
+      ToastAndroid.show(t('toast.cancel_order'), ToastAndroid.SHORT);
+      // navigation.goBack();
+      navigation.navigate('OrderScreen', {initialRoute: t('orders.cancel')});
+    }
+    setModalVisible(false);
+  };
+
+  const handleOrderDetail = () => {
+    if (orderDetail.orderStatus === 'pending') {
+      setModalVisible(true);
+    }
+  };
+
   const Item = ({content1, content2}) => {
     return (
       <View style={appst.rowCenter}>
@@ -58,12 +86,12 @@ const OrderDetail = ({route, navigation}) => {
     );
   };
 
-  const Item2 = ({contetn1, content2}) => {
+  const Item2 = ({contetn1, content2, onPress}) => {
     return (
-      <View style={appst.rowCenter}>
+      <TouchableOpacity onPress={onPress} View style={appst.rowCenter}>
         <Text style={oddt.text12}>{contetn1}</Text>
         <Text style={oddt.text11}>{content2}</Text>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -228,17 +256,65 @@ const OrderDetail = ({route, navigation}) => {
                   ? oddt.titleDisable
                   : oddt.titleStyle
               }
-              onPress={() =>
-                handleOrderDetail(orderDetail, ToastAndroid, index)
-              }
+              onPress={() => handleOrderDetail()}
             />
           </View>
         ) : (
           <OrderDetailSkeleton />
         )}
       </View>
+
+      {/* Confirmation Modal */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}>
+        <View style={styles.overlay}>
+          <View style={styles.modalView}>
+            <Text style={oddt.modalText1}>{t('home.noti')}</Text>
+            <Text style={oddt.modalText}>{t('nothing.cancel_order')}</Text>
+            <Image
+              source={require('../../assets/icons/warning.jpeg')}
+              style={{width: 100, height: 100}}
+            />
+            <View style={[oddt.modalButtonContainer]}>
+              <TouchableOpacity
+                style={oddt.modalbuttons}
+                onPress={confirmCancelOrder}>
+                <Text style={{color: 'white', fontWeight: 'bold'}}>
+                  {t('buttons.btn_ok')}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={oddt.modalbuttons}
+                onPress={() => setModalVisible(false)}>
+                <Text style={{color: 'white', fontWeight: 'bold'}}>
+                  {t('buttons.close')}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
 
+const styles = {
+  overlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // semi-transparent background
+  },
+  modalView: {
+    width: '80%',
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignItems: 'center',
+    elevation: 5,
+  },
+};
 export default OrderDetail;

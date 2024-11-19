@@ -1,5 +1,5 @@
 import {View} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import Header from '../../components/Header';
 import appst from '../../constants/AppStyle';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
@@ -13,9 +13,19 @@ import {fonts} from '../../constants/fonts';
 import {useTranslation} from 'react-i18next';
 import ToReturn from './ToReturn';
 
-const OrderScreen = ({navigation}) => {
+const OrderScreen = ({navigation, route}) => {
   const {t} = useTranslation();
   const TopTab = createMaterialTopTabNavigator();
+
+  const initialRoute = route?.params?.initialRoute || t('orders.pay');
+
+  useEffect(() => {
+    if (route.params?.initialRoute) {
+      navigation.navigate(route.params.initialRoute);
+    }
+  }, [route.params?.initialRoute]);
+
+  console.log('initialRoute', initialRoute);
 
   return (
     <View style={[appst.container]}>
@@ -27,7 +37,9 @@ const OrderScreen = ({navigation}) => {
         rightOnPress={() => navigation.navigate('')}
       />
       <TopTab.Navigator
+        // initialRouteName={initialRoute}
         screenOptions={{
+          lazy: true,
           tabBarStyle: {
             backgroundColor: colors.background_secondary,
             paddingVertical: 0,

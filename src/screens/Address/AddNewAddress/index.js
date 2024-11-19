@@ -77,7 +77,7 @@ const AddNewAddress = () => {
         recieverName: fullName,
         isDefault: true,
       };
-      console.log('body', body);
+      // console.log('body', body);
 
       const response = await AxiosInstance().post(
         '/addresses/add-address',

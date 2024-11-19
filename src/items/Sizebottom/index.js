@@ -3,8 +3,12 @@ import React, {useEffect, useState} from 'react';
 import {bottomSheetStyle} from './style';
 import appst from '../../constants/AppStyle';
 import {addItemToCartApi} from '../../api/CartApi';
+import {useNavigation} from '@react-navigation/native';
+import {setOrderData, setToltalPrice} from '../../redux/reducer/cartReducer';
+import {useTranslation} from 'react-i18next';
 
 const BottomSheetContent = ({
+  dispatch,
   product,
   sizes,
   selectedSize,
@@ -12,9 +16,13 @@ const BottomSheetContent = ({
   quantity,
   setQuantity,
   setSizeModalVisible,
+  img,
+  closeBottomSheet,
 }) => {
   const [sizeId, setsizeId] = useState('');
   const [sizeDetailId, setsizeDetailId] = useState('');
+  const navigation = useNavigation();
+  const {t} = useTranslation();
 
   useEffect(() => {
     if (sizes && sizes.length > 0 && !selectedSize) {
@@ -57,6 +65,7 @@ const BottomSheetContent = ({
         setSizeModalVisible(false);
         ToastAndroid.show('Thêm vào giỏ hàng thành công', ToastAndroid.SHORT);
         setSizeModalVisible(false);
+        closeBottomSheet();
       } else {
         setSizeModalVisible(false);
         ToastAndroid.show(
@@ -64,6 +73,7 @@ const BottomSheetContent = ({
           ToastAndroid.SHORT,
         );
         setSizeModalVisible(false);
+        closeBottomSheet();
       }
     } catch (error) {
       ToastAndroid.show(
@@ -74,17 +84,45 @@ const BottomSheetContent = ({
     }
   };
 
+  // console.log('product', product?.size);
+
+  const buyNow = () => {
+    const productOrder = [
+      {
+        message: 'Buy Now',
+        product_id: {
+          _id: product._id,
+          assets: img,
+          name: product.name,
+          price: product.price,
+        },
+        quantity: quantity,
+        size_id: {_id: sizeDetailId, name: selectedSize},
+      },
+    ];
+
+    // console.log('productOrder', productOrder);
+    dispatch(setOrderData(productOrder));
+    dispatch(setToltalPrice(product.price * quantity));
+    closeBottomSheet();
+    navigation.navigate('CheckOutScreen');
+  };
+
   return (
     <View style={bottomSheetStyle.container}>
       <View style={bottomSheetStyle.topContainer}>
         <Image
           style={bottomSheetStyle.image}
-          source={{
-            uri: 'https://product.hstatic.net/1000219207/product/nike-air-force-1-low-like-auth-sieu-cap-rep-1-1_d07f962c30fa4adf928c53a81a56b58d_master.jpg',
-          }}
+          source={
+            img.length > 0
+              ? {uri: img[0]}
+              : require('../../assets/images/placeholder_image.jpg')
+          }
         />
         <View style={bottomSheetStyle.colContainer}>
-          <Text style={bottomSheetStyle.priceText}>${product.price}</Text>
+          <Text style={bottomSheetStyle.priceText}>
+            ${product.price && product.price.toLocaleString('vi-VN')}
+          </Text>
           <View style={bottomSheetStyle.handleCountContainer}>
             <TouchableOpacity
               onPress={() => decreaseQuantity()}
@@ -137,10 +175,16 @@ const BottomSheetContent = ({
           <TouchableOpacity
             onPress={() => addToCart()}
             style={bottomSheetStyle.buyButton}>
-            <Text style={bottomSheetStyle.txtPress}>Add To Card</Text>
+            <Text style={bottomSheetStyle.txtPress}>
+              {t('buttons.btn_addtocart')}
+            </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={bottomSheetStyle.buyButton}>
-            <Text style={bottomSheetStyle.txtPress}>Buy Now</Text>
+          <TouchableOpacity
+            onPress={() => buyNow()}
+            style={bottomSheetStyle.buyButton}>
+            <Text style={bottomSheetStyle.txtPress}>
+              {t('buttons.btn_buynow')}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>

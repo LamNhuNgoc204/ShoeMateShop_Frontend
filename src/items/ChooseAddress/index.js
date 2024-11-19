@@ -2,15 +2,24 @@ import {View, Text, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
 import {c_adrIt} from './style';
 import appst from '../../constants/AppStyle';
+import {useTranslation} from 'react-i18next';
 
-const ChooseAddressItem = ({item, deleteAddress}) => {
+const ChooseAddressItem = ({
+  item,
+  deleteAddress,
+  isChoose,
+  addressDefault,
+  setAddressDefault,
+}) => {
+  const {t} = useTranslation();
   // console.log('address id', item._id);
 
   return (
     <TouchableOpacity
+      onPress={() => setAddressDefault(item)}
       onLongPress={() => deleteAddress(item._id)}
       style={[c_adrIt.container, appst.rowCenter]}>
-      {item.isDefault ? (
+      {isChoose && addressDefault == item._id ? (
         <TouchableOpacity style={c_adrIt.icon}>
           <Image
             style={appst.icon30}
@@ -32,7 +41,7 @@ const ChooseAddressItem = ({item, deleteAddress}) => {
         </Text>
         {item.isDefault && (
           <View style={c_adrIt.viewDefault}>
-            <Text style={c_adrIt.textDefault}>Default</Text>
+            <Text style={c_adrIt.textDefault}>{t('address.default')}</Text>
           </View>
         )}
       </View>

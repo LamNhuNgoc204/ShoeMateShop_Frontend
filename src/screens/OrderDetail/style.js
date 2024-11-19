@@ -144,4 +144,30 @@ export const oddt = StyleSheet.create({
     color: '#000',
     fontSize: sizes.size18,
   },
+  modalButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginHorizontal: 20,
+    marginTop: 10,
+  },
+  modalbuttons: {
+    width: '40%',
+    borderRadius: 10,
+    paddingHorizontal: 20,
+    backgroundColor: colors.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 10,
+  },
+  modalText1: {
+    fontSize: 25,
+    color: 'orange',
+    fontWeight: '700',
+  },
+  modalText: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginVertical: 10,
+  },
 });

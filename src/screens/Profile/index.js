@@ -2,7 +2,7 @@ import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-import {Image, Text, View, FlatList} from 'react-native';
+import {Image, Text, View, FlatList, ScrollView} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import styles from './style';
 import ChildItem from './ChildItems';
@@ -10,11 +10,13 @@ import ChildItemGadget from './Mygadget';
 import {PROFILE} from '../../api/mockData';
 import appst from '../../constants/AppStyle';
 import {handleNavigate} from '../../utils/functions/navigationHelper';
+import ProductList from '../Product/ProductList';
 
 const ProfileScreen = () => {
   const {t} = useTranslation();
   const navigation = useNavigation();
   const {user, avatar} = useSelector(state => state.user);
+  const productState = useSelector(state => state.products);
 
   const renderItem = ({item}) => (
     <ChildItem
@@ -25,7 +27,7 @@ const ProfileScreen = () => {
   );
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.profile}>
         <View style={appst.rowStart}>
           <Image
@@ -82,8 +84,16 @@ const ProfileScreen = () => {
         data={PROFILE}
         renderItem={renderItem}
         keyExtractor={item => item.id}
+        scrollEnabled={false}
       />
-    </View>
+
+      <View style={{marginTop: 10}}>
+        <ProductList
+          listProduct={productState.products}
+          wishList={productState.wishList}
+        />
+      </View>
+    </ScrollView>
   );
 };
 

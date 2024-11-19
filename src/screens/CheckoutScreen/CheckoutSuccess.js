@@ -1,26 +1,20 @@
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  FlatList,
-  ScrollView,
-} from 'react-native';
+import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
 import React from 'react';
 import Header from '../../components/Header';
 import appst from '../../constants/AppStyle';
 import {useSelector} from 'react-redux';
-import ProductItem from '../../items/ProductItem';
+import ProductList from '../Product/ProductList';
 
 const CheckoutSuccess = ({navigation}) => {
-  const productState = useSelector(state => state.products.products);
-  console.log('productState', productState);
+  const productState = useSelector(state => state.products);
+  // console.log('productState', productState);
 
   return (
     <View>
       <Header
+        name={'Dat hang thanh cong'}
         iconLeft={require('../../assets/icons/back.png')}
-        leftOnPress={() => {}}
+        leftOnPress={() => navigation.replace('BottomNav')}
         iconRight={require('../../assets/icons/bag_icon.png')}
         rightOnPress={() => {}}
       />
@@ -36,7 +30,7 @@ const CheckoutSuccess = ({navigation}) => {
           ]}>
           <Text style={{alignItems: 'center'}}>
             <Image
-              style={appst.icon40}
+              style={appst.icon50}
               source={require('../../assets/icons/checkout_success.png')}
             />
             <Text style={{fontSize: 24, color: 'white'}}>
@@ -80,17 +74,10 @@ const CheckoutSuccess = ({navigation}) => {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{alignItems: 'center', marginTop: 20, marginLeft: 20}}>
-          <Text style={{color: 'black', paddingBottom: 20, fontSize: 20}}>
-            San pham danh cho ban
-          </Text>
-          <FlatList
-            data={productState}
-            renderItem={({item}) => <ProductItem product={item} />}
-            keyExtractor={(item, index) => index.toString()}
-            numColumns={2}
-            showsVerticalScrollIndicator={false}
-            scrollEnabled={true}
+        <View style={{marginTop: 20, marginBottom: 20}}>
+          <ProductList
+            listProduct={productState.products}
+            wishList={productState.wishList}
           />
         </View>
       </ScrollView>

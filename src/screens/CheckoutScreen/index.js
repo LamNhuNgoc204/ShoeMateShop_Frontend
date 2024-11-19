@@ -25,25 +25,21 @@ import {
   getPaymentDefault,
   getShipDefault,
 } from '../../redux/thunks/CartThunks';
+import LoadingModal from '../../components/Modal/LoadingModal';
 
 const CheckOutScreen = ({navigation}) => {
   const state = useSelector(state => state.cart);
   const dispatch = useDispatch();
-  // console.log(
-  //   'address - ',
-  //   state.address,
-  //   ' ship - ',
-  //   state.ship,
-  //   ' payment - ',
-  //   state.payment,
-  // );
 
+  const [isLoading, setIsLoading] = useState(false);
   const {t} = useTranslation();
   const [isswitch, setIsswitch] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [addressDefault] = useState(state.address);
+  const addressDefault = state.address;
+  const [isComplete, setisComplete] = useState(false);
 
   // console.log('addressDefault', addressDefault);
+  // console.log('state.ship', state.ship);
 
   const ship = state.ship && state.ship.cost && state.ship.cost;
   const tongchiphi = state.totalPrice + ship;
@@ -64,6 +60,9 @@ const CheckOutScreen = ({navigation}) => {
       ToastAndroid.show(`${t('nothing.adress_war')}`, ToastAndroid.SHORT);
       return;
     }
+
+    setIsLoading(true);
+    setisComplete(false);
 
     const products = state.productOrder.map(item => ({
       _id: item.product_id._id,
@@ -89,17 +88,23 @@ const CheckOutScreen = ({navigation}) => {
     // console.log('body orrder: ', body);
 
     const response = await createOrder(body);
+    setIsLoading(false);
+    setisComplete(false);
     if (response.status) {
+      setIsLoading(true);
+      setisComplete(true);
       if (state.payment && state.payment.payment_method === 'Zalo Pay') {
         dispatch(setPriceToPay(tongchiphi));
         dispatch(setOrderId(response.data.order._id));
-        navigation.navigate('ZaloPayScreen');
+        setisComplete(true);
+        // navigation.navigate('ZaloPayScreen');
       } else if (
         state.payment &&
         state.payment.payment_method === 'Thanh toán khi nhận hàng'
       ) {
         // setModalVisible(true);
         ToastAndroid.show('tao don thanh cong', ToastAndroid.show);
+        setisComplete(true);
         navigation.navigate('CheckoutSuccess');
       }
     }
@@ -107,16 +112,20 @@ const CheckOutScreen = ({navigation}) => {
     //check xem chon phuong thuc nao roi chuyen man hinh tuong ung
   };
 
-  const closeModal = () => {
-    setModalVisible(false);
-  };
-
-  const handleToggle = value => {
-    setIsswitch(value);
-  };
-
-  const goToScreen = Screen => {
-    navigation.navigate(Screen);
+  const onLoadingComplete = () => {
+    setIsLoading(false); // Hide the loading modal
+    // if (state.payment && state.payment.payment_method === 'Zalo Pay') {
+    //   // dispatch(setPriceToPay(tongchiphi));
+    //   // dispatch(setOrderId(response.data.order._id));
+    //   navigation.navigate('ZaloPayScreen');
+    // }
+    //  else if (
+    //   state.payment &&
+    //   state.payment.payment_method === 'Thanh toán khi nhận hàng'
+    // ) {
+    //   ToastAndroid.show('tao don thanh cong', ToastAndroid.show);
+    //   navigation.navigate('CheckoutSuccess');
+    // }
   };
 
   return (
@@ -145,7 +154,12 @@ const CheckOutScreen = ({navigation}) => {
               style={[appst.rowCenter, c_outst.body1, c_outst.borderBottom]}>
               <TouchableOpacity
                 style={c_outst.view1}
-                onPress={() => goToScreen('ChooseAddress')}>
+                onPress={() =>
+                  navigation.navigate('ChooseAddress', {
+                    isChoose: true,
+                    addressDefault: addressDefault._id,
+                  })
+                }>
                 <Image
                   style={appst.icon24}
                   source={require('../../assets/icons/address.png')}
@@ -161,7 +175,8 @@ const CheckOutScreen = ({navigation}) => {
                   </Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => goToScreen('ChooseAddress')}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('ChooseAddress')}>
                 <Image
                   style={appst.icon24}
                   source={require('../../assets/icons/arrow_right.png')}
@@ -207,12 +222,15 @@ const CheckOutScreen = ({navigation}) => {
               />
               <Text style={c_outst.text6}>Redeem 3500 Points</Text>
             </View>
-            <Switch onValueChange={handleToggle} value={isswitch} />
+            <Switch
+              onValueChange={value => setIsswitch(value)}
+              value={isswitch}
+            />
           </View>
 
           <View style={[c_outst.body3, c_outst.borderBottom]}>
             <TouchableOpacity
-              onPress={() => goToScreen('ChoosePaymentScreen')}
+              onPress={() => navigation.navigate('ChoosePaymentScreen')}
               style={[appst.rowCenter]}>
               <View style={appst.rowCenter}>
                 <Image
@@ -231,7 +249,12 @@ const CheckOutScreen = ({navigation}) => {
               />
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => goToScreen('ShipScreen')}
+              onPress={() =>
+                navigation.navigate('ShipScreen', {
+                  shipId: state?.ship?._id,
+                  isDefault: true,
+                })
+              }
               style={[appst.rowCenter, {marginTop: 5}]}>
               <View style={appst.rowCenter}>
                 <Image
@@ -322,11 +345,18 @@ const CheckOutScreen = ({navigation}) => {
 
       <CustomModal
         visible={modalVisible}
-        closeModal={closeModal}
+        closeModal={() => setModalVisible(false)}
         image={require('../../assets/images/img_success.png')}
         title={t('modals.title_payment')}
         content={t('modals.sub_title_mail')}
         textbutton={t('buttons.btn_back_to_shop')}
+      />
+
+      <LoadingModal
+        isComplete={isComplete}
+        visible={isLoading}
+        message={t('orders.creating_order')}
+        onLoadingComplete={onLoadingComplete}
       />
     </View>
   );

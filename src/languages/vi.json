@@ -141,7 +141,8 @@
     "commune": "Xã",
     "sub_commune": "Chọn xã",
     "detail": "Đường/Thôn",
-    "required": "Bắt buộc"
+    "required": "Bắt buộc",
+    "default": "Mặc định"
   },
   "titles": {
     "signin": "Chào mừng trở lại!",
@@ -223,7 +224,9 @@
     "creater_by": "Yêu cầu bởi",
     "requested_by": "Yêu cầu vào ",
     "reason": "Lý do",
-    "received": "Đã nhận được hàng"
+    "received": "Đã nhận được hàng",
+    "creating_order": "Đang tạo đơn hàng",
+    "delivered":"Đơn hàng đã được giao thành công"
   },
   "rating": {
     "review": "Đánh giá của tôi",
@@ -241,7 +244,8 @@
     "to_review": "Đã đánh giá",
     "rating": "Chưa đánh giá",
     "not_found": "Không tìm thấy đánh giá nào nữa.",
-    "response": "Phản hồi của người bán:"
+    "response": "Phản hồi của người bán:",
+    "review_order": "Đánh giá đơn hàng"
   },
   "notifications": {
     "title": "Thông báo",
@@ -266,13 +270,16 @@
     "history": "Chưa có lịch sử",
     "sub_history": "Nhấn nút màu xanh bên dưới để tạo đơn hàng",
     "order": "Chưa có đơn hàng",
-    "adress_war": "Vui lòng thêm địa chỉ giao hàng!"
+    "adress_war": "Vui lòng thêm địa chỉ giao hàng!",
+    "cancel_order": "Bạn có chắc chắn muốn hủy đơn hàng này không?"
   },
   "toast": {
     "cancel_order": "Đơn hàng đã bị hủy"
   },
   "ship": {
-    "infor": "Thông tin vận chuyển"
+    "infor": "Thông tin vận chuyển",
+    "shipments": "Các phương thức vận chuyển của shop",
+    "method": "Phương thức vận chuyển"
   },
   "search": {
     "product": " sản phẩm được tìm thấy",
@@ -282,5 +289,8 @@
     "rate": "Đánh giá",
     "min_price": "Tối thiểu",
     "max_price": "Tối đa"
+  },
+  "common": {
+    "warning": "Cảnh báo"
   }
 }

@@ -7,6 +7,6 @@ export const registerUser = async userData => {
 
 export const loginUser = async userData => {
   const response = await AxiosInstance().post('/auth/login', userData);
-  console.log('Call api login: ', response);
+  // console.log('Call api login: ', response);
   return response;
 };

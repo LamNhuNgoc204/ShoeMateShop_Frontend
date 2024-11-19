@@ -22,7 +22,6 @@ import SettingScreen from '../screens/SettingScreen';
 import RecentlyViewedScreen from '../screens/RecentlyViewedScreen';
 import ResetPasswordScreen from '../screens/ResetPasswordScreen';
 import MyRating from '../screens/Rating';
-import Review from '../screens/Review';
 import SearchResult from '../screens/SearchResult';
 import AddNewAddress from '../screens/Address/AddNewAddress';
 import MessageScreen from '../screens/MessageScreen';
@@ -41,6 +40,7 @@ import CheckoutSuccess from '../screens/CheckoutScreen/CheckoutSuccess';
 import ChooseLanguage from '../screens/Languages';
 import CancelDetail from '../screens/Orders/CancelDetail';
 import MultiProductReviewForm from '../screens/Review/MultiProductReviewForm';
+import ProductReviews from '../screens/Review/ProductReviews';
 
 const Stack = createNativeStackNavigator();
 
@@ -78,7 +78,7 @@ const StackNav = () => {
         component={ResetPasswordScreen}
       />
       <Stack.Screen name="MyRating" component={MyRating} />
-      <Stack.Screen name="Review" component={Review} />
+      <Stack.Screen name="ProductReviews" component={ProductReviews} />
       <Stack.Screen name="SearchResult" component={SearchResult} />
       <Stack.Screen name="AddNewAddress" component={AddNewAddress} />
       <Stack.Screen name="MessageScreen" component={MessageScreen} />

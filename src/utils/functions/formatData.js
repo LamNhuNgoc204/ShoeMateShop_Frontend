@@ -11,3 +11,6 @@ export function formatDate(isoString) {
   // Trả về định dạng ngày/tháng/năm giờ:phút
   return `${day}/${month}/${year} ${hours}:${minutes}`;
 }
+
+// Tron mang
+export const shuffleArray = array => array.sort(() => Math.random() - 0.5);

@@ -10,11 +10,14 @@ import AxiosInstance from '../../helpers/AxiosInstance';
 import {useDispatch} from 'react-redux';
 import {setShipping} from '../../redux/reducer/cartReducer';
 
-const ShipScreen = ({navigation}) => {
+const ShipScreen = ({navigation, route}) => {
   const {t} = useTranslation();
   const dispatch = useDispatch();
   const [selectedShipping, setSelectedShipping] = useState(null);
   const [ships, setships] = useState([]);
+
+  const {shipId, isDefault} = route.params;
+  const [id, setId] = useState(shipId);
 
   useEffect(() => {
     const fetchShipData = async () => {
@@ -28,20 +31,15 @@ const ShipScreen = ({navigation}) => {
     fetchShipData();
   }, []);
 
-  console.log('ships', ships);
+  // console.log('ships', ships);
   const handleSelectShipping = shipping => {
     setSelectedShipping(shipping);
   };
 
   const handleToggleTracking = shipping => {
     // Cập nhật trạng thái local
-    setships(prevShips =>
-      prevShips.map(ship =>
-        ship._id === shipping._id
-          ? {...ship, trackingAvailable: true}
-          : {...ship, trackingAvailable: false},
-      ),
-    );
+    setId(shipping._id);
+    dispatch(setShipping(shipping));
     handleSelectShipping(shipping);
   };
 
@@ -61,21 +59,26 @@ const ShipScreen = ({navigation}) => {
       <Header
         leftOnPress={() => navigation.goBack()}
         iconLeft={require('../../assets/icons/back.png')}
-        name={'Phương thức vận chuyển'}
+        name={t('ship.method')}
       />
-      <Text style={ship.text1}>Cac phuong thuc van chuyen cua shop</Text>
+      <Text style={ship.text1}>{t('ship.shipments')}</Text>
       <FlatList
         style={ship.flat}
         data={ships}
         keyExtractor={item => item._id}
         renderItem={item => (
-          <ShipItem item={item} onSelect={handleToggleTracking} />
+          <ShipItem
+            item={item}
+            id={id}
+            isDefault={isDefault}
+            onSelect={handleToggleTracking}
+          />
         )}
       />
       <CustomedButton
         style={ship.button}
         titleStyle={ship.titleButton}
-        title={'Xac nhan'}
+        title={t('buttons.btn_confirm')}
         onPress={handleConfirm}
       />
     </View>

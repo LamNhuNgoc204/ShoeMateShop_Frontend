@@ -13,6 +13,13 @@ const productStyle = StyleSheet.create({
         elevation: 2,
         marginBottom: 20
     },
+    container1: {
+        width: productWidth,
+        // borderRadius: 20,
+        // backgroundColor: colors.background_primary,
+        // elevation: 2,
+        marginBottom: 20
+    },
     image: {
         width: '100%',
         height: 100,

@@ -1,46 +1,84 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, ScrollView, FlatList, Image} from 'react-native';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {
+  View,
+  Text,
+  ScrollView,
+  FlatList,
+  Image,
+  RefreshControl,
+} from 'react-native';
 import {useSelector} from 'react-redux';
 import {odst} from './style';
 import appst from '../../constants/AppStyle';
-import ProductItem from '../../items/ProductItem';
 import OrderItem from '../../items/OrderItem/OrderItem';
 import {getOrderCompeleted} from '../../api/OrderApi';
 import OrderHistorySkeleton from '../../placeholders/product/order/OrderHistory';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
+import ProductList from '../Product/ProductList';
+import {shuffleArray} from '../../utils/functions/formatData';
 
 const ToReceive = ({navigation}) => {
   const {t} = useTranslation();
   const useAppSelector = useSelector;
-  const products = useAppSelector(state => state.products.products);
+  const products = useAppSelector(state => state.products);
   const [completedOrders, setCompletedOrders] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [listProduct, setListProduct] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const scrollViewRef = useRef(null);
 
   useEffect(() => {
-    const fetchOrder = async () => {
-      setLoading(false);
-      try {
-        const response = await getOrderCompeleted();
-        if (response.status) {
-          setCompletedOrders(response.data);
-          setLoading(true);
-        }
-      } catch (error) {
-        console.log('Get order error: ', error);
+    const unsubscribe = navigation.addListener('tabPress', () => {
+      if (scrollViewRef.current) {
+        scrollViewRef.current.scrollTo({y: 0, animated: true});
+      }
+    });
+    return unsubscribe;
+  }, [navigation]);
+
+  useEffect(() => {
+    if (products.products && products.products.length) {
+      setListProduct(shuffleArray([...products.products]));
+    }
+  }, []);
+
+  const fetchOrder = async () => {
+    setLoading(false);
+    try {
+      const response = await getOrderCompeleted();
+      if (response.status) {
+        setCompletedOrders(response.data);
         setLoading(true);
       }
-    };
+    } catch (error) {
+      console.log('Get order error: ', error);
+      setLoading(true);
+    }
+  };
+
+  useEffect(() => {
     fetchOrder();
+  }, []);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    fetchOrder().then(() => setRefreshing(false));
   }, []);
 
   return (
     <View style={appst.container}>
       {loading ? (
-        <ScrollView style={appst.container}>
+        <ScrollView
+          ref={scrollViewRef}
+          style={appst.container}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }>
           {completedOrders.length !== 0 ? (
             <FlatList
               style={odst.flat1}
-              data={completedOrders}
+              data={completedOrders.slice().reverse()}
               renderItem={({item, index}) => (
                 <OrderItem item={item} receive={true} navigation={navigation} />
               )}
@@ -59,26 +97,7 @@ const ToReceive = ({navigation}) => {
             </View>
           )}
 
-          <View style={appst.rowCenter}>
-            <View style={odst.border} />
-            <Text style={odst.text}>{t('products.similar_product')}</Text>
-            <View style={odst.border} />
-          </View>
-          <View style={[appst.center]}>
-            <FlatList
-              style={odst.flat2}
-              data={products}
-              renderItem={({item, index}) => (
-                <ProductItem product={item} index={index} />
-              )}
-              keyExtractor={(item, index) =>
-                item._id ? item._id : index.toString()
-              }
-              numColumns={2}
-              scrollEnabled={false}
-              contentContainerStyle={{padding: 20}}
-            />
-          </View>
+          <ProductList listProduct={listProduct} wishList={products.wishList} />
         </ScrollView>
       ) : (
         <OrderHistorySkeleton />

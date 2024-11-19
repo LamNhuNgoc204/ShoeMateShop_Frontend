@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Image} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {useDispatch, useSelector} from 'react-redux';
 import {FlatList, ScrollView} from 'react-native-gesture-handler';
@@ -8,7 +8,6 @@ import PagerView from 'react-native-pager-view';
 import homeStyle from './style';
 import appst from '../../constants/AppStyle';
 import ToolBar from '../../components/ToolBar';
-import ProductItem from '../../items/ProductItem';
 import {
   fetchProductsThunk,
   fetchWishlist,
@@ -24,6 +23,8 @@ import Loading from '../../components/Loading';
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AxiosInstance from '../../helpers/AxiosInstance';
+import ProductList from '../Product/ProductList';
+import {shuffleArray} from '../../utils/functions/formatData';
 
 const HomeScreen = ({navigation, route}) => {
   const {t} = useTranslation();
@@ -34,12 +35,8 @@ const HomeScreen = ({navigation, route}) => {
   const [wishList, setWishlist] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Tron mang
-  const shuffleArray = array => array.sort(() => Math.random() - 0.5);
-
   const state = useSelector(state => state.products);
-  const useAppDispatch = () => useDispatch();
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
 
 
   const uploadFCMToken = async () => {
@@ -132,12 +129,11 @@ const HomeScreen = ({navigation, route}) => {
   }, [state.wishlist]);
 
   useEffect(() => {
-    // setListProduct([...state.products]);
     setCategories(state.categories);
   }, [state]);
 
   useEffect(() => {
-    if (state.products.length) {
+    if (state.products && state.products.length) {
       setListProduct(shuffleArray([...state.products]));
     }
   }, [state.products]);
@@ -175,23 +171,23 @@ const HomeScreen = ({navigation, route}) => {
     navigation.navigate('SearchResult');
   };
 
-  const handleHeartPress = async (product, isFavorite) => {
-    try {
-      var response;
-      if (isFavorite) {
-        response = await removeFromWishlist(product._id);
-      } else {
-        response = await addProductInWishlist(product._id);
-      }
+  // const handleHeartPress = async (product, isFavorite) => {
+  //   try {
+  //     var response;
+  //     if (isFavorite) {
+  //       response = await removeFromWishlist(product._id);
+  //     } else {
+  //       response = await addProductInWishlist(product._id);
+  //     }
 
-      if (response.status) {
-        dispatch(setWishlistLocal(product));
-        console.log(isFavorite ? 'Removed from wishlist' : 'Added to wishlist');
-      }
-    } catch (error) {
-      console.error('Error updating wishlist:', error);
-    }
-  };
+  //     if (response.status) {
+  //       dispatch(setWishlistLocal(product));
+  //       console.log(isFavorite ? 'Removed from wishlist' : 'Added to wishlist');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error updating wishlist:', error);
+  //   }
+  // };
 
   return (
     <View style={[homeStyle.container, appst.container]}>
@@ -212,7 +208,6 @@ const HomeScreen = ({navigation, route}) => {
           {loading ? (
             <HomeSkeleton />
           ) : (
-            // <ActivityIndicator size="large" color="#0000ff" />
             <ScrollView
               showsVerticalScrollIndicator={false}
               style={appst.container}>
@@ -239,7 +234,7 @@ const HomeScreen = ({navigation, route}) => {
                         index !== BANNERS.length - 1 && homeStyle.marginRight12,
                       ]}></View>
                   )}
-                  keyExtractor={(item, index) => index.toString()}
+                  keyExtractor={(item, index) => item._id || index.toString()}
                   horizontal
                   style={homeStyle.indicator}
                 />
@@ -302,7 +297,7 @@ const HomeScreen = ({navigation, route}) => {
                 </View>
               </ScrollView>
 
-              <Text style={homeStyle.pfyText}>{t('home.list_product')}</Text>
+              {/* <Text style={homeStyle.pfyText}>{t('home.list_product')}</Text>
 
               <FlatList
                 data={listProduct}
@@ -317,6 +312,12 @@ const HomeScreen = ({navigation, route}) => {
                 numColumns={2}
                 showsVerticalScrollIndicator={false}
                 scrollEnabled={false}
+              /> */}
+
+              <ProductList
+                listProduct={listProduct}
+                wishList={wishList}
+                isHome={true}
               />
             </ScrollView>
           )}

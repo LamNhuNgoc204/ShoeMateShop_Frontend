@@ -5,9 +5,16 @@ import appst from '../../constants/AppStyle';
 import {spacing} from '../../constants';
 import {gotoOrderDetail} from '../../utils/functions/handleOrder';
 import {useTranslation} from 'react-i18next';
-import {updateOrderStatus} from '../../api/OrderApi';
 
-const OrderItem = ({item, receive, ship, cancel, refunded, navigation}) => {
+const OrderItem = ({
+  item,
+  receive,
+  ship,
+  cancel,
+  refunded,
+  navigation,
+  updateOrderStatus,
+}) => {
   const {t} = useTranslation();
 
   const orderDetail = item.orderDetails && item.orderDetails[0];
@@ -85,7 +92,7 @@ const OrderItem = ({item, receive, ship, cancel, refunded, navigation}) => {
                     ? t('orders.wait_confirm')
                     : item.status === 'processing'
                     ? t('orders.proccessed_status')
-                    : ''}
+                    : t('orders.delivered')}
                 </Text>
                 <Image
                   style={appst.icon24}
@@ -96,13 +103,13 @@ const OrderItem = ({item, receive, ship, cancel, refunded, navigation}) => {
               {item.status === 'delivered' && (
                 <View style={[appst.rowEnd, {paddingHorizontal: 10}]}>
                   <TouchableOpacity
-                    onPress={() => updateOrderStatus(item._id, 'completed')}
                     style={[odit.press, odit.press1, {paddingHorizontal: 10}]}>
                     <Text style={[odit.textTouch, odit.textTouch1]}>
                       {t('orders.return')}
                     </Text>
                   </TouchableOpacity>
                   <TouchableOpacity
+                    onPress={() => updateOrderStatus(item._id)}
                     style={[
                       odit.press,
                       {paddingHorizontal: 5, marginLeft: 10},
@@ -145,7 +152,7 @@ const OrderItem = ({item, receive, ship, cancel, refunded, navigation}) => {
               </TouchableOpacity>
               {item.isReviewed ? (
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('')}
+                  onPress={() => navigation.navigate('ProductReviews')}
                   style={[odit.press, {paddingHorizontal: 5, marginLeft: 10}]}>
                   <Text style={odit.textTouch}>{t('review.see')}</Text>
                 </TouchableOpacity>
