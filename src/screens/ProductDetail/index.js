@@ -46,6 +46,7 @@ const ProductDetail = props => {
   const [sizeModalVisible, setSizeModalVisible] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 
+
   const dispatch = useDispatch();
 
   const fetchProduct = async () => {
@@ -104,6 +105,10 @@ const ProductDetail = props => {
         fileExtension,
       );
     }) || [];
+
+    const onSetProduct = (product) => {
+      setProduct(product)
+    }
 
   return (
     <View style={[appst.container, pddt.container]}>
@@ -235,6 +240,7 @@ const ProductDetail = props => {
 
           <View style={{marginTop: 15}}>
             <ProductList
+              onSetProduct={onSetProduct}
               listProduct={productState.products}
               wishList={productState.wishList}
             />

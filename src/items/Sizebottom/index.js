@@ -50,7 +50,6 @@ const BottomSheetContent = ({
     }
   };
 
-  console.log('body', product._id, ' ', sizeDetailId, '-', quantity);
 
   const addToCart = async () => {
     try {

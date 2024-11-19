@@ -27,7 +27,7 @@ const Notifycation = ({navigation}) => {
       const response = await AxiosInstance().get('/notifications/notifications-user')
       console.log('noti response: ', response.data)
       if (response.status) {
-        setNotifications(response.data)
+        setNotifications(response.data.reverse());
       } else {
         console.log('errr: ', response.message)
       }

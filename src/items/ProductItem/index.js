@@ -3,7 +3,7 @@ import {useNavigation} from '@react-navigation/native';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import productStyle from './style';
 
-const ProductItem = ({handleHeartPress, product, style, wishlist = []}) => {
+const ProductItem = ({handleHeartPress, product, style, wishlist = [], onSetProduct}) => {
   const getIsFavorite = () => {
     const index = wishlist.findIndex(e => e._id == product._id);
     return index !== -1;
@@ -21,6 +21,9 @@ const ProductItem = ({handleHeartPress, product, style, wishlist = []}) => {
 
   function onProductDetail() {
     navigation.navigate('ProductDetail', {index: product._id});
+    if(onSetProduct) {
+      onSetProduct(product)
+    }
   }
 
   return (

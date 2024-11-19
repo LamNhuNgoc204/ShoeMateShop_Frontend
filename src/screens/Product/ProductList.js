@@ -9,7 +9,7 @@ import {setWishlistLocal} from '../../redux/reducer/productReducer';
 import appst from '../../constants/AppStyle';
 import {odst} from '../Orders/style';
 
-const ProductList = ({listProduct, wishList, isHome}) => {
+const ProductList = ({listProduct, wishList, isHome, onSetProduct}) => {
   const {t} = useTranslation();
   const dispatch = useDispatch();
 
@@ -55,6 +55,7 @@ const ProductList = ({listProduct, wishList, isHome}) => {
             wishlist={wishList}
             handleHeartPress={handleHeartPress}
             product={item}
+            onSetProduct={onSetProduct}
           />
         )}
         keyExtractor={(item, index) => item._id || index.toString()}
