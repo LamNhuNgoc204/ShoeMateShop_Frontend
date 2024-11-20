@@ -48,7 +48,7 @@ const ToReturn = ({navigation}) => {
     try {
       const response = await getOrderReturn();
       if (response.status) {
-        setReturnOrder(response.data);
+        setReturnOrder(response?.data?.reverse());
         setLoading(true);
       }
     } catch (error) {
@@ -78,7 +78,7 @@ const ToReturn = ({navigation}) => {
           {returnOrder.length !== 0 ? (
             <FlatList
               style={odst.flat1}
-              data={returnOrder.slice().reverse()}
+              data={returnOrder}
               renderItem={({item}) => (
                 <OrderItem
                   item={item}
@@ -103,7 +103,7 @@ const ToReturn = ({navigation}) => {
             </View>
           )}
 
-          <ProductList listProduct={listProduct} wishList={products.wishList} />
+          <ProductList listProduct={listProduct} />
         </ScrollView>
       ) : (
         <OrderHistorySkeleton />

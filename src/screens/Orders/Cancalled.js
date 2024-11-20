@@ -7,6 +7,9 @@ import {
   FlatList,
   Image,
   RefreshControl,
+  ToastAndroid,
+  Modal,
+  ActivityIndicator,
 } from 'react-native';
 import {odst} from './style';
 import appst from '../../constants/AppStyle';
@@ -16,6 +19,7 @@ import OrderHistorySkeleton from '../../placeholders/product/order/OrderHistory'
 import {useTranslation} from 'react-i18next';
 import ProductList from '../Product/ProductList';
 import {shuffleArray} from '../../utils/functions/formatData';
+import {addItemToCartApi} from '../../api/CartApi';
 
 const Cancalled = ({navigation}) => {
   const {t} = useTranslation();
@@ -25,6 +29,7 @@ const Cancalled = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const [listProduct, setListProduct] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [isOverlayLoading, setIsOverlayLoading] = useState(false);
 
   const scrollViewRef = useRef(null);
 
@@ -48,7 +53,7 @@ const Cancalled = ({navigation}) => {
     try {
       const response = await getOrderCancell();
       if (response.status) {
-        setCancelOrders(response?.data);
+        setCancelOrders(response?.data?.reverse());
         setLoading(true);
       }
     } catch (error) {
@@ -66,6 +71,42 @@ const Cancalled = ({navigation}) => {
     fetchOrder().then(() => setRefreshing(false));
   }, []);
 
+  const addToCart = async productForCart => {
+    setIsOverlayLoading(true);
+    // console.log('productForCart==>', productForCart);
+
+    try {
+      if (Array.isArray(productForCart)) {
+        for (const product of productForCart) {
+          const itemCart = {
+            product_id: product?.product?.id,
+            size_id: product?.product?.size_id,
+            quantity: product?.product?.pd_quantity,
+          };
+          const response = await addItemToCartApi(itemCart);
+          if (!response.status) {
+            ToastAndroid.show(
+              `Không thể thêm sản phẩm: ${product?.product?.name}`,
+              ToastAndroid.SHORT,
+            );
+          }
+        }
+        ToastAndroid.show(
+          'Thêm tất cả sản phẩm vào giỏ hàng thành công',
+          ToastAndroid.SHORT,
+        );
+        navigation.navigate('CartScreen');
+      }
+    } catch (error) {
+      ToastAndroid.show(
+        'Lỗi trong quá trình thêm vào giỏ hàng',
+        ToastAndroid.SHORT,
+      );
+    } finally {
+      setIsOverlayLoading(false);
+    }
+  };
+
   return (
     <View style={appst.container}>
       {loading ? (
@@ -78,9 +119,14 @@ const Cancalled = ({navigation}) => {
           {cancelOrders.length !== 0 ? (
             <FlatList
               style={odst.flat1}
-              data={cancelOrders.reverse()}
+              data={cancelOrders}
               renderItem={({item}) => (
-                <OrderItem item={item} cancel={true} navigation={navigation} />
+                <OrderItem
+                  addToCart={addToCart}
+                  item={item}
+                  cancel={true}
+                  navigation={navigation}
+                />
               )}
               keyExtractor={(item, index) =>
                 item._id ? item._id : index.toString()
@@ -97,11 +143,24 @@ const Cancalled = ({navigation}) => {
             </View>
           )}
 
-          <ProductList listProduct={listProduct} wishList={products.wishList} />
+          <ProductList listProduct={listProduct} />
         </ScrollView>
       ) : (
         <OrderHistorySkeleton />
       )}
+
+      {/* Cho them gio hang */}
+      <Modal transparent={true} visible={isOverlayLoading}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          }}>
+          <ActivityIndicator size="large" color="#fff" />
+        </View>
+      </Modal>
     </View>
   );
 };

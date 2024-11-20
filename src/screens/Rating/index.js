@@ -1,5 +1,5 @@
 import {View} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import ratingst from './style';
 import appst from '../../constants/AppStyle';
 import Header from '../../components/Header';
@@ -11,9 +11,18 @@ import {sizes} from '../../constants';
 import {fonts} from '../../constants/fonts';
 import {useTranslation} from 'react-i18next';
 
-const MyRating = ({navigation}) => {
+const MyRating = ({navigation, route}) => {
   const {t} = useTranslation();
   const TopTab = createMaterialTopTabNavigator();
+
+  const initialRoute = route?.params?.initialRoute || t('review.rating');
+  console.log('initialRoute', initialRoute);
+
+  useEffect(() => {
+    if (route.params?.initialRoute) {
+      navigation.navigate(route.params.initialRoute);
+    }
+  }, [route.params?.initialRoute]);
 
   return (
     <View style={[ratingst.container, appst.container]}>

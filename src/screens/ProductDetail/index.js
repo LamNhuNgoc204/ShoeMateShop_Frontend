@@ -239,11 +239,7 @@ const ProductDetail = props => {
           </View>
 
           <View style={{marginTop: 15}}>
-            <ProductList
-              onSetProduct={onSetProduct}
-              listProduct={productState.products}
-              wishList={productState.wishList}
-            />
+            <ProductList listProduct={productState.products} />
           </View>
         </ScrollView>
       ) : (

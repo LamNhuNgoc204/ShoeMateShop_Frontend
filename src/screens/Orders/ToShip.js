@@ -49,7 +49,7 @@ const ToShip = ({navigation}) => {
     try {
       const response = await getOrderProcess();
       if (response.status) {
-        setProcessOrders(response.data);
+        setProcessOrders(response?.data?.reverse());
         setLoading(true);
       }
     } catch (error) {
@@ -94,7 +94,7 @@ const ToShip = ({navigation}) => {
           {processOrders.length !== 0 ? (
             <FlatList
               style={odst.flat1}
-              data={processOrders.slice().reverse()}
+              data={processOrders}
               renderItem={({item}) => (
                 <OrderItem
                   item={item}
@@ -119,7 +119,7 @@ const ToShip = ({navigation}) => {
             </View>
           )}
 
-          <ProductList listProduct={listProduct} wishList={products.wishList} />
+          <ProductList listProduct={listProduct} />
         </ScrollView>
       ) : (
         <OrderHistorySkeleton />

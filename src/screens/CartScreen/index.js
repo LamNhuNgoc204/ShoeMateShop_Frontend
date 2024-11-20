@@ -149,10 +149,7 @@ const CartScreen = ({navigation}) => {
                 <Text style={cartst.text}>Bat dau mua sam ngay</Text>
               </TouchableOpacity>
 
-              <ProductList
-                listProduct={productState.products}
-                wishList={productState.wishList}
-              />
+              <ProductList listProduct={productState.products} />
             </ScrollView>
           ) : (
             <FlatList

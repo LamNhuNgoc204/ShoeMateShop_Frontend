@@ -6,6 +6,8 @@ import {fonts} from '../../constants/fonts';
 const rvst = StyleSheet.create({
   container: {
     backgroundColor: colors.background_primary,
+    marginBottom: 15,
+    flex: 1,
   },
   imgPd: {
     width: 50,

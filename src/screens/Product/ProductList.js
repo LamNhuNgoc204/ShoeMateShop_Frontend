@@ -1,22 +1,28 @@
 import {View, Text, FlatList} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import homeStyle from '../HomeScreen/style';
 import {useTranslation} from 'react-i18next';
 import ProductItem from '../../items/ProductItem';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {addProductInWishlist, removeFromWishlist} from '../../api/ProductApi';
 import {setWishlistLocal} from '../../redux/reducer/productReducer';
 import appst from '../../constants/AppStyle';
 import {odst} from '../Orders/style';
 
-const ProductList = ({listProduct, wishList, isHome, onSetProduct}) => {
+const ProductList = ({listProduct, isHome}) => {
   const {t} = useTranslation();
   const dispatch = useDispatch();
+  const [wishLists, setWishLists] = useState([]);
+  const state = useSelector(state => state.products);
 
   const modifiedListProduct =
     listProduct.length % 2 !== 0
       ? [...listProduct, {_id: 'empty'}]
       : listProduct;
+
+  useEffect(() => {
+    setWishLists(state.wishlist);
+  }, [state.wishlist]);
 
   const handleHeartPress = async (product, isFavorite) => {
     try {
@@ -35,6 +41,18 @@ const ProductList = ({listProduct, wishList, isHome, onSetProduct}) => {
       console.error('Error updating wishlist:', error);
     }
   };
+  const _renderItem = React.useCallback(
+    ({item, index}) => {
+      return (
+        <ProductItem
+          wishlist={wishLists}
+          handleHeartPress={handleHeartPress}
+          product={item}
+        />
+      );
+    },
+    [wishLists],
+  );
 
   return (
     <View style={{width: '100%'}}>
@@ -50,15 +68,8 @@ const ProductList = ({listProduct, wishList, isHome, onSetProduct}) => {
 
       <FlatList
         data={modifiedListProduct}
-        renderItem={({item}) => (
-          <ProductItem
-            wishlist={wishList}
-            handleHeartPress={handleHeartPress}
-            product={item}
-            onSetProduct={onSetProduct}
-          />
-        )}
-        keyExtractor={(item, index) => item._id || index.toString()}
+        renderItem={_renderItem}
+        keyExtractor={(item, index) => `${index}`}
         numColumns={2}
         showsVerticalScrollIndicator={false}
         scrollEnabled={false}

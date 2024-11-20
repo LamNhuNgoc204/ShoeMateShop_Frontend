@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   ScrollView,
   FlatList,
@@ -28,6 +28,9 @@ const ToPay = ({navigation}) => {
 
   const scrollViewRef = useRef(null);
 
+  const dispatch = useDispatch();
+  const state = useSelector(order => order.order);
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('tabPress', () => {
       if (scrollViewRef.current) {
@@ -45,10 +48,11 @@ const ToPay = ({navigation}) => {
 
   const fetchOrder = async () => {
     setLoading(false);
+
     try {
       const response = await getOrderPending();
       if (response.status) {
-        setPendingOrders(response.data);
+        setPendingOrders(response?.data?.reverse());
         setLoading(true);
       }
     } catch (error) {
@@ -75,10 +79,10 @@ const ToPay = ({navigation}) => {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }>
-          {pendingOrders.length !== 0 ? (
+          {pendingOrders?.length !== 0 ? (
             <FlatList
               style={odst.flat1}
-              data={pendingOrders.slice().reverse()}
+              data={pendingOrders}
               renderItem={({item}) => (
                 <OrderItem navigation={navigation} item={item} />
               )}
@@ -97,31 +101,7 @@ const ToPay = ({navigation}) => {
             </View>
           )}
 
-          {/* <View style={appst.rowCenter}>
-            <View style={odst.border} />
-            <Text style={odst.text}>{t('products.similar_product')}</Text>
-            <View style={odst.border} />
-          </View> */}
-          {/* <View style={{marginLeft: 20}}>
-            <FlatList
-              style={odst.flat2}
-              data={products}
-              renderItem={({item, index}) => (
-                <ProductItem product={item} index={index} />
-              )}
-              keyExtractor={(item, index) =>
-                item._id ? item._id : index.toString()
-              }
-              numColumns={2}
-              scrollEnabled={false}
-              contentContainerStyle={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                paddingBottom: 20,
-              }}
-            />
-          </View> */}
-          <ProductList listProduct={listProduct} wishList={products.wishList} />
+          <ProductList listProduct={listProduct} />
         </ScrollView>
       ) : (
         <OrderHistorySkeleton />

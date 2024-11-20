@@ -21,6 +21,7 @@ import {cancelOrder, getOrderDetail} from '../../api/OrderApi';
 import OrderItemDetail from '../../items/OrderItem/OrderItemDetail';
 import {formatDate} from '../../utils/functions/formatData';
 import {handleOrderDetail} from '../../utils/functions/order';
+import Loading from '../../components/Loading';
 
 const OrderDetail = ({route, navigation}) => {
   const {item} = route.params;
@@ -29,6 +30,8 @@ const OrderDetail = ({route, navigation}) => {
   const [orderDetail, setOrderDetail] = useState({});
   const [titleButton, setTitleButton] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+  const [isCancel, setisCancel] = useState(false);
+  
 
 
   useEffect(() => {
@@ -51,21 +54,12 @@ const OrderDetail = ({route, navigation}) => {
     fetchData();
   }, []);
 
-  // const handleOrderDetail = async () => {
-  //   if (orderDetail.orderStatus === 'pending') {
-  //     const response = await cancelOrder(item._id);
-  //     if (response.status) {
-  //       ToastAndroid.show(t('toast.cancel_order'), ToastAndroid.SHORT);
-  //       navigation.goBack();
-  //     }
-  //   }
-  // };
-
   const confirmCancelOrder = async () => {
+    setisCancel(true);
     const response = await cancelOrder(item._id);
     if (response.status) {
+      setisCancel(false);
       ToastAndroid.show(t('toast.cancel_order'), ToastAndroid.SHORT);
-      // navigation.goBack();
       navigation.navigate('OrderScreen', {initialRoute: t('orders.cancel')});
     }
     setModalVisible(false);
@@ -96,207 +90,231 @@ const OrderDetail = ({route, navigation}) => {
   };
 
   return (
-    <View style={[appst.container, oddt.container]}>
-      <Header
-        iconLeft={require('../../assets/icons/back.png')}
-        leftOnPress={() => navigation.goBack()}
-        name={t('orders.order_detail')}
-      />
-      <View style={{flex: 1}}>
-        {loading ? (
-          <View
-            style={{flex: 1, height: '100%', justifyContent: 'space-between'}}>
-            <ScrollView>
-              <View style={oddt.itemContainer}>
-                <View style={oddt.row}>
-                  <Image
-                    source={require('../../assets/icons/location.png')}
-                    style={oddt.location}
-                  />
-                  <View>
-                    <Text style={oddt.text1}>{t('checkout.address')}:</Text>
-                    <Text>
-                      <Text style={oddt.text2}>
-                        <Text style={oddt.text3}>
-                          {orderDetail.receiver} | {orderDetail.receiverPhone}
-                        </Text>{' '}
-                        {'\n'}
-                        {orderDetail.address}
+    <View style={appst.container}>
+      {isCancel ? (
+        <Loading />
+      ) : (
+        <View style={[appst.container, oddt.container]}>
+          <Header
+            iconLeft={require('../../assets/icons/back.png')}
+            leftOnPress={() => navigation.goBack()}
+            name={t('orders.order_detail')}
+          />
+          <View style={{flex: 1}}>
+            {loading ? (
+              <View
+                style={{
+                  flex: 1,
+                  height: '100%',
+                  justifyContent: 'space-between',
+                }}>
+                <ScrollView>
+                  <View style={oddt.itemContainer}>
+                    <View style={oddt.row}>
+                      <Image
+                        source={require('../../assets/icons/location.png')}
+                        style={oddt.location}
+                      />
+                      <View>
+                        <Text style={oddt.text1}>{t('checkout.address')}:</Text>
+                        <Text>
+                          <Text style={oddt.text2}>
+                            <Text style={oddt.text3}>
+                              {orderDetail.receiver} |{' '}
+                              {orderDetail.receiverPhone}
+                            </Text>{' '}
+                            {'\n'}
+                            {orderDetail.address}
+                          </Text>
+                        </Text>
+                      </View>
+                    </View>
+
+                    <View style={oddt.border} />
+
+                    <View style={[oddt.body]}>
+                      <View style={[appst.rowCenter, oddt.view]}>
+                        <Text style={oddt.text4}>{t('orders.code')}</Text>
+                        <Text style={oddt.text4}>
+                          {orderDetail.orderCode &&
+                            orderDetail.orderCode.slice(0, 10)}
+                        </Text>
+                      </View>
+                      <FlatList
+                        data={orderDetail.products}
+                        renderItem={item => <OrderItemDetail item={item} />}
+                        keyExtractor={item => item._id.toString()}
+                        scrollEnabled={false}
+                      />
+                    </View>
+
+                    <View style={oddt.border} />
+
+                    <View style={oddt.body}>
+                      <Text style={oddt.text5}>
+                        {t('orders.status')}:{' '}
+                        <Text style={oddt.text6}>
+                          {orderDetail.statusShip === 'pending'
+                            ? t('orders.pending')
+                            : ''}
+                        </Text>
                       </Text>
-                    </Text>
-                  </View>
-                </View>
-
-                <View style={oddt.border} />
-
-                <View style={[oddt.body]}>
-                  <View style={[appst.rowCenter, oddt.view]}>
-                    <Text style={oddt.text4}>{t('orders.code')}</Text>
-                    <Text style={oddt.text4}>
-                      {orderDetail.orderCode &&
-                        orderDetail.orderCode.slice(0, 10)}
-                    </Text>
-                  </View>
-                  <FlatList
-                    data={orderDetail.products}
-                    renderItem={item => <OrderItemDetail item={item} />}
-                    keyExtractor={item => item._id.toString()}
-                    scrollEnabled={false}
-                  />
-                </View>
-
-                <View style={oddt.border} />
-
-                <View style={oddt.body}>
-                  <Text style={oddt.text5}>
-                    {t('orders.status')}:{' '}
-                    <Text style={oddt.text6}>
-                      {orderDetail.statusShip === 'pending'
-                        ? t('orders.pending')
-                        : ''}
-                    </Text>
-                  </Text>
-                  <Text style={oddt.text7}>{t('orders.order_total')}</Text>
-                  <View style={oddt.view2}>
-                    <Text style={oddt.text7}>{t('orders.fees')}</Text>
-                    <View style={[appst.rowCenter]}>
-                      <View style={[appst.rowCenter, {marginLeft: spacing.xm}]}>
-                        <Image
-                          style={oddt.icon}
-                          source={require('../../assets/icons/vouchersss.png')}
-                        />
-                        <Text style={oddt.text8}>{t('checkout.vouchers')}</Text>
+                      <Text style={oddt.text7}>{t('orders.order_total')}</Text>
+                      <View style={oddt.view2}>
+                        <Text style={oddt.text7}>{t('orders.fees')}</Text>
+                        <View style={[appst.rowCenter]}>
+                          <View
+                            style={[appst.rowCenter, {marginLeft: spacing.xm}]}>
+                            <Image
+                              style={oddt.icon}
+                              source={require('../../assets/icons/vouchersss.png')}
+                            />
+                            <Text style={oddt.text8}>
+                              {t('checkout.vouchers')}
+                            </Text>
+                          </View>
+                          <Text style={oddt.text8}>0</Text>
+                        </View>
+                        <View style={[appst.rowCenter]}>
+                          <View
+                            style={[appst.rowCenter, {marginLeft: spacing.xm}]}>
+                            <Image
+                              style={oddt.icon}
+                              source={require('../../assets/icons/point.png')}
+                            />
+                            <Text style={oddt.text8}>
+                              {t('checkout.points')}
+                            </Text>
+                          </View>
+                          <Text style={oddt.text8}>200</Text>
+                        </View>
                       </View>
-                      <Text style={oddt.text8}>0</Text>
                     </View>
-                    <View style={[appst.rowCenter]}>
-                      <View style={[appst.rowCenter, {marginLeft: spacing.xm}]}>
-                        <Image
-                          style={oddt.icon}
-                          source={require('../../assets/icons/point.png')}
+
+                    <View style={oddt.border} />
+
+                    <View style={[oddt.body]}>
+                      <Item
+                        content1={t('orders.total')}
+                        content2={
+                          '$' + orderDetail.total_price &&
+                          orderDetail.total_price.toLocaleString('vi-VN')
+                        }
+                      />
+                      <Item
+                        content1={t('setting.payment')}
+                        content2={
+                          orderDetail.payment_method ===
+                          'Thanh toán khi nhận hàng'
+                            ? 'COD'
+                            : orderDetail.payment_method
+                        }
+                      />
+                      <Item
+                        content1={t('orders.shipprice')}
+                        content2={
+                          '$' + orderDetail.shipCost &&
+                          orderDetail.shipCost.toLocaleString('vi-VN')
+                        }
+                      />
+                    </View>
+
+                    <View style={oddt.border} />
+
+                    <View style={oddt.body}>
+                      <Item2
+                        contetn1={t('orders.time')}
+                        content2={formatDate(orderDetail.timestamps.placedAt)}
+                      />
+                      {orderDetail.timestamps.paidAt && (
+                        <Item2
+                          contetn1={t('orders.payment')}
+                          content2={formatDate(orderDetail.timestamps.paidAt)}
                         />
-                        <Text style={oddt.text8}>{t('checkout.points')}</Text>
-                      </View>
-                      <Text style={oddt.text8}>200</Text>
+                      )}
+                      {orderDetail.timestamps.shippedAt && (
+                        <Item2
+                          contetn1={t('orders.shipping')}
+                          content2={formatDate(
+                            orderDetail.timestamps.shippedAt,
+                          )}
+                        />
+                      )}
+                      {orderDetail.timestamps.completedAt && (
+                        <Item2
+                          contetn1={t('orders.complete')}
+                          content2={formatDate(
+                            orderDetail.timestamps.completedAt,
+                          )}
+                        />
+                      )}
+                      {orderDetail.timestamps.cancelledAt && (
+                        <Item2
+                          contetn1={t('orders.timeCancel')}
+                          content2={formatDate(
+                            orderDetail.timestamps.cancelledAt,
+                          )}
+                        />
+                      )}
                     </View>
                   </View>
-                </View>
+                </ScrollView>
+                <CustomedButton
+                  disabled={orderDetail.orderStatus === 'processing' && true}
+                  title={t(titleButton)}
+                  style={
+                    orderDetail.orderStatus === 'processing'
+                      ? oddt.disable
+                      : oddt.press
+                  }
+                  titleStyle={
+                    orderDetail.orderStatus === 'processing'
+                      ? oddt.titleDisable
+                      : oddt.titleStyle
+                  }
+                  onPress={() => handleOrderDetail()}
+                />
+              </View>
+            ) : (
+              <OrderDetailSkeleton />
+            )}
+          </View>
 
-                <View style={oddt.border} />
-
-                <View style={[oddt.body]}>
-                  <Item
-                    content1={t('orders.total')}
-                    content2={
-                      '$' + orderDetail.total_price &&
-                      orderDetail.total_price.toLocaleString('vi-VN')
-                    }
-                  />
-                  <Item
-                    content1={t('setting.payment')}
-                    content2={
-                      orderDetail.payment_method === 'Thanh toán khi nhận hàng'
-                        ? 'COD'
-                        : orderDetail.payment_method
-                    }
-                  />
-                  <Item
-                    content1={t('orders.shipprice')}
-                    content2={
-                      '$' + orderDetail.shipCost &&
-                      orderDetail.shipCost.toLocaleString('vi-VN')
-                    }
-                  />
-                </View>
-
-                <View style={oddt.border} />
-
-                <View style={oddt.body}>
-                  <Item2
-                    contetn1={t('orders.time')}
-                    content2={formatDate(orderDetail.timestamps.placedAt)}
-                  />
-                  {orderDetail.timestamps.paidAt && (
-                    <Item2
-                      contetn1={t('orders.payment')}
-                      content2={formatDate(orderDetail.timestamps.paidAt)}
-                    />
-                  )}
-                  {orderDetail.timestamps.shippedAt && (
-                    <Item2
-                      contetn1={t('orders.shipping')}
-                      content2={formatDate(orderDetail.timestamps.shippedAt)}
-                    />
-                  )}
-                  {orderDetail.timestamps.completedAt && (
-                    <Item2
-                      contetn1={t('orders.complete')}
-                      content2={formatDate(orderDetail.timestamps.completedAt)}
-                    />
-                  )}
-                  {orderDetail.timestamps.cancelledAt && (
-                    <Item2
-                      contetn1={t('orders.timeCancel')}
-                      content2={formatDate(orderDetail.timestamps.cancelledAt)}
-                    />
-                  )}
+          {/* Confirmation Modal */}
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => setModalVisible(false)}>
+            <View style={styles.overlay}>
+              <View style={styles.modalView}>
+                <Text style={oddt.modalText1}>{t('home.noti')}</Text>
+                <Text style={oddt.modalText}>{t('nothing.cancel_order')}</Text>
+                <Image
+                  source={require('../../assets/icons/warning.jpeg')}
+                  style={{width: 100, height: 100}}
+                />
+                <View style={[oddt.modalButtonContainer]}>
+                  <TouchableOpacity
+                    style={oddt.modalbuttons}
+                    onPress={confirmCancelOrder}>
+                    <Text style={{color: 'white', fontWeight: 'bold'}}>
+                      {t('buttons.btn_ok')}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={oddt.modalbuttons}
+                    onPress={() => setModalVisible(false)}>
+                    <Text style={{color: 'white', fontWeight: 'bold'}}>
+                      {t('buttons.close')}
+                    </Text>
+                  </TouchableOpacity>
                 </View>
               </View>
-            </ScrollView>
-            <CustomedButton
-              disabled={orderDetail.orderStatus === 'processing' && true}
-              title={t(titleButton)}
-              style={
-                orderDetail.orderStatus === 'processing'
-                  ? oddt.disable
-                  : oddt.press
-              }
-              titleStyle={
-                orderDetail.orderStatus === 'processing'
-                  ? oddt.titleDisable
-                  : oddt.titleStyle
-              }
-              onPress={() => handleOrderDetail()}
-            />
-          </View>
-        ) : (
-          <OrderDetailSkeleton />
-        )}
-      </View>
-
-      {/* Confirmation Modal */}
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}>
-        <View style={styles.overlay}>
-          <View style={styles.modalView}>
-            <Text style={oddt.modalText1}>{t('home.noti')}</Text>
-            <Text style={oddt.modalText}>{t('nothing.cancel_order')}</Text>
-            <Image
-              source={require('../../assets/icons/warning.jpeg')}
-              style={{width: 100, height: 100}}
-            />
-            <View style={[oddt.modalButtonContainer]}>
-              <TouchableOpacity
-                style={oddt.modalbuttons}
-                onPress={confirmCancelOrder}>
-                <Text style={{color: 'white', fontWeight: 'bold'}}>
-                  {t('buttons.btn_ok')}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={oddt.modalbuttons}
-                onPress={() => setModalVisible(false)}>
-                <Text style={{color: 'white', fontWeight: 'bold'}}>
-                  {t('buttons.close')}
-                </Text>
-              </TouchableOpacity>
             </View>
-          </View>
+          </Modal>
         </View>
-      </Modal>
+      )}
     </View>
   );
 };

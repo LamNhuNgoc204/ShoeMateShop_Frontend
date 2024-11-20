@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, FlatList, Alert} from 'react-native';
+import {View, FlatList, Alert, Modal, ActivityIndicator} from 'react-native';
 import Header from '../../components/Header';
 import {useTranslation} from 'react-i18next';
 import appst from '../../constants/AppStyle';
@@ -10,6 +10,8 @@ const MultiProductReviewForm = ({route, navigation}) => {
   const {products} = route.params;
   // console.log('products ====================>>>>>', products);
   const {t} = useTranslation();
+  const [isVisible, setIsVisible] = useState(false);
+
   const [reviews] = useState(
     products &&
       products.map(product => ({
@@ -18,7 +20,7 @@ const MultiProductReviewForm = ({route, navigation}) => {
       })),
   );
 
-  // console.log('reviews', reviews);
+  // console.log('reviews-------------->', reviews);
 
   const [data, setData] = useState(
     products.map(product => ({
@@ -42,7 +44,7 @@ const MultiProductReviewForm = ({route, navigation}) => {
       const response = await createMultipleReviews({reviews: data});
       if (response) {
         Alert.alert('Bạn đã đánh giá sản phẩm');
-        navigation.goBack();
+        navigation.navigate('MyRating', {initialRoute: t('review.to_review')});
       } else {
         Alert.alert('Xảy ra lỗi');
       }
@@ -74,11 +76,24 @@ const MultiProductReviewForm = ({route, navigation}) => {
         keyExtractor={item => item.orderDetail_id}
         renderItem={({item, index}) => (
           <ReviewItem
+            setIsVisible={setIsVisible}
             onReviewChange={handleReviewChange}
             product={products && products[index].product}
           />
         )}
       />
+
+      <Modal transparent={true} visible={isVisible}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          }}>
+          <ActivityIndicator size="large" color="#fff" />
+        </View>
+      </Modal>
     </View>
   );
 };

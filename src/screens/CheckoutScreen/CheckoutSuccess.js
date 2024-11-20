@@ -75,10 +75,7 @@ const CheckoutSuccess = ({navigation}) => {
           </View>
         </View>
         <View style={{marginTop: 20, marginBottom: 20}}>
-          <ProductList
-            listProduct={productState.products}
-            wishList={productState.wishList}
-          />
+          <ProductList listProduct={productState.products} />
         </View>
       </ScrollView>
     </View>

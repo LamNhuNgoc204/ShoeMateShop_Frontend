@@ -132,10 +132,7 @@ const CancelDetail = ({navigation, route}) => {
         </View>
 
         <View style={st.view5}>
-          <ProductList
-            listProduct={products.products}
-            wishList={products.wishList}
-          />
+          <ProductList listProduct={products.products} />
         </View>
       </ScrollView>
       <TouchableOpacity

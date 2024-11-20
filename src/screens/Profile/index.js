@@ -88,10 +88,7 @@ const ProfileScreen = () => {
       />
 
       <View style={{marginTop: 10}}>
-        <ProductList
-          listProduct={productState.products}
-          wishList={productState.wishList}
-        />
+        <ProductList listProduct={productState.products} />
       </View>
     </ScrollView>
   );

@@ -14,9 +14,7 @@ import {
 } from '../../redux/thunks/productThunks';
 import {getCategoryThunk} from '../../redux/thunks/categoryThunk';
 import {BANNERS} from '../../api/mockData';
-import {addProductInWishlist, removeFromWishlist} from '../../api/ProductApi';
 import Category from '../../items/Category';
-import {setWishlistLocal} from '../../redux/reducer/productReducer';
 import HomeSkeleton from '../../placeholders/home';
 import {useFocusEffect} from '@react-navigation/native';
 import Loading from '../../components/Loading';
@@ -32,7 +30,6 @@ const HomeScreen = ({navigation, route}) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [listProduct, setListProduct] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [wishList, setWishlist] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const state = useSelector(state => state.products);
@@ -125,10 +122,6 @@ const HomeScreen = ({navigation, route}) => {
   }, []);
 
   useEffect(() => {
-    setWishlist(state.wishlist);
-  }, [state.wishlist]);
-
-  useEffect(() => {
     setCategories(state.categories);
   }, [state]);
 
@@ -170,24 +163,6 @@ const HomeScreen = ({navigation, route}) => {
   const onEditPress = () => {
     navigation.navigate('SearchResult');
   };
-
-  // const handleHeartPress = async (product, isFavorite) => {
-  //   try {
-  //     var response;
-  //     if (isFavorite) {
-  //       response = await removeFromWishlist(product._id);
-  //     } else {
-  //       response = await addProductInWishlist(product._id);
-  //     }
-
-  //     if (response.status) {
-  //       dispatch(setWishlistLocal(product));
-  //       console.log(isFavorite ? 'Removed from wishlist' : 'Added to wishlist');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error updating wishlist:', error);
-  //   }
-  // };
 
   return (
     <View style={[homeStyle.container, appst.container]}>
@@ -297,28 +272,7 @@ const HomeScreen = ({navigation, route}) => {
                 </View>
               </ScrollView>
 
-              {/* <Text style={homeStyle.pfyText}>{t('home.list_product')}</Text>
-
-              <FlatList
-                data={listProduct}
-                renderItem={({item}) => (
-                  <ProductItem
-                    wishlist={wishList}
-                    handleHeartPress={handleHeartPress}
-                    product={item}
-                  />
-                )}
-                keyExtractor={(item, index) => index.toString()}
-                numColumns={2}
-                showsVerticalScrollIndicator={false}
-                scrollEnabled={false}
-              /> */}
-
-              <ProductList
-                listProduct={listProduct}
-                wishList={wishList}
-                isHome={true}
-              />
+              <ProductList listProduct={listProduct} isHome={true} />
             </ScrollView>
           )}
         </View>
