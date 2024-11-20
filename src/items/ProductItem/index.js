@@ -3,7 +3,7 @@ import {useNavigation} from '@react-navigation/native';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import productStyle from './style';
 
-const ProductItem = ({handleHeartPress, product, style, wishlist = []}) => {
+const ProductItem = ({handleHeartPress, product, style, wishlist = [], onSetProduct}) => {
   const [liked, setLiked] = React.useState(false);
 
   React.useEffect(() => {

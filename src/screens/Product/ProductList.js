@@ -9,7 +9,7 @@ import {setWishlistLocal} from '../../redux/reducer/productReducer';
 import appst from '../../constants/AppStyle';
 import {odst} from '../Orders/style';
 
-const ProductList = ({listProduct, isHome}) => {
+const ProductList = ({listProduct, isHome, onSetProduct}) => {
   const {t} = useTranslation();
   const dispatch = useDispatch();
   const [wishLists, setWishLists] = useState([]);
@@ -45,6 +45,7 @@ const ProductList = ({listProduct, isHome}) => {
     ({item, index}) => {
       return (
         <ProductItem
+          onSetProduct={onSetProduct}
           wishlist={wishLists}
           handleHeartPress={handleHeartPress}
           product={item}

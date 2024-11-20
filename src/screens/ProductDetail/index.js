@@ -45,6 +45,9 @@ const ProductDetail = props => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [sizeModalVisible, setSizeModalVisible] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const [proId, setProId] = useState(index);
+
+
 
 
   const dispatch = useDispatch();
@@ -53,7 +56,7 @@ const ProductDetail = props => {
     try {
       const [addpdView, response] = await Promise.all([
         addRecentView(index),
-        AxiosInstance().get(`/products/detail/${index}`),
+        AxiosInstance().get(`/products/detail/${proId}`),
       ]);
 
       console.log('Thêm sản phẩm vào danh sách xem gần đây:', addpdView);
@@ -70,7 +73,7 @@ const ProductDetail = props => {
   useEffect(() => {
     fetchProduct();
     return () => {};
-  }, []);
+  }, [proId]);
 
   // console.log(product);
 
@@ -107,7 +110,7 @@ const ProductDetail = props => {
     }) || [];
 
     const onSetProduct = (product) => {
-      setProduct(product)
+      setProId(product._id)
     }
 
   return (
@@ -239,7 +242,7 @@ const ProductDetail = props => {
           </View>
 
           <View style={{marginTop: 15}}>
-            <ProductList listProduct={productState.products} />
+            <ProductList onSetProduct={onSetProduct} listProduct={productState.products.filter((item)=>item._id != product._id)} />
           </View>
         </ScrollView>
       ) : (

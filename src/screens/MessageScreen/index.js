@@ -421,7 +421,7 @@ const MessageScreen = ({ navigation, route }) => {
 
   // console.log('user', name, avatar);
 
-  const SOCKET_URL = `http://192.168.1.79:3000/`;
+  const SOCKET_URL = `http://192.168.1.97:3000/`;
 
   const getConversation = async () => {
     try {
@@ -541,8 +541,10 @@ const MessageScreen = ({ navigation, route }) => {
 
     // Lắng nghe sự kiện 'newMessage' để nhận tin nhắn mới
     socket.on('sendMessage', data => {
+      console.log('aaaaa: ', messages.length)
       console.log('Received message:', data.message);
-      setMessages([data.message, ...messages])
+      var newMessages = groupDate([data.message, ...messages])
+      setMessages(newMessages)
     });
 
     // Lắng nghe sự kiện 'disconnect'
@@ -555,7 +557,7 @@ const MessageScreen = ({ navigation, route }) => {
       socket.disconnect();
       console.log('Socket disconnected on cleanup');
     };
-  }, []);
+  }, [messages]);
 
   const scrollToTop = () => {
     if (messagesRef.current) {
