@@ -10,6 +10,7 @@ export const rtit = StyleSheet.create({
     paddingVertical: spacing.sm,
     marginHorizontal: 10,
     borderRadius: 10,
+    marginBottom: 15,
   },
   code: {
     paddingHorizontal: spacing.sm,

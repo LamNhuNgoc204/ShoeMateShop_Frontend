@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Modal,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
@@ -15,11 +17,10 @@ import rvst from '../../../screens/Review/style';
 import StarRating from '../../StarRating';
 import Video from 'react-native-video';
 import {uploadMediaToCloudinary} from '../../../utils/functions/uploadImage';
-import Loading from '../../../components/Loading';
 
-const ReviewItem = ({product, onReviewChange}) => {
+const ReviewItem = ({setIsVisible, product, onReviewChange}) => {
   const {t} = useTranslation();
-  const [rating, setRating] = useState();
+  const [rating, setRating] = useState(1);
   const [comment, setComment] = useState('');
   const pd = product;
   const [photos, setPhotos] = useState([]);
@@ -65,6 +66,7 @@ const ReviewItem = ({product, onReviewChange}) => {
         ) {
           const localPhotos = response.assets;
           setloadingImg(false);
+          setIsVisible(true);
           try {
             const uploadedPhotos = await Promise.all(
               localPhotos.map(photo => uploadMediaToCloudinary(photo, 'image')),
@@ -77,12 +79,13 @@ const ReviewItem = ({product, onReviewChange}) => {
             console.error('Error uploading photos:', error);
           } finally {
             setloadingImg(true);
+            setIsVisible(false);
           }
         }
       },
     );
   };
-  console.log('--------->', photos);
+  // console.log('--------->', photos);
 
   const selectVideo = () => {
     launchImageLibrary(
@@ -121,8 +124,8 @@ const ReviewItem = ({product, onReviewChange}) => {
   };
 
   return (
-    <View style={[appst.container, rvst.container]}>
-      {loadingImg ? (
+    <View style={[rvst.container]}>
+      {loadingImg && (
         <>
           <View style={[rvst.itemPd]}>
             <Image
@@ -260,8 +263,6 @@ const ReviewItem = ({product, onReviewChange}) => {
             />
           </View>
         </>
-      ) : (
-        <Loading />
       )}
     </View>
   );

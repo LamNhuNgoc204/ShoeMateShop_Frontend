@@ -7,6 +7,8 @@ import {
   FlatList,
   Switch,
   ToastAndroid,
+  Modal,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import appst from '../../constants/AppStyle';
@@ -36,7 +38,7 @@ const CheckOutScreen = ({navigation}) => {
   const [isswitch, setIsswitch] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const addressDefault = state.address;
-  const [isComplete, setisComplete] = useState(false);
+  // const [isComplete, setisComplete] = useState(false);
 
   // console.log('addressDefault', addressDefault);
   // console.log('state.ship', state.ship);
@@ -62,7 +64,7 @@ const CheckOutScreen = ({navigation}) => {
     }
 
     setIsLoading(true);
-    setisComplete(false);
+    // setisComplete(false);
 
     const products = state.productOrder.map(item => ({
       _id: item.product_id._id,
@@ -88,15 +90,13 @@ const CheckOutScreen = ({navigation}) => {
     // console.log('body orrder: ', body);
 
     const response = await createOrder(body);
-    setIsLoading(false);
-    setisComplete(false);
     if (response.status) {
-      setIsLoading(true);
-      setisComplete(true);
+      setIsLoading(false);
+      // setisComplete(true);
       if (state.payment && state.payment.payment_method === 'Zalo Pay') {
         dispatch(setPriceToPay(tongchiphi));
         dispatch(setOrderId(response.data.order._id));
-        setisComplete(true);
+        // setisComplete(true);
         // navigation.navigate('ZaloPayScreen');
       } else if (
         state.payment &&
@@ -104,7 +104,7 @@ const CheckOutScreen = ({navigation}) => {
       ) {
         // setModalVisible(true);
         ToastAndroid.show('tao don thanh cong', ToastAndroid.show);
-        setisComplete(true);
+        // setisComplete(true);
         navigation.navigate('CheckoutSuccess');
       }
     }
@@ -352,12 +352,24 @@ const CheckOutScreen = ({navigation}) => {
         textbutton={t('buttons.btn_back_to_shop')}
       />
 
-      <LoadingModal
+      {/* <LoadingModal
         isComplete={isComplete}
         visible={isLoading}
         message={t('orders.creating_order')}
         onLoadingComplete={onLoadingComplete}
-      />
+      /> */}
+      {/* Cho them gio hang */}
+      <Modal transparent={true} visible={isLoading}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          }}>
+          <ActivityIndicator size="large" color="#fff" />
+        </View>
+      </Modal>
     </View>
   );
 };
