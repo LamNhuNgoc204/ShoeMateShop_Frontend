@@ -7,7 +7,6 @@ import HomeScreen from '../screens/HomeScreen';
 import CartScreen from '../screens/CartScreen';
 import FavoriteScreen from '../screens/FavoriteScreen';
 import ProfileScreen from '../screens/Profile';
-import SearchScreen from '../screens/SearchScreen';
 import Notifycation from '../screens/Notifycation';
 
 const Tab = createBottomTabNavigator();
@@ -121,6 +120,7 @@ const BottomNav = () => {
           height: 80,
         },
         headerShown: false,
+        lazy: true,
       }}
       tabBar={props => <AnimatedTabBar {...props} />}>
       <Tab.Screen name="Home" component={HomeScreen} />

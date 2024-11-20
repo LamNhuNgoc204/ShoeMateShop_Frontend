@@ -103,7 +103,7 @@ const ToReturn = ({navigation}) => {
             </View>
           )}
 
-          <ProductList listProduct={listProduct} wishList={products.wishList} />
+          <ProductList listProduct={listProduct} />
         </ScrollView>
       ) : (
         <OrderHistorySkeleton />

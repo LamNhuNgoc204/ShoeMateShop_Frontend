@@ -4,9 +4,15 @@ import {View, Text, Image, TouchableOpacity} from 'react-native';
 import productStyle from './style';
 
 const ProductItem = ({handleHeartPress, product, style, wishlist = []}) => {
-  const getIsFavorite = () => {
-    const index = wishlist.findIndex(e => e._id == product._id);
-    return index !== -1;
+  const [liked, setLiked] = React.useState(false);
+
+  React.useEffect(() => {
+    setLiked(wishlist.find(e => e._id == product._id) !== undefined);
+  }, [wishlist]);
+
+  const handleLike = () => {
+    setLiked(!liked);
+    handleHeartPress(product, liked);
   };
 
   const navigation = useNavigation();
@@ -75,9 +81,8 @@ const ProductItem = ({handleHeartPress, product, style, wishlist = []}) => {
                   {product.price && product.price.toLocaleString('vi-VN')}
                 </Text>
               </Text>
-              <TouchableOpacity
-                onPress={() => handleHeartPress(product, getIsFavorite())}>
-                {!getIsFavorite() ? (
+              <TouchableOpacity onPress={handleLike}>
+                {!liked ? (
                   <Image
                     style={productStyle.icon21}
                     source={require('../../assets/icons/heart.png')}
