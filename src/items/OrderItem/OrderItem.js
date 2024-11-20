@@ -7,6 +7,7 @@ import {gotoOrderDetail} from '../../utils/functions/handleOrder';
 import {useTranslation} from 'react-i18next';
 
 const OrderItem = ({
+  addToCart,
   item,
   receive,
   ship,
@@ -19,7 +20,8 @@ const OrderItem = ({
 
   const orderDetail = item.orderDetails && item.orderDetails[0];
   const product = orderDetail && orderDetail.product;
-  // console.log('item orderDetail: ', item);
+  const productForCart = item?.orderDetails;
+  // console.log('item orderDetail------>: ', item?.orderDetails);
 
   const quantities =
     item.orderDetails &&
@@ -145,7 +147,9 @@ const OrderItem = ({
           {/* ĐƠN ĐÃ HOÀN THÀNH */}
           {!cancel && (
             <View style={appst.rowEnd}>
-              <TouchableOpacity style={[odit.press, {paddingHorizontal: 10}]}>
+              <TouchableOpacity
+                onPress={() => addToCart(productForCart)}
+                style={[odit.press, {paddingHorizontal: 10}]}>
                 <Text style={odit.textTouch}>
                   {true ? t('orders.return') : t('buttons.btn_buy_again')}
                 </Text>
@@ -182,6 +186,7 @@ const OrderItem = ({
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={() => addToCart(productForCart)}
                 style={[odit.press, {paddingHorizontal: 5, marginLeft: 10}]}>
                 <Text style={odit.textTouch}>{t('buttons.btn_buy_again')}</Text>
               </TouchableOpacity>
