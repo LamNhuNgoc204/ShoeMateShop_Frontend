@@ -24,8 +24,21 @@ export const login = createAsyncThunk(
     try {
       const response = await loginUser(userData);
       const result = response.data;
+
+      // Lấy thời gian hiện tại
+      const tokenExpirationDate = new Date();
+      // Cộng thêm 7 ngày
+      tokenExpirationDate.setDate(tokenExpirationDate.getDate() + 7);
+
       await AsyncStorage.setItem('token', result.token);
-      console.log('token=>>>>', AsyncStorage.getItem('token'));
+      await AsyncStorage.setItem(
+        'token_expiration',
+        tokenExpirationDate.toISOString(),
+      );
+      await AsyncStorage.setItem('user_id', response?.data?._id);
+
+      console.log('token saved:', result.token);
+      console.log('token expiration saved:', tokenExpirationDate);
       return result;
     } catch (error) {
       return rejectWithValue(error.response?.data);

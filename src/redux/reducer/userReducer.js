@@ -36,7 +36,7 @@ const UserSlice = createSlice({
         state.error = null;
       })
       .addCase(login.rejected, (state, action) => {
-        console.log('Login rejected');
+        console.log('Login rejected', action.payload);
         state.isLoading = false;
         state.error = action.payload;
       })

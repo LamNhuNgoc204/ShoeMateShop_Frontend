@@ -1,4 +1,34 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import AxiosInstance from '../helpers/AxiosInstance';
+
+export const refreshAccessToken = async (token, userId) => {
+  try {
+    const response = await AxiosInstance().post('/auth/refresh-token', {
+      token,
+      userId,
+    });
+
+    const newToken = response.data;
+
+    // Lưu token mới và cập nhật ngày hết hạn
+    const tokenExpirationDate = new Date();
+    tokenExpirationDate.setDate(tokenExpirationDate.getDate() + 7);
+
+    await AsyncStorage.setItem('token', newToken);
+    await AsyncStorage.setItem(
+      'token_expiration',
+      tokenExpirationDate.toISOString(),
+    );
+
+    console.log('Token refreshed:', newToken);
+    return newToken;
+  } catch (error) {
+    console.error('Error refreshing token:', error);
+    // Xử lý logout nếu refresh token thất bại
+    await AsyncStorage.clear();
+    return null;
+  }
+};
 
 export const updateInformation = async body => {
   try {
