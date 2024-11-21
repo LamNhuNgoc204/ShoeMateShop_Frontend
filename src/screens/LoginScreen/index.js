@@ -129,6 +129,12 @@ const LoginScreen = () => {
         )}
       </View>
 
+      <TouchableOpacity
+        onPress={() => navigation.navigate('ForgotPassWord')}
+        style={appst.rowEnd}>
+        <Text style={styles.text4}>{t('titles.forgot_password')}?</Text>
+      </TouchableOpacity>
+
       <View>
         <CustomedButton
           title={

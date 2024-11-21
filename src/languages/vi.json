@@ -226,7 +226,7 @@
     "reason": "Lý do",
     "received": "Đã nhận được hàng",
     "creating_order": "Đang tạo đơn hàng",
-    "delivered":"Đơn hàng đã được giao thành công"
+    "delivered": "Đơn hàng đã được giao thành công"
   },
   "rating": {
     "review": "Đánh giá của tôi",
@@ -292,5 +292,13 @@
   },
   "common": {
     "warning": "Cảnh báo"
+  },
+  "onboard": {
+    "buttonTitle1": "Bắt đầu",
+    "buttonTitle2": "Tiếp theo",
+    "title1": "Khởi đầu hành trình\ncùng ShoeMate",
+    "content1": "Kết hợp hoàn hảo giữa hiệu suất thể thao,\nphong cách và sự linh hoạt. Khám phá ngay!",
+    "title2": "Nâng tầm cuộc chơi",
+    "content2": "Khám phá các thương hiệu nổi tiếng\ndành riêng cho những nhà vô địch như bạn."
   }
 }

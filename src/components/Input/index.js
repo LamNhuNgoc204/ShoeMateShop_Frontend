@@ -30,7 +30,7 @@ const CustomTextInput = ({
             onPress={onTogglePassword}>
             <Image
               source={
-                secureTextEntry
+                !secureTextEntry
                   ? require('../../assets/icons/eyeon.png')
                   : require('../../assets/icons/eyeoff.png')
               }

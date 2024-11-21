@@ -132,7 +132,7 @@ const SignUpScreen = () => {
       </View>
       <View style={[appst.center, {marginTop: 30}]}>
         <Text style={styles.text7}>
-          {t('titles.have_account')}
+          {t('titles.have_account')}{' '}
           <Text
             style={styles.text8}
             onPress={() => handleNavigate(navigation, 'LoginScreen')}>

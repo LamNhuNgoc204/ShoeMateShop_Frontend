@@ -256,5 +256,13 @@
     "rate": "Rate",
     "min_price": "Min",
     "max_price": "Max"
+  },
+  "onboard": {
+    "buttonTitle1": "Get Started",
+    "buttonTitle2": "Next",
+    "title1": "Kickstart Your Adventure\nwith ShoeMate",
+    "content1": "Experience a perfect blend of style, comfort,\nand performance. Discover the collection now!",
+    "title2": "Unleash Your Potential",
+    "content2": "Step into the world of iconic sports brands\ndesigned to elevate your game and fit your lifestyle."
   }
 }
