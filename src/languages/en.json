@@ -31,7 +31,8 @@
     "btn_send": "Send",
     "btn_next": "Next",
     "btn_try_again": "Try again",
-    "btn_start_order": "Start ordering"
+    "btn_start_order": "Start ordering",
+    "home": "Home"
   },
   "home": {
     "list_product": "Products for you",
@@ -64,7 +65,9 @@
     "shipping_discount": "Shipping Discount Subtotal",
     "payment": "Total Payment",
     "detail": "By clicking \"Place Order\", you are agreeing to",
-    "term": "Shop General Transaction Terms"
+    "term": "Shop General Transaction Terms",
+    "checkout_success": "Checkout successfully",
+    "checkout_success_des": "Protect your rights with ShoeMate - only receive goods & pay when you receive the goods"
   },
   "profiles": {
     "wallet": "My Wallet",
