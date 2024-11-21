@@ -627,7 +627,7 @@ const MessageScreen = ({ navigation, route }) => {
             )}
           </>
         )}
-        ListHeaderComponent={messages.length > 0 && <View style={{
+        ListHeaderComponent={(messages.length > 0 && messages[0].senderId._id == user._id) && <View style={{
           paddingVertical: 5, paddingHorizontal: 10, justifyContent: 'center', alignItems: 'center', marginVertical: 5,
           borderRadius: 16,
           backgroundColor: "#cdcdcd",
