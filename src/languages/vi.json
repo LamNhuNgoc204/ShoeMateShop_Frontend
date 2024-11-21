@@ -70,9 +70,7 @@
     "term": "Điều khoản giao dịch chung của cửa hàng"
   },
   "profiles": {
-    "bag": "Thiết bị của tôi",
     "wallet": "Ví của tôi",
-    "game": "Trò chơi",
     "rate": "Đánh giá",
     "viewed": "Đã xem gần đây",
     "rating": "Đánh giá của tôi",
@@ -190,7 +188,7 @@
     "receiver": "Người nhận"
   },
   "orders": {
-    "pay": "Chờ thanh toán",
+    "pay": "Chờ xác nhận",
     "ship": "Chờ giao hàng",
     "receive": "Chờ nhận hàng",
     "cancel": "Đã hủy",

@@ -67,9 +67,7 @@
     "term": "Shop General Transaction Terms"
   },
   "profiles": {
-    "bag": "My gadget",
     "wallet": "My Wallet",
-    "game": "Mini game",
     "rate": "To Rate",
     "viewed": "Recently Viewed",
     "rating": "My Rating",

@@ -5,6 +5,12 @@ export const LANGUAGES = [
 ];
 
 export const PROFILE = [
+  // {
+  //   id: '5',
+  //   iconSource: require('../assets/icons/ic_mywallet.png'),
+  //   text: 'profiles.wallet',
+  //   navigateTo: 'wallet',
+  // },
   {
     id: '3',
     iconSource: require('../assets/icons/ic_orderhistory.png'),

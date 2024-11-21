@@ -18,7 +18,7 @@ export default styles = StyleSheet.create({
     marginBottom: spacing.xm,
   },
   text2: {
-    fontSize: sizes.size16,
+    fontSize: 14,
     fontFamily: fonts.rlw_medium,
     color: colors.text_black00,
     textAlign: 'center',
