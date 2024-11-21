@@ -155,7 +155,7 @@
     "sub_forgot_password": "Nhập tài khoản email của bạn để đặt lại mật khẩu",
     "otp": "Xác minh OTP",
     "sub_otp": "Vui lòng kiểm tra email để nhận mã xác minh",
-    "resend_code": "Gửi lại mã đến",
+    "resend_code": "Gửi lại mã OTP",
     "new_pass": "Mật khẩu mới",
     "sub_newpass": "Vui lòng nhập mật khẩu mới",
     "address": "Địa chỉ"
@@ -253,7 +253,11 @@
     "promotion": "Khuyến mãi",
     "message": "Tin nhắn",
     "system": "Hệ thống",
-    "sub_title": "Bạn không có thông báo"
+    "sub_title": "Bạn không có thông báo",
+    "send_otp_success": "Đã gửi lại OPT,vui lòng kiểm tra email",
+    "send_otp_error": "Gửi otp thất bại",
+    "verify_success": "Bạn đã xác thực tài khoản thành công!",
+    "verify_error": "Xác minh tài khoản thất bại!"
   },
   "messages": {
     "title": "Tin nhắn",

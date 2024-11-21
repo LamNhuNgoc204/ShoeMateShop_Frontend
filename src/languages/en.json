@@ -246,7 +246,11 @@
     "promotion": "Promotion",
     "message": "Message",
     "system": "System",
-    "sub_title": "You have no notifications"
+    "sub_title": "You have no notifications",
+    "send_otp_success": "OTP has been resent, please check your email",
+    "send_otp_error": "Failed to send OTP",
+    "verify_success": "Your account has been successfully verified!",
+    "verify_error": "Account verification failed!"
   },
   "search": {
     "product": " products found",
