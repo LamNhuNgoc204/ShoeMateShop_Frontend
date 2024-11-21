@@ -369,7 +369,6 @@ const groupDate = (messages) => {
 
   messages = messages.reverse();
 
-  // Helper function to format date in DD/MM/YYYY format
   const formatDate = (isoString) => {
     const date = new Date(isoString);
     const day = String(date.getDate()).padStart(2, '0');
@@ -380,25 +379,38 @@ const groupDate = (messages) => {
 
   let lastDate = null;
 
-  // Iterate over messages and mark `isShowDate` when the date changes
+  
   return messages.map((message) => {
     const messageDate = formatDate(message.createdAt);
 
-    const isShowDate = messageDate !== lastDate; // Show date only if it's different from the last one
-    lastDate = messageDate; // Update lastDate for next comparison
-
+    const isShowDate = messageDate !== lastDate; 
+    lastDate = messageDate; 
     return { ...message, isShowDate };
   }).reverse();;
 };
 
 
-function formatDate(isoString) {
-  const date = new Date(isoString);
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const year = date.getFullYear();
+export function formatDate(isoString) {
+  const inputDate = new Date(isoString);
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
 
-  return `${day}/${month}/${year}`;
+  const day = String(inputDate.getDate()).padStart(2, '0');
+  const month = String(inputDate.getMonth() + 1).padStart(2, '0');
+  const year = inputDate.getFullYear();
+  const formattedDate = `${day}/${month}/${year}`;
+
+  const daysOfWeek = ['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+
+  // So sánh ngày
+  if (inputDate.toDateString() === today.toDateString()) {
+    return `Hôm nay, ${formattedDate}`;
+  } else if (inputDate.toDateString() === yesterday.toDateString()) {
+    return `Hôm qua, ${formattedDate}`;
+  } else {
+    return `${daysOfWeek[inputDate.getDay()]}, ${formattedDate}`;
+  }
 }
 
 const MessageScreen = ({ navigation, route }) => {
