@@ -3,7 +3,7 @@ import React, {useEffect} from 'react';
 import appst from '../../constants/AppStyle';
 import splashStyle from './style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
+import AxiosInstance from '../../helpers/AxiosInstance';
 
 const SplashScreen = ({navigation}) => {
   useEffect(() => {
@@ -14,12 +14,9 @@ const SplashScreen = ({navigation}) => {
 
         if (token) {
           // Kiểm tra token
-          const response = await axios.post(
-            'http://192.168.1.68:3000/auth/protected',
-            {
-              token,
-            },
-          );
+          const response = await AxiosInstance().post('/auth/protected', {
+            token,
+          });
           if (response.status === 200) {
             // Token hợp lệ => vào Home
             navigation.replace('BottomNav');
@@ -49,8 +46,9 @@ const SplashScreen = ({navigation}) => {
     <View style={[appst.container, splashStyle.container]}>
       <Image
         style={splashStyle.logo}
-        source={require('../../assets/images/logo.png')}
+        source={require('../../assets/images/img_splash.png')}
       />
+      {/* <Image source={require('../../assets/images/shoename.png')} /> */}
     </View>
   );
 };

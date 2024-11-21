@@ -5,6 +5,7 @@ import appst from '../../constants/AppStyle';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import SweetAlert from 'react-native-sweet-alert';
 import {deleteOneItemCard, updateCartItem} from '../../api/CartApi';
+import {useNavigation} from '@react-navigation/native';
 
 const ItemCart = ({
   item,
@@ -19,6 +20,7 @@ const ItemCart = ({
   onCheckedChange,
 }) => {
   const [productQuantity, setProductQuantity] = useState(item.quantity);
+  const navigation = useNavigation();
 
   const handlePress = () => {
     onCheckedChange(item, !isChecked);
@@ -169,6 +171,8 @@ const ItemCart = ({
     );
   };
 
+  // console.log('item', item);
+
   return (
     <Swipeable
       ref={swipeableRef}
@@ -189,7 +193,11 @@ const ItemCart = ({
           setCurrentlyOpenSwipeable(null);
         }
       }}>
-      <View style={itCart.container}>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('ProductDetail', {index: item?.product_id?._id})
+        }
+        style={itCart.container}>
         <View style={[itCart.viewContainer, appst.rowStart]}>
           <TouchableOpacity onPress={handlePress}>
             <Image
@@ -228,7 +236,7 @@ const ItemCart = ({
             </View>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     </Swipeable>
   );
 };

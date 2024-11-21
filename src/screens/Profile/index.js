@@ -51,35 +51,58 @@ const ProfileScreen = () => {
           />
         </TouchableOpacity>
       </View>
-      <View style={styles.myGadget}>
+
+      <TouchableOpacity
+        onPress={() => navigation.navigate('HomeWallet')}
+        style={styles.myGadget}>
         <Image
           style={styles.ic_mygadget}
-          source={require('../../assets/icons/ic_mygadget.png')}
+          source={require('../../assets/icons/icons8-wallet.png')}
         />
-        <Text style={styles.text1}>{t('profiles.bag')}</Text>
-      </View>
+        <Text style={styles.text1}>{t('profiles.wallet')}</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Voucher')}
+        style={styles.myGadget}>
+        <Image
+          style={styles.ic_mygadget}
+          source={require('../../assets/icons/icons8-voucher-24.png')}
+        />
+        <Text style={styles.text1}>{t('checkout.vouchers')}</Text>
+      </TouchableOpacity>
+
       <View style={styles.childsMyGadget}>
         <ChildItemGadget
-          onPress={() => navigation.navigate('MyWallet')}
-          iconSource={require('../../assets/icons/ic_mywallet.png')}
-          text={t('profiles.wallet')}
+          onPress={() =>
+            navigation.navigate('OrderScreen', {initialRoute: t('orders.pay')})
+          }
+          iconSource={require('../../assets/icons/icons8-wallet-24.png')}
+          text={t('orders.pay')}
         />
         <ChildItemGadget
-          onPress={() => navigation.navigate('Vouchers')}
-          iconSource={require('../../assets/icons/ic_myvoucher.png')}
-          text={t('checkout.vouchers')}
+          onPress={() =>
+            navigation.navigate('OrderScreen', {initialRoute: t('orders.ship')})
+          }
+          iconSource={require('../../assets/icons/icons8-box-24.png')}
+          text={t('orders.ship')}
         />
         <ChildItemGadget
-          onPress={() => navigation.navigate('MiniGame')}
-          iconSource={require('../../assets/icons/ic_minigame.png')}
-          text={t('profiles.game')}
+          onPress={() =>
+            navigation.navigate('OrderScreen', {
+              initialRoute: t('orders.completed'),
+            })
+          }
+          iconSource={require('../../assets/icons/icons8-delivered-24.png')}
+          text={t('orders.completed')}
         />
         <ChildItemGadget
-          onPress={() => navigation.navigate('Rate')}
-          iconSource={require('../../assets/icons/ic_torate.png')}
+          onPress={() => navigation.navigate('MyRating')}
+          iconSource={require('../../assets/icons/icons8-star-24.png')}
           text={t('profiles.rate')}
         />
       </View>
+
       <FlatList
         data={PROFILE}
         renderItem={renderItem}

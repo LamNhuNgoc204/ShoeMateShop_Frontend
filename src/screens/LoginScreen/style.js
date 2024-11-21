@@ -6,8 +6,10 @@ import {colors} from '../../constants/colors';
 export default styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: spacing.lg,
+    paddingHorizontal: spacing.lg,
     backgroundColor: 'white',
+    paddingBottom: 20,
+    paddingTop: 10,
   },
   text1: {
     fontSize: sizes.size32,

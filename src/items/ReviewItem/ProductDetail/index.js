@@ -11,7 +11,7 @@ const ItemReview = () => {
       <View style={appst.rowStart}>
         <Image
           style={pddtit.avatar}
-          source={require('../../../assets/images/avatar.png')}
+          source={require('../../../assets/images/placeholder_image.jpg')}
         />
         <View>
           <Text style={pddtit.name}>User 1</Text>
@@ -47,11 +47,11 @@ const ItemReview = () => {
                 uri: 'https://media.istockphoto.com/id/1020236082/vi/video/c%C3%B4-g%C3%A1i-ng%E1%BB%93i-trong-%C4%91%C6%B0%E1%BB%9Dng-m%C3%B2n-ch%E1%BB%9D-%C4%91%E1%BB%A3i-m%E1%BB%99t-ng%C6%B0%E1%BB%9Di-ph%E1%BB%A5-n%E1%BB%AF-v%C3%A0-c%C3%B4-b%E1%BA%AFt-%C4%91%E1%BA%A7u-%C4%91i-b%E1%BB%99.mp4?s=mp4-640x640-is&k=20&c=5i-gC0iJ-Z3Qa1QQ5U2AcOfwGdmDCeTZfBml_GDpVzI=',
               }}
               style={pddtit.image}
-              controls={true} 
-              resizeMode="cover" 
+              controls={true}
+              resizeMode="cover"
             />
             <FlatList
-            style={pddtit.flat}
+              style={pddtit.flat}
               data={[1, 2, 3, 4]}
               horizontal
               scrollEnabled={false}

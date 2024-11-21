@@ -59,5 +59,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<!-- chạy dòng này khi thêm mới: adb shell am start -a android.intent.action.VIEW -d "shoeMate://callback" -->
+            <!-- <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="shoeMate" android:host="callback" /> -->
+        </intent-filter>
+
+        <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data
+          android:host="app"
+          android:scheme="demo" />
+      </intent-filter>
+      </activity>
     </application>
 </manifest>

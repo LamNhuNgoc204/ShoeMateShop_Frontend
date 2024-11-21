@@ -29,10 +29,8 @@ const ForgotPassWord = () => {
         <Text style={styles.text1}>{t('titles.forgot_password')}</Text>
         <Text style={styles.text2}>{t('titles.sub_forgot_password')}</Text>
       </View>
-      <View style={{marginTop: spacing.xl}}>
+      <View style={styles.view}>
         <CustomTextInput placeholder={t('form_input.placeholder_email')} />
-      </View>
-      <View>
         <CustomedButton
           title={t('home.reset_pass')}
           titleStyle={styles.textPress}

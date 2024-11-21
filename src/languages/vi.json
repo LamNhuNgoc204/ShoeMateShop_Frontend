@@ -70,9 +70,7 @@
     "term": "Điều khoản giao dịch chung của cửa hàng"
   },
   "profiles": {
-    "bag": "Thiết bị của tôi",
     "wallet": "Ví của tôi",
-    "game": "Trò chơi",
     "rate": "Đánh giá",
     "viewed": "Đã xem gần đây",
     "rating": "Đánh giá của tôi",
@@ -155,7 +153,7 @@
     "sub_forgot_password": "Nhập tài khoản email của bạn để đặt lại mật khẩu",
     "otp": "Xác minh OTP",
     "sub_otp": "Vui lòng kiểm tra email để nhận mã xác minh",
-    "resend_code": "Gửi lại mã đến",
+    "resend_code": "Gửi lại mã OTP",
     "new_pass": "Mật khẩu mới",
     "sub_newpass": "Vui lòng nhập mật khẩu mới",
     "address": "Địa chỉ"
@@ -190,7 +188,7 @@
     "receiver": "Người nhận"
   },
   "orders": {
-    "pay": "Chờ thanh toán",
+    "pay": "Chờ xác nhận",
     "ship": "Chờ giao hàng",
     "receive": "Chờ nhận hàng",
     "cancel": "Đã hủy",
@@ -226,7 +224,7 @@
     "reason": "Lý do",
     "received": "Đã nhận được hàng",
     "creating_order": "Đang tạo đơn hàng",
-    "delivered":"Đơn hàng đã được giao thành công"
+    "delivered": "Đơn hàng đã được giao thành công"
   },
   "rating": {
     "review": "Đánh giá của tôi",
@@ -253,7 +251,11 @@
     "promotion": "Khuyến mãi",
     "message": "Tin nhắn",
     "system": "Hệ thống",
-    "sub_title": "Bạn không có thông báo"
+    "sub_title": "Bạn không có thông báo",
+    "send_otp_success": "Đã gửi lại OPT,vui lòng kiểm tra email",
+    "send_otp_error": "Gửi otp thất bại",
+    "verify_success": "Bạn đã xác thực tài khoản thành công!",
+    "verify_error": "Xác minh tài khoản thất bại!"
   },
   "messages": {
     "title": "Tin nhắn",
@@ -292,5 +294,13 @@
   },
   "common": {
     "warning": "Cảnh báo"
+  },
+  "onboard": {
+    "buttonTitle1": "Bắt đầu",
+    "buttonTitle2": "Tiếp theo",
+    "title1": "Khởi đầu hành trình\ncùng ShoeMate",
+    "content1": "Kết hợp hoàn hảo giữa hiệu suất thể thao,\nphong cách và sự linh hoạt. Khám phá ngay!",
+    "title2": "Nâng tầm cuộc chơi",
+    "content2": "Khám phá các thương hiệu nổi tiếng\ndành riêng cho những nhà vô địch như bạn."
   }
 }

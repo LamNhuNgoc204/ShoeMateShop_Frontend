@@ -4,6 +4,7 @@ import onBoardStyle from './style';
 import appst from '../../constants/AppStyle';
 import PagerView from 'react-native-pager-view';
 import {CustomedButton} from '../../components';
+import {useTranslation} from 'react-i18next';
 
 const renderPage = key => {
   let backg;
@@ -22,34 +23,36 @@ const renderPage = key => {
 };
 
 const renderContent = (page, onButtonPress) => {
+  const {t} = useTranslation();
+
   let content = {};
   if (page === 0) {
     content = {
-      buttonTitle: 'Get Started',
+      buttonTitle: 'onboard.buttonTitle1',
       indicator: require('../../assets/images/indi1.png'),
     };
   } else if (page === 1) {
     content = {
-      buttonTitle: 'Next',
+      buttonTitle: 'onboard.buttonTitle2',
       indicator: require('../../assets/images/indi2.png'),
-      title: 'Let’s Start Journey\nWith Nike',
-      content: 'Smart, Gorgeous & Fashionable\nCollection Explor Now',
+      title: 'onboard.title1',
+      content: 'onboard.content1',
     };
   } else {
     content = {
-      buttonTitle: 'Next',
+      buttonTitle: 'onboard.buttonTitle2',
       indicator: require('../../assets/images/indi3.png'),
-      title: 'You Have the\nPower To',
-      content: 'There Are Many Beautiful And Attractive\nPlants To Your Room',
+      title: 'onboard.title2',
+      content: 'onboard.content2',
     };
   }
 
   return (
     <View style={onBoardStyle.contentContainer}>
-      <Text style={onBoardStyle.title}>{content.title}</Text>
-      <Text style={onBoardStyle.content}>{content.content}</Text>
+      <Text style={onBoardStyle.title}>{t(content.title)}</Text>
+      <Text style={onBoardStyle.content}>{t(content.content)}</Text>
       <Image style={onBoardStyle.indicator} source={content.indicator} />
-      <CustomedButton onPress={onButtonPress} title={content.buttonTitle} />
+      <CustomedButton onPress={onButtonPress} title={t(content.buttonTitle)} />
     </View>
   );
 };

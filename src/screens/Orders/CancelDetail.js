@@ -8,7 +8,6 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
-import appst from '../../constants/AppStyle';
 import Header from '../../components/Header';
 import {useTranslation} from 'react-i18next';
 import {colors} from '../../constants/colors';
@@ -17,8 +16,6 @@ import {oddt} from '../OrderDetail/style';
 import {formatDate} from '../../utils/functions/formatData';
 import odit from '../../items/OrderItem/style';
 import {useSelector} from 'react-redux';
-import {odst} from './style';
-import ProductItem from '../../items/ProductItem';
 import ProductList from '../Product/ProductList';
 
 const CancelDetail = ({navigation, route}) => {

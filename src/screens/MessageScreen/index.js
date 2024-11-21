@@ -112,7 +112,9 @@ const renderToolbar = ({ onBack, name, avatar }) => {
         <Image
           style={[messageScreenStyle.image40]}
           source={
-            avatar ? { uri: avatar } : require('../../assets/images/avatar.png')
+            avatar
+              ? {uri: avatar}
+              : require('../../assets/images/placeholder_image.jpg')
           }
         />
       </View>
