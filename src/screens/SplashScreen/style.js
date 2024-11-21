@@ -4,12 +4,12 @@ const splashStyle = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#C2E8FD',
-    paddingBottom: 200,
+    backgroundColor: '#1483C2',
   },
   logo: {
-    width: 250,
-    height: 250,
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
     marginTop: 100,
   },
 });
