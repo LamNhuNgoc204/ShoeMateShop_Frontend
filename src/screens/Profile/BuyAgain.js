@@ -51,8 +51,7 @@ const BuyAgain = () => {
       />
       <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
         <View style={{flex: 1, marginTop: 10}}>
-          {/* {loading ? ( */}
-          {
+          {loading ? (
             products.length > 0 ? (
               <FlatList
                 data={products}
@@ -74,10 +73,9 @@ const BuyAgain = () => {
                 <Text style={st.text}>Chưa có sản phẩm</Text>
               </View>
             )
-            //   {/* ) : (
-            //     <RecentlySkeleton />
-            //   ) */}
-          }
+          ) : (
+            <RecentlySkeleton />
+          )}
         </View>
 
         <ProductList listProduct={listProduct} />
