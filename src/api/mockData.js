@@ -5,6 +5,12 @@ export const LANGUAGES = [
 ];
 
 export const PROFILE = [
+  // {
+  //   id: '5',
+  //   iconSource: require('../assets/icons/ic_mywallet.png'),
+  //   text: 'profiles.wallet',
+  //   navigateTo: 'wallet',
+  // },
   {
     id: '3',
     iconSource: require('../assets/icons/ic_orderhistory.png'),
@@ -35,7 +41,7 @@ export const PROFILE = [
     id: '6',
     iconSource: require('../assets/icons/shopping_bag.png'),
     text: 'profiles.buy_again',
-    navigateTo: 'InformationSecurity',
+    navigateTo: 'BuyAgain',
   },
   {
     id: '7',
@@ -71,14 +77,18 @@ export const SETTING = [
     text: 'profiles.help',
     navigateTo: 'Help',
   },
-  {id: '6', text: 'profiles.about', navigateTo: 'Size'},
+  {id: '6', text: 'profiles.about', navigateTo: 'About'},
   {
     id: '10',
     // iconSource: require('../assets/icons/ic_informationsecurity.png'),
     text: 'profiles.security',
-    navigateTo: 'InformationSecurity',
+    navigateTo: 'Privacy',
   },
-  {id: '3', text: 'profiles.standards', navigateTo: 'PaymentMethod'},
+  {id: '3', text: 'profiles.standards', navigateTo: 'CommunityStandards'},
   {id: '7', text: 'profiles.term', navigateTo: 'TermsAndConditions'},
-  {id: '8', text: 'profiles.delete_acc', navigateTo: 'TermsAndConditions'},
+  {
+    id: '8',
+    text: 'profiles.delete_acc',
+    navigateTo: 'DeleteAccountScreen',
+  },
 ];

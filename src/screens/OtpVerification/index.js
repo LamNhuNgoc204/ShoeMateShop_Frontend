@@ -1,4 +1,11 @@
-import {Text, View, Image, TouchableOpacity, TextInput, Alert, ToastAndroid} from 'react-native';
+import {
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  ToastAndroid,
+} from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import appst from '../../constants/AppStyle';
 import {spacing} from '../../constants';
@@ -13,7 +20,7 @@ const OtpVerification = () => {
   const {t} = useTranslation();
   const navigation = useNavigation();
   const route = useRoute();
-  const { email } = route.params;
+  const {email} = route.params || '';
   const [otp, setOtp] = useState(['', '', '', '']);
   const [completeOtp, setCompleteOtp] = useState('');
   const inputs = useRef([]);
@@ -31,12 +38,15 @@ const OtpVerification = () => {
 
   const handleResendOtp = async () => {
     try {
-      await AxiosInstance().post('auth/resend-otp', { email });
-      ToastAndroid.show("Đã gửi lại OPT,vui lòng kiểm tra email",ToastAndroid.SHORT);
+      await AxiosInstance().post('auth/resend-otp', {email});
+      ToastAndroid.show(
+        t('notifications.send_otp_success'),
+        ToastAndroid.SHORT,
+      );
       setResendOtp(true);
-      setTimer(60); // Reset timer to 60 seconds
+      setTimer(60);
     } catch (error) {
-      ToastAndroid.show("Gửi otp thất bại",ToastAndroid.SHORT);
+      ToastAndroid.show(t('notifications.send_otp_error'), ToastAndroid.SHORT);
     }
   };
 
@@ -60,21 +70,27 @@ const OtpVerification = () => {
         email,
         otpCode: completeOtp,
       });
-      
+
       if (response.status && response.data.token) {
         await AsyncStorage.setItem('token', response.data.token);
-        ToastAndroid.show("Bạn đã xác thực tài khoản thành công", ToastAndroid.SHORT);
-        navigation.navigate('HomeScreen');
+        ToastAndroid.show(
+          t('notifications.verify_success'),
+          ToastAndroid.SHORT,
+        );
+        navigation.navigate('BottomNav');
       }
     } catch (error) {
-      ToastAndroid.show("Xác minh tài khoản thất bại " , ToastAndroid.SHORT);
+      ToastAndroid.show(t('notifications.verify_error'), ToastAndroid.SHORT);
     }
   };
 
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Image style={appst.icon40} source={require('../../assets/icons/ic_back.png')} />
+        <Image
+          style={appst.icon40}
+          source={require('../../assets/icons/ic_back.png')}
+        />
       </TouchableOpacity>
       <View style={[appst.center]}>
         <Text style={styles.text1}>{t('titles.otp')}</Text>
@@ -96,13 +112,24 @@ const OtpVerification = () => {
         ))}
       </View>
       <View>
-        <CustomedButton title={'Verify'} titleStyle={styles.textPress} onPress={handleVerify} style={styles.press} />
+        <CustomedButton
+          title={t('buttons.btn_verify')}
+          titleStyle={styles.textPress}
+          onPress={handleVerify}
+          style={styles.press}
+        />
       </View>
       <View style={[appst.rowCenter, {marginTop: spacing.xm}]}>
-        <TouchableOpacity onPress={handleResendOtp} disabled={resendOtp && timer > 0}>
+        <TouchableOpacity
+          onPress={handleResendOtp}
+          disabled={resendOtp && timer > 0}>
           <Text style={styles.text4}>{t('titles.resend_code')}</Text>
         </TouchableOpacity>
-        {resendOtp && <Text style={styles.text4}>{` 0:${timer < 10 ? `0${timer}` : timer}`}</Text>}
+        {resendOtp && (
+          <Text style={styles.text4}>{` 0:${
+            timer < 10 ? `0${timer}` : timer
+          }`}</Text>
+        )}
       </View>
     </View>
   );

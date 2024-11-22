@@ -16,7 +16,7 @@ const ToRate = ({navigation}) => {
       try {
         const response = await getUnreviewedProductsInOrder();
         if (response) {
-          setRating(response);
+          setRating(response?.reverse());
           setLoading(true);
         }
       } catch (error) {
@@ -27,7 +27,7 @@ const ToRate = ({navigation}) => {
     fetchData();
   }, []);
 
-  // console.log('rating: ', rating);
+  console.log('rating: ', rating);
 
   return (
     <View style={appst.container}>

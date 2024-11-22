@@ -25,6 +25,7 @@
         <meta-data  android:name="com.dieam.reactnativepushnotification.notification_color"
                     android:resource="@color/white"/> <!-- or @android:color/{name} to use a standard color -->
 
+<<<<<<< HEAD
         <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationActions" 
                   android:exported="true"/>
         <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher"
@@ -59,5 +60,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+=======
+<!-- chạy dòng này khi thêm mới: adb shell am start -a android.intent.action.VIEW -d "shoeMate://callback" -->
+            <!-- <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="shoeMate" android:host="callback" /> -->
+        </intent-filter>
+
+        <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data
+          android:host="app"
+          android:scheme="demo" />
+      </intent-filter>
+      </activity>
+>>>>>>> 0cf23dbc438be8b982161e55bcbe5fa426fb7959
     </application>
 </manifest>

@@ -31,7 +31,8 @@
     "btn_send": "Send",
     "btn_next": "Next",
     "btn_try_again": "Try again",
-    "btn_start_order": "Start ordering"
+    "btn_start_order": "Start ordering",
+    "home": "Home"
   },
   "home": {
     "list_product": "Products for you",
@@ -64,12 +65,12 @@
     "shipping_discount": "Shipping Discount Subtotal",
     "payment": "Total Payment",
     "detail": "By clicking \"Place Order\", you are agreeing to",
-    "term": "Shop General Transaction Terms"
+    "term": "Shop General Transaction Terms",
+    "checkout_success": "Checkout successfully",
+    "checkout_success_des": "Protect your rights with ShoeMate - only receive goods & pay when you receive the goods"
   },
   "profiles": {
-    "bag": "My gadget",
     "wallet": "My Wallet",
-    "game": "Mini game",
     "rate": "To Rate",
     "viewed": "Recently Viewed",
     "rating": "My Rating",
@@ -246,7 +247,11 @@
     "promotion": "Promotion",
     "message": "Message",
     "system": "System",
-    "sub_title": "You have no notifications"
+    "sub_title": "You have no notifications",
+    "send_otp_success": "OTP has been resent, please check your email",
+    "send_otp_error": "Failed to send OTP",
+    "verify_success": "Your account has been successfully verified!",
+    "verify_error": "Account verification failed!"
   },
   "search": {
     "product": " products found",
@@ -256,5 +261,13 @@
     "rate": "Rate",
     "min_price": "Min",
     "max_price": "Max"
+  },
+  "onboard": {
+    "buttonTitle1": "Get Started",
+    "buttonTitle2": "Next",
+    "title1": "Kickstart Your Adventure\nwith ShoeMate",
+    "content1": "Experience a perfect blend of style, comfort,\nand performance. Discover the collection now!",
+    "title2": "Unleash Your Potential",
+    "content2": "Step into the world of iconic sports brands\ndesigned to elevate your game and fit your lifestyle."
   }
 }

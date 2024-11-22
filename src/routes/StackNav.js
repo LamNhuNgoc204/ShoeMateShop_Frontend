@@ -41,13 +41,25 @@ import ChooseLanguage from '../screens/Languages';
 import CancelDetail from '../screens/Orders/CancelDetail';
 import MultiProductReviewForm from '../screens/Review/MultiProductReviewForm';
 import ProductReviews from '../screens/Review/ProductReviews';
+import HelpScreen from '../screens/SettingScreen/Other/HelpScreen';
+import AboutScreen from '../screens/SettingScreen/Other/AboutScreen';
+import PrivacyScreen from '../screens/SettingScreen/Other/PrivacyScreen';
+import CommunityStandardsScreen from '../screens/SettingScreen/Other/CommunityStandardsScreen';
+import TermsAndConditionsScreen from '../screens/SettingScreen/Other/TermsAndConditionsScreen';
+import AccountDeletionReasonScreen from '../screens/SettingScreen/DeleteAccountDetail/AccountDeletionReasonScreen';
+import AccountVerificationScreen from '../screens/SettingScreen/DeleteAccountDetail/AccountVerificationScreen ';
+import ConsequencesScreen from '../screens/SettingScreen/DeleteAccountDetail/ConsequencesScreen ';
+import DeletionCompletedScreen from '../screens/SettingScreen/DeleteAccountDetail/DeletionCompletedScreen ';
+import FinalConfirmationScreen from '../screens/SettingScreen/DeleteAccountDetail/FinalConfirmationScreen ';
+import DeleteAccountScreen from '../screens/SettingScreen/Other/DeleteAccountScreen ';
+import BuyAgain from '../screens/Profile/BuyAgain';
 
 const Stack = createNativeStackNavigator();
 
 const StackNav = () => {
   return (
     <Stack.Navigator
-      initialRouteName="LoginScreen"
+      initialRouteName="SplashScreen"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="SplashScreen" component={SplashScreen} />
       <Stack.Screen name="OnBoardScreen" component={OnBoardScreen} />
@@ -107,6 +119,42 @@ const StackNav = () => {
       <Stack.Screen
         name="MultiProductReviewForm"
         component={MultiProductReviewForm}
+      />
+      <Stack.Screen name="Help" component={HelpScreen} />
+      <Stack.Screen name="About" component={AboutScreen} />
+      <Stack.Screen name="Privacy" component={PrivacyScreen} />
+      <Stack.Screen
+        name="CommunityStandards"
+        component={CommunityStandardsScreen}
+      />
+      <Stack.Screen
+        name="TermsAndConditions"
+        component={TermsAndConditionsScreen}
+      />
+      <Stack.Screen
+        name="AccountDeletionReasonScreen"
+        component={AccountDeletionReasonScreen}
+      />
+      <Stack.Screen
+        name="AccountVerificationScreen"
+        component={AccountVerificationScreen}
+      />
+      <Stack.Screen name="ConsequencesScreen" component={ConsequencesScreen} />
+      <Stack.Screen
+        name="DeletionCompletedScreen"
+        component={DeletionCompletedScreen}
+      />
+      <Stack.Screen
+        name="FinalConfirmationScreen"
+        component={FinalConfirmationScreen}
+      />
+      <Stack.Screen
+        name="DeleteAccountScreen"
+        component={DeleteAccountScreen}
+      />
+      <Stack.Screen
+        name="BuyAgain"
+        component={BuyAgain}
       />
     </Stack.Navigator>
   );

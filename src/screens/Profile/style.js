@@ -41,7 +41,7 @@ export default styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: spacing.sm,
     paddingStart: spacing.lg,
-    marginVertical: 4,
+    marginTop: 4,
   },
   ic_mygadget: {
     width: sizes.size32,
@@ -60,5 +60,6 @@ export default styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 10,
     paddingVertical: 8,
+    marginTop: 4,
   },
 });

@@ -29,7 +29,7 @@ const MyReviews = () => {
     fetchData();
   }, []);
 
-  // console.log('user reiew', data);
+  console.log('user reiew', data);
 
   return (
     <View style={[appst.container, mrvit.container]}>
