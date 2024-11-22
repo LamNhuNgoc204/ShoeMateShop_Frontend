@@ -306,5 +306,20 @@
     "content1": "Kết hợp hoàn hảo giữa hiệu suất thể thao,\nphong cách và sự linh hoạt. Khám phá ngay!",
     "title2": "Nâng tầm cuộc chơi",
     "content2": "Khám phá các thương hiệu nổi tiếng\ndành riêng cho những nhà vô địch như bạn."
+  },
+  "help": {
+    "title": "Trợ giúp"
+  },
+  "privacy": {
+    "title": "Chính sách bảo mật thông tin"
+  },
+  "about": {
+    "title": "Giới thiệu"
+  },
+  "community": {
+    "title": "Tiêu chuẩn cộng đồng"
+  },
+  "termsandcondition": {
+    "title": "Quy luật và điều khoản"
   }
 }

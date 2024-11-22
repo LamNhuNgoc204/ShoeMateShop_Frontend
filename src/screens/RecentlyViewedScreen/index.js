@@ -3,12 +3,10 @@ import {
   Image,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import appst from '../../constants/AppStyle';
-import {spacing} from '../../constants';
 import {colors} from '../../constants/colors';
 import {fonts} from '../../constants/fonts';
 import {useNavigation} from '@react-navigation/native';

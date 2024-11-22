@@ -2,11 +2,9 @@ import React from 'react';
 import {
   View,
   Text,
-  Image,
   FlatList,
   TouchableOpacity,
   ToastAndroid,
-  ScrollView,
 } from 'react-native';
 import appst from '../../constants/AppStyle';
 import {useNavigation} from '@react-navigation/native';
@@ -14,7 +12,7 @@ import RenderSettingItem from './ItemSetting/RenderSettingItem';
 import styles from './style';
 import {useTranslation} from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {logout} from '../../redux/reducer/userReducer';
+import {logout, setAvatarUser} from '../../redux/reducer/userReducer';
 import {useDispatch} from 'react-redux';
 import {SETTING} from '../../api/mockData';
 import Header from '../../components/Header';
@@ -27,6 +25,11 @@ const SettingScreen = () => {
   const Logout = async () => {
     try {
       dispatch(logout());
+      dispatch(
+        setAvatarUser(
+          'https://i.pinimg.com/enabled_hi/564x/d4/35/42/d435423c9386e708c678b7663656b9c0.jpg',
+        ),
+      );
       await AsyncStorage.removeItem('token');
       navigation.replace('LoginScreen');
     } catch (error) {
