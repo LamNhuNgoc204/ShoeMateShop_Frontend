@@ -83,9 +83,6 @@ const StackNav = () => {
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="SettingScreen" component={SettingScreen} />
-      <Stack.Screen name="SetupWallet" component={SetupWallet} />
-      <Stack.Screen name="WalletScreen" component={WalletScreen} />
-      
       <Stack.Screen
         name="RecentlyViewedScreen"
         component={RecentlyViewedScreen}

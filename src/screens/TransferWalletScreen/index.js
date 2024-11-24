@@ -69,13 +69,13 @@ const TransferWalletScreen = () => {
             source={require('../../assets/icons/ic_backwhite.png')}
           />
         </TouchableOpacity>
-        <Text style={styles.title}>Chuyển tiền</Text>
+        <Text style={styles.title}>Deposit</Text>
         <View style={{width: 40}} />
       </View>
       <View style={styles.viewBody}>
         <View style={styles.boxwallet}>
-          <Text style={styles.textwallet}>Số dư</Text>
-          <Text style={styles.textmoney}>100.000 VNĐ</Text>
+          <Text style={styles.textwallet}>Your wallet</Text>
+          <Text style={styles.textmoney}>1000$</Text>
         </View>
         <View style={{marginTop: spacing.lg}}>
           <Text style={styles.lable}>Email người nhận</Text>
@@ -87,7 +87,7 @@ const TransferWalletScreen = () => {
           <TextInput editable={false} value={name} placeholder="Tên người nhận" style={styles.input}/>
         </View>
         <View style={{marginTop: spacing.lg}}>
-          <Text style={styles.lable}>Số tiền</Text>
+          <Text style={styles.lable}>Amount</Text>
           <TextInput
             placeholder="Nhập số tiền cần chuyển"
             style={styles.input}
@@ -108,7 +108,7 @@ const TransferWalletScreen = () => {
 
         <View style={styles.viewButton}>
           <CustomedButton
-            title={'Chuyển tiền'}
+            title={'Transfer'}
             titleStyle={styles.textPress}
             onPress={handleTransfer}
             style={styles.press}
