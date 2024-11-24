@@ -3,13 +3,7 @@ import React from 'react'
 import VoucherBgSvg from './VoucherBg'
 import style from './style'
 
-const ButtonClaim = ({isClaimed}) => {
-  return (
-    <TouchableOpacity style={[style.buttonClaimContainer, isClaimed && style.bgClaimed]}>
-      <Text style={[style.buttonClaimText, isClaimed && style.textClaimed]}>Claim</Text>
-    </TouchableOpacity>
-  )
-}
+
 
 const VoucherItem = ({ortherStyle}) => {
   return (
@@ -17,19 +11,21 @@ const VoucherItem = ({ortherStyle}) => {
       <VoucherBgSvg style={style.svgbg} />
       <View style={style.headerContainer}>
         <Text style={style.voucherTxt}>Voucher</Text>
-        <Text style={style.validText}>Valid Until 5.16.20</Text>
+        <Text style={style.validText}>khả dụng</Text>
       </View>
       <View style={style.bottomView}>
         <View
           style={style.flexRow}
         >
           <Image source={require('../../assets/icons/bag_icon.png')} />
-          <Text style={style.firstPurchase}>First Purchase</Text>
+          <Text style={style.firstPurchase}>Cho đơn từ 50k</Text>
         </View>
 
         <View style={style.headerContainer}>
-          <Text style={style.endow}>5% off for your next order</Text>
-          <ButtonClaim/>
+          <Text style={style.endow}>Giảm 20% tối đa 100k</Text>
+          <TouchableOpacity style={style.buttonClaimContainer}>
+      <Text style={style.buttonClaimText}>Áp dụng</Text>
+    </TouchableOpacity>
         </View>
       </View>
     </View>

@@ -11,9 +11,9 @@ const list = new Array(10).fill(0)
 const SearchSection = () =>  {
   return(
     <View style={style.searchSection}>
-      <TextInput placeholder='Looking Voucher' style={style.inputText}/>
+      <TextInput placeholder='Tìm kiếm vouchers' style={style.inputText}/>
       <TouchableOpacity style={style.buttonSearch}>
-        <Text style={style.btnText}>Search</Text>
+        <Text style={style.btnText}>Tìm kiếm</Text>
       </TouchableOpacity>
     </View>
   )

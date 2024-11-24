@@ -32,17 +32,17 @@ const DepositWalletScreen = () => {
             source={require('../../assets/icons/ic_backwhite.png')}
           />
         </TouchableOpacity>
-        <Text style={styles.title}>Deposit</Text>
+        <Text style={styles.title}>Nạp tiền</Text>
         <View style={{width: 40}} />
       </View>
       <View style={styles.viewBody}>
         <View style={styles.viewInput}>
-          <Text style={styles.label}>Input Top Up Amount</Text>
+          <Text style={styles.label}>Nhập số tiền(vnđ)</Text>
           <View style={styles.inputContainer}>
-            <Text style={styles.dollarSign}>$</Text>
+            <Text style={styles.dollarSign}>₫</Text>
             <TextInput
               style={styles.textInput}
-              placeholder="Enter Amount"
+              placeholder="Số tiền"
               keyboardType="number-pad"
               value={value}
               onChangeText={setValue}
@@ -55,10 +55,10 @@ const DepositWalletScreen = () => {
             </TouchableOpacity>
           </View>
           <Text style={styles.currentBalance}>
-            Current wallet balance: $1.390
+            Số dư hiên tại: 100.000 VND
           </Text>
           <View style={styles.valueButtonsContainer}>
-            {['100', '200', '500'].map(amount => (
+            {['100.000', '200.000', '500.000'].map(amount => (
               <TouchableOpacity
                 key={amount}
                 style={[
@@ -66,7 +66,7 @@ const DepositWalletScreen = () => {
                   value === amount && styles.selectedValueButton,
                 ]}
                 onPress={() => handleValuePress(amount)}>
-                <Text style={styles.valueButtonText}>$ {amount}</Text>
+                <Text style={styles.valueButtonText}> {amount}</Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -78,7 +78,7 @@ const DepositWalletScreen = () => {
           <View style={styles.depositContainer}>
             <TouchableOpacity style={styles.depositButton}>
               <Image source={require('../../assets/images/vcb.png')} />
-              <Text style={styles.depositButtonText}>Bank Transfer</Text>
+              <Text style={styles.depositButtonText}>Chuyển khoản từ ngân hàng</Text>
             </TouchableOpacity>
             <Image
               style={styles.rightArrow}
@@ -91,8 +91,8 @@ const DepositWalletScreen = () => {
           />
           <View style={styles.depositContainer}>
             <TouchableOpacity style={styles.depositButton}>
-              <Image source={require('../../assets/images/momo.png')} />
-              <Text style={styles.depositButtonText}>Momo</Text>
+              <Image source={require('../../assets/images/vnpay.png')} style={styles.depositIcon} />
+              <Text style={styles.depositButtonText}>VN Pay</Text>
             </TouchableOpacity>
             <Image
               style={styles.rightArrow}
@@ -102,22 +102,22 @@ const DepositWalletScreen = () => {
         </View>
         <View style={styles.summaryContainer}>
           <View style={appst.rowCenter}>
-            <Text>To Up Amount</Text>
-            <Text>$1500</Text>
+            <Text>Nạp tiền</Text>
+            <Text>200.000 VNĐ</Text>
           </View>
           <View style={appst.rowCenter}>
-            <Text style={styles.totalcheckout}>Top Up Charge</Text>
-            <Text style={styles.totalcheckout}>$1500</Text>
+            <Text style={styles.totalcheckout}>Tổng thanh toán</Text>
+            <Text style={styles.totalcheckout}>200.000 VNĐ</Text>
           </View>
         </View>
         <View style={styles.bottomContainer}>
           <Text style={styles.text}>
-            By clicking on “Top Up Now”, you agree to the{' '}
-            <Text style={styles.TermOfUse}>Term of Use</Text> and{' '}
-            <Text style={styles.TermOfUse}>Privacy Policy</Text> of Shop
+          Bằng cách nhấp vào “Nạp tiền ngay”, bạn đồng ý với{' '}
+            <Text style={styles.TermOfUse}>Điều khoản</Text> và {' '}
+            <Text style={styles.TermOfUse}>Chính sách bảo mật</Text> của ShoeMate
           </Text>
           <CustomedButton
-            title={'To Up Now'}
+            title={'Nạp tiền ngay'}
             titleStyle={styles.textPress}
             onPress={() => console.log('To Up Now')}
             style={styles.press}

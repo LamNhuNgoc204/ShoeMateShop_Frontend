@@ -9,6 +9,10 @@ export default styles = StyleSheet.create({
         padding: spacing.lg,
         paddingBottom: 0,
       },
+      depositIcon: {
+        width: 50,
+        height: 50,
+      },
       title: {
         fontSize: 20,
         fontWeight: 'semibold',
@@ -87,7 +91,7 @@ export default styles = StyleSheet.create({
         borderColor: colors.background_blue,
       },
       valueButtonText: {
-        fontSize: sizes.size18,
+        fontSize: sizes.size16,
         color: colors.text_black2B,
       },
       line: {

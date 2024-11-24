@@ -5,19 +5,23 @@ import appst from '../../constants/AppStyle';
 import HistoryItem from './HistoryItem';
 import styles from './style';
 import {useTranslation} from 'react-i18next';
-
 const HomeWallet = ({navigation}) => {
   const {t} = useTranslation();
 
   const historyData = [
-    {id: '1', title: 'Payment', date: '17/07/2024', amount: -5100},
-    {id: '2', title: 'Deposit', date: '17/07/2024', amount: 5000},
-    {id: '3', title: 'Use point', date: '17/07/2024', amount: -500},
-    {id: '4', title: 'Received', date: '17/07/2024', amount: 5000},
-    {id: '5', title: 'Payment', date: '17/07/2024', amount: -5100},
-    {id: '6', title: 'Deposit', date: '17/07/2024', amount: 5000},
-    {id: '7', title: 'Use point', date: '17/07/2024', amount: -500},
+    {id: '1', title: 'Thanh toán', date: '17/07/2024', amount: -5100},
+    {id: '2', title: 'Nạp tiền', date: '17/07/2024', amount: 5000},
+    {id: '4', title: 'Nhận tiền', date: '17/07/2024', amount: 5000},
+    {id: '5', title: 'Thanh toán', date: '17/07/2024', amount: -5100},
+    {id: '6', title: 'Nạp tiền', date: '17/07/2024', amount: 5000},
+   
   ];
+  const HandleDepositWallet = () => {
+    navigation.navigate('DepositWalletScreen');
+  };
+  const HandleTransferWallet = () => {
+    navigation.navigate('TransferWalletScreen');
+  };
 
   const renderItem = ({item}) => (
     <HistoryItem title={item.title} date={item.date} amount={item.amount} />
@@ -40,15 +44,19 @@ const HomeWallet = ({navigation}) => {
         <View style={appst.rowCenter}>
           <View>
             <Text style={styles.balance}>{t('wallets.balance')}</Text>
-            <Text style={styles.price}>6000$</Text>
-            <Text style={styles.point}>300 {t('wallets.point')}</Text>
+            <Text style={styles.price}>600.000 VNĐ</Text>
+            
           </View>
           <View>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button}
+             onPress={HandleDepositWallet}>
+           
               <Text style={styles.buttonText}>{t('wallets.deposit')}</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText}>{t('wallets.transfer')}</Text>
+            <TouchableOpacity style={styles.button}
+            onPress={HandleTransferWallet}>
+             
+              <Text style={styles.buttonText}>Chuyển tiền</Text>
             </TouchableOpacity>
           </View>
         </View>

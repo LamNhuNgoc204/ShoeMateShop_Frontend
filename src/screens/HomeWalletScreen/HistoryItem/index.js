@@ -17,7 +17,7 @@ const HistoryItem = ({ title, date, amount }) => {
           <Text style={styles.datehistory}>{date}</Text>
         </View>
         <Text style={isPositive ? styles.priceplushistory : styles.priceminushistory}>
-          {formattedAmount}{showDollarSign ? '$' : ''}
+          {formattedAmount}{showDollarSign ? 'VNĐ' : ''}
         </Text>
       </View>
       <Image

@@ -70,20 +70,20 @@ const TransferWalletScreen = () => {
             source={require('../../assets/icons/ic_backwhite.png')}
           />
         </TouchableOpacity>
-        <Text style={styles.title}>Deposit</Text>
+        <Text style={styles.title}>Chuyển tiền</Text>
         <View style={{width: 40}} />
       </View>
       <View style={styles.viewBody}>
         <View style={styles.boxwallet}>
-          <Text style={styles.textwallet}>Your wallet</Text>
-          <Text style={styles.textmoney}>1000$</Text>
+          <Text style={styles.textwallet}>Số dư</Text>
+          <Text style={styles.textmoney}>100.000 VNĐ</Text>
         </View>
         <View style={styles.selectListContainer}>
           <SelectList
             setSelected={setSelected}
             data={data}
             onSelect={() => console.log('onSelect')}
-            placeholder="Mobile number"
+            placeholder="Email người nhận"
             boxStyles={styles.selectListBox}
             inputStyles={styles.selectListInput}
             dropdownStyles={styles.selectListDropdown}
@@ -91,20 +91,20 @@ const TransferWalletScreen = () => {
         </View>
 
         <View style={{marginTop: spacing.lg}}>
-          <Text style={styles.lable}>Reciever</Text>
-          <TextInput value={name} placeholder="Name" style={styles.input} />
+          <Text style={styles.lable}>Tên người nhận</Text>
+          <TextInput value={name} placeholder="Trinh Ngoc Duc" style={styles.input}/>
         </View>
         <View style={{marginTop: spacing.lg}}>
-          <Text style={styles.lable}>Amount</Text>
+          <Text style={styles.lable}>Số tiền</Text>
           <TextInput
-            placeholder="Amount"
+            placeholder="200.000"
             style={styles.input}
             keyboardType="numeric"
           />
         </View>
         <View style={styles.viewButton}>
           <CustomedButton
-            title={'Transfer'}
+            title={'Chuyển tiền'}
             titleStyle={styles.textPress}
             onPress={handleTransfer}
             style={styles.press}
