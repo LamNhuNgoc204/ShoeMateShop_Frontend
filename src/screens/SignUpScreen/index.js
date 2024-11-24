@@ -54,7 +54,7 @@ const SignUpScreen = () => {
       })
       .catch(error => {
         ToastAndroid.show(
-         error.message,
+          'Register failed: ' + error.message,
           ToastAndroid.SHORT,
         );
       });

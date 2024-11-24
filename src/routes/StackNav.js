@@ -41,15 +41,13 @@ import ChooseLanguage from '../screens/Languages';
 import CancelDetail from '../screens/Orders/CancelDetail';
 import MultiProductReviewForm from '../screens/Review/MultiProductReviewForm';
 import ProductReviews from '../screens/Review/ProductReviews';
-import SetupWallet from '../screens/WalletSetUp';
-import WalletScreen from '../screens/HomeWalletScreen';
 
 const Stack = createNativeStackNavigator();
 
 const StackNav = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Voucher"
+      initialRouteName="LoginScreen"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="SplashScreen" component={SplashScreen} />
       <Stack.Screen name="OnBoardScreen" component={OnBoardScreen} />
@@ -71,9 +69,6 @@ const StackNav = () => {
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="SettingScreen" component={SettingScreen} />
-      <Stack.Screen name="SetupWallet" component={SetupWallet} />
-      <Stack.Screen name="WalletScreen" component={WalletScreen} />
-      
       <Stack.Screen
         name="RecentlyViewedScreen"
         component={RecentlyViewedScreen}
