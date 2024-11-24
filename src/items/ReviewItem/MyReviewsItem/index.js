@@ -23,6 +23,8 @@ const MyReviewItem = ({item}) => {
     return arr;
   };
 
+  console.log('iimages', item.images);
+
   const images = [
     {
       uri: 'https://i.pinimg.com/236x/73/45/82/734582c9077c5dd4b4181e6911e980c3.jpg',
@@ -68,21 +70,24 @@ const MyReviewItem = ({item}) => {
         <Text style={mrvit.time}>
           {t('products.size')}: {item.size}
         </Text>
-        <Text numberOfLines={3} style={mrvit.content}>
-          {item.comment}
-        </Text>
+        {item.comment && (
+          <Text numberOfLines={3} style={mrvit.content}>
+            {item.comment}
+          </Text>
+        )}
+
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
           style={mrvit.imgContainer}>
-          {images.map((item, index) => (
+          {item?.images.map((item, index) => (
             <View key={index} style={mrvit.imageContainer}>
-              <Image source={{uri: item.uri}} style={mrvit.imageRv} />
-              {item.type === 'video' && (
+              <Image source={{uri: item}} style={mrvit.imageRv} />
+              {/* {item.type === 'video' && (
                 <View style={mrvit.videoOverlay}>
                   <Text style={mrvit.videoDuration}>{item.duration}</Text>
                 </View>
-              )}
+              )} */}
             </View>
           ))}
         </ScrollView>

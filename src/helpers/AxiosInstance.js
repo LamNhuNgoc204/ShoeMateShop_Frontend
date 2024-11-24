@@ -13,7 +13,7 @@ const AxiosInstance = (contentType = 'application/json') => {
 
       if (dayjs().isAfter(expiredTokenDate)) {
         const response = await axios.post(
-          'https://shoe-mate-shop-backend.vercel.app/auth/refresh-token',
+          'http://192.168.1.97:3000/',
           {},
           {
             headers: {
