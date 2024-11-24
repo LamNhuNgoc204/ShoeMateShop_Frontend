@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {SelectList} from 'react-native-dropdown-select-list';
 import appst from '../../constants/AppStyle';
 import {spacing} from '../../constants';
 import {CustomedButton} from '../../components';
@@ -78,30 +77,35 @@ const TransferWalletScreen = () => {
           <Text style={styles.textwallet}>Số dư</Text>
           <Text style={styles.textmoney}>100.000 VNĐ</Text>
         </View>
-        <View style={styles.selectListContainer}>
-          <SelectList
-            setSelected={setSelected}
-            data={data}
-            onSelect={() => console.log('onSelect')}
-            placeholder="Email người nhận"
-            boxStyles={styles.selectListBox}
-            inputStyles={styles.selectListInput}
-            dropdownStyles={styles.selectListDropdown}
-          />
+        <View style={{marginTop: spacing.lg}}>
+          <Text style={styles.lable}>Email người nhận</Text>
+          <TextInput value={name} placeholder="Nhập email" style={styles.input}/>
         </View>
 
         <View style={{marginTop: spacing.lg}}>
           <Text style={styles.lable}>Tên người nhận</Text>
-          <TextInput value={name} placeholder="Trinh Ngoc Duc" style={styles.input}/>
+          <TextInput editable={false} value={name} placeholder="Tên người nhận" style={styles.input}/>
         </View>
         <View style={{marginTop: spacing.lg}}>
           <Text style={styles.lable}>Số tiền</Text>
           <TextInput
-            placeholder="200.000"
+            placeholder="Nhập số tiền cần chuyển"
             style={styles.input}
             keyboardType="numeric"
           />
         </View>
+        <View style={{marginTop: spacing.lg}}>
+          <Text style={styles.lable}>Lời nhắn</Text>
+          <TextInput
+          style={styles.inputarea}
+            placeholder="Nhập lời nhắn"
+            multiline
+            maxLength={50}
+            numberOfLines={4}
+            editable
+          />
+        </View>
+
         <View style={styles.viewButton}>
           <CustomedButton
             title={'Chuyển tiền'}

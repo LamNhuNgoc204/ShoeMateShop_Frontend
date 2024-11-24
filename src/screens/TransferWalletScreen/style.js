@@ -41,7 +41,11 @@ export default  styles = StyleSheet.create({
       color: colors.background_primary,
       fontFamily: fonts.rlw_medium,
     },
-  
+    inputarea:{
+      backgroundColor: 'white',
+       borderRadius: 8, 
+       padding: 10
+    },
     input: {
       height: 50,
       padding: 10,
