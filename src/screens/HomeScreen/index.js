@@ -161,7 +161,7 @@ const HomeScreen = ({navigation, route}) => {
   }, [currentPage, BANNERS.length]);
 
   const onEditPress = () => {
-    navigation.navigate('SearchResult');
+    navigation.navigate('SearchScreen');
   };
 
   return (

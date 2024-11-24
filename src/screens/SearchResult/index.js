@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import searchResultStyle from './style';
 import ToolBar from '../../components/ToolBar';
@@ -8,16 +8,16 @@ import FilterPanel from '../../components/FilterPanel';
 import AxiosInstance from '../../helpers/AxiosInstance';
 
 
-const SearchResult = ({ navigation }) => {
+const SearchResult = ({ navigation, route }) => {
   const [filterOpen, setFilterOpen] = useState(false);
   const [listSelectedBrand, setListSelectedBrand] = useState([]);
   const [listSelectedStar, setListSelectedStar] = useState([]);
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(0);
   const [products, setProducts] = useState([]);
-  const [searchText, setSearchText] = useState("");
   const [preSearch, setPreSearch] = useState();
   const [brands, setBrands] = useState([]);
+  const {key, searchs} = route.params;
 
   const onOpenFilter = () => {
     setFilterOpen(true);
@@ -70,22 +70,30 @@ const SearchResult = ({ navigation }) => {
   };
 
   const onBack = () => {
-    navigation.goBack();
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'HomeScreen' }],
+    });
+    
   }
 
-  const onSubmit = async () => {
+  const onSubmit = async (keyText) => {
     try {
-      if (searchText == "") {
+      if (keyText == "") {
         return;
       }
-      const response = await AxiosInstance().get(`/products/search?query=${searchText}`);
+      const response = await AxiosInstance().get(`/products/search?query=${keyText}`);
       setProducts(response)
-      setPreSearch(searchText)
-      setSearchText("")
+      setPreSearch(keyText)
+      addSearch(keyText)
     } catch (error) {
       console.log(error.message)
     }
   }
+
+  useEffect(() => {
+    onSubmit(key);
+  }, [key])
 
   const getAllBrand = async () => {
     try {
@@ -122,6 +130,23 @@ const SearchResult = ({ navigation }) => {
     }
   }
 
+
+  const addSearch = async (search) => {
+    try {
+      const response = await AxiosInstance().put('/users/add-search', {
+        search: search 
+      })
+      if(response.status) {
+        console.log('add search success')
+      } else {
+        console.log('add search fail: ', response.message)
+      }
+    } catch (error) {
+      console.log(error.message)
+      
+    }
+  }
+
   useEffect(() => {
     getAllBrand();
   }, []);
@@ -129,16 +154,17 @@ const SearchResult = ({ navigation }) => {
   return (
     <View style={searchResultStyle.container}>
       <ToolBar
-        autoFocus={true}
-        value={searchText}
-        handleSubmit={onSubmit}
-        onChangeText={(txt) => setSearchText(txt)}
+        onEditPress={()=> {
+          navigation.navigate('SearchScreen');
+        }}
+        onChangeText={(txt) => setkeyText(txt)}
         onIconLeftPress={onBack}
         onIconRightPress={onOpenFilter}
-        iconLeft={require('../../assets/icons/ic_back.png')}
+        iconLeft={require('../../assets/icons/back_arr.png')}
         iconRight={require('../../assets/icons/ic_filter.png')}
       />
       <FlatList
+        ListHeaderComponent={<Text style={{fontSize: 16, fontWeight: '600', color: 'black', margin: 20}} >{`Kết quả tìm kiếm cho "${preSearch}", ${products.length} kết quả`}</Text>}
         data={products}
         renderItem={({ item, index }) => (
           <ProductItem product={item} index={index} />

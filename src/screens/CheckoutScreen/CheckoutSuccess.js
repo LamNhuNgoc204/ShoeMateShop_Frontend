@@ -4,15 +4,17 @@ import Header from '../../components/Header';
 import appst from '../../constants/AppStyle';
 import {useSelector} from 'react-redux';
 import ProductList from '../Product/ProductList';
+import {useTranslation} from 'react-i18next';
 
 const CheckoutSuccess = ({navigation}) => {
+  const {t} = useTranslation();
   const productState = useSelector(state => state.products);
   // console.log('productState', productState);
 
   return (
     <View>
       <Header
-        name={'Dat hang thanh cong'}
+        name={t('checkout.checkout_success')}
         iconLeft={require('../../assets/icons/back.png')}
         leftOnPress={() => navigation.replace('BottomNav')}
         iconRight={require('../../assets/icons/bag_icon.png')}
@@ -35,7 +37,7 @@ const CheckoutSuccess = ({navigation}) => {
             />
             <Text style={{fontSize: 24, color: 'white'}}>
               {' '}
-              Đặt hàng thành công
+              {t('checkout.checkout_success')}
             </Text>
           </Text>
           <Text
@@ -45,8 +47,7 @@ const CheckoutSuccess = ({navigation}) => {
               marginVertical: 30,
               fontSize: 14,
             }}>
-            Cùng ShoeMate bảo vệ quyền lợi của bạn - chỉ nhận hàng & thanh toán
-            khi đã nhận được hàng
+            {t('checkout.checkout_success_des')}
           </Text>
           <View style={[appst.rowCenter, {marginTop: 15}]}>
             <TouchableOpacity
@@ -59,7 +60,9 @@ const CheckoutSuccess = ({navigation}) => {
                 borderRadius: 5,
                 marginRight: 20,
               }}>
-              <Text style={{fontSize: 18, color: 'white'}}>Trang chủ</Text>
+              <Text style={{fontSize: 18, color: 'white'}}>
+                {t('buttons.home')}
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => navigation.navigate('OrderScreen')}
@@ -70,7 +73,9 @@ const CheckoutSuccess = ({navigation}) => {
                 borderWidth: 1,
                 borderRadius: 5,
               }}>
-              <Text style={{fontSize: 18, color: 'white'}}>Đơn mua</Text>
+              <Text style={{fontSize: 18, color: 'white'}}>
+                {t('buttons.order')}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

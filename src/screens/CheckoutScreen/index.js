@@ -112,22 +112,6 @@ const CheckOutScreen = ({navigation}) => {
     //check xem chon phuong thuc nao roi chuyen man hinh tuong ung
   };
 
-  const onLoadingComplete = () => {
-    setIsLoading(false); // Hide the loading modal
-    // if (state.payment && state.payment.payment_method === 'Zalo Pay') {
-    //   // dispatch(setPriceToPay(tongchiphi));
-    //   // dispatch(setOrderId(response.data.order._id));
-    //   navigation.navigate('ZaloPayScreen');
-    // }
-    //  else if (
-    //   state.payment &&
-    //   state.payment.payment_method === 'Thanh toán khi nhận hàng'
-    // ) {
-    //   ToastAndroid.show('tao don thanh cong', ToastAndroid.show);
-    //   navigation.navigate('CheckoutSuccess');
-    // }
-  };
-
   return (
     <View style={[appst.container, c_outst.containerPosition]}>
       <View style={[appst.container]}>

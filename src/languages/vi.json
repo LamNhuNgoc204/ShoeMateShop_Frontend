@@ -33,7 +33,9 @@
     "btn_try_again": "Thử lại",
     "btn_start_order": "Bắt đầu đặt hàng",
     "read_more": "Xem thêm",
-    "close": "Đóng"
+    "close": "Đóng",
+    "home": "Trang chủ",
+    "order": "Đơn hàng"
   },
   "home": {
     "list_product": "Sản phẩm dành cho bạn",
@@ -56,7 +58,7 @@
   "checkout": {
     "address": "Địa chỉ giao hàng",
     "your_product": "Sản phẩm của bạn",
-    "vouchers": "Voucher",
+    "vouchers": "Mã giảm giá",
     "points": "Điểm thưởng",
     "redeem": "Đổi điểm",
     "pay_option": "Tùy chọn thanh toán",
@@ -67,7 +69,9 @@
     "shipping_discount": "Giảm giá vận chuyển",
     "payment": "Tổng thanh toán",
     "detail": "Bằng cách nhấn \"Đặt hàng\", bạn đồng ý với",
-    "term": "Điều khoản giao dịch chung của cửa hàng"
+    "term": "Điều khoản giao dịch chung của cửa hàng",
+    "checkout_success": "Đặt hàng thành công",
+    "checkout_success_des": "Cùng ShoeMate bảo vệ quyền lợi của bạn - chỉ nhận hàng & thanh toán khi đã nhận được hàng"
   },
   "profiles": {
     "wallet": "Ví của tôi",
@@ -302,5 +306,20 @@
     "content1": "Kết hợp hoàn hảo giữa hiệu suất thể thao,\nphong cách và sự linh hoạt. Khám phá ngay!",
     "title2": "Nâng tầm cuộc chơi",
     "content2": "Khám phá các thương hiệu nổi tiếng\ndành riêng cho những nhà vô địch như bạn."
+  },
+  "help": {
+    "title": "Trợ giúp"
+  },
+  "privacy": {
+    "title": "Chính sách bảo mật thông tin"
+  },
+  "about": {
+    "title": "Giới thiệu"
+  },
+  "community": {
+    "title": "Tiêu chuẩn cộng đồng"
+  },
+  "termsandcondition": {
+    "title": "Quy luật và điều khoản"
   }
 }
