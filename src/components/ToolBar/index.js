@@ -4,6 +4,7 @@ import toolBarStyle from './style'
 import SearchInput from '../SearchInput'
 
 const ToolBar = ({ iconRight, iconLeft, style, onIconRightPress, onIconLeftPress, title, onChangeText, placeholder, editable = true, onEditPress, handleSubmit, value, autoFocus }) => {
+    
     return (
         <View style={[toolBarStyle.container, style]}>
             {

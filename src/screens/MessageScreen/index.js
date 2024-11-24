@@ -411,7 +411,7 @@ export function formatDate(isoString) {
   } else if (inputDate.toDateString() === yesterday.toDateString()) {
     return `Hôm qua, ${formattedDate}`;
   } else {
-    return `${daysOfWeek[inputDate.getDay()]}, ${formattedDate}`;
+    return `${daysOfWeek[inputDate.getDay() + 1]}, ${formattedDate}`;
   }
 }
 
@@ -435,7 +435,7 @@ const MessageScreen = ({ navigation, route }) => {
 
   // console.log('user', name, avatar);
 
-  const SOCKET_URL = `http://192.168.175.83:3000/`;
+  const SOCKET_URL = `http://192.168.1.97:3000/`;
 
   const getConversation = async () => {
     try {
