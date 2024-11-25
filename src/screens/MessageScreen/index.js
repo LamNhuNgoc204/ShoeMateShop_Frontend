@@ -6,6 +6,7 @@ import {
   FlatList,
   TextInput,
   StyleSheet,
+  Alert,
 } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import appst from '../../constants/AppStyle';
@@ -22,6 +23,7 @@ import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import AxiosInstance from '../../helpers/AxiosInstance';
 import { Axios } from 'axios';
 import { formatCurrency } from '../../utils/functions/formatCurrency';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 
 const ProductMessageItem = ({ product, isMessage, onSend, onClose }) => {
@@ -113,7 +115,7 @@ const renderToolbar = ({ onBack, name, avatar }) => {
           style={[messageScreenStyle.image40]}
           source={
             avatar
-              ? {uri: avatar}
+              ? { uri: avatar }
               : require('../../assets/images/placeholder_image.jpg')
           }
         />
@@ -177,6 +179,7 @@ const renderBottom = ({
   onChangeText,
   onSend,
   onOpenBottomSheet,
+  onOpenGallery
 }) => {
   return (
     <View style={messageScreenStyle.bottomContainer}>
@@ -189,7 +192,7 @@ const renderBottom = ({
         placeholder="Message"
         placeholderTextColor={colors.color004BFE}
       />
-      <TouchableOpacity>
+      <TouchableOpacity onPress={onOpenGallery}>
         <Image
           source={require('../../assets/icons/open_gallery.png')}
           style={[
@@ -381,12 +384,12 @@ const groupDate = (messages) => {
 
   let lastDate = null;
 
-  
+
   return messages.map((message) => {
     const messageDate = formatDate(message.createdAt);
 
-    const isShowDate = messageDate !== lastDate; 
-    lastDate = messageDate; 
+    const isShowDate = messageDate !== lastDate;
+    lastDate = messageDate;
     return { ...message, isShowDate };
   }).reverse();;
 };
@@ -411,8 +414,54 @@ export function formatDate(isoString) {
   } else if (inputDate.toDateString() === yesterday.toDateString()) {
     return `Hôm qua, ${formattedDate}`;
   } else {
-    return `${daysOfWeek[inputDate.getDay() + 1]}, ${formattedDate}`;
+    return `${daysOfWeek[inputDate.getDay()]}, ${formattedDate}`;
   }
+}
+
+const maxWidth = 220
+
+const MessageTypeImage = ({ message, user }) => {
+  const imageCount = message.fileUrls.length;
+  const isLastMessageExpand = imageCount % 2 == 1;
+
+  function formatDate(isoString) {
+    const date = new Date(isoString);
+    const now = new Date();
+
+    const diffTime = now - date;
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays >= 2) {
+      return date.toLocaleDateString('vi-VN');
+    } else if (diffDays >= 1) {
+      return 'hôm qua';
+    } else {
+      return date.toLocaleTimeString('vi-VN', {
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+    }
+  }
+  return <View>
+    <View style={{ flexDirection: 'row', flexWrap: 'wrap', maxWidth: maxWidth + 16, alignSelf: user._id == message.senderId._id ? 'flex-end' : 'flex-start' }}>
+      {
+        message.fileUrls.map((file, index) => {
+          return <Image
+            source={{ uri: file }}
+            style={[{
+              marginVertical: 2,
+              borderRadius: 16,
+              width: maxWidth / 2 - 2,
+              height: 100,
+              borderRadius: 10,
+              marginHorizontal: 5,
+            }, (isLastMessageExpand && index == message.fileUrls.length - 1) && { width: 220 }]}
+          />
+        })
+      }
+    </View>
+    <Text style={{ borderRadius: 16, color: 'white',paddingHorizontal: 5, backgroundColor: '#cdcdcd' ,fontSize: 12, alignSelf: 'flex-end', marginRight: 10 }}>{formatDate(message.createdAt)}</Text>
+  </View>
 }
 
 const MessageScreen = ({ navigation, route }) => {
@@ -430,12 +479,13 @@ const MessageScreen = ({ navigation, route }) => {
   const { product } = route.params;
   const [curProduct, setCurProduct] = useState(null);
   const [orderSelected, setOrderSelected] = useState();
+  const [urls, setUrls] = useState([]);
 
   console.log('message length: ' + messages.length)
 
   // console.log('user', name, avatar);
 
-  const SOCKET_URL = `http://192.168.1.97:3000/`;
+  const SOCKET_URL = `http://192.168.9.31:3000/`;
 
   const getConversation = async () => {
     try {
@@ -504,6 +554,76 @@ const MessageScreen = ({ navigation, route }) => {
       console.log('Error sending product');
     }
   }
+
+  const pickImages = () => {
+    launchImageLibrary(
+      {
+        mediaType: 'photo',
+        selectionLimit: 0,
+        includeBase64: false,
+      },
+      response => {
+        if (response.didCancel) {
+          Alert.alert('User cancelled image picker');
+        } else if (response.errorCode) {
+          Alert.alert('ImagePicker Error', response.errorMessage);
+        } else {
+          uploadImages(response.assets)
+        }
+      }
+    );
+  };
+
+  // Upload ảnh
+  const uploadImages = async (selectedImages) => {
+    if (selectedImages.length === 0) {
+      Alert.alert('No images selected!');
+      return;
+    }
+
+    const formData = new FormData();
+    selectedImages.forEach((image, index) => {
+      const mimeType = image.uri.split('.').pop().toLowerCase(); // Lấy phần mở rộng file ảnh
+      const type = mimeType === 'jpg' || mimeType === 'jpeg' ? 'image/jpeg' : `image/${mimeType}`;
+
+      formData.append('images', {
+        uri: image.uri,
+        name: `photo-${index}.${mimeType}`,
+        type: type,
+      });
+    });
+
+    try {
+      const result = await AxiosInstance('multipart/form-data').post('/upload/upload-multiple', formData)
+
+      console.log('Upload successful:', result.data);
+      sendImage(result.data);
+    } catch (error) {
+      console.error('Upload failed:', error);
+      Alert.alert('Error', 'Failed to upload images.');
+    }
+  };
+
+  const sendImage = async (urls) => {
+    console.log('sendImage....');
+    try {
+      if (urls.length == 0) {
+        return
+      }
+      const result = await AxiosInstance().post('/messages/send-message', {
+        conversationId: conversation._id,
+        senderId: user._id,
+        text: '{Ảnh}',
+        imageUrls: urls,
+      })
+      if (result.status) {
+        setUrls([]);
+      }
+    } catch (error) {
+      console.log('Upload failed:', error);
+    }
+  }
+
 
 
 
@@ -620,6 +740,7 @@ const MessageScreen = ({ navigation, route }) => {
             {item.type === 'text' && <MessageItem user={user} message={item} />}
             {item.type === 'order' && <OrderItem order={item.order} isMessage={true} />}
             {item.type === 'product' && <ProductMessageItem product={item.product} isMessage={true} />}
+            {item.type === 'image' && <MessageTypeImage message={item} user={user} />}
             {item.isShowDate && (
               <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={{ fontSize: 12, color: '#999', marginBottom: 5, marginVertical: 10 }}>
@@ -629,14 +750,14 @@ const MessageScreen = ({ navigation, route }) => {
             )}
           </>
         )}
-        ListHeaderComponent={(messages.length > 0 && messages[0].senderId._id == user._id) && <View style={{
-          paddingVertical: 5, paddingHorizontal: 10, justifyContent: 'center', alignItems: 'center', marginVertical: 5,
-          borderRadius: 16,
-          backgroundColor: "#cdcdcd",
-          alignSelf: 'flex-end'
-        }}>
-          <Text style={{ fontSize: 14, fontWeight: '500', color: 'white' }}>{messages[0].isStaffRead ? "Đã xem" : "Đã gửi"}</Text>
-        </View>}
+        // ListHeaderComponent={(messages.length > 0 && messages[0].senderId._id == user._id) && <View style={{
+        //   paddingVertical: 5, paddingHorizontal: 10, justifyContent: 'center', alignItems: 'center', marginVertical: 5,
+        //   borderRadius: 16,
+        //   backgroundColor: "#cdcdcd",
+        //   alignSelf: 'flex-end'
+        // }}>
+        //   <Text style={{ fontSize: 14, fontWeight: '500', color: 'white' }}>{messages[0].isStaffRead ? "Đã xem" : "Đã gửi"}</Text>
+        // </View>}
         keyExtractor={(item, index) => index.toString()}
         style={{ paddingHorizontal: 20, flex: 1 }}
         contentContainerStyle={{ paddingTop: 10 }}
@@ -644,13 +765,14 @@ const MessageScreen = ({ navigation, route }) => {
 
       <ProductMessageItem product={curProduct} onClose={() => { setCurProduct(null) }} onSend={sendProduct} />
       {renderBottom({
-        focused,
+        focused: text != "",
         onFocused,
         onBlur,
         text,
         onChangeText,
         onSend: sendMessage,
         onOpenBottomSheet: openBottomSheet,
+        onOpenGallery: pickImages
       })}
       <BottomSheet
         ref={bottomSheetRef}
