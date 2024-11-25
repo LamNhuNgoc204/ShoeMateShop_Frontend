@@ -96,15 +96,12 @@ const CheckOutScreen = ({navigation}) => {
       if (state.payment && state.payment.payment_method === 'Zalo Pay') {
         dispatch(setPriceToPay(tongchiphi));
         dispatch(setOrderId(response.data.order._id));
-        // setisComplete(true);
-        // navigation.navigate('ZaloPayScreen');
+        navigation.navigate('ZaloPayScreen');
       } else if (
         state.payment &&
         state.payment.payment_method === 'Thanh toán khi nhận hàng'
       ) {
-        // setModalVisible(true);
         ToastAndroid.show('tao don thanh cong', ToastAndroid.show);
-        // setisComplete(true);
         navigation.navigate('CheckoutSuccess');
       }
     }

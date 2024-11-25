@@ -21,7 +21,7 @@ const ZaloPayScreen = ({navigation}) => {
         amount: cartState.priceToPay,
       };
       const response = await AxiosInstance().post('/payment', body);
-      // console.log('payment -------', response);
+      console.log('payment -------', response);
 
       // Nhận URL thanh toán từ ZaloPay
       if (response.data.return_code === 1) {

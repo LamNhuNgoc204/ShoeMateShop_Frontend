@@ -11,6 +11,9 @@ const config = {
       },
       Notifications: "notifications",
       Settings: "settings",
+      CheckoutSuccess: {
+        path: "checkout-success",
+      },
     },
   };
   

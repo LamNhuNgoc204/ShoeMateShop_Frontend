@@ -1,24 +1,29 @@
-import React from 'react';
-import {ActivityIndicator} from 'react-native';
+import React, {useEffect} from 'react';
+import {ActivityIndicator, Linking} from 'react-native';
 import WebView from 'react-native-webview';
 import appst from '../../../../constants/AppStyle';
 
 const ZaloPayWebView = ({route, navigation}) => {
   const {paymentUrl} = route.params;
 
-  const handleNavigationChange = navState => {
-    // Kiểm tra nếu URL có chứa 'success' hoặc 'fail'
-    if (navState.url.includes('success')) {
-      // Nếu thanh toán thành công, quay lại ứng dụng thông qua deep link
-      navigation.navigate('CheckoutSuccess');
-    } else if (navState.url.includes('fail')) {
-      // Nếu thanh toán thất bại, quay lại màn hình trước
-      navigation.goBack();
-    } else if (navState.url.includes('shoeMate://callback')) {
-      // Xử lý khi nhận được callback từ Zalo Pay (deep link)
-      navigation.navigate('CheckoutSuccess'); // Hoặc xử lý theo cách bạn muốn
-    }
-  };
+  useEffect(() => {
+    // Đảm bảo ứng dụng có thể nhận deep link khi quay lại
+    const handleDeepLink = event => {
+      const {url} = event;
+
+      if (url.includes('success')) {
+        navigation.navigate('CheckoutSuccess', {status: 'success'});
+      } else if (url.includes('fail')) {
+        navigation.goBack();
+      }
+    };
+
+    Linking.addEventListener('url', handleDeepLink);
+
+    return () => {
+      Linking.removeEventListener('url', handleDeepLink);
+    };
+  }, [navigation]);
 
   return (
     <WebView
@@ -32,7 +37,14 @@ const ZaloPayWebView = ({route, navigation}) => {
           style={{flex: 1, justifyContent: 'center'}}
         />
       )}
-      onNavigationStateChange={handleNavigationChange}
+      onShouldStartLoadWithRequest={request => {
+        // Nếu URL chứa deep link trả về kết quả thanh toán
+        if (request.url.includes('shoeMate://callback')) {
+          Linking.openURL(request.url);
+          return false; // Ngừng tải URL trong WebView
+        }
+        return true;
+      }}
     />
   );
 };
