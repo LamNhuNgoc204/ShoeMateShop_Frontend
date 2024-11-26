@@ -121,6 +121,7 @@ const BottomNav = () => {
         },
         headerShown: false,
         lazy: true,
+        tabBarHideOnKeyboard: true,
       }}
       tabBar={props => <AnimatedTabBar {...props} />}>
       <Tab.Screen name="Home" component={HomeScreen} />

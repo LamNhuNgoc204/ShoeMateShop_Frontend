@@ -7,6 +7,7 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
+    "deeplink-test": "adb shell am start -W -a android.intent.action.VIEW -d 'myapp://payment/success' com.bdnteam.mateshoe",
     "test": "jest"
   },
   "dependencies": {

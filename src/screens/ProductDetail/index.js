@@ -45,6 +45,20 @@ const ProductDetail = props => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [sizeModalVisible, setSizeModalVisible] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const [lstReviews, setLstReviews] = useState([]);
+
+  const fetchReview = async () => {
+    try {
+      const response = await AxiosInstance().get(
+        `/reviews/get-list-product-reviews/${index}`,
+      );
+      if (response.status === true) {
+        setLstReviews(response.data);
+      }
+    } catch (error) {
+      console.log('Lỗi lấy review: ', error);
+    }
+  };
 
   const dispatch = useDispatch();
 
@@ -53,6 +67,7 @@ const ProductDetail = props => {
       const [addpdView, response] = await Promise.all([
         addRecentView(index),
         AxiosInstance().get(`/products/detail/${index}`),
+        fetchReview(),
       ]);
 
       console.log('Thêm sản phẩm vào danh sách xem gần đây:', addpdView);
@@ -71,7 +86,8 @@ const ProductDetail = props => {
     return () => {};
   }, []);
 
-  // console.log(product);
+  // console.log('product detail ===>', product);
+  console.log('lstReviews ===>', lstReviews);
 
   const handleSheetChanges = useCallback(index => {
     console.log('handleSheetChanges', index);
@@ -214,7 +230,7 @@ const ProductDetail = props => {
             <Text style={[pddt.reviewTitle, pddt.pdHorizon]}>
               {t('products.reviews')}
             </Text>
-            {hasReviews ? (
+            {lstReviews.length !== 0 ? (
               <View>
                 <FlatList
                   data={product.reviewsOfProduct}

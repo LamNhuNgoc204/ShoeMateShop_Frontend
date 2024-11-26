@@ -53,6 +53,7 @@ import DeletionCompletedScreen from '../screens/SettingScreen/DeleteAccountDetai
 import FinalConfirmationScreen from '../screens/SettingScreen/DeleteAccountDetail/FinalConfirmationScreen ';
 import DeleteAccountScreen from '../screens/SettingScreen/Other/DeleteAccountScreen ';
 import BuyAgain from '../screens/Profile/BuyAgain';
+import PaymentResult from '../screens/PaymentResult';
 
 const Stack = createNativeStackNavigator();
 
@@ -62,6 +63,8 @@ const StackNav = () => {
       initialRouteName="SplashScreen"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="SplashScreen" component={SplashScreen} />
+      <Stack.Screen name="PaymentResult" component={PaymentResult} />
+
       <Stack.Screen name="OnBoardScreen" component={OnBoardScreen} />
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
@@ -152,10 +155,7 @@ const StackNav = () => {
         name="DeleteAccountScreen"
         component={DeleteAccountScreen}
       />
-      <Stack.Screen
-        name="BuyAgain"
-        component={BuyAgain}
-      />
+      <Stack.Screen name="BuyAgain" component={BuyAgain} />
     </Stack.Navigator>
   );
 };

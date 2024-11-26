@@ -1,26 +1,32 @@
-const config = {
+import {Linking} from 'react-native';
+
+const linking = {
+  prefixes: [
+    'myapp://',
+    'http://shoe-mate-shop-backend.vercel.app',
+    'https://shoe-mate-shop-backend.vercel.app',
+  ],
+
+  config: {
     screens: {
-      Home: {
-        path: "home",
-      },
-      Profile: {
-        path: "profile/:id",
-        parse: {
-          id: (id) => `${id}`,
-        },
-      },
-      Notifications: "notifications",
-      Settings: "settings",
-      CheckoutSuccess: {
-        path: "checkout-success",
-      },
+      PaymentResult: 'payment/:status',
     },
-  };
-  
-  const linking = {
-    prefixes: ["demo://app"],
-    config,
-  };
-  
-  export default linking;
-  
+  },
+
+  async getInitialURL() {
+    const url = await Linking.getInitialURL();
+    return url;
+  },
+
+  subscribe(listener) {
+    const linkingSubscription = Linking.addEventListener('url', ({url}) => {
+      listener(url);
+    });
+
+    return () => {
+      linkingSubscription.remove();
+    };
+  },
+};
+
+export default linking;

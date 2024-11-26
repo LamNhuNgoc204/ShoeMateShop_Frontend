@@ -22,14 +22,21 @@
         </intent-filter>
 
         <intent-filter>
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.BROWSABLE" />
-        <data
-          android:host="app"
-          android:scheme="demo" />
-      </intent-filter>
-      
+          <action android:name="android.intent.action.VIEW" />
+          <category android:name="android.intent.category.DEFAULT" />
+          <category android:name="android.intent.category.BROWSABLE" />
+          <category android:name="android.intent.category.APP_BROWSER" />
+          <data android:scheme="myapp" />
+        </intent-filter>
+        <intent-filter android:autoVerify="true">
+          <action android:name="android.intent.action.VIEW" />
+          <category android:name="android.intent.category.DEFAULT" />
+          <category android:name="android.intent.category.BROWSABLE" />
+          <data android:scheme="http" />
+          <data android:scheme="https" />
+          <data android:host="shoe-mate-shop-backend.vercel.app" />
+          <data android:pathPattern="/payment/.*" />            
+        </intent-filter>
       </activity>
     </application>
 </manifest>
