@@ -160,7 +160,7 @@ const SearchResult = ({ navigation, route }) => {
         onChangeText={(txt) => setkeyText(txt)}
         onIconLeftPress={onBack}
         onIconRightPress={onOpenFilter}
-        iconLeft={require('../../assets/icons/back_arr.png')}
+        iconLeft={require('../../assets/icons/back.png')}
         iconRight={require('../../assets/icons/ic_filter.png')}
       />
       <FlatList

@@ -66,7 +66,7 @@ const SearchScreen = ({ navigation }) => {
       {/* Toolbar */}
       <ToolBar
         onIconLeftPress={() => navigation.goBack()}
-        iconLeft={require('../../assets/icons/ic_back.png')}
+        iconLeft={require('../../assets/icons/back.png')}
         title={t('home.search')}
       />
 

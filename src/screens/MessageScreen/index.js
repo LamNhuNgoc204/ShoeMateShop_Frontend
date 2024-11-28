@@ -24,6 +24,7 @@ import AxiosInstance from '../../helpers/AxiosInstance';
 import { Axios } from 'axios';
 import { formatCurrency } from '../../utils/functions/formatCurrency';
 import { launchImageLibrary } from 'react-native-image-picker';
+import ImageView from "react-native-image-viewing";
 
 
 const ProductMessageItem = ({ product, isMessage, onSend, onClose }) => {
@@ -420,7 +421,7 @@ export function formatDate(isoString) {
 
 const maxWidth = 220
 
-const MessageTypeImage = ({ message, user }) => {
+const MessageTypeImage = ({ message, user, onImagePress }) => {
   const imageCount = message.fileUrls.length;
   const isLastMessageExpand = imageCount % 2 == 1;
 
@@ -446,7 +447,8 @@ const MessageTypeImage = ({ message, user }) => {
     <View style={{ flexDirection: 'row', flexWrap: 'wrap', maxWidth: maxWidth + 16, alignSelf: user._id == message.senderId._id ? 'flex-end' : 'flex-start' }}>
       {
         message.fileUrls.map((file, index) => {
-          return <Image
+          return <TouchableOpacity onPress={() => {onImagePress(message.fileUrls, index)}} key={index.toString() + message._id}>
+            <Image
             source={{ uri: file }}
             style={[{
               marginVertical: 2,
@@ -457,10 +459,11 @@ const MessageTypeImage = ({ message, user }) => {
               marginHorizontal: 5,
             }, (isLastMessageExpand && index == message.fileUrls.length - 1) && { width: 220 }]}
           />
+          </TouchableOpacity>
         })
       }
     </View>
-    <Text style={{ borderRadius: 16, color: 'white',paddingHorizontal: 5, backgroundColor: '#cdcdcd' ,fontSize: 12, alignSelf: 'flex-end', marginRight: 10 }}>{formatDate(message.createdAt)}</Text>
+    <Text style={{ borderRadius: 16, color: 'white', paddingHorizontal: 5, backgroundColor: '#cdcdcd', fontSize: 12, alignSelf: 'flex-end', marginRight: 10 }}>{formatDate(message.createdAt)}</Text>
   </View>
 }
 
@@ -480,6 +483,9 @@ const MessageScreen = ({ navigation, route }) => {
   const [curProduct, setCurProduct] = useState(null);
   const [orderSelected, setOrderSelected] = useState();
   const [urls, setUrls] = useState([]);
+  const [images, setImages] = useState([]);
+  const [imageIndex, setImageIndex] = useState(0)
+  const [visible, setVisible] = useState(false);
 
   console.log('message length: ' + messages.length)
 
@@ -726,6 +732,15 @@ const MessageScreen = ({ navigation, route }) => {
     return newDate;
   }
 
+  const onImagePress = (imgs, index) => {
+    const newImgs = imgs.map((img) => ({
+      uri: img
+    }))
+    setImageIndex(index)
+    setImages(newImgs)
+    setVisible(true)
+  }
+
   return conversation ? (
     <View style={[appst.container, messageScreenStyle.container]}>
       {renderToolbar({ onBack, name, avatar })}
@@ -740,7 +755,7 @@ const MessageScreen = ({ navigation, route }) => {
             {item.type === 'text' && <MessageItem user={user} message={item} />}
             {item.type === 'order' && <OrderItem order={item.order} isMessage={true} />}
             {item.type === 'product' && <ProductMessageItem product={item.product} isMessage={true} />}
-            {item.type === 'image' && <MessageTypeImage message={item} user={user} />}
+            {item.type === 'image' && <MessageTypeImage onImagePress={onImagePress} message={item} user={user} />}
             {item.isShowDate && (
               <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={{ fontSize: 12, color: '#999', marginBottom: 5, marginVertical: 10 }}>
@@ -774,6 +789,13 @@ const MessageScreen = ({ navigation, route }) => {
         onOpenBottomSheet: openBottomSheet,
         onOpenGallery: pickImages
       })}
+
+      <ImageView
+        images={images}
+        imageIndex={imageIndex}
+        visible={visible}
+        onRequestClose={() => setVisible(false)}
+      />
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={[420]}
