@@ -1,4 +1,4 @@
-import {View, Text, FlatList} from 'react-native';
+import {View, Text, FlatList, Image} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import ratingst from './style';
 import RatingItem from '../../items/ReviewItem/ToRateItem';
@@ -7,7 +7,7 @@ import {useTranslation} from 'react-i18next';
 import {getUnreviewedProductsInOrder} from '../../api/ProductApi';
 import SkeletonToRating from '../../placeholders/reviews/SkeletonToRating';
 
-const ToRate = ({navigation}) => {
+const ToRate = () => {
   const {t} = useTranslation();
   const [rating, setRating] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -57,9 +57,21 @@ const ToRate = ({navigation}) => {
               <Text style={ratingst.textRate}>{t('review.not_found')}</Text>
             </>
           ) : (
-            <>
-              <Text>Khong cos sp</Text>
-            </>
+            <View style={[appst.center, {paddingVertical: 50}]}>
+              <Image
+                source={require('../../assets/icons/blank_review.png')}
+                style={{width: 60, height: 60}}
+              />
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: 'black',
+                  marginTop: 10,
+                  fontWeight: '500',
+                }}>
+                {t('review.blank_review')}
+              </Text>
+            </View>
           )}
         </>
       )}

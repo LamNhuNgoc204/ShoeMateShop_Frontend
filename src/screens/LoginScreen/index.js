@@ -58,7 +58,6 @@ const LoginScreen = () => {
           index: 0,
           routes: [{name: 'BottomNav'}],
         });
-        // navigation.navigate('BottomNav');
       }
     } else {
       ToastAndroid.show('Đăng nhập thất bại', ToastAndroid.SHORT);
@@ -84,7 +83,10 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (authState.user) {
-      navigation.navigate('BottomNav');
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'BottomNav'}],
+      });
     }
   }, [authState?.user]);
 

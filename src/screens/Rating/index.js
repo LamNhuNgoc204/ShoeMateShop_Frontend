@@ -29,7 +29,13 @@ const MyRating = ({navigation, route}) => {
       <Header
         name={t('profiles.rating')}
         iconLeft={require('../../assets/icons/back.png')}
-        leftOnPress={() => navigation.goBack()}
+        leftOnPress={() => {
+          navigation.reset({
+            // Đảm bảo tab này là tab đầu tiên khi reset
+            index: 0,
+            routes: [{name: 'BottomNav', params: {screen: 'ProfileScreen'}}],
+          });
+        }}
       />
       <TopTab.Navigator
         screenOptions={{

@@ -247,7 +247,8 @@
     "rating": "Chưa đánh giá",
     "not_found": "Không tìm thấy đánh giá nào nữa.",
     "response": "Phản hồi của người bán:",
-    "review_order": "Đánh giá đơn hàng"
+    "review_order": "Đánh giá đơn hàng",
+    "blank_review": "Không có đơn hàng cần đánh giá."
   },
   "notifications": {
     "title": "Thông báo",
