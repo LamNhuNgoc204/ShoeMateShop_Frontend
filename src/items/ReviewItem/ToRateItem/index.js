@@ -32,10 +32,7 @@ const RatingItem = ({item}) => {
                   : require('../../../assets/images/placeholder_image.jpg')
               }
             />
-            <Text style={rtit.name}>
-              {pd && pd.name} Giày Thời Trang Unisex Converse Chuck Taylor All
-              Star - Trắng
-            </Text>
+            <Text style={rtit.name}>{pd && pd.name}</Text>
           </View>
           <View style={[appst.rowCenter, rtit.view]}>
             <Text style={rtit.time}>7 days left to review</Text>

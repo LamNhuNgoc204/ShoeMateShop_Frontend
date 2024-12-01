@@ -48,6 +48,7 @@ const MyRating = ({navigation, route}) => {
             padding: 0,
             margin: 0,
           },
+          lazy: true,
         }}>
         <TopTab.Screen name={t('review.rating')} component={ToRate} />
         <TopTab.Screen name={t('review.to_review')} component={MyReviews} />
