@@ -45,6 +45,22 @@ const ProductDetail = props => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [sizeModalVisible, setSizeModalVisible] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const [listReview, setListReview] = useState([]);
+
+  const fetchListReview = async () => {
+    try {
+      const response = await AxiosInstance().get(
+        `/reviews/get-list-product-reviews/${index}`,
+      );
+      console.log('response =>', response);
+
+      if (response.status) {
+        setListReview(response.data);
+      }
+    } catch (error) {
+      console.log('fetch reviews error: ', error);
+    }
+  };
 
   const dispatch = useDispatch();
 
@@ -53,6 +69,7 @@ const ProductDetail = props => {
       const [addpdView, response] = await Promise.all([
         addRecentView(index),
         AxiosInstance().get(`/products/detail/${index}`),
+        fetchListReview(),
       ]);
 
       console.log('Thêm sản phẩm vào danh sách xem gần đây:', addpdView);
@@ -72,6 +89,7 @@ const ProductDetail = props => {
   }, []);
 
   // console.log(product);
+  console.log('listReview', listReview);
 
   const handleSheetChanges = useCallback(index => {
     console.log('handleSheetChanges', index);
@@ -161,7 +179,10 @@ const ProductDetail = props => {
             <Text style={pddt.bestSl}>{t('products.best_seller')}</Text>
             <View style={[appst.rowCenter, pddt.body1]}>
               <View style={{flex: 1}}>
-                <Text numberOfLines={1} style={pddt.name}>
+                <Text
+                  // numberOfLines={1}
+                  maxFontSizeMultiplier={5}
+                  style={pddt.name}>
                   {product.name}
                 </Text>
                 <Text style={pddt.price}>

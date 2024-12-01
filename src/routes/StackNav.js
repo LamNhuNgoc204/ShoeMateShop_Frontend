@@ -35,7 +35,6 @@ import Notifycation from '../screens/Notifycation';
 import ShipScreen from '../screens/Shipping';
 import ChoosePaymentScreen from '../screens/Payment/ChoosePayment';
 import ZaloPayScreen from '../screens/Payment/ZaloPay/Payment';
-import ZaloPayWebView from '../screens/Payment/ZaloPay/WebView';
 import CheckoutSuccess from '../screens/CheckoutScreen/CheckoutSuccess';
 import ChooseLanguage from '../screens/Languages';
 import CancelDetail from '../screens/Orders/CancelDetail';
@@ -108,7 +107,6 @@ const StackNav = () => {
       <Stack.Screen name="BottomNav" component={BottomNav} />
       <Stack.Screen name="ShipScreen" component={ShipScreen} />
       <Stack.Screen name="ZaloPayScreen" component={ZaloPayScreen} />
-      <Stack.Screen name="ZaloPayWebView" component={ZaloPayWebView} />
       <Stack.Screen name="CheckoutSuccess" component={CheckoutSuccess} />
       <Stack.Screen name="ChooseLanguage" component={ChooseLanguage} />
       <Stack.Screen name="CancelDetail" component={CancelDetail} />
@@ -152,10 +150,7 @@ const StackNav = () => {
         name="DeleteAccountScreen"
         component={DeleteAccountScreen}
       />
-      <Stack.Screen
-        name="BuyAgain"
-        component={BuyAgain}
-      />
+      <Stack.Screen name="BuyAgain" component={BuyAgain} />
     </Stack.Navigator>
   );
 };
