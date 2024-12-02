@@ -18,7 +18,6 @@ import CustomTextInput from '../../components/Input';
 import {register} from '../../redux/thunks/UserThunks';
 import {validateFields} from '../../utils/functions/validData';
 import DropdownComponent from '../../components/ButtonLanguages';
-import {handleNavigate} from '../../utils/functions/navigationHelper';
 
 const SignUpScreen = () => {
   const {t} = useTranslation();
@@ -135,7 +134,7 @@ const SignUpScreen = () => {
           {t('titles.have_account')}{' '}
           <Text
             style={styles.text8}
-            onPress={() => handleNavigate(navigation, 'LoginScreen')}>
+            onPress={() => navigation.navigate('LoginScreen')}>
             {t('buttons.btn_signin')}
           </Text>
         </Text>

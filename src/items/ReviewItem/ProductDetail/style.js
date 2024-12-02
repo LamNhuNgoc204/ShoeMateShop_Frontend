@@ -12,6 +12,8 @@ const pddtit = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.colorE5EBFC,
     paddingHorizontal: spacing.lg,
+    backgroundColor: '#fff',
+    marginTop: 5,
   },
   avatar: {
     width: 25,
@@ -52,7 +54,6 @@ const pddtit = StyleSheet.create({
     borderRadius: 5,
     marginRight: spacing.xm,
   },
-  
 });
 
 export default pddtit;

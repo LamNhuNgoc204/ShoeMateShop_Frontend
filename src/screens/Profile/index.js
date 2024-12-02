@@ -9,7 +9,6 @@ import ChildItem from './ChildItems';
 import ChildItemGadget from './Mygadget';
 import {PROFILE} from '../../api/mockData';
 import appst from '../../constants/AppStyle';
-import {handleNavigate} from '../../utils/functions/navigationHelper';
 import ProductList from '../Product/ProductList';
 
 const ProfileScreen = () => {
@@ -43,8 +42,7 @@ const ProfileScreen = () => {
             <Text style={styles.email}>{user && user.email}</Text>
           </View>
         </View>
-        <TouchableOpacity
-          onPress={() => handleNavigate(navigation, 'SettingScreen')}>
+        <TouchableOpacity onPress={() => navigation.navigate('SettingScreen')}>
           <Image
             style={appst.icon30}
             source={require('../../assets/icons/setting.png')}

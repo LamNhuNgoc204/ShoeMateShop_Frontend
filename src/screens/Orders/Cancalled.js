@@ -20,6 +20,7 @@ import {useTranslation} from 'react-i18next';
 import ProductList from '../Product/ProductList';
 import {shuffleArray} from '../../utils/functions/formatData';
 import {addItemToCartApi} from '../../api/CartApi';
+import {gotoCart} from '../../utils/functions/navigationHelper';
 
 const Cancalled = ({navigation}) => {
   const {t} = useTranslation();
@@ -95,7 +96,7 @@ const Cancalled = ({navigation}) => {
           'Thêm tất cả sản phẩm vào giỏ hàng thành công',
           ToastAndroid.SHORT,
         );
-        navigation.navigate('CartScreen');
+        gotoCart();
       }
     } catch (error) {
       ToastAndroid.show(

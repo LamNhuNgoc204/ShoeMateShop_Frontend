@@ -52,6 +52,8 @@ import DeletionCompletedScreen from '../screens/SettingScreen/DeleteAccountDetai
 import FinalConfirmationScreen from '../screens/SettingScreen/DeleteAccountDetail/FinalConfirmationScreen ';
 import DeleteAccountScreen from '../screens/SettingScreen/Other/DeleteAccountScreen ';
 import BuyAgain from '../screens/Profile/BuyAgain';
+import AllReview from '../screens/ProductDetail/AllReview';
+import RequireLogin from '../screens/Required/RequireLogin';
 
 const Stack = createNativeStackNavigator();
 
@@ -89,6 +91,7 @@ const StackNav = () => {
         component={ResetPasswordScreen}
       />
       <Stack.Screen name="MyRating" component={MyRating} />
+      <Stack.Screen name="AllProductReview" component={AllReview} />
       <Stack.Screen name="ProductReviews" component={ProductReviews} />
       <Stack.Screen name="SearchResult" component={SearchResult} />
       <Stack.Screen name="AddNewAddress" component={AddNewAddress} />
@@ -151,6 +154,7 @@ const StackNav = () => {
         component={DeleteAccountScreen}
       />
       <Stack.Screen name="BuyAgain" component={BuyAgain} />
+      <Stack.Screen name="RequireLogin" component={RequireLogin} />
     </Stack.Navigator>
   );
 };

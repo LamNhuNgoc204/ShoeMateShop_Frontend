@@ -13,7 +13,6 @@ import Header from '../../components/Header';
 import {colors} from '../../constants/colors';
 import ItemReview from '../../items/ReviewItem/ProductDetail';
 import {spacing} from '../../constants';
-import ProductItem from '../../items/ProductItem';
 import AxiosInstance from '../../helpers/AxiosInstance';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -23,6 +22,7 @@ import ProductSkeleton from '../../placeholders/product/detail';
 import {addRecentView} from '../../api/ProductApi';
 import {useTranslation} from 'react-i18next';
 import ProductList from '../Product/ProductList';
+import {checkTokenValidity} from '../../utils/functions/checkToken';
 
 const ProductDetail = props => {
   const {t} = useTranslation();
@@ -52,7 +52,7 @@ const ProductDetail = props => {
       const response = await AxiosInstance().get(
         `/reviews/get-list-product-reviews/${index}`,
       );
-      console.log('response =>', response);
+      // console.log('response =>', response);
 
       if (response.status) {
         setListReview(response.data);
@@ -66,13 +66,23 @@ const ProductDetail = props => {
 
   const fetchProduct = async () => {
     try {
-      const [addpdView, response] = await Promise.all([
-        addRecentView(index),
+      const isTokenValid = await checkTokenValidity();
+
+      if (isTokenValid) {
+        await addRecentView(index);
+      } else {
+        console.log(
+          'Token hết hạn, bỏ qua thêm sản phẩm vào danh sách gần đây',
+        );
+      }
+
+      const [response] = await Promise.all([
+        // addRecentView(index),
         AxiosInstance().get(`/products/detail/${index}`),
         fetchListReview(),
       ]);
 
-      console.log('Thêm sản phẩm vào danh sách xem gần đây:', addpdView);
+      // console.log('Thêm sản phẩm vào danh sách xem gần đây:', addpdView);
       if (response) {
         setProduct(response);
         setLoading(false);
@@ -89,7 +99,7 @@ const ProductDetail = props => {
   }, []);
 
   // console.log(product);
-  console.log('listReview', listReview);
+  // console.log('listReview', listReview);
 
   const handleSheetChanges = useCallback(index => {
     console.log('handleSheetChanges', index);
@@ -123,13 +133,21 @@ const ProductDetail = props => {
       );
     }) || [];
 
+  // console.log('product.reviewsOfProduct====>', product.reviewsOfProduct);
+
   return (
     <View style={[appst.container, pddt.container]}>
       <Header
         iconLeft={require('../../assets/icons/back.png')}
         leftOnPress={() => navigation.goBack()}
         name={product.name}
-        rightOnPress={() => navigation.navigate('CartScreen')}
+        rightOnPress={() => {
+          navigation.reset({
+            // Đảm bảo tab này là tab đầu tiên khi reset
+            index: 0,
+            routes: [{name: 'BottomNav', params: {screen: 'CartScreen'}}],
+          });
+        }}
         iconRight={require('../../assets/icons/mycart.png')}
         backgroundColor={colors.background_secondary}
       />
@@ -235,21 +253,28 @@ const ProductDetail = props => {
             <Text style={[pddt.reviewTitle, pddt.pdHorizon]}>
               {t('products.reviews')}
             </Text>
-            {hasReviews ? (
+            {listReview.length !== 0 ? (
               <View>
                 <FlatList
-                  data={product.reviewsOfProduct}
+                  data={listReview?.slice(0, 2)}
                   renderItem={({item}) => <ItemReview item={item} />}
-                  extraData={item => item.id}
+                  extraData={item => item._id}
                   scrollEnabled={false}
                 />
-                <Text style={pddt.text1}>
-                  See All ({product.reviewsOfProduct.length})
-                </Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('AllProductReview', {
+                      lstReview: listReview,
+                    })
+                  }>
+                  <Text style={pddt.text1}>
+                    {t('products.see_all')} ({product.reviewsOfProduct.length})
+                  </Text>
+                </TouchableOpacity>
               </View>
             ) : (
               <Text style={{padding: 10, textAlign: 'center'}}>
-                Chua co danh gia
+                {t('review.no_review')}
               </Text>
             )}
           </View>

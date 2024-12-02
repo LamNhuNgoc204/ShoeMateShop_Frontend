@@ -248,7 +248,9 @@
     "not_found": "Không tìm thấy đánh giá nào nữa.",
     "response": "Phản hồi của người bán:",
     "review_order": "Đánh giá đơn hàng",
-    "blank_review": "Không có đơn hàng cần đánh giá."
+    "blank_review": "Không có đơn hàng cần đánh giá.",
+    "no_review":"Chưa có đánh giá",
+    "all_review":"Tất cả đánh giá"
   },
   "notifications": {
     "title": "Thông báo",

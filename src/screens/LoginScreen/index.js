@@ -19,7 +19,6 @@ import CustomTextInput from '../../components/Input';
 import {login, loginWithGG} from '../../redux/thunks/UserThunks';
 import DropdownComponent from '../../components/ButtonLanguages';
 import {validateFieldsLogin} from '../../utils/functions/validData';
-import {handleNavigate} from '../../utils/functions/navigationHelper';
 
 GoogleSignin.configure({
   webClientId:
@@ -167,7 +166,7 @@ const LoginScreen = () => {
           {t('titles.new_users')}
           <Text
             style={styles.text8}
-            onPress={() => handleNavigate(navigation, 'SignUpScreen')}>
+            onPress={() => navigation.navigate('SignUpScreen')}>
             {t('buttons.btn_create_account')}
           </Text>
         </Text>
