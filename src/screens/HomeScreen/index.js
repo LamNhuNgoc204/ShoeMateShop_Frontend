@@ -20,6 +20,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import Loading from '../../components/Loading';
 import ProductList from '../Product/ProductList';
 import {shuffleArray} from '../../utils/functions/formatData';
+import {checkTokenValidity} from '../../utils/functions/checkToken';
 
 const HomeScreen = ({navigation, route}) => {
   const {t} = useTranslation();
@@ -36,38 +37,71 @@ const HomeScreen = ({navigation, route}) => {
     useCallback(() => {
       if (route?.params?.reload) {
         console.log('Reload dữ liệu trên HomeScreen');
+
         const fetchData = async () => {
+          const isTokenValid = await checkTokenValidity();
           setLoading(true);
-          await Promise.all([
+
+          // Danh sách các API cần gọi
+          const thunks = [
             dispatch(fetchProductsThunk()),
             dispatch(getCategoryThunk()),
-            dispatch(fetchWishlist()),
-          ]);
+          ];
+
+          // Thêm fetchWishlist nếu token hợp lệ
+          if (isTokenValid) {
+            thunks.push(dispatch(fetchWishlist()));
+          }
+
+          await Promise.all(thunks);
           setLoading(false);
         };
+
         fetchData();
+
         // Đặt lại params để không reload liên tục
-        route.params.reload = false;
+        // route.params.reload = false;
+        navigation.setParams({reload: false}); //Set params trực tiếp
       }
     }, [route?.params?.reload]),
   );
 
+  const [isTokenValid, setIsTokenValid] = useState(false);
+
+  useEffect(() => {
+    const validateToken = async () => {
+      const valid = await checkTokenValidity();
+      setIsTokenValid(valid);
+    };
+
+    validateToken();
+  }, []);
+
   useEffect(() => {
     const fetchData = async () => {
+      // const isTokenValid = await checkTokenValidity();
+
       if (
         !state.products.length ||
         !state.categories.length ||
-        !state.wishlist.length
+        (isTokenValid && !state.wishlist.length)
       ) {
         setLoading(true);
-        await Promise.all([
+        const thunks = [
           dispatch(fetchProductsThunk()),
           dispatch(getCategoryThunk()),
-          dispatch(fetchWishlist()),
-        ]);
+        ];
+
+        // Chỉ gọi wishlist nếu token hợp lệ
+        if (isTokenValid && !state.wishlist.length) {
+          thunks.push(dispatch(fetchWishlist()));
+        }
+
+        await Promise.all(thunks);
         setLoading(false);
       }
     };
+
     fetchData();
   }, []);
 
@@ -76,12 +110,16 @@ const HomeScreen = ({navigation, route}) => {
   }, [state]);
 
   useEffect(() => {
-    if (state.products && state.products.length) {
-      setListProduct(shuffleArray([...state.products]));
+    if (
+      Array.isArray(state?.products?.data) &&
+      state?.products?.data.length > 0
+    ) {
+      setListProduct(shuffleArray(state?.products?.data));
     }
-  }, [state.products]);
+  }, [state?.products?.data]);
 
   // console.log('product data', state, '-----', listProduct);
+  // console.log('state?.products?.data ===========', state?.products?.data);
   // console.log('listProduct===========', listProduct);
 
   const goToPage = page => {

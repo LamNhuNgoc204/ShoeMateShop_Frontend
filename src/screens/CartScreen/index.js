@@ -146,10 +146,10 @@ const CartScreen = ({navigation}) => {
                     routes: [{name: 'BottomNav'}],
                   })
                 }>
-                <Text style={cartst.text}>Bat dau mua sam ngay</Text>
+                <Text style={cartst.text}>Bắt đầu mua sắm ngay</Text>
               </TouchableOpacity>
 
-              <ProductList listProduct={productState.products} />
+              <ProductList listProduct={productState?.products?.data} />
             </ScrollView>
           ) : (
             <FlatList

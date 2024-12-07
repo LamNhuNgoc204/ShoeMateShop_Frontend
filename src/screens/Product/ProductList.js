@@ -8,6 +8,7 @@ import {addProductInWishlist, removeFromWishlist} from '../../api/ProductApi';
 import {setWishlistLocal} from '../../redux/reducer/productReducer';
 import appst from '../../constants/AppStyle';
 import {odst} from '../Orders/style';
+import {checkTokenValidity} from '../../utils/functions/checkToken';
 
 const ProductList = ({listProduct, isHome}) => {
   const {t} = useTranslation();
@@ -21,7 +22,16 @@ const ProductList = ({listProduct, isHome}) => {
       : listProduct;
 
   useEffect(() => {
-    setWishLists(state.wishlist);
+    const checkToken = async () => {
+      const isTokenValid = await checkTokenValidity();
+      if (isTokenValid) {
+        setWishLists(state.wishlist);
+      } else {
+        setWishLists([]);
+      }
+    };
+
+    checkToken();
   }, [state.wishlist]);
 
   const handleHeartPress = async (product, isFavorite) => {
@@ -41,6 +51,7 @@ const ProductList = ({listProduct, isHome}) => {
       console.error('Error updating wishlist:', error);
     }
   };
+
   const _renderItem = React.useCallback(
     ({item, index}) => {
       return (

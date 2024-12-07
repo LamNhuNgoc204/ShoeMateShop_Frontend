@@ -13,4 +13,12 @@ export function formatDate(isoString) {
 }
 
 // Tron mang
-export const shuffleArray = array => array.sort(() => Math.random() - 0.5);
+// export const shuffleArray = array => array.sort(() => Math.random() - 0.5);
+export const shuffleArray = array => {
+  const newArray = [...array]; // Tạo bản sao mảng
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+};

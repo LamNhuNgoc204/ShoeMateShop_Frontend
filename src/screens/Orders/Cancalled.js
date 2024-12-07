@@ -44,8 +44,10 @@ const Cancalled = ({navigation}) => {
   }, [navigation]);
 
   useEffect(() => {
-    if (products.products && products.products.length) {
-      setListProduct(shuffleArray([...products.products]));
+    if (Array.isArray(products.products)) {
+      if (products.products && products.products.length) {
+        setListProduct(shuffleArray(products?.products?.data));
+      }
     }
   }, []);
 

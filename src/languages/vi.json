@@ -106,6 +106,7 @@
     "best_seller": "BÁN CHẠY",
     "sold": "Đã bán",
     "see_more": "Xem thêm",
+    "read_less": "Thu gọn",
     "reviews": "Đánh giá sản phẩm",
     "similar_product": "Bạn có thể thích",
     "see_all": "Xem tất cả",
@@ -249,8 +250,14 @@
     "response": "Phản hồi của người bán:",
     "review_order": "Đánh giá đơn hàng",
     "blank_review": "Không có đơn hàng cần đánh giá.",
-    "no_review":"Chưa có đánh giá",
-    "all_review":"Tất cả đánh giá"
+    "no_review": "Chưa có đánh giá",
+    "all_review": "Tất cả đánh giá",
+    "all": "Tất cả",
+    "with_image_video": "Có hình ảnh / Video",
+    "select_stars": "Sao",
+    "type": "Phân loại",
+    "no_reviews": "Không có đánh giá phù hợp",
+    "filter_by_size": "Lọc theo kích thước"
   },
   "notifications": {
     "title": "Thông báo",

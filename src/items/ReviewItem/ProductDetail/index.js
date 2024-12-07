@@ -1,15 +1,26 @@
-import {View, Text, Image, FlatList} from 'react-native';
-import React from 'react';
+import {View, Text, Image, FlatList, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
 import pddtit from './style';
 import appst from '../../../constants/AppStyle';
 import {spacing} from '../../../constants';
 import Video from 'react-native-video';
 import {useTranslation} from 'react-i18next';
+import {colors} from '../../../constants/colors';
 
 const ItemReview = ({item}) => {
   // console.log('item', item);
   const user = item?.reviewer_id;
   const {t} = useTranslation();
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isResponseVisible, setIsResponseVisible] = useState(false);
+
+  const toggleReadMore = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  const toggleResponseVisibility = () => {
+    setIsResponseVisible(!isResponseVisible);
+  };
 
   return (
     <View style={pddtit.container}>
@@ -47,9 +58,32 @@ const ItemReview = ({item}) => {
             {t('products.size')}: {item?.size}
           </Text>
           {item?.comment && (
-            <Text style={pddtit.descript} numberOfLines={4}>
-              {item?.comment}
-            </Text>
+            <>
+              <Text
+                style={pddtit.descript}
+                numberOfLines={isExpanded ? undefined : 4}>
+                {item.comment}
+              </Text>
+              {item.comment.length > 100 && (
+                <TouchableOpacity
+                  style={appst.rowStart}
+                  onPress={toggleReadMore}>
+                  <Text style={pddtit.readMore}>
+                    {isExpanded
+                      ? t('products.read_less')
+                      : t('buttons.read_more')}
+                  </Text>
+                  <Image
+                    style={[appst.icon20, {marginTop: 10}]}
+                    source={
+                      isExpanded
+                        ? require('../../../assets/icons/arrrow_up.png')
+                        : require('../../../assets/icons/arrrow_down.png')
+                    }
+                  />
+                </TouchableOpacity>
+              )}
+            </>
           )}
 
           <View style={[appst.rowStart, pddtit.body2]}>
@@ -75,6 +109,60 @@ const ItemReview = ({item}) => {
               )}
             />
           </View>
+
+          {item.response && item.response.content && (
+            <>
+              {!isResponseVisible && (
+                <TouchableOpacity
+                  style={appst.rowEnd}
+                  onPress={toggleResponseVisibility}>
+                  <Text style={pddtit.readMore}>Phản hồi từ người bán</Text>
+                  <Image
+                    style={[appst.icon20, {marginTop: 10}]}
+                    source={require('../../../assets/icons/arrrow_down.png')}
+                  />
+                </TouchableOpacity>
+              )}
+              {isResponseVisible && (
+                <View
+                  style={{
+                    marginTop: 10,
+                  }}>
+                  <View
+                    style={{
+                      backgroundColor: colors.background_secondary,
+                      paddingHorizontal: 10,
+                      paddingVertical: 5,
+                      borderRadius: 8,
+                    }}>
+                    <View style={appst.rowStart}>
+                      <Image
+                        style={appst.icon30}
+                        source={require('../../../assets/icons/logo.png')}
+                      />
+                      <Text
+                        style={{fontSize: 16, marginLeft: 5, color: '#333'}}>
+                        Phản hồi từ người bán
+                      </Text>
+                    </View>
+                    <Text style={pddtit.responseText}>
+                      {item.response.content}
+                    </Text>
+                  </View>
+
+                  <TouchableOpacity
+                    style={appst.rowEnd}
+                    onPress={toggleResponseVisibility}>
+                    <Text style={pddtit.readMore}>Ẩn phản hồi</Text>
+                    <Image
+                      style={[appst.icon20, {marginTop: 10}]}
+                      source={require('../../../assets/icons/arrrow_up.png')}
+                    />
+                  </TouchableOpacity>
+                </View>
+              )}
+            </>
+          )}
         </View>
       </View>
     </View>

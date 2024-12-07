@@ -2,20 +2,27 @@ import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import productStyle from './style';
+import {checkTokenValidity} from '../../utils/functions/checkToken';
 
 const ProductItem = ({handleHeartPress, product, style, wishlist = []}) => {
   const [liked, setLiked] = React.useState(false);
+  const navigation = useNavigation();
 
   React.useEffect(() => {
     setLiked(wishlist.find(e => e._id == product._id) !== undefined);
   }, [wishlist]);
 
-  const handleLike = () => {
+  const handleLike = async () => {
+    const isTokenValid = await checkTokenValidity();
+    if (!isTokenValid) {
+      navigation.navigate('RequireLogin');
+      return;
+    }
+
     setLiked(!liked);
     handleHeartPress(product, liked);
   };
 
-  const navigation = useNavigation();
   const imageAssets =
     product.assets &&
     product.assets.filter(asset => {

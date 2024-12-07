@@ -54,6 +54,25 @@ const pddtit = StyleSheet.create({
     borderRadius: 5,
     marginRight: spacing.xm,
   },
+  descript: {
+    fontSize: 16,
+    color: '#333',
+  },
+  readMore: {
+    fontSize: 14,
+    color: 'blue',
+    marginTop: 5,
+  },
+  icon20: {
+    width: 20,
+    height: 20,
+  },
+  responseText: {
+    fontSize: 16,
+    color: '#333',
+    marginVertical: 5,
+    marginLeft: 5,
+  },
 });
 
 export default pddtit;

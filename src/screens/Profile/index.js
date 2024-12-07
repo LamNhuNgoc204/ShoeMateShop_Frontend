@@ -109,7 +109,7 @@ const ProfileScreen = () => {
       />
 
       <View style={{marginTop: 10}}>
-        <ProductList listProduct={productState.products} />
+        <ProductList listProduct={productState?.products?.data} />
       </View>
     </ScrollView>
   );

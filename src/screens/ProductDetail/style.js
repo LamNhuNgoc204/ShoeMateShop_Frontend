@@ -75,7 +75,7 @@ const pddt = StyleSheet.create({
     fontFamily: fonts.rlw_regular,
     fontSize: sizes.size14,
     color: colors.color707B81,
-    marginVertical: spacing.md,
+    marginVertical: 5,
     textAlign: 'justify',
     lineHeight: 20,
   },

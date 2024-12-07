@@ -143,7 +143,6 @@ const ProductDetail = props => {
         name={product.name}
         rightOnPress={() => {
           navigation.reset({
-            // Đảm bảo tab này là tab đầu tiên khi reset
             index: 0,
             routes: [{name: 'BottomNav', params: {screen: 'CartScreen'}}],
           });
@@ -238,14 +237,18 @@ const ProductDetail = props => {
                 style={pddt.des}>
                 {product.description}
               </Text>
-              <TouchableOpacity
-                onPress={() =>
-                  setIsDescriptionExpanded(!isDescriptionExpanded)
-                }>
-                <Text style={pddt.readmore}>
-                  {isDescriptionExpanded ? 'Read Less' : t('buttons.read_more')}
-                </Text>
-              </TouchableOpacity>
+              {product.description.length > 100 && (
+                <TouchableOpacity
+                  onPress={() =>
+                    setIsDescriptionExpanded(!isDescriptionExpanded)
+                  }>
+                  <Text style={pddt.readmore}>
+                    {isDescriptionExpanded
+                      ? t('products.read_less')
+                      : t('buttons.read_more')}
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
 
@@ -256,7 +259,7 @@ const ProductDetail = props => {
             {listReview.length !== 0 ? (
               <View>
                 <FlatList
-                  data={listReview?.slice(0, 2)}
+                  data={listReview?.slice(0, 3)}
                   renderItem={({item}) => <ItemReview item={item} />}
                   extraData={item => item._id}
                   scrollEnabled={false}
