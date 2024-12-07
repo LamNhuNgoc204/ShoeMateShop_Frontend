@@ -22,28 +22,25 @@ const RequireLogin = () => {
           source={require('../../assets/icons/logo.png')}
           style={styles.image}
         />
-        <Text style={styles.title}>Đăng nhập để tiếp tục</Text>
-        <Text style={styles.subtitle}>
-          Để trải nghiệm đầy đủ các tính năng, hãy đăng nhập vào tài khoản của
-          bạn.
-        </Text>
+        <Text style={styles.title}>{t('login.continue')}</Text>
+        <Text style={styles.subtitle}>{t('login.title1')}</Text>
         <TouchableOpacity
           style={styles.button}
           onPress={async () => {
             await AsyncStorage.removeItem('token');
             navigation.replace('LoginScreen');
           }}>
-          <Text style={styles.buttonText}>Đăng nhập</Text>
+          <Text style={styles.buttonText}>{t('buttons.btn_signin')}</Text>
         </TouchableOpacity>
 
         <Text style={styles.footer}>
-          Chưa có tài khoản?{' '}
+          {t('login.no_acc')}{' '}
           <Text
             style={styles.signUpLink}
             onPress={() => {
               navigation.navigate('SignUpScreen');
             }}>
-            Đăng ký ngay
+            {t('buttons.btn_signup')}
           </Text>
         </Text>
       </View>

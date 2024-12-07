@@ -18,11 +18,13 @@ import ItemCart from '../../items/CartItem/ItemCart';
 import {getUserCard} from '../../api/CartApi';
 import {useDispatch, useSelector} from 'react-redux';
 import {setOrderData, setToltalPrice} from '../../redux/reducer/cartReducer';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import CartPlaceholder from '../../placeholders/product/cart';
 import ProductList from '../Product/ProductList';
+import {checkTokenValidity} from '../../utils/functions/checkToken';
 
-const CartScreen = ({navigation}) => {
+const CartScreen = () => {
+  const navigation = useNavigation();
   const {t} = useTranslation();
   const [cards, setCards] = useState([]);
   const [currentlyOpenSwipeable, setCurrentlyOpenSwipeable] = useState(null);
@@ -33,6 +35,16 @@ const CartScreen = ({navigation}) => {
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isTokenValid, setIsTokenValid] = useState(false);
+
+  useEffect(() => {
+    const validateToken = async () => {
+      const valid = await checkTokenValidity();
+      setIsTokenValid(valid);
+    };
+
+    validateToken();
+  }, []);
 
   const fetchCard = async () => {
     try {
@@ -57,7 +69,9 @@ const CartScreen = ({navigation}) => {
   // Sử dụng useFocusEffect để gọi lại API mỗi khi màn hình được mount
   useFocusEffect(
     React.useCallback(() => {
-      fetchCard();
+      if (isTokenValid) {
+        fetchCard();
+      }
     }, []),
   );
 
@@ -127,94 +141,113 @@ const CartScreen = ({navigation}) => {
           name={t('home.cart')}
         />
       </View>
-      {loading ? (
-        <View style={[cartst.viewBody, {flex: 1}]}>
-          <Text style={cartst.text1}>
-            {cards && cards.length} {t('home.item')}
-          </Text>
-          {cards.length === 0 ? (
-            <ScrollView>
-              <Image
-                style={cartst.placeholder}
-                source={require('../../assets/images/shopping.jpg')}
-              />
-              <TouchableOpacity
-                style={{marginBottom: 20}}
-                onPress={() =>
-                  navigation.reset({
-                    index: 0,
-                    routes: [{name: 'BottomNav'}],
-                  })
-                }>
-                <Text style={cartst.text}>Bắt đầu mua sắm ngay</Text>
-              </TouchableOpacity>
+      {isTokenValid ? (
+        <>
+          {loading ? (
+            <View style={[cartst.viewBody, {flex: 1}]}>
+              <Text style={cartst.text1}>
+                {cards && cards.length} {t('home.item')}
+              </Text>
+              {cards.length === 0 ? (
+                <ScrollView>
+                  <Image
+                    style={cartst.placeholder}
+                    source={require('../../assets/images/shopping.jpg')}
+                  />
+                  <TouchableOpacity
+                    style={{marginBottom: 20}}
+                    onPress={() =>
+                      navigation.reset({
+                        index: 0,
+                        routes: [{name: 'BottomNav'}],
+                      })
+                    }>
+                    <Text style={cartst.text}>{t('cart.sub_title')}</Text>
+                  </TouchableOpacity>
 
-              <ProductList listProduct={productState?.products?.data} />
-            </ScrollView>
-          ) : (
-            <FlatList
-              style={cartst.flat}
-              data={cards}
-              renderItem={({item}) => (
-                <ItemCart
-                  item={item}
-                  setCards={setCards}
-                  cards={cards}
-                  setTotalPrice={setTotalPrice}
-                  checkedProducts={checkedProducts}
-                  setCheckedProducts={setCheckedProducts}
-                  currentlyOpenSwipeable={currentlyOpenSwipeable}
-                  setCurrentlyOpenSwipeable={setCurrentlyOpenSwipeable}
-                  isChecked={checkedProducts.some(
-                    cart => cart._id === item._id,
+                  <ProductList listProduct={productState?.products?.data} />
+                </ScrollView>
+              ) : (
+                <FlatList
+                  style={cartst.flat}
+                  data={cards}
+                  renderItem={({item}) => (
+                    <ItemCart
+                      item={item}
+                      setCards={setCards}
+                      cards={cards}
+                      setTotalPrice={setTotalPrice}
+                      checkedProducts={checkedProducts}
+                      setCheckedProducts={setCheckedProducts}
+                      currentlyOpenSwipeable={currentlyOpenSwipeable}
+                      setCurrentlyOpenSwipeable={setCurrentlyOpenSwipeable}
+                      isChecked={checkedProducts.some(
+                        cart => cart._id === item._id,
+                      )}
+                      onCheckedChange={handleCheckedChange}
+                    />
                   )}
-                  onCheckedChange={handleCheckedChange}
+                  extraData={item => item.id}
+                  ItemSeparatorComponent={
+                    <View style={{marginBottom: spacing.sm}} />
+                  }
+                  showsVerticalScrollIndicator={false}
+                  onRefresh={fetchCard}
+                  refreshing={refreshing}
                 />
               )}
-              extraData={item => item.id}
-              ItemSeparatorComponent={
-                <View style={{marginBottom: spacing.sm}} />
-              }
-              showsVerticalScrollIndicator={false}
-              onRefresh={fetchCard}
-              refreshing={refreshing}
-            />
+            </View>
+          ) : (
+            <CartPlaceholder />
           )}
-        </View>
-      ) : (
-        <CartPlaceholder />
-      )}
-      <View style={cartst.viewFooter}>
-        <View style={[appst.rowCenter]}>
-          <View style={appst.rowCenter}>
-            <TouchableOpacity onPress={handleSelectAll}>
-              <Image
-                style={appst.icon24}
-                source={
-                  isAllChecked
-                    ? require('../../assets/icons/ppd_card_check.png')
-                    : require('../../assets/icons/icon_check.png')
-                }
-              />
-            </TouchableOpacity>
-            <Text style={cartst.text6}>{t('home.all_product')}</Text>
-          </View>
-          <View style={[appst.rowCenter]}>
-            <Text style={cartst.text2}>{t('home.total')}: </Text>
-            <Text style={cartst.text3}>
-              ${totalPrice.toLocaleString('vi-VN')}
-            </Text>
-            <View>
-              <CustomedButton
-                title={t('buttons.btn_checkout')}
-                style={cartst.btCheckout}
-                titleStyle={cartst.textTouch}
-                onPress={() => handleOrder()}
-              />
+          <View style={cartst.viewFooter}>
+            <View style={[appst.rowCenter]}>
+              <View style={appst.rowCenter}>
+                <TouchableOpacity onPress={handleSelectAll}>
+                  <Image
+                    style={appst.icon24}
+                    source={
+                      isAllChecked
+                        ? require('../../assets/icons/ppd_card_check.png')
+                        : require('../../assets/icons/icon_check.png')
+                    }
+                  />
+                </TouchableOpacity>
+                <Text style={cartst.text6}>{t('home.all_product')}</Text>
+              </View>
+              <View style={[appst.rowCenter]}>
+                <Text style={cartst.text2}>{t('home.total')}: </Text>
+                <Text style={cartst.text3}>
+                  ${totalPrice.toLocaleString('vi-VN')}
+                </Text>
+                <View>
+                  <CustomedButton
+                    title={t('buttons.btn_checkout')}
+                    style={cartst.btCheckout}
+                    titleStyle={cartst.textTouch}
+                    onPress={() => handleOrder()}
+                  />
+                </View>
+              </View>
             </View>
           </View>
+        </>
+      ) : (
+        <View style={cartst.container2}>
+          <Image
+            style={cartst.icon}
+            source={require('../../assets/icons/start_shopping.png')}
+          />
+          <Text style={cartst.text1}>
+            {t('cart.sub_title1')}.{' '}
+            <Text
+              onPress={() => navigation.replace('LoginScreen')}
+              style={cartst.text2}>
+              {t('buttons.btn_signin')}
+            </Text>
+          </Text>
         </View>
-      </View>
+      )}
     </View>
   );
 };

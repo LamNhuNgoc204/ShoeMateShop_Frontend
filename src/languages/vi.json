@@ -269,7 +269,8 @@
     "send_otp_success": "Đã gửi lại OPT,vui lòng kiểm tra email",
     "send_otp_error": "Gửi otp thất bại",
     "verify_success": "Bạn đã xác thực tài khoản thành công!",
-    "verify_error": "Xác minh tài khoản thất bại!"
+    "verify_error": "Xác minh tài khoản thất bại!",
+    "sub_noti": "Đăng nhập để nhận thông báo về đơn hàng của bạn."
   },
   "messages": {
     "title": "Tin nhắn",
@@ -331,5 +332,18 @@
   },
   "termsandcondition": {
     "title": "Quy luật và điều khoản"
+  },
+  "login": {
+    "continue": "Đăng nhập để tiếp tục",
+    "title1": "Để trải nghiệm đầy đủ các tính năng, hãy đăng nhập vào tài khoản của bạn.",
+    "no_acc": "Chưa có tài khoản?"
+  },
+  "favorite": {
+    "sub_title": " Bạn chưa thêm sản phẩm nào vào danh sách yêu thích cả. Đến trang chủ ngay",
+    "sub_title1": "Đăng nhập để quản lý danh sách yêu thích của bạn."
+  },
+  "cart": {
+    "sub_title": "Bắt đầu mua sắm ngay",
+    "sub_title1": "Đăng nhập để bắt đầu mua sắm cùng ShoeMate nhé"
   }
 }

@@ -6,7 +6,7 @@ import {fonts} from '../../constants/fonts';
 export const cartst = StyleSheet.create({
   container: {
     backgroundColor: colors.background_secondary,
-    marginTop: spacing.md,
+    marginTop: 10,
   },
   header: {
     marginHorizontal: spacing.md,
@@ -75,5 +75,30 @@ export const cartst = StyleSheet.create({
     fontFamily: fonts.rlw_bold,
     marginTop: 10,
     textDecorationLine: 'underline',
+  },
+  icon: {
+    width: 100,
+    height: 100,
+  },
+  container2: {
+    flex: 1,
+    marginBottom: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 30,
+  },
+  text1: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: 'black',
+    fontFamily: fonts.pp_regular,
+  },
+  text2: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: colors.primary,
+    textDecorationColor: colors.primary,
+    textDecorationLine: 'underline',
+    fontFamily: fonts.pp_bold,
   },
 });

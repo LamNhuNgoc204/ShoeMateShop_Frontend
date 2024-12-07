@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import { colors } from '../../constants/colors';
+import {colors} from '../../constants/colors';
 
 const styles = StyleSheet.create({
   container: {
@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
   image: {
     width: 200,
     height: 200,
-    // marginBottom: 30,
   },
   title: {
     fontSize: 24,
@@ -49,7 +48,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   signUpLink: {
-    color: '#3498db',
+    color: colors.primary,
     fontWeight: 'bold',
   },
 });

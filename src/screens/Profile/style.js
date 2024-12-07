@@ -62,4 +62,21 @@ export default styles = StyleSheet.create({
     paddingVertical: 8,
     marginTop: 4,
   },
+  button: {
+    backgroundColor: colors.primary,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5,
+    marginLeft: 10,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
 });
