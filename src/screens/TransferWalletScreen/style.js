@@ -3,10 +3,25 @@ import {colors} from '../../constants/colors';
 import {sizes, spacing} from '../../constants';
 import {fonts} from '../../constants/fonts';
 export default  styles = StyleSheet.create({
+    // container: {
+    //   flex: 1,
+    //   padding: spacing.lg,
+    //   paddingBottom: 0,
+    // },
     container: {
       flex: 1,
-      padding: spacing.lg,
-      paddingBottom: 0,
+      padding: spacing.md,
+     
+    },
+    loadingOverlay: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     title: {
       fontSize: 20,

@@ -11,12 +11,29 @@ import {PROFILE} from '../../api/mockData';
 import appst from '../../constants/AppStyle';
 import {handleNavigate} from '../../utils/functions/navigationHelper';
 import ProductList from '../Product/ProductList';
-
+import AxiosInstance from "../../helpers/AxiosInstance"
 const ProfileScreen = () => {
   const {t} = useTranslation();
   const navigation = useNavigation();
   const {user, avatar} = useSelector(state => state.user);
   const productState = useSelector(state => state.products);
+
+
+ const handleToWallet =  async() => {
+    const response = await AxiosInstance().get('/wallet/balance');
+
+    if (response.status) {
+      navigation.navigate('HomeWallet');
+    
+    } else {
+      navigation.navigate('SetupWallet');
+      console.log("chưa có ví");
+    }
+
+    
+
+  };
+
 
   const renderItem = ({item}) => (
     <ChildItem
@@ -53,7 +70,7 @@ const ProfileScreen = () => {
       </View>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate('HomeWallet')}
+        onPress={handleToWallet}
         style={styles.myGadget}>
         <Image
           style={styles.ic_mygadget}

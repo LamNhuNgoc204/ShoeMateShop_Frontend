@@ -1,4 +1,4 @@
-import {Text, View, Image, TouchableOpacity} from 'react-native';
+import {Text, View, Image, TouchableOpacity, ToastAndroid} from 'react-native';
 import React, {useState} from 'react';
 import appst from '../../constants/AppStyle';
 import {useNavigation} from '@react-navigation/native';
@@ -8,14 +8,44 @@ import {spacing} from '../../constants';
 import CustomModal from '../../components/Modal';
 import {CustomedButton} from '../../components';
 import {useTranslation} from 'react-i18next';
-
+import AxiosInstance from "../../helpers/AxiosInstance"
 const ForgotPassWord = () => {
   const {t} = useTranslation();
   const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation();
+  const [email, setEmail] = useState('');
+
+  const handleEmailChange = (text) => {
+    setEmail(text); 
+  };
+console.log(email);
+
+  const handleChangePassword = async() => {
+   try {
+    const response = await AxiosInstance().post('/auth/forgot-password', {email});
+    if (response.status) {
+      setModalVisible(true);
+      
+    }else {
+      ToastAndroid.show(
+        "Email chưa được đăng kí", 
+         ToastAndroid.SHORT,
+       );
+    }
+   } catch (error) {
+    console.log(error);
+    ToastAndroid.show(
+      "Vui lòng thử lại sau ", 
+       ToastAndroid.SHORT,
+     );
+   }
+    
+  };
+
   const closeModal = () => {
+    navigation.navigate('OtpVerificationPassWord', {email});
     setModalVisible(false);
-    navigation.navigate('OtpVerification');
+   
   };
   return (
     <View style={styles.container}>
@@ -30,11 +60,15 @@ const ForgotPassWord = () => {
         <Text style={styles.text2}>{t('titles.sub_forgot_password')}</Text>
       </View>
       <View style={styles.view}>
-        <CustomTextInput placeholder={t('form_input.placeholder_email')} />
+      <CustomTextInput
+          placeholder={t('form_input.placeholder_email')}
+          value={email} 
+          onChangeText={handleEmailChange}
+        />
         <CustomedButton
           title={t('home.reset_pass')}
           titleStyle={styles.textPress}
-          onPress={() => setModalVisible(true)}
+          onPress={handleChangePassword}
           style={styles.press}
         />
       </View>

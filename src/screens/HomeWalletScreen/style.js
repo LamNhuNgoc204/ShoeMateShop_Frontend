@@ -26,7 +26,7 @@ export default styles = StyleSheet.create({
         fontFamily: fonts.rlw_medium,
       },
       price: {
-        fontSize: sizes.size32,
+        fontSize: sizes.size28,
         fontWeight: 'semibold',
         color: colors.text_black2B,
         fontFamily: fonts.pp_bold,

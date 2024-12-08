@@ -62,14 +62,33 @@ const AddNewAddress = () => {
   }, [selectedDistrict]);
 
   const saveChanges = async () => {
+    // Kiểm tra các trường không được để trống
+    if (!fullName || !phoneNumber || !addressDetail || !selectedProvince || !selectedDistrict || !selectedWard) {
+      ToastAndroid.show('Vui lòng điền đầy đủ thông tin', ToastAndroid.SHORT);
+      return;
+    }
+  
+    // Tên phải có ít nhất 6 ký tự
+    if (fullName.length <= 6) {
+      ToastAndroid.show('Tên phải dài hơn 6 ký tự', ToastAndroid.SHORT);
+      return;
+    }
+  
+    // Số điện thoại phải bắt đầu bằng số 0 và có độ dài là 10
+    const phoneRegex = /^0\d{9}$/;
+    if (!phoneRegex.test(phoneNumber)) {
+      ToastAndroid.show('Số điện thoại phải bắt đầu bằng số 0 và có 10 chữ số', ToastAndroid.SHORT);
+      return;
+    }
+  
+    // Nếu tất cả điều kiện hợp lệ
     const address = `${addressDetail},${findWardName(
       selectedWard,
     )},${findDistrictName(selectedDistrict)},${findProvinceName(
       selectedProvince,
     )}`;
     setAddress(address);
-    console.log('Address:', address);
-
+  
     try {
       const body = {
         address: address,
@@ -77,14 +96,9 @@ const AddNewAddress = () => {
         recieverName: fullName,
         isDefault: true,
       };
-      // console.log('body', body);
-
-      const response = await AxiosInstance().post(
-        '/addresses/add-address',
-        body,
-      );
-      console.log('response', response);
-
+  
+      const response = await AxiosInstance().post('/addresses/add-address', body);
+  
       if (response.status) {
         setFullName('');
         setPhoneNumber('');
@@ -93,18 +107,20 @@ const AddNewAddress = () => {
         setSelectedProvince('');
         setSelectedWard('');
         setSelectedDistrict('');
-        ToastAndroid.show('Theem address thanh cong', ToastAndroid.SHORT);
-
+        ToastAndroid.show('Thêm địa chỉ thành công', ToastAndroid.SHORT);
+  
         navigation.navigate('ChooseAddress', {
           newAddressItem: response.data,
         });
       } else {
-        console.log('loi server');
+        ToastAndroid.show('Lỗi server, vui lòng thử lại', ToastAndroid.SHORT);
       }
     } catch (error) {
-      console.log('error add address===', error);
+      ToastAndroid.show('Có lỗi xảy ra, vui lòng thử lại', ToastAndroid.SHORT);
+      // console.error('Error adding address:', error);
     }
   };
+  
 
   const findProvinceName = value => {
     const province = provinces.find(province => province.id === value);

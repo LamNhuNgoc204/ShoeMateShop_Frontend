@@ -1,0 +1,38 @@
+import * as React from "react";
+import Svg, { G, Mask, Path, Defs } from "react-native-svg";
+import style from "../../../components/Input/style";
+/* SVGR has dropped some elements not supported by react-native-svg: filter */
+const VoucherBgSvg = ({style}) => (
+  <Svg
+    style={style}
+    width={348}
+    height={112}
+    viewBox="0 0 348 112"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <G filter="url(#filter0_d_552_2476)">
+      <Mask id="path-1-inside-1_552_2476" fill="white">
+        <Path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M6 12C6 7.02943 10.0294 3 15 3H333C337.971 3 342 7.02944 342 12V43C336.477 43 332 47.4772 332 53C332 58.5228 336.477 63 342 63V94C342 98.9706 337.971 103 333 103H15C10.0294 103 6 98.9706 6 94V63C11.5228 63 16 58.5228 16 53C16 47.4772 11.5228 43 6 43V12Z"
+        />
+      </Mask>
+      <Path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M6 12C6 7.02943 10.0294 3 15 3H333C337.971 3 342 7.02944 342 12V43C336.477 43 332 47.4772 332 53C332 58.5228 336.477 63 342 63V94C342 98.9706 337.971 103 333 103H15C10.0294 103 6 98.9706 6 94V63C11.5228 63 16 58.5228 16 53C16 47.4772 11.5228 43 6 43V12Z"
+        fill="white"
+      />
+      <Path
+        d="M342 43V44H343V43H342ZM342 63H343V62H342V63ZM6 63V62H5V63H6ZM6 43H5V44H6V43ZM15 2C9.47715 2 5 6.47715 5 12H7C7 7.58172 10.5817 4 15 4V2ZM333 2H15V4H333V2ZM343 12C343 6.47715 338.523 2 333 2V4C337.418 4 341 7.58172 341 12H343ZM343 43V12H341V43H343ZM342 42C335.925 42 331 46.9249 331 53H333C333 48.0294 337.029 44 342 44V42ZM331 53C331 59.0751 335.925 64 342 64V62C337.029 62 333 57.9706 333 53H331ZM343 94V63H341V94H343ZM333 104C338.523 104 343 99.5229 343 94H341C341 98.4183 337.418 102 333 102V104ZM15 104H333V102H15V104ZM5 94C5 99.5229 9.47716 104 15 104V102C10.5817 102 7 98.4183 7 94H5ZM5 63V94H7V63H5ZM15 53C15 57.9706 10.9706 62 6 62V64C12.0751 64 17 59.0751 17 53H15ZM6 44C10.9706 44 15 48.0294 15 53H17C17 46.9249 12.0751 42 6 42V44ZM5 12V43H7V12H5Z"
+        fill="#004CFF"
+        mask="url(#path-1-inside-1_552_2476)"
+      />
+    </G>
+    <Path d="M6.00098 34.5H342.001" stroke="#004CFF" strokeDasharray={3} />
+    <Defs></Defs>
+  </Svg>
+);
+export default VoucherBgSvg;

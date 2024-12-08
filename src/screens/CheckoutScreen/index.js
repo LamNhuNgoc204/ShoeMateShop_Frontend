@@ -22,30 +22,43 @@ import {useTranslation} from 'react-i18next';
 import {useDispatch, useSelector} from 'react-redux';
 import {setOrderId, setPriceToPay} from '../../redux/reducer/cartReducer';
 import {createOrder} from '../../api/OrderApi';
+import AxiosInstance from '../../helpers/AxiosInstance';
+
 import {
   getAdressDefault,
   getPaymentDefault,
   getShipDefault,
 } from '../../redux/thunks/CartThunks';
 import LoadingModal from '../../components/Modal/LoadingModal';
-
-const CheckOutScreen = ({navigation}) => {
+import {useNavigation} from '@react-navigation/native';
+const CheckOutScreen = ({route}) => {
+  const {responseVoucher} = route.params || {};
   const state = useSelector(state => state.cart);
+  const [responseVouchers, setResponseVouchers] = useState({});
   const dispatch = useDispatch();
-
+  const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const {t} = useTranslation();
   const [isswitch, setIsswitch] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const addressDefault = state.address;
+  var tongchiphi = 0;
   // const [isComplete, setisComplete] = useState(false);
 
   // console.log('addressDefault', addressDefault);
   // console.log('state.ship', state.ship);
+  useEffect(() => {
+    if (responseVoucher) {
+      setResponseVouchers(responseVoucher);
+    }
+  }, [responseVoucher]);
 
   const ship = state.ship && state.ship.cost && state.ship.cost;
-  const tongchiphi = state.totalPrice + ship;
 
+  tongchiphi = state.totalPrice + ship;
+  if (responseVoucher) {
+    tongchiphi = responseVoucher.discountedPrice + ship;
+  }
   useEffect(() => {
     const getInforDefault = async () => {
       await Promise.all([
@@ -85,6 +98,7 @@ const CheckOutScreen = ({navigation}) => {
       receiver: addressDefault.recieverName,
       receiverPhone: addressDefault.recieverPhoneNumber,
       address: addressDefault.address,
+      voucher_code: responseVouchers.voucher_code,
     };
 
     // console.log('body orrder: ', body);
@@ -106,10 +120,35 @@ const CheckOutScreen = ({navigation}) => {
         ToastAndroid.show('tao don thanh cong', ToastAndroid.show);
         // setisComplete(true);
         navigation.navigate('CheckoutSuccess');
+      } else if (
+        state.payment &&
+        state.payment.payment_method == 'Shoes Mate Wallet'
+      ) {
+        console.log('Shoes Mate Wallet');
+        
+         try {
+          const response = await AxiosInstance().post('/wallet/payment', {
+            amount: tongchiphi,
+          });
+          
+          if (response.status) {
+            ToastAndroid.show('Đặt hàng thành công', ToastAndroid.show);
+            navigation.navigate('CheckoutSuccess');
+          }else {
+            ToastAndroid.show('Vui lòng kiểm tra số dư', ToastAndroid.show);
+          }
+         } catch (error) {
+          console.log(error);
+         }
+        
       }
     }
 
     //check xem chon phuong thuc nao roi chuyen man hinh tuong ung
+  };
+
+  const handeToVouchers = () => {
+    navigation.navigate('Voucher', {totalOrderValue: state.totalPrice});
   };
 
   return (
@@ -181,7 +220,9 @@ const CheckOutScreen = ({navigation}) => {
             />
           </View>
 
-          <View style={[appst.rowCenter, c_outst.body3, c_outst.borderBottom]}>
+          <TouchableOpacity
+            style={[appst.rowCenter, c_outst.body3, c_outst.borderBottom]}
+            onPress={handeToVouchers}>
             <View style={appst.rowCenter}>
               <Image
                 style={appst.icon24}
@@ -190,27 +231,15 @@ const CheckOutScreen = ({navigation}) => {
               <Text style={c_outst.text6}>{t('checkout.vouchers')}</Text>
             </View>
             <View style={[appst.rowCenter]}>
-              <Text style={c_outst.text7}>Use 1 Voucher</Text>
+              <Text style={c_outst.text7}>
+                {(responseVoucher && 'Use 1 Voucher') || ''}
+              </Text>
               <Image
                 style={appst.icon24}
                 source={require('../../assets/icons/arrow_right.png')}
               />
             </View>
-          </View>
-
-          <View style={[appst.rowCenter, c_outst.body3, c_outst.borderBottom]}>
-            <View style={appst.rowCenter}>
-              <Image
-                style={appst.icon24}
-                source={require('../../assets/icons/points.png')}
-              />
-              <Text style={c_outst.text6}>Redeem 3500 Points</Text>
-            </View>
-            <Switch
-              onValueChange={value => setIsswitch(value)}
-              value={isswitch}
-            />
-          </View>
+          </TouchableOpacity>
 
           <View style={[c_outst.body3, c_outst.borderBottom]}>
             <TouchableOpacity
@@ -268,7 +297,8 @@ const CheckOutScreen = ({navigation}) => {
             <View style={[appst.rowCenter, c_outst.view4Text]}>
               <Text style={c_outst.textTitle}>{t('checkout.merchandise')}</Text>
               <Text style={c_outst.textPrice}>
-                $ {state.totalPrice && state.totalPrice.toLocaleString('vi-VN')}
+                {state.totalPrice && state.totalPrice.toLocaleString('vi-VN')}{' '}
+                VNĐ
               </Text>
             </View>
             <View style={[appst.rowCenter, c_outst.view4Text]}>
@@ -276,24 +306,31 @@ const CheckOutScreen = ({navigation}) => {
                 {t('checkout.shipping_total')}
               </Text>
               <Text style={c_outst.textPrice}>
-                ${' '}
+                {' '}
                 {state.ship && state.ship.cost
                   ? state.ship.cost.toLocaleString('vi-VN')
-                  : '...'}
+                  : '...'}{' '}
+                VNĐ
               </Text>
             </View>
             <View style={[appst.rowCenter, c_outst.view4Text]}>
-              <Text style={c_outst.textTitle}>
-                {t('checkout.shipping_discount')}
+              <Text style={c_outst.textTitle}>{t('Áp dụng voucher')}</Text>
+              <Text style={c_outst.textPrice}>
+                {' '}
+                -
+                {(responseVouchers.discountAmount &&
+                  responseVouchers.discountAmount.toLocaleString('vi-VN')) ||
+                  '0'}{' '}
+                VNĐ
               </Text>
-              <Text style={c_outst.textPrice}>$ 0</Text>
             </View>
             <View style={[appst.rowCenter, c_outst.view4Text]}>
               <Text style={[c_outst.textTitle, c_outst.textTitle1]}>
                 {t('checkout.payment')}
               </Text>
               <Text style={[c_outst.textPrice, c_outst.textPrice1]}>
-                $ {(tongchiphi && tongchiphi.toLocaleString('vi-VN')) || '...'}
+                {(tongchiphi && tongchiphi.toLocaleString('vi-VN')) || '...'}{' '}
+                VNĐ
               </Text>
             </View>
           </View>
@@ -315,7 +352,7 @@ const CheckOutScreen = ({navigation}) => {
           <View style={[appst.rowCenter, c_outst.borderTop]}>
             <Text style={c_outst.text4}>{t('home.total')}</Text>
             <Text style={c_outst.text5}>
-              ${tongchiphi.toLocaleString('vi-VN') || '...'}
+              {tongchiphi.toLocaleString('vi-VN') || '...'} VNĐ
             </Text>
           </View>
           <CustomedButton
