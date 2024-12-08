@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 
 const AxiosInstance = (contentType = 'application/json') => {
   const axiosInstance = axios.create({
-    baseURL: `http://192.168.9.31:3000/`,
+    baseURL: `http://192.168.1.97:3000/`,
   });
   axiosInstance.interceptors.request.use(
     async config => {
@@ -13,7 +13,7 @@ const AxiosInstance = (contentType = 'application/json') => {
 
       if (dayjs().isAfter(expiredTokenDate)) {
         const response = await axios.post(
-          'http://192.168.9.31:3000/',
+          'http://192.168.1.97:3000/',
           {},
           {
             headers: {

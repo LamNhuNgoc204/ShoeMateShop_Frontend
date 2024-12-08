@@ -12,6 +12,9 @@ import { persistor, store } from './src/redux/store/store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging, { firebase } from '@react-native-firebase/messaging';
 import AxiosInstance from './src/helpers/AxiosInstance';
+
+
+
 const App = () => {
   useEffect(() => {
     const getLanguage = async () => {

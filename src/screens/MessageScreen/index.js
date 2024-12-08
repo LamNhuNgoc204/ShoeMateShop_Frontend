@@ -25,6 +25,7 @@ import { Axios } from 'axios';
 import { formatCurrency } from '../../utils/functions/formatCurrency';
 import { launchImageLibrary } from 'react-native-image-picker';
 import ImageView from "react-native-image-viewing";
+import axios from 'axios';
 
 
 const ProductMessageItem = ({ product, isMessage, onSend, onClose }) => {
@@ -491,7 +492,7 @@ const MessageScreen = ({ navigation, route }) => {
 
   // console.log('user', name, avatar);
 
-  const SOCKET_URL = `http://192.168.9.31:3000/`;
+  const SOCKET_URL = `http://192.168.1.97:3000/`;
 
   const getConversation = async () => {
     try {
@@ -519,6 +520,7 @@ const MessageScreen = ({ navigation, route }) => {
       console.error('Error sending message:', error);
     }
   };
+
 
   const sendOrder = async () => {
     if (!orderSelected) {
@@ -600,10 +602,18 @@ const MessageScreen = ({ navigation, route }) => {
     });
 
     try {
-      const result = await AxiosInstance('multipart/form-data').post('/upload/upload-multiple', formData)
+      const result = await axios.post(
+        'https://upload-image-git-main-duc-duys-projects-1c370f99.vercel.app/upload/upload-multiple',
+        formData,
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        }
+    );
 
       console.log('Upload successful:', result.data);
-      sendImage(result.data);
+      sendImage(result.data.data);
     } catch (error) {
       console.error('Upload failed:', error);
       Alert.alert('Error', 'Failed to upload images.');
@@ -611,7 +621,7 @@ const MessageScreen = ({ navigation, route }) => {
   };
 
   const sendImage = async (urls) => {
-    console.log('sendImage....');
+    console.log('sendImage....: ', urls);
     try {
       if (urls.length == 0) {
         return

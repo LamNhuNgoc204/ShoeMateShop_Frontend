@@ -23,6 +23,7 @@ import ProductSkeleton from '../../placeholders/product/detail';
 import {addRecentView} from '../../api/ProductApi';
 import {useTranslation} from 'react-i18next';
 import ProductList from '../Product/ProductList';
+import Share from 'react-native-share';
 
 const ProductDetail = props => {
   const {t} = useTranslation();
@@ -113,11 +114,37 @@ const ProductDetail = props => {
       setProId(product._id)
     }
 
+
+    const createDeepLink = () => {
+      return `mateshoe://product/${product._id}`;
+    };
+  
+    const shareProduct = async () => {
+      const deepLink = createDeepLink();
+  
+      const shareOptions = {
+        url: deepLink,
+      };
+  
+      try {
+        const result = await Share.open(shareOptions);
+        console.log('Chia sẻ thành công', result);
+      } catch (error) {
+        console.log('Lỗi chia sẻ:', error);
+      }
+    };
+
   return (
     <View style={[appst.container, pddt.container]}>
       <Header
         iconLeft={require('../../assets/icons/back.png')}
-        leftOnPress={() => navigation.goBack()}
+        leftOnPress={() => {
+          try {
+            navigation.goBack()
+          } catch (error) {
+            navigation.navigate('BottomNav')
+          }
+        }}
         name={product.name}
         rightOnPress={() => navigation.navigate('CartScreen')}
         iconRight={require('../../assets/icons/mycart.png')}
@@ -185,6 +212,15 @@ const ProductDetail = props => {
                   <Image source={require('../../assets/icons/favorite.png')} />
                 )}
               </View>
+
+              <View style={{width: 5}}/>
+              <TouchableOpacity onPress={shareProduct} style={[pddt.iconfav, appst.center]}>
+              <Image
+                    style={{width: 20, height: 20}}
+                    resizeMode='contain'
+                    source={require('../../assets/icons/share.png')}
+                  />
+              </TouchableOpacity>
             </View>
 
             <View style={[appst.rowStart]}>
