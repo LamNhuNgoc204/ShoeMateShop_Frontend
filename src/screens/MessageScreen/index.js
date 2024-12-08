@@ -603,7 +603,7 @@ const MessageScreen = ({ navigation, route }) => {
 
     try {
       const result = await axios.post(
-        'https://upload-image-git-main-duc-duys-projects-1c370f99.vercel.app/upload/upload-multiple',
+        'https://upload-image-production.up.railway.app/upload/upload-multiple',
         formData,
         {
             headers: {
