@@ -4,8 +4,11 @@ import appst from '../../constants/AppStyle';
 import splashStyle from './style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AxiosInstance from '../../helpers/AxiosInstance';
+import {useTranslation} from 'react-i18next';
 
 const SplashScreen = ({navigation}) => {
+  const {t} = useTranslation();
+
   useEffect(() => {
     const checkAppStatus = async () => {
       try {
@@ -24,8 +27,8 @@ const SplashScreen = ({navigation}) => {
           } else {
             // Token hết hạn => về Login
             Alert.alert(
-              'Thông báo',
-              'Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại.',
+              t('notifications.title'),
+              t('login.sub_title1'),
               [
                 {
                   text: 'OK',

@@ -11,7 +11,7 @@ const OrderItemDetail = ({item}) => {
   // console.log('item', data);
 
   return (
-    <View style={appst.rowStart}>
+    <View style={[appst.rowStart, {marginBottom: 10}]}>
       <Image
         style={oddt.img}
         source={

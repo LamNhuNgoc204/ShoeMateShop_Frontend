@@ -354,6 +354,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 0.5,
     borderColor: '#0159A6',
+    marginHorizontal: 15,
   },
   modalOptionText: {
     fontSize: 14,

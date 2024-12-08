@@ -32,7 +32,11 @@
     "btn_next": "Next",
     "btn_try_again": "Try again",
     "btn_start_order": "Start ordering",
-    "home": "Home"
+    "home": "Home",
+    "close": "Close",
+    "order": "Order",
+    "cancel": "Cancel",
+    "read_more": "Read more"
   },
   "home": {
     "list_product": "Products for you",
@@ -70,6 +74,7 @@
     "checkout_success_des": "Protect your rights with ShoeMate - only receive goods & pay when you receive the goods"
   },
   "profiles": {
+    "update_profile": "Update Profile Information",
     "wallet": "My Wallet",
     "rate": "To Rate",
     "viewed": "Recently Viewed",
@@ -80,7 +85,6 @@
     "help": "Help",
     "chat": "Chat with Shop",
     "language": "Change Language",
-    "update_profile": "Update Profile",
     "ship_address": "Shipping Address",
     "change_email": "Change Email",
     "change_pass": "Change Password",
@@ -109,7 +113,10 @@
     "brand": "Brand",
     "price": "Price",
     "rate": "Rate",
-    "total": "Total Price"
+    "total": "Total Price",
+    "read_less": "Read less",
+    "quantity": "Quantity",
+    "no_recently": "No recently viewed products."
   },
   "form_input": {
     "curr_pass": "Current Password",
@@ -188,6 +195,7 @@
     "receiver": "Receiver"
   },
   "orders": {
+    "code": "Code",
     "pay": "To Pay",
     "ship": "To Ship",
     "receive": "To Receive",
@@ -197,21 +205,27 @@
     "order_total": "Order Total",
     "fees": "Fees apply",
     "total": "Total",
+    "shipprice": "Shipping Fee",
     "accumulated": "Accumulated Points",
     "time": "Order time",
+    "return": "Return/Refund",
     "payment": "Payment time",
     "shipping": "Ship time",
     "complete": "Completed Time",
+    "completed": "Delivered",
     "order_detail": "Order Detail",
     "code_order": "Code order",
     "success_delivery": "Successful Delivery",
     "unit": "item(s)",
-    "processing": "Đang xử lý",
+    "timeCancel": "Order Cancellation Time",
+    "processing": "Processing",
     "wait_confirm": "Wait for confirmation",
     "proccessed_status": "Order is being processed",
     "no_order": "You don't have any orders yet",
     "watch_order_detail": "View order details",
-    "received": "Order received"
+    "received": "Order received",
+    "Canceler": "Cancelled by",
+    "cancelled": "Cancel order"
   },
   "rating": {
     "review": "My Reviews",
@@ -229,7 +243,17 @@
     "see": "See review",
     "rating": "To Rating",
     "not_found": "No more ratings found.",
-    "response": "Seller response:"
+    "response": "Seller response:",
+    "review_order": "Review Order",
+    "blank_review": "No orders to review.",
+    "no_review": "No reviews yet",
+    "all_review": "All Reviews",
+    "all": "All",
+    "with_image_video": "With Images/Videos",
+    "select_stars": "Stars",
+    "type": "Type",
+    "no_reviews": "No matching reviews",
+    "filter_by_size": "Filter by Size"
   },
   "nothing": {
     "internet": "No internet Connection",

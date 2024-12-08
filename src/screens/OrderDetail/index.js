@@ -7,7 +7,6 @@ import {
   ToastAndroid,
   TouchableOpacity,
   Modal,
-  Button,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import appst from '../../constants/AppStyle';
@@ -20,8 +19,8 @@ import OrderDetailSkeleton from '../../placeholders/product/order/OrderDetail';
 import {cancelOrder, getOrderDetail} from '../../api/OrderApi';
 import OrderItemDetail from '../../items/OrderItem/OrderItemDetail';
 import {formatDate} from '../../utils/functions/formatData';
-import {handleOrderDetail} from '../../utils/functions/order';
 import Loading from '../../components/Loading';
+import odit from '../../items/OrderItem/style';
 
 const OrderDetail = ({route, navigation}) => {
   const {item} = route.params;
@@ -31,7 +30,6 @@ const OrderDetail = ({route, navigation}) => {
   const [titleButton, setTitleButton] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [isCancel, setisCancel] = useState(false);
-  
 
   // console.log('orderDetail => ', item);
 
@@ -138,7 +136,7 @@ const OrderDetail = ({route, navigation}) => {
                         <Text style={oddt.text4}>{t('orders.code')}</Text>
                         <Text style={oddt.text4}>
                           {orderDetail.orderCode &&
-                            orderDetail.orderCode.slice(0, 10)}
+                            orderDetail.orderCode.toUpperCase()}
                         </Text>
                       </View>
                       <FlatList
@@ -260,21 +258,64 @@ const OrderDetail = ({route, navigation}) => {
                     </View>
                   </View>
                 </ScrollView>
-                <CustomedButton
-                  disabled={orderDetail.orderStatus === 'processing' && true}
-                  title={t(titleButton)}
-                  style={
-                    orderDetail.orderStatus === 'processing'
-                      ? oddt.disable
-                      : oddt.press
-                  }
-                  titleStyle={
-                    orderDetail.orderStatus === 'processing'
-                      ? oddt.titleDisable
-                      : oddt.titleStyle
-                  }
-                  onPress={() => handleOrderDetail()}
-                />
+
+                {orderDetail.orderStatus === 'completed'
+                  ? ''
+                  : orderDetail.orderStatus === 'delivered'
+                  ? ''
+                  : orderDetail.orderStatus === 'cancelled' && (
+                      <View style={[appst.rowCenter, {marginHorizontal: 10}]}>
+                        <TouchableOpacity
+                          // onPress={() =>
+                          //   gotoOrderDetail('CancelDetail', navigation, item)
+                          // }
+                          style={[
+                            odit.press,
+                            odit.press1,
+                            {paddingHorizontal: 10, width: '47%', height: 40},
+                          ]}>
+                          <Text style={[odit.textTouch, odit.textTouch1]}>
+                            {t('orders.watch_order_detail')}
+                          </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          // onPress={() => addToCart(productForCart)}
+                          style={[
+                            odit.press,
+                            {
+                              marginLeft: 10,
+                              width: '47%',
+                              height: 40,
+                            },
+                          ]}>
+                          <Text style={odit.textTouch}>
+                            {t('buttons.btn_buy_again')}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    )}
+
+                {orderDetail.orderStatus !== 'completed' &&
+                  orderDetail.orderStatus !== 'delivered' &&
+                  orderDetail.orderStatus !== 'cancelled' && (
+                    <CustomedButton
+                      disabled={
+                        orderDetail.orderStatus === 'processing' && true
+                      }
+                      title={t(titleButton)}
+                      style={
+                        orderDetail.orderStatus === 'processing'
+                          ? oddt.disable
+                          : oddt.press
+                      }
+                      titleStyle={
+                        orderDetail.orderStatus === 'processing'
+                          ? oddt.titleDisable
+                          : oddt.titleStyle
+                      }
+                      onPress={() => handleOrderDetail()}
+                    />
+                  )}
               </View>
             ) : (
               <OrderDetailSkeleton />

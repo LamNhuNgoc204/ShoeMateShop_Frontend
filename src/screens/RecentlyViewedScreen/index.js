@@ -1,10 +1,4 @@
-import {
-  FlatList,
-  Image,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import appst from '../../constants/AppStyle';
 import {colors} from '../../constants/colors';
@@ -36,7 +30,7 @@ const RecentlyViewedScreen = () => {
     fetchData();
   }, []);
 
-  // console.log('product', products);
+  // console.log('product rêcntly ', products);
 
   return (
     <View style={styles.container}>
@@ -46,7 +40,7 @@ const RecentlyViewedScreen = () => {
         leftOnPress={() => navigation.goBack()}
       />
 
-      <View style={{flex: 1, marginTop: 10}}>
+      <View style={{flex: 1, marginTop: 10, paddingHorizontal: 20}}>
         {loading ? (
           products.length > 0 ? (
             <FlatList
@@ -54,10 +48,10 @@ const RecentlyViewedScreen = () => {
               renderItem={({item, index}) => (
                 <ProductItem product={item.productId} index={index} />
               )}
-              keyExtractor={(item, index) => index.toString()}
+              keyExtractor={(item, index) => item._id || index.toString()}
               numColumns={2}
               showsVerticalScrollIndicator={false}
-              scrollEnabled={false}
+              // scrollEnabled={false}
             />
           ) : (
             <View style={[appst.container, appst.center]}>
@@ -65,7 +59,7 @@ const RecentlyViewedScreen = () => {
                 style={st.img}
                 source={require('../../assets/images/no_recent.png')}
               />
-              <Text style={st.text}>Khong co san pham da xem gan day</Text>
+              <Text style={st.text}>{t('products.no_recently')}</Text>
             </View>
           )
         ) : (
@@ -82,8 +76,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingHorizontal: 20,
-    paddingTop: 5
+    paddingTop: 5,
   },
   title: {
     fontSize: 20,

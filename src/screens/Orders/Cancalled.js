@@ -44,12 +44,14 @@ const Cancalled = ({navigation}) => {
   }, [navigation]);
 
   useEffect(() => {
-    if (Array.isArray(products.products)) {
-      if (products.products && products.products.length) {
+    if (Array.isArray(products?.products?.data)) {
+      if (products?.products?.data && products?.products?.data?.length) {
         setListProduct(shuffleArray(products?.products?.data));
       }
     }
   }, []);
+
+  // console.log('listProduct=>>', listProduct);
 
   const fetchOrder = async () => {
     setLoading(false);

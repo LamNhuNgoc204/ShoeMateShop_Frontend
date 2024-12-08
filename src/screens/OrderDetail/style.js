@@ -47,7 +47,7 @@ export const oddt = StyleSheet.create({
     marginBottom: spacing.sm,
   },
   text4: {
-    fontFamily: fonts.rlw_semibold,
+    fontFamily: fonts.pp_semibold,
     fontSize: sizes.size15,
     color: colors.black,
   },

@@ -85,7 +85,7 @@
     "help": "Trợ giúp",
     "chat": "Chat với cửa hàng",
     "language": "Đổi ngôn ngữ",
-    "update_prodile": "Cập nhật thông tin",
+    "update_profile": "Cập nhật thông tin",
     "ship_address": "Địa chỉ giao hàng",
     "change_email": "Đổi email",
     "change_pass": "Đổi mật khẩu",
@@ -116,7 +116,8 @@
     "price": "Giá",
     "rate": "Đánh giá",
     "total": "Tổng giá",
-    "quantity": "Số lượng"
+    "quantity": "Số lượng",
+    "no_recently": "Chưa có sản phẩm xem gần đây."
   },
   "form_input": {
     "name": "Tên của bạn",
@@ -337,7 +338,8 @@
   "login": {
     "continue": "Đăng nhập để tiếp tục",
     "title1": "Để trải nghiệm đầy đủ các tính năng, hãy đăng nhập vào tài khoản của bạn.",
-    "no_acc": "Chưa có tài khoản?"
+    "no_acc": "Chưa có tài khoản?",
+    "sub_title1": "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại."
   },
   "favorite": {
     "sub_title": " Bạn chưa thêm sản phẩm nào vào danh sách yêu thích cả. Đến trang chủ ngay",

@@ -60,7 +60,7 @@ export const BANNERS = [
 export const SETTING = [
   {
     id: '1',
-    text: 'profiles.update_prodile',
+    text: 'profiles.update_profile',
     navigateTo: 'EditProfile',
   },
   {id: '2', text: 'profiles.ship_address', navigateTo: 'ChooseAddress'},

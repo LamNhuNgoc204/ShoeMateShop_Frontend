@@ -11,7 +11,7 @@ const ProductItem = ({handleHeartPress, product, style, wishlist = []}) => {
   const {t} = useTranslation();
 
   React.useEffect(() => {
-    setLiked(wishlist.find(e => e._id == product._id) !== undefined);
+    setLiked(wishlist.find(e => e._id == product?._id) !== undefined);
   }, [wishlist]);
 
   const handleLike = async () => {
@@ -43,8 +43,8 @@ const ProductItem = ({handleHeartPress, product, style, wishlist = []}) => {
   };
 
   const imageAssets =
-    product.assets &&
-    product.assets.filter(asset => {
+    product?.assets &&
+    product?.assets.filter(asset => {
       return asset.match(/\.(jpeg|jpg|png|gif)$/);
     });
 
@@ -52,12 +52,12 @@ const ProductItem = ({handleHeartPress, product, style, wishlist = []}) => {
     imageAssets && imageAssets.length > 0 ? imageAssets[0] : null;
 
   function onProductDetail() {
-    navigation.navigate('ProductDetail', {index: product._id});
+    navigation.navigate('ProductDetail', {index: product?._id});
   }
 
   return (
     <>
-      {product._id !== 'empty' ? (
+      {product?._id !== 'empty' ? (
         <TouchableOpacity
           onPress={onProductDetail}
           style={[
@@ -80,7 +80,7 @@ const ProductItem = ({handleHeartPress, product, style, wishlist = []}) => {
               numberOfLines={1}
               ellipsizeMode="tail"
               style={[productStyle.text14, productStyle.maxWidth100]}>
-              {product.name}
+              {product?.name}
             </Text>
             <Text
               numberOfLines={1}
@@ -90,9 +90,9 @@ const ProductItem = ({handleHeartPress, product, style, wishlist = []}) => {
                 style={productStyle.icon14}
                 source={require('../../assets/icons/star.png')}
               />
-              <Text style={productStyle.text14}>{product.avgRating}</Text>
+              <Text style={productStyle.text14}>{product?.avgRating}</Text>
               <Text style={productStyle.review}>
-                ({product.numOfReviews} reviews)
+                ({product?.numOfReviews} reviews)
               </Text>
             </Text>
             <View
@@ -104,7 +104,7 @@ const ProductItem = ({handleHeartPress, product, style, wishlist = []}) => {
               <Text numberOfLines={1} ellipsizeMode="tail">
                 <Text style={productStyle.dolar}>$</Text>{' '}
                 <Text style={productStyle.text14}>
-                  {product.price && product.price.toLocaleString('vi-VN')}
+                  {product?.price && product?.price.toLocaleString('vi-VN')}
                 </Text>
               </Text>
               <TouchableOpacity onPress={handleLike}>
