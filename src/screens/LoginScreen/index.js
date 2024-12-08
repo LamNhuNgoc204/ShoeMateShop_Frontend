@@ -19,6 +19,7 @@ import CustomTextInput from '../../components/Input';
 import {login, loginWithGG} from '../../redux/thunks/UserThunks';
 import DropdownComponent from '../../components/ButtonLanguages';
 import {validateFieldsLogin} from '../../utils/functions/validData';
+import {checkTokenValidity} from '../../utils/functions/checkToken';
 
 GoogleSignin.configure({
   webClientId:
@@ -81,12 +82,21 @@ const LoginScreen = () => {
   };
 
   useEffect(() => {
-    if (authState.user) {
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'BottomNav'}],
-      });
-    }
+    const checkAuth = async () => {
+      const isTokenValid = await checkTokenValidity();
+      if (isTokenValid) {
+        if (authState.user) {
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'BottomNav'}],
+          });
+        }
+      } else {
+        return;
+      }
+    };
+
+    checkAuth();
   }, [authState?.user]);
 
   return (

@@ -87,13 +87,13 @@ export const cartst = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 30,
   },
-  text1: {
+  text4: {
     textAlign: 'center',
     fontSize: 16,
     color: 'black',
     fontFamily: fonts.pp_regular,
   },
-  text2: {
+  text5: {
     textAlign: 'center',
     fontSize: 16,
     color: colors.primary,

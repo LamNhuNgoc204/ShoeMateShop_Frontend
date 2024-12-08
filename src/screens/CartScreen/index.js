@@ -238,11 +238,11 @@ const CartScreen = () => {
             style={cartst.icon}
             source={require('../../assets/icons/start_shopping.png')}
           />
-          <Text style={cartst.text1}>
+          <Text style={cartst.text4}>
             {t('cart.sub_title1')}.{' '}
             <Text
               onPress={() => navigation.replace('LoginScreen')}
-              style={cartst.text2}>
+              style={cartst.text5}>
               {t('buttons.btn_signin')}
             </Text>
           </Text>

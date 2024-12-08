@@ -34,10 +34,6 @@ const ProductDetail = props => {
   const [selectedImage, setSelectedImage] = useState(
     product && product.assets[0],
   );
-  const hasReviews =
-    product &&
-    Array.isArray(product.reviewsOfProduct) &&
-    product.reviewsOfProduct.length > 0;
 
   const [product, setProduct] = useState({});
   const [quantity, setQuantity] = useState(1);
@@ -151,7 +147,9 @@ const ProductDetail = props => {
         backgroundColor={colors.background_secondary}
       />
       {!loading ? (
-        <ScrollView style={{flex: 1, marginBottom: spacing.md}}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{flex: 1, marginBottom: spacing.md, marginTop: 5}}>
           <View>
             {imageAssets.length > 0 ? (
               <FlatList
@@ -283,7 +281,7 @@ const ProductDetail = props => {
           </View>
 
           <View style={{marginTop: 15}}>
-            <ProductList listProduct={productState.products} />
+            <ProductList listProduct={productState?.products?.data} />
           </View>
         </ScrollView>
       ) : (

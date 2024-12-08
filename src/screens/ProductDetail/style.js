@@ -8,6 +8,7 @@ const {width, height} = Dimensions.get('window');
 const pddt = StyleSheet.create({
   container: {
     backgroundColor: colors.background_secondary,
+    paddingTop: 5,
   },
   pdImg: {
     width: width,
