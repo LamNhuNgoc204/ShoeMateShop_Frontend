@@ -199,7 +199,11 @@ const ItemCart = ({
         }
         style={itCart.container}>
         <View style={[itCart.viewContainer, appst.rowStart]}>
-          <TouchableOpacity onPress={handlePress}>
+          <TouchableOpacity
+            onPress={e => {
+              e.stopPropagation();
+              handlePress();
+            }}>
             <Image
               style={appst.icon24}
               source={
@@ -226,11 +230,20 @@ const ItemCart = ({
             </Text>
             <Text style={itCart.price}>Size: {item.size_id.name}</Text>
             <View style={[appst.rowCenter, itCart.view]}>
-              <TouchableOpacity onPress={tangSL}>
+              <TouchableOpacity
+                onPress={e => {
+                  e.stopPropagation();
+                  tangSL();
+                }}>
                 <Image source={require('../../assets/icons/increase.png')} />
               </TouchableOpacity>
               <Text style={itCart.quatity}>{productQuantity}</Text>
-              <TouchableOpacity style={{padding: 5}} onPress={giamSL}>
+              <TouchableOpacity
+                style={{padding: 5}}
+                onPress={e => {
+                  e.stopPropagation();
+                  giamSL();
+                }}>
                 <Image source={require('../../assets/icons/decrease.png')} />
               </TouchableOpacity>
             </View>
