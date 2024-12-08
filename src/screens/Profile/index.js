@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
@@ -10,7 +10,6 @@ import ChildItemGadget from './Mygadget';
 import {PROFILE} from '../../api/mockData';
 import appst from '../../constants/AppStyle';
 import ProductList from '../Product/ProductList';
-import {checkTokenValidity} from '../../utils/functions/checkToken';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfileScreen = () => {
@@ -18,16 +17,7 @@ const ProfileScreen = () => {
   const navigation = useNavigation();
   const {user, avatar} = useSelector(state => state.user);
   const productState = useSelector(state => state.products);
-  const [isTokenValid, setIsTokenValid] = useState(false);
-
-  useEffect(() => {
-    const validateToken = async () => {
-      const valid = await checkTokenValidity();
-      setIsTokenValid(valid);
-    };
-
-    validateToken();
-  }, []);
+  const isTokenValid = useSelector(state => state?.user?.isValidToken);
 
   const renderItem = ({item}) => (
     <ChildItem

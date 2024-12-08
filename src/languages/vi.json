@@ -35,7 +35,8 @@
     "read_more": "Xem thêm",
     "close": "Đóng",
     "home": "Trang chủ",
-    "order": "Đơn hàng"
+    "order": "Đơn hàng",
+    "cancel": "Đóng"
   },
   "home": {
     "list_product": "Sản phẩm dành cho bạn",
@@ -344,6 +345,6 @@
   },
   "cart": {
     "sub_title": "Bắt đầu mua sắm ngay",
-    "sub_title1": "Đăng nhập để bắt đầu mua sắm cùng ShoeMate nhé"
+    "sub_title1": "Vui lòng đăng nhập để bắt đầu mua sắm cùng ShoeMate nhé"
   }
 }

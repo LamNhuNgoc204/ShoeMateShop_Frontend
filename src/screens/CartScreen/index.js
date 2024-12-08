@@ -21,7 +21,6 @@ import {setOrderData, setToltalPrice} from '../../redux/reducer/cartReducer';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import CartPlaceholder from '../../placeholders/product/cart';
 import ProductList from '../Product/ProductList';
-import {checkTokenValidity} from '../../utils/functions/checkToken';
 
 const CartScreen = () => {
   const navigation = useNavigation();
@@ -35,16 +34,7 @@ const CartScreen = () => {
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [isTokenValid, setIsTokenValid] = useState(false);
-
-  useEffect(() => {
-    const validateToken = async () => {
-      const valid = await checkTokenValidity();
-      setIsTokenValid(valid);
-    };
-
-    validateToken();
-  }, []);
+  const isTokenValid = useSelector(state => state?.user?.isValidToken);
 
   const fetchCard = async () => {
     try {

@@ -67,11 +67,21 @@ export const checkTokenValidity = async () => {
   //   return false;
   // }
   try {
+    const token = await AsyncStorage.getItem('token');
+    if (!token) return false;
+
     const expiredTokenDate = await AsyncStorage.getItem('expiredTokenDate');
     if (!expiredTokenDate) return false;
 
     const currentTime = dayjs();
     const expiryTime = dayjs(expiredTokenDate);
+
+    console.log(
+      'expiredTokenDate - ',
+      expiredTokenDate,
+      '   currentTime - ',
+      currentTime,
+    );
 
     // Kiểm tra xem token đã hết hạn chưa
     return currentTime.isBefore(expiryTime); // Nếu chưa hết hạn, trả về true

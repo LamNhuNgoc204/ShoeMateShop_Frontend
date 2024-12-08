@@ -22,7 +22,6 @@ import ProductSkeleton from '../../placeholders/product/detail';
 import {addRecentView} from '../../api/ProductApi';
 import {useTranslation} from 'react-i18next';
 import ProductList from '../Product/ProductList';
-import {checkTokenValidity} from '../../utils/functions/checkToken';
 
 const ProductDetail = props => {
   const {t} = useTranslation();
@@ -42,6 +41,7 @@ const ProductDetail = props => {
   const [sizeModalVisible, setSizeModalVisible] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [listReview, setListReview] = useState([]);
+  const isTokenValid = useSelector(state => state?.user?.isValidToken);
 
   const fetchListReview = async () => {
     try {
@@ -62,8 +62,6 @@ const ProductDetail = props => {
 
   const fetchProduct = async () => {
     try {
-      const isTokenValid = await checkTokenValidity();
-
       if (isTokenValid) {
         await addRecentView(index);
       } else {

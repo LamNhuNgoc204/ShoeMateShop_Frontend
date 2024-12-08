@@ -7,22 +7,14 @@ import NotiMainSkeleton from '../../placeholders/noti';
 import st from './style';
 import {checkTokenValidity} from '../../utils/functions/checkToken';
 import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 
 const Notifycation = () => {
   const {t} = useTranslation();
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [isTokenValid, setIsTokenValid] = useState(false);
   const navigation = useNavigation();
-
-  useEffect(() => {
-    const validateToken = async () => {
-      const valid = await checkTokenValidity();
-      setIsTokenValid(valid);
-    };
-
-    validateToken();
-  }, []);
+  const isTokenValid = useSelector(state => state?.user?.isValidToken);
 
   return (
     <View style={appst.container}>

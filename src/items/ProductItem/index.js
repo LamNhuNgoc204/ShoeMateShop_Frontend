@@ -1,12 +1,14 @@
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {View, Text, Image, TouchableOpacity, Alert} from 'react-native';
 import productStyle from './style';
 import {checkTokenValidity} from '../../utils/functions/checkToken';
+import {useTranslation} from 'react-i18next';
 
 const ProductItem = ({handleHeartPress, product, style, wishlist = []}) => {
   const [liked, setLiked] = React.useState(false);
   const navigation = useNavigation();
+  const {t} = useTranslation();
 
   React.useEffect(() => {
     setLiked(wishlist.find(e => e._id == product._id) !== undefined);
@@ -15,7 +17,24 @@ const ProductItem = ({handleHeartPress, product, style, wishlist = []}) => {
   const handleLike = async () => {
     const isTokenValid = await checkTokenValidity();
     if (!isTokenValid) {
-      navigation.navigate('RequireLogin');
+      // navigation.navigate('RequireLogin');
+      Alert.alert(
+        t('home.noti'),
+        t('cart.sub_title1'),
+        [
+          {
+            text: t('buttons.cancel'),
+            style: 'cancel',
+          },
+          {
+            text: 'OK',
+            onPress: async () => {
+              return navigation.replace('LoginScreen');
+            },
+          },
+        ],
+        {cancelable: false},
+      );
       return;
     }
 

@@ -16,20 +16,11 @@ const FavoriteScreen = ({navigation}) => {
   const useAppDispatch = () => useDispatch();
   const dispatch = useAppDispatch();
   const [wishList, setWishList] = useState([]);
+  const isTokenValid = useSelector(state => state?.user?.isValidToken);
 
   useEffect(() => {
     setWishList(productsState.wishlist);
   }, [productsState.wishlist]);
-
-  const [isTokenValid, setIsTokenValid] = useState(false);
-  useEffect(() => {
-    const validateToken = async () => {
-      const valid = await checkTokenValidity();
-      setIsTokenValid(valid);
-    };
-
-    validateToken();
-  }, []);
 
   const handleHeartPress = async (product, favorite) => {
     try {

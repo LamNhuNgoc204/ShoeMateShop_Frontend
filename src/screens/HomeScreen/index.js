@@ -21,6 +21,7 @@ import Loading from '../../components/Loading';
 import ProductList from '../Product/ProductList';
 import {shuffleArray} from '../../utils/functions/formatData';
 import {checkTokenValidity} from '../../utils/functions/checkToken';
+import {setValidToken} from '../../redux/reducer/userReducer';
 
 const HomeScreen = ({navigation, route}) => {
   const {t} = useTranslation();
@@ -66,12 +67,15 @@ const HomeScreen = ({navigation, route}) => {
     }, [route?.params?.reload]),
   );
 
-  const [isTokenValid, setIsTokenValid] = useState(false);
+  // const [isTokenValid, setIsTokenValid] = useState(false);
+  const isTokenValid = useSelector(state => state?.user?.isValidToken);
+  // console.log('isTokenValid ===============>', isTokenValid);
 
   useEffect(() => {
     const validateToken = async () => {
       const valid = await checkTokenValidity();
-      setIsTokenValid(valid);
+      dispatch(setValidToken(valid));
+      // setIsTokenValid(valid);
     };
 
     validateToken();
