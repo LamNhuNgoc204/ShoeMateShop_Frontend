@@ -87,6 +87,7 @@ const BottomNav = () => {
                       style={{
                         width: 24,
                         height: 24,
+                        padding: 10,
                         // tintColor: activeIndex === index ? '#0F6DFA' : '#000',
                       }}
                     />
