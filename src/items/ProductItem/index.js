@@ -4,11 +4,13 @@ import {View, Text, Image, TouchableOpacity, Alert} from 'react-native';
 import productStyle from './style';
 import {checkTokenValidity} from '../../utils/functions/checkToken';
 import {useTranslation} from 'react-i18next';
+import {formatPrice} from '../../utils/functions/formatData';
 
 const ProductItem = ({handleHeartPress, product, style, wishlist = []}) => {
   const [liked, setLiked] = React.useState(false);
   const navigation = useNavigation();
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
+  const lag = i18n.language;
 
   React.useEffect(() => {
     setLiked(wishlist.find(e => e._id == product?._id) !== undefined);
@@ -92,7 +94,8 @@ const ProductItem = ({handleHeartPress, product, style, wishlist = []}) => {
               />
               <Text style={productStyle.text14}>{product?.avgRating}</Text>
               <Text style={productStyle.review}>
-                ({product?.numOfReviews} reviews)
+                ({product?.numOfReviews ? product?.numOfReviews : 0}{' '}
+                {t('products.review')})
               </Text>
             </Text>
             <View
@@ -102,10 +105,17 @@ const ProductItem = ({handleHeartPress, product, style, wishlist = []}) => {
                 productStyle.maxWidth100,
               ]}>
               <Text numberOfLines={1} ellipsizeMode="tail">
-                <Text style={productStyle.dolar}>$</Text>{' '}
+                {lag === 'en' && (
+                  <Text style={productStyle.dolar}>$</Text>
+                )}
                 <Text style={productStyle.text14}>
-                  {product?.price && product?.price.toLocaleString('vi-VN')}
+                  {product?.price && formatPrice(product?.price, lag)}
                 </Text>
+                {lag === 'vi' && (
+                  <Text style={productStyle.vnd}>
+                    {lag === 'vi' && ' VNĐ '}
+                  </Text>
+                )}
               </Text>
               <TouchableOpacity onPress={handleLike}>
                 {!liked ? (

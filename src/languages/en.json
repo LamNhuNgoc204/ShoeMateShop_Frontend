@@ -219,7 +219,7 @@
     "success_delivery": "Successful Delivery",
     "unit": "item(s)",
     "timeCancel": "Order Cancellation Time",
-    "processing": "Processing",
+    "status_process": "Order is being processed",
     "wait_confirm": "Wait for confirmation",
     "proccessed_status": "Order is being processed",
     "no_order": "You don't have any orders yet",

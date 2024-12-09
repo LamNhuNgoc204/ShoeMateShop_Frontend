@@ -22,3 +22,18 @@ export const shuffleArray = array => {
   }
   return newArray;
 };
+
+// Hàm format giá tiền
+export const formatPrice = (price, language) => {
+  if (!price) return null;
+  if (language === 'en') {
+    // en, đổi sang USD
+    const usdPrice = price / 24000; // 1 USD = 24,000 VNĐ
+    return usdPrice.toLocaleString('en-US');
+    // , {
+    //   style: 'currency',
+    //   currency: 'USD',
+    // }
+  }
+  return price.toLocaleString('vi-VN');
+};

@@ -1,8 +1,12 @@
 import React from 'react';
 import {View, Text, Image} from 'react-native';
 import {c_outIt} from './style';
+import {useTranslation} from 'react-i18next';
+import {formatPrice} from '../../utils/functions/formatData';
 
 const CheckOutItem = ({item}) => {
+  const {t, i18n} = useTranslation();
+  const lag = i18n.language;
   // console.log('item', item);
   // console.log('assets', item.product_id.assets[0]);
 
@@ -23,16 +27,22 @@ const CheckOutItem = ({item}) => {
           {item.product_id.name}
         </Text>
         <Text style={c_outIt.text}>
-          Size: <Text style={c_outIt.size1}>{item.size_id.name}</Text>
+          {t('products.size')}:{' '}
+          <Text style={c_outIt.size1}>{item.size_id.name}</Text>
         </Text>
         <Text style={c_outIt.text}>
-          Quantity: <Text style={c_outIt.size1}> {item.quantity}</Text>
+          {t('products.quantity')}:{' '}
+          <Text style={c_outIt.size1}> {item.quantity}</Text>
         </Text>
         <Text style={c_outIt.text}>
-          Price:
+          {t('products.price')}:
           <Text style={c_outIt.price1}>
             {' '}
-            ${item && item.product_id.price.toLocaleString('vi-VN')}
+            {lag === 'en' && '$'}
+            {item &&
+              item.product_id.price &&
+              formatPrice(item?.product_id?.price, lag)}
+            {lag === 'vi' && ' VNĐ '}
           </Text>
         </Text>
       </View>

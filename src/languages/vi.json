@@ -117,7 +117,8 @@
     "rate": "Đánh giá",
     "total": "Tổng giá",
     "quantity": "Số lượng",
-    "no_recently": "Chưa có sản phẩm xem gần đây."
+    "no_recently": "Chưa có sản phẩm xem gần đây.",
+    "review":"đánh giá"
   },
   "form_input": {
     "name": "Tên của bạn",
@@ -232,7 +233,8 @@
     "reason": "Lý do",
     "received": "Đã nhận được hàng",
     "creating_order": "Đang tạo đơn hàng",
-    "delivered": "Đơn hàng đã được giao thành công"
+    "delivered": "Đơn hàng đã được giao thành công",
+    "status_process":"Đơn hàng đang xử lý"
   },
   "rating": {
     "review": "Đánh giá của tôi",

@@ -16,20 +16,21 @@ import {getCategoryThunk} from '../../redux/thunks/categoryThunk';
 import {BANNERS} from '../../api/mockData';
 import Category from '../../items/Category';
 import HomeSkeleton from '../../placeholders/home';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import Loading from '../../components/Loading';
 import ProductList from '../Product/ProductList';
 import {shuffleArray} from '../../utils/functions/formatData';
 import {checkTokenValidity} from '../../utils/functions/checkToken';
 import {setValidToken} from '../../redux/reducer/userReducer';
 
-const HomeScreen = ({navigation, route}) => {
+const HomeScreen = ({route}) => {
   const {t} = useTranslation();
   const pagerRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [listProduct, setListProduct] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigation = useNavigation();
 
   const state = useSelector(state => state.products);
   const dispatch = useDispatch();
@@ -161,7 +162,7 @@ const HomeScreen = ({navigation, route}) => {
       <ToolBar
         onEditPress={onEditPress}
         editable={false}
-        iconRight={require('../../assets/icons/message.png')}
+        iconRight={require('../../assets/icons/mesage.png')}
         onIconRightPress={() => {
           isTokenValid
             ? navigation.navigate('MessageScreen')

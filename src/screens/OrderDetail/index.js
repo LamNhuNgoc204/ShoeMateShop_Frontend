@@ -22,22 +22,67 @@ import {
   updateOrderStatus,
 } from '../../api/OrderApi';
 import OrderItemDetail from '../../items/OrderItem/OrderItemDetail';
-import {formatDate} from '../../utils/functions/formatData';
+import {formatDate, formatPrice} from '../../utils/functions/formatData';
 import Loading from '../../components/Loading';
 import odit from '../../items/OrderItem/style';
 import {addItemToCartApi} from '../../api/CartApi';
 import {ActivityIndicator} from 'react-native-paper';
 import {gotoCart} from '../../utils/functions/navigationHelper';
+import {useNavigation} from '@react-navigation/native';
 
-const OrderDetail = ({route, navigation}) => {
+const OrderDetail = ({route}) => {
   const {item} = route.params;
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
+  const lag = i18n.language;
   const [loading, setLoading] = useState(false);
   const [orderDetail, setOrderDetail] = useState({});
   const [titleButton, setTitleButton] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [isCancel, setisCancel] = useState(false);
+  const navigation = useNavigation();
   const [isOverlayLoading, setIsOverlayLoading] = useState(false);
+
+  const addToCart = async () => {
+    setIsOverlayLoading(true);
+    console.log('productForCart==>', item?.orderDetails);
+
+    try {
+      if (Array.isArray(item?.orderDetails)) {
+        for (const product of item?.orderDetails) {
+          const itemCart = {
+            product_id: product?.product?.id,
+            size_id: product?.product?.size_id,
+            quantity: product?.product?.pd_quantity,
+          };
+          const response = await addItemToCartApi(itemCart);
+          if (!response.status) {
+            ToastAndroid.show(
+              `Không thể thêm sản phẩm: ${product?.product?.name}`,
+              ToastAndroid.SHORT,
+            );
+          }
+        }
+        ToastAndroid.show(
+          'Thêm tất cả sản phẩm vào giỏ hàng thành công',
+          ToastAndroid.SHORT,
+        );
+        navigation.reset({
+          // Đảm bảo tab này là tab đầu tiên khi reset
+          index: 0,
+          routes: [{name: 'BottomNav', params: {screen: 'CartScreen'}}],
+        });
+      }
+    } catch (error) {
+      console.log('Lỗi them sp vào giỏ hàng: ', error);
+
+      ToastAndroid.show(
+        'Lỗi trong quá trình thêm vào giỏ hàng',
+        ToastAndroid.SHORT,
+      );
+    } finally {
+      setIsOverlayLoading(false);
+    }
+  };
 
   // console.log('orderDetail => ', item);
 
@@ -50,7 +95,7 @@ const OrderDetail = ({route, navigation}) => {
         if (response.orderStatus === 'pending') {
           setTitleButton('orders.cancelled');
         } else if (response.orderStatus === 'processing') {
-          setTitleButton('orders.processing');
+          setTitleButton('orders.status_process');
         } else if (response.orderStatus === 'shipped') {
           setTitleButton('orders.track');
         }
@@ -75,42 +120,6 @@ const OrderDetail = ({route, navigation}) => {
   const handleOrderDetail = () => {
     if (orderDetail.orderStatus === 'pending') {
       setModalVisible(true);
-    }
-  };
-
-  const addToCart = async productForCart => {
-    setIsOverlayLoading(true);
-    // console.log('productForCart==>', productForCart);
-
-    try {
-      if (Array.isArray(productForCart)) {
-        for (const product of productForCart) {
-          const itemCart = {
-            product_id: product?.product?.id,
-            size_id: product?.product?.size_id,
-            quantity: product?.product?.pd_quantity,
-          };
-          const response = await addItemToCartApi(itemCart);
-          if (!response.status) {
-            ToastAndroid.show(
-              `Không thể thêm sản phẩm: ${product?.product?.name}`,
-              ToastAndroid.SHORT,
-            );
-          }
-        }
-        ToastAndroid.show(
-          'Thêm tất cả sản phẩm vào giỏ hàng thành công',
-          ToastAndroid.SHORT,
-        );
-        gotoCart();
-      }
-    } catch (error) {
-      ToastAndroid.show(
-        'Lỗi trong quá trình thêm vào giỏ hàng',
-        ToastAndroid.SHORT,
-      );
-    } finally {
-      setIsOverlayLoading(false);
     }
   };
 
@@ -235,8 +244,11 @@ const OrderDetail = ({route, navigation}) => {
                       <Item
                         content1={t('orders.total')}
                         content2={
+                          lag === 'en' &&
                           '$' + orderDetail.total_price &&
-                          orderDetail.total_price.toLocaleString('vi-VN')
+                          formatPrice(orderDetail.total_price, lag) + lag ===
+                            'vi' &&
+                          ' VNĐ '
                         }
                       />
                       <Item
@@ -251,8 +263,11 @@ const OrderDetail = ({route, navigation}) => {
                       <Item
                         content1={t('orders.shipprice')}
                         content2={
+                          lag === 'en' &&
                           '$' + orderDetail.shipCost &&
-                          orderDetail.shipCost.toLocaleString('vi-VN')
+                          formatPrice(orderDetail.shipCost, lag) + lag ===
+                            'vi' &&
+                          ' VNĐ '
                         }
                       />
                     </View>
@@ -309,7 +324,7 @@ const OrderDetail = ({route, navigation}) => {
                 {orderDetail.orderStatus === 'completed' ? (
                   <View style={[appst.rowCenter, {marginHorizontal: 10}]}>
                     <TouchableOpacity
-                      onPress={() => addToCart(item?.orderDetails)}
+                      onPress={() => addToCart()}
                       style={[odit.press, oddt.button]}>
                       <Text style={odit.textTouch}>
                         {true ? t('orders.return') : t('buttons.btn_buy_again')}
@@ -356,7 +371,7 @@ const OrderDetail = ({route, navigation}) => {
                   orderDetail.orderStatus === 'cancelled' && (
                     <View style={[appst.center, {marginHorizontal: 10}]}>
                       <TouchableOpacity
-                        onPress={() => addToCart(item?.orderDetails)}
+                        onPress={() => addToCart()}
                         style={[
                           odit.press,
                           {

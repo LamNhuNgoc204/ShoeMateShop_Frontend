@@ -28,13 +28,15 @@ import {
   getShipDefault,
 } from '../../redux/thunks/CartThunks';
 import LoadingModal from '../../components/Modal/LoadingModal';
+import {formatPrice} from '../../utils/functions/formatData';
 
 const CheckOutScreen = ({navigation}) => {
   const state = useSelector(state => state.cart);
   const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(false);
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
+  const lag = i18n.language;
   const [isswitch, setIsswitch] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const addressDefault = state.address;
@@ -265,7 +267,9 @@ const CheckOutScreen = ({navigation}) => {
             <View style={[appst.rowCenter, c_outst.view4Text]}>
               <Text style={c_outst.textTitle}>{t('checkout.merchandise')}</Text>
               <Text style={c_outst.textPrice}>
-                $ {state.totalPrice && state.totalPrice.toLocaleString('vi-VN')}
+                {lag === 'en' && '$'}
+                {state.totalPrice && formatPrice(state.totalPrice, lag)}
+                {lag === 'vi' && ' VNĐ '}${' '}
               </Text>
             </View>
             <View style={[appst.rowCenter, c_outst.view4Text]}>
@@ -273,10 +277,11 @@ const CheckOutScreen = ({navigation}) => {
                 {t('checkout.shipping_total')}
               </Text>
               <Text style={c_outst.textPrice}>
-                ${' '}
+                {lag === 'en' && '$'}
                 {state.ship && state.ship.cost
-                  ? state.ship.cost.toLocaleString('vi-VN')
+                  ? state.ship.cost && formatPrice(state?.ship?.cost, lag)
                   : '...'}
+                {lag === 'vi' && ' VNĐ '}
               </Text>
             </View>
             <View style={[appst.rowCenter, c_outst.view4Text]}>
@@ -290,7 +295,9 @@ const CheckOutScreen = ({navigation}) => {
                 {t('checkout.payment')}
               </Text>
               <Text style={[c_outst.textPrice, c_outst.textPrice1]}>
-                $ {(tongchiphi && tongchiphi.toLocaleString('vi-VN')) || '...'}
+                {lag === 'en' && '$'}
+                {(tongchiphi && formatPrice(tongchiphi, lag)) || '...'}
+                {lag === 'vi' && ' VNĐ '}
               </Text>
             </View>
           </View>
@@ -312,7 +319,9 @@ const CheckOutScreen = ({navigation}) => {
           <View style={[appst.rowCenter, c_outst.borderTop]}>
             <Text style={c_outst.text4}>{t('home.total')}</Text>
             <Text style={c_outst.text5}>
-              ${tongchiphi.toLocaleString('vi-VN') || '...'}
+              {lag === 'en' && '$'}
+              {formatPrice(tongchiphi) || '...'}
+              {lag === 'vi' && ' VNĐ '}
             </Text>
           </View>
           <CustomedButton

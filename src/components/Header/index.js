@@ -23,7 +23,7 @@ const Header = ({
         <TouchableOpacity
           style={[hdst.press, {backgroundColor: background}]}
           onPress={leftOnPress}>
-          <Image style={appst.icon24} source={iconLeft} />
+          <Image style={[appst.icon24, {padding: 10}]} source={iconLeft} />
         </TouchableOpacity>
       ) : (
         <View style={hdst.view} />
@@ -33,7 +33,7 @@ const Header = ({
       </Text>
       {iconRight ? (
         <TouchableOpacity style={hdst.press} onPress={rightOnPress}>
-          <Image style={appst.icon24} source={iconRight} />
+          <Image style={[appst.icon24, {padding: 10}]} source={iconRight} />
         </TouchableOpacity>
       ) : (
         <View style={hdst.view} />

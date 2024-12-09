@@ -22,9 +22,12 @@ import ProductSkeleton from '../../placeholders/product/detail';
 import {addRecentView} from '../../api/ProductApi';
 import {useTranslation} from 'react-i18next';
 import ProductList from '../Product/ProductList';
+import {formatPrice} from '../../utils/functions/formatData';
 
 const ProductDetail = props => {
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
+  const lag = i18n.language;
+
   const navigation = useNavigation();
   const {index} = props.route.params;
   const useAppSelector = useSelector;
@@ -199,7 +202,9 @@ const ProductDetail = props => {
                   {product.name}
                 </Text>
                 <Text style={pddt.price}>
-                  ${product.price && product.price.toLocaleString('vi-VN')}
+                  {lag === 'en' && '$'}
+                  {product.price && formatPrice(product.price, lag)}
+                  {lag === 'vi' && ' VNĐ '}
                 </Text>
               </View>
               <View style={[pddt.iconfav, appst.center]}>

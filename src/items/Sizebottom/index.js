@@ -14,6 +14,7 @@ import {useNavigation} from '@react-navigation/native';
 import {setOrderData, setToltalPrice} from '../../redux/reducer/cartReducer';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
+import {formatPrice} from '../../utils/functions/formatData';
 
 const BottomSheetContent = ({
   dispatch,
@@ -30,7 +31,8 @@ const BottomSheetContent = ({
   const [sizeId, setsizeId] = useState('');
   const [sizeDetailId, setsizeDetailId] = useState('');
   const navigation = useNavigation();
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
+  const lag = i18n.language;
   const isTokenValid = useSelector(state => state?.user?.isValidToken);
 
   useEffect(() => {
@@ -171,7 +173,9 @@ const BottomSheetContent = ({
         />
         <View style={bottomSheetStyle.colContainer}>
           <Text style={bottomSheetStyle.priceText}>
-            ${product.price && product.price.toLocaleString('vi-VN')}
+            {lag === 'en' && '$'}
+            {product.price && formatPrice(product.price, lag)}
+            {lag === 'vi' && ' VNĐ '}
           </Text>
           <View style={bottomSheetStyle.handleCountContainer}>
             <TouchableOpacity

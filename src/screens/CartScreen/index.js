@@ -21,10 +21,12 @@ import {setOrderData, setToltalPrice} from '../../redux/reducer/cartReducer';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import CartPlaceholder from '../../placeholders/product/cart';
 import ProductList from '../Product/ProductList';
+import {formatPrice} from '../../utils/functions/formatData';
 
 const CartScreen = () => {
   const navigation = useNavigation();
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
+  const lag = i18n.language;
   const [cards, setCards] = useState([]);
   const [currentlyOpenSwipeable, setCurrentlyOpenSwipeable] = useState(null);
   const dispatch = useDispatch();
@@ -208,7 +210,9 @@ const CartScreen = () => {
               <View style={[appst.rowCenter]}>
                 <Text style={cartst.text2}>{t('home.total')}: </Text>
                 <Text style={cartst.text3}>
-                  ${totalPrice.toLocaleString('vi-VN')}
+                  {lag === 'en' && '$'}
+                  {totalPrice ? formatPrice(totalPrice, lag) : 0}
+                  {lag === 'vi' && ' VNĐ '}
                 </Text>
                 <View>
                   <CustomedButton
