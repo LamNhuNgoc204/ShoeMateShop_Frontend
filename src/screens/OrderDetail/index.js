@@ -239,6 +239,14 @@ const OrderDetail = ({route, navigation}) => {
                           )}
                         />
                       )}
+                      {orderDetail.timestamps.deliveredAt && (
+                        <Item2
+                          contetn1={t('orders.delivery')}
+                          content2={formatDate(
+                            orderDetail.timestamps.deliveredAt,
+                          )}
+                        />
+                      )}
                       {orderDetail.timestamps.completedAt && (
                         <Item2
                           contetn1={t('orders.complete')}
@@ -366,7 +374,7 @@ const styles = {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // semi-transparent background
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
   },
   modalView: {
     width: '80%',

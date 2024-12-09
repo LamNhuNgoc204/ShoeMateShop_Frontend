@@ -45,7 +45,7 @@ const ToPay = ({navigation}) => {
     }
   }, []);
   
-  console.log('listProduct=>>', listProduct);
+  // console.log('listProduct=>>', listProduct);
 
   const fetchOrder = async () => {
     setLoading(false);
