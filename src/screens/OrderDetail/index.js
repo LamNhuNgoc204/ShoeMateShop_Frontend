@@ -27,7 +27,6 @@ import Loading from '../../components/Loading';
 import odit from '../../items/OrderItem/style';
 import {addItemToCartApi} from '../../api/CartApi';
 import {ActivityIndicator} from 'react-native-paper';
-import {gotoCart} from '../../utils/functions/navigationHelper';
 import {useNavigation} from '@react-navigation/native';
 
 const OrderDetail = ({route}) => {
@@ -44,7 +43,7 @@ const OrderDetail = ({route}) => {
 
   const addToCart = async () => {
     setIsOverlayLoading(true);
-    console.log('productForCart==>', item?.orderDetails);
+    // console.log('productForCart==>', item?.orderDetails);
 
     try {
       if (Array.isArray(item?.orderDetails)) {
@@ -83,8 +82,6 @@ const OrderDetail = ({route}) => {
       setIsOverlayLoading(false);
     }
   };
-
-  // console.log('orderDetail => ', item);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -140,6 +137,12 @@ const OrderDetail = ({route}) => {
       </TouchableOpacity>
     );
   };
+
+  const orderTotal = orderDetail?.products?.reduce((total, product) => {
+    const price = product.product?.price || 0;
+    const quantity = product.product?.pd_quantity || 0;
+    return total + price * quantity;
+  }, 0);
 
   return (
     <View style={appst.container}>
@@ -202,11 +205,20 @@ const OrderDetail = ({route}) => {
                         {t('orders.status')}:{' '}
                         <Text style={oddt.text6}>
                           {orderDetail.statusShip === 'pending'
-                            ? t('orders.pending')
+                            ? `${t('orders.pending')}`
                             : ''}
                         </Text>
                       </Text>
-                      <Text style={oddt.text7}>{t('orders.order_total')}</Text>
+                      <View style={[appst.rowCenter]}>
+                        <Text style={oddt.text7}>
+                          {t('orders.order_total')}
+                        </Text>
+                        <Text style={oddt.text7}>
+                          {lag === 'en' && '$'}
+                          {formatPrice(orderTotal, lag)}
+                          {lag === 'vi' && ' VNĐ '}
+                        </Text>
+                      </View>
                       <View style={oddt.view2}>
                         <Text style={oddt.text7}>{t('orders.fees')}</Text>
                         <View style={[appst.rowCenter]}>
@@ -244,11 +256,11 @@ const OrderDetail = ({route}) => {
                       <Item
                         content1={t('orders.total')}
                         content2={
-                          lag === 'en' &&
-                          '$' + orderDetail.total_price &&
-                          formatPrice(orderDetail.total_price, lag) + lag ===
-                            'vi' &&
-                          ' VNĐ '
+                          lag === 'en'
+                            ? '$' + formatPrice(orderDetail.total_price, lag)
+                            : lag === 'vi'
+                            ? formatPrice(orderDetail.total_price, lag) + ' VNĐ'
+                            : ''
                         }
                       />
                       <Item
@@ -263,11 +275,11 @@ const OrderDetail = ({route}) => {
                       <Item
                         content1={t('orders.shipprice')}
                         content2={
-                          lag === 'en' &&
-                          '$' + orderDetail.shipCost &&
-                          formatPrice(orderDetail.shipCost, lag) + lag ===
-                            'vi' &&
-                          ' VNĐ '
+                          lag === 'en'
+                            ? '$' + formatPrice(orderDetail.shipCost, lag)
+                            : lag === 'vi'
+                            ? formatPrice(orderDetail.shipCost, lag) + ' VNĐ'
+                            : ''
                         }
                       />
                     </View>

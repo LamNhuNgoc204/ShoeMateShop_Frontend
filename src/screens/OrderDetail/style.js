@@ -77,10 +77,10 @@ export const oddt = StyleSheet.create({
     fontFamily: fonts.pp_regular,
   },
   text7: {
-    fontFamily: fonts.rlw_bold,
+    fontFamily: fonts.pp_bold,
     color: colors.black,
-    fontSize: sizes.size14,
-    marginVertical: spacing.xm,
+    fontSize: 13,
+    marginTop: spacing.xm,
   },
   text8: {
     fontFamily: fonts.rlw_semibold,
@@ -88,7 +88,7 @@ export const oddt = StyleSheet.create({
     color: colors.black,
   },
   view2: {
-    marginHorizontal: spacing.xm,
+    // marginHorizontal: spacing.xm,
   },
   icon: {
     width: 15,
