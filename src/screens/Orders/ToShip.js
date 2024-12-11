@@ -12,7 +12,11 @@ import {
 import {odst} from './style';
 import appst from '../../constants/AppStyle';
 import OrderItem from '../../items/OrderItem/OrderItem.js';
-import {getOrderProcess, updateOrderStatus} from '../../api/OrderApi.js';
+import {
+  getOrderProcess,
+  handleReturnRq,
+  updateOrderStatus,
+} from '../../api/OrderApi.js';
 import OrderHistorySkeleton from '../../placeholders/product/order/OrderHistory.js';
 import {useTranslation} from 'react-i18next';
 import ProductList from '../Product/ProductList.js';
@@ -82,6 +86,22 @@ const ToShip = ({navigation}) => {
     }
   };
 
+  const requestReturnOrder = async (id, reason) => {
+    console.log('requestReturnOrder-------------------- ');
+
+    try {
+      const response = await handleReturnRq(id, reason);
+      if (response.status) {
+        ToastAndroid.show('Đã gửi yêu cầu hoàn hàng', ToastAndroid.SHORT);
+        navigation.navigate('OrderScreen', {
+          initialRoute: t('orders.return'),
+        });
+      }
+    } catch (error) {
+      console.log('request status order error: ', error);
+    }
+  };
+
   return (
     <View style={appst.container}>
       {loading ? (
@@ -101,6 +121,7 @@ const ToShip = ({navigation}) => {
                   navigation={navigation}
                   ship={true}
                   updateOrderStatus={cofirmOrder}
+                  requestReturnOrder={requestReturnOrder}
                 />
               )}
               keyExtractor={(item, index) =>

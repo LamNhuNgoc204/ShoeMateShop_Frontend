@@ -108,3 +108,17 @@ export const updateOrderStatus = async (orderId, status) => {
     console.log('get order detail error: ', error);
   }
 };
+
+export const handleReturnRq = async (orderId, reason) => {
+  try {
+    const response = await AxiosInstance().put(
+      `/orders/request-return-order/${orderId}`,
+      {reason: reason},
+    );
+    if (response.status) {
+      return response;
+    }
+  } catch (error) {
+    console.log('get order detail error: ', error);
+  }
+};

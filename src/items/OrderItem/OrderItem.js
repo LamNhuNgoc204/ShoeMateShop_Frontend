@@ -16,6 +16,7 @@ const OrderItem = ({
   refunded,
   navigation,
   updateOrderStatus,
+  requestReturnOrder,
 }) => {
   const {t, i18n} = useTranslation();
   const lag = i18n.language;
@@ -106,10 +107,15 @@ const OrderItem = ({
                   source={require('../../assets/icons/chevron_right.png')}
                 />
               </View>
+
               {/* Cập nhật status khi đơn hàng đã được giao */}
               {item.status === 'delivered' && (
                 <View style={[appst.rowEnd, {paddingHorizontal: 10}]}>
                   <TouchableOpacity
+                    onPress={e => {
+                      e.stopPropagation();
+                      requestReturnOrder(item._id, 'Khác');
+                    }}
                     style={[odit.press, odit.press1, {paddingHorizontal: 10}]}>
                     <Text style={[odit.textTouch, odit.textTouch1]}>
                       {t('orders.return')}
@@ -211,6 +217,7 @@ const OrderItem = ({
               </TouchableOpacity>
             </View>
           )}
+
           {refunded && (
             <TouchableOpacity
               style={[odit.press, odit.press1, {paddingHorizontal: 10}]}>
