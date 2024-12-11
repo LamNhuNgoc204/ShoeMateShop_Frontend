@@ -21,12 +21,14 @@ const ProductSlice = createSlice({
     setWishlistLocal: (state, action) => {
       const product = action.payload;
       const index = state.wishlist.findIndex(item => item._id == product._id);
-      if (index == -1) {
-        state.wishlist = [...state.wishlist, action.payload];
-      } else {
-        state.wishlist = state.wishlist.filter(
-          item => item._id !== product._id,
-        );
+      if (Array.isArray(state.wishlist)) {
+        if (index == -1) {
+          state.wishlist = [...state.wishlist, action.payload];
+        } else {
+          state.wishlist = state.wishlist.filter(
+            item => item._id !== product._id,
+          );
+        }
       }
     },
   },

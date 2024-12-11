@@ -13,7 +13,6 @@ import Header from '../../components/Header';
 import {colors} from '../../constants/colors';
 import ItemReview from '../../items/ReviewItem/ProductDetail';
 import {spacing} from '../../constants';
-import ProductItem from '../../items/ProductItem';
 import AxiosInstance from '../../helpers/AxiosInstance';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
@@ -24,9 +23,12 @@ import {addRecentView} from '../../api/ProductApi';
 import {useTranslation} from 'react-i18next';
 import ProductList from '../Product/ProductList';
 import Share from 'react-native-share';
+import {formatPrice} from '../../utils/functions/formatData';
 
 const ProductDetail = props => {
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
+  const lag = i18n.language;
+
   const navigation = useNavigation();
   const {index} = props.route.params;
   const useAppSelector = useSelector;
@@ -35,10 +37,6 @@ const ProductDetail = props => {
   const [selectedImage, setSelectedImage] = useState(
     product && product.assets[0],
   );
-  const hasReviews =
-    product &&
-    Array.isArray(product.reviewsOfProduct) &&
-    product.reviewsOfProduct.length > 0;
 
   const [product, setProduct] = useState({});
   const [quantity, setQuantity] = useState(1);
@@ -50,17 +48,43 @@ const ProductDetail = props => {
 
 
 
+  const [listReview, setListReview] = useState([]);
+  const isTokenValid = useSelector(state => state?.user?.isValidToken);
+
+  const fetchListReview = async () => {
+    try {
+      const response = await AxiosInstance().get(
+        `/reviews/get-list-product-reviews/${index}`,
+      );
+      // console.log('response =>', response);
+
+      if (response.status) {
+        setListReview(response.data);
+      }
+    } catch (error) {
+      console.log('fetch reviews error: ', error);
+    }
+  };
 
   const dispatch = useDispatch();
 
   const fetchProduct = async () => {
     try {
-      const [addpdView, response] = await Promise.all([
-        addRecentView(index),
-        AxiosInstance().get(`/products/detail/${proId}`),
+      if (isTokenValid) {
+        await addRecentView(index);
+      } else {
+        console.log(
+          'Token hết hạn, bỏ qua thêm sản phẩm vào danh sách gần đây',
+        );
+      }
+
+      const [response] = await Promise.all([
+        // addRecentView(index),
+        AxiosInstance().get(`/products/detail/${index}`),
+        fetchListReview(),
       ]);
 
-      console.log('Thêm sản phẩm vào danh sách xem gần đây:', addpdView);
+      // console.log('Thêm sản phẩm vào danh sách xem gần đây:', addpdView);
       if (response) {
         setProduct(response);
         setLoading(false);
@@ -77,6 +101,7 @@ const ProductDetail = props => {
   }, [proId]);
 
   // console.log(product);
+  // console.log('listReview', listReview);
 
   const handleSheetChanges = useCallback(index => {
     console.log('handleSheetChanges', index);
@@ -133,6 +158,7 @@ const ProductDetail = props => {
         console.log('Lỗi chia sẻ:', error);
       }
     };
+  // console.log('product.reviewsOfProduct====>', product.reviewsOfProduct);
 
   return (
     <View style={[appst.container, pddt.container]}>
@@ -146,12 +172,19 @@ const ProductDetail = props => {
           }
         }}
         name={product.name}
-        rightOnPress={() => navigation.navigate('CartScreen')}
+        rightOnPress={() => {
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'BottomNav', params: {screen: 'CartScreen'}}],
+          });
+        }}
         iconRight={require('../../assets/icons/mycart.png')}
         backgroundColor={colors.background_secondary}
       />
       {!loading ? (
-        <ScrollView style={{flex: 1, marginBottom: spacing.md}}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{flex: 1, marginBottom: spacing.md, marginTop: 5}}>
           <View>
             {imageAssets.length > 0 ? (
               <FlatList
@@ -196,11 +229,16 @@ const ProductDetail = props => {
             <Text style={pddt.bestSl}>{t('products.best_seller')}</Text>
             <View style={[appst.rowCenter, pddt.body1]}>
               <View style={{flex: 1}}>
-                <Text numberOfLines={1} style={pddt.name}>
+                <Text
+                  // numberOfLines={1}
+                  maxFontSizeMultiplier={5}
+                  style={pddt.name}>
                   {product.name}
                 </Text>
                 <Text style={pddt.price}>
-                  ${product.price && product.price.toLocaleString('vi-VN')}
+                  {lag === 'en' && '$'}
+                  {product.price && formatPrice(product.price, lag)}
+                  {lag === 'vi' && ' VNĐ '}
                 </Text>
               </View>
               <View style={[pddt.iconfav, appst.center]}>
@@ -243,14 +281,18 @@ const ProductDetail = props => {
                 style={pddt.des}>
                 {product.description}
               </Text>
-              <TouchableOpacity
-                onPress={() =>
-                  setIsDescriptionExpanded(!isDescriptionExpanded)
-                }>
-                <Text style={pddt.readmore}>
-                  {isDescriptionExpanded ? 'Read Less' : t('buttons.read_more')}
-                </Text>
-              </TouchableOpacity>
+              {product.description.length > 100 && (
+                <TouchableOpacity
+                  onPress={() =>
+                    setIsDescriptionExpanded(!isDescriptionExpanded)
+                  }>
+                  <Text style={pddt.readmore}>
+                    {isDescriptionExpanded
+                      ? t('products.read_less')
+                      : t('buttons.read_more')}
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
 
@@ -258,27 +300,34 @@ const ProductDetail = props => {
             <Text style={[pddt.reviewTitle, pddt.pdHorizon]}>
               {t('products.reviews')}
             </Text>
-            {hasReviews ? (
+            {listReview.length !== 0 ? (
               <View>
                 <FlatList
-                  data={product.reviewsOfProduct}
+                  data={listReview?.slice(0, 3)}
                   renderItem={({item}) => <ItemReview item={item} />}
-                  extraData={item => item.id}
+                  extraData={item => item._id}
                   scrollEnabled={false}
                 />
-                <Text style={pddt.text1}>
-                  See All ({product.reviewsOfProduct.length})
-                </Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('AllProductReview', {
+                      lstReview: listReview,
+                    })
+                  }>
+                  <Text style={pddt.text1}>
+                    {t('products.see_all')} ({product.reviewsOfProduct.length})
+                  </Text>
+                </TouchableOpacity>
               </View>
             ) : (
               <Text style={{padding: 10, textAlign: 'center'}}>
-                Chua co danh gia
+                {t('review.no_review')}
               </Text>
             )}
           </View>
 
           <View style={{marginTop: 15}}>
-            <ProductList onSetProduct={onSetProduct} listProduct={productState.products.filter((item)=>item._id != product._id)} />
+            <ProductList onSetProduct={onSetProduct} listProduct={productState?.products?.data} />
           </View>
         </ScrollView>
       ) : (

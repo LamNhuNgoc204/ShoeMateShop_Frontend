@@ -35,7 +35,8 @@
     "read_more": "Xem thêm",
     "close": "Đóng",
     "home": "Trang chủ",
-    "order": "Đơn hàng"
+    "order": "Đơn hàng",
+    "cancel": "Đóng"
   },
   "home": {
     "list_product": "Sản phẩm dành cho bạn",
@@ -84,7 +85,7 @@
     "help": "Trợ giúp",
     "chat": "Chat với cửa hàng",
     "language": "Đổi ngôn ngữ",
-    "update_prodile": "Cập nhật thông tin",
+    "update_profile": "Cập nhật thông tin",
     "ship_address": "Địa chỉ giao hàng",
     "change_email": "Đổi email",
     "change_pass": "Đổi mật khẩu",
@@ -106,6 +107,7 @@
     "best_seller": "BÁN CHẠY",
     "sold": "Đã bán",
     "see_more": "Xem thêm",
+    "read_less": "Thu gọn",
     "reviews": "Đánh giá sản phẩm",
     "similar_product": "Bạn có thể thích",
     "see_all": "Xem tất cả",
@@ -114,7 +116,9 @@
     "price": "Giá",
     "rate": "Đánh giá",
     "total": "Tổng giá",
-    "quantity": "Số lượng"
+    "quantity": "Số lượng",
+    "no_recently": "Chưa có sản phẩm xem gần đây.",
+    "review":"đánh giá"
   },
   "form_input": {
     "name": "Tên của bạn",
@@ -203,9 +207,10 @@
     "total": "Tổng cộng",
     "shipprice": "Phí vận chuyển",
     "time": "Thời gian đặt hàng",
+    "shipping":"Thời gian đơn vị vận chuyển lấy hàng",
     "payment": "Thời gian thanh toán",
-    "shipping": "Thời gian giao hàng",
-    "complete": "Thời gian hoàn tất",
+    "delivery": "Thời gian giao hàng",
+    "complete": "Thời gian hoàn thành đơn",
     "timeCancel": "Thời gian hủy đơn hàng",
     "cancelled": "Hủy đơn hàng",
     "order_detail": "Chi tiết đơn hàng",
@@ -228,7 +233,8 @@
     "reason": "Lý do",
     "received": "Đã nhận được hàng",
     "creating_order": "Đang tạo đơn hàng",
-    "delivered": "Đơn hàng đã được giao thành công"
+    "delivered": "Đơn hàng đã được giao thành công",
+    "status_process":"Đơn hàng đang xử lý"
   },
   "rating": {
     "review": "Đánh giá của tôi",
@@ -247,7 +253,16 @@
     "rating": "Chưa đánh giá",
     "not_found": "Không tìm thấy đánh giá nào nữa.",
     "response": "Phản hồi của người bán:",
-    "review_order": "Đánh giá đơn hàng"
+    "review_order": "Đánh giá đơn hàng",
+    "blank_review": "Không có đơn hàng cần đánh giá.",
+    "no_review": "Chưa có đánh giá",
+    "all_review": "Tất cả đánh giá",
+    "all": "Tất cả",
+    "with_image_video": "Có hình ảnh / Video",
+    "select_stars": "Sao",
+    "type": "Phân loại",
+    "no_reviews": "Không có đánh giá phù hợp",
+    "filter_by_size": "Lọc theo kích thước"
   },
   "notifications": {
     "title": "Thông báo",
@@ -259,7 +274,8 @@
     "send_otp_success": "Đã gửi lại OPT,vui lòng kiểm tra email",
     "send_otp_error": "Gửi otp thất bại",
     "verify_success": "Bạn đã xác thực tài khoản thành công!",
-    "verify_error": "Xác minh tài khoản thất bại!"
+    "verify_error": "Xác minh tài khoản thất bại!",
+    "sub_noti": "Đăng nhập để nhận thông báo về đơn hàng của bạn."
   },
   "messages": {
     "title": "Tin nhắn",
@@ -321,5 +337,19 @@
   },
   "termsandcondition": {
     "title": "Quy luật và điều khoản"
+  },
+  "login": {
+    "continue": "Đăng nhập để tiếp tục",
+    "title1": "Để trải nghiệm đầy đủ các tính năng, hãy đăng nhập vào tài khoản của bạn.",
+    "no_acc": "Chưa có tài khoản?",
+    "sub_title1": "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại."
+  },
+  "favorite": {
+    "sub_title": " Bạn chưa thêm sản phẩm nào vào danh sách yêu thích cả. Đến trang chủ ngay",
+    "sub_title1": "Đăng nhập để quản lý danh sách yêu thích của bạn."
+  },
+  "cart": {
+    "sub_title": "Bắt đầu mua sắm ngay",
+    "sub_title1": "Vui lòng đăng nhập để bắt đầu mua sắm cùng ShoeMate nhé"
   }
 }

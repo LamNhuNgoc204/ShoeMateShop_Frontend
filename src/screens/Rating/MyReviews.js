@@ -5,6 +5,7 @@ import MyReviewItem from '../../items/ReviewItem/MyReviewsItem';
 import mrvit from '../../items/ReviewItem/MyReviewsItem/style';
 import ratingst from './style';
 import {getAllUserReview} from '../../api/reviewAPI';
+import SkeletonToRating from '../../placeholders/reviews/SkeletonToRating';
 
 const MyReviews = () => {
   const [loading, setLoading] = useState(false);
@@ -29,28 +30,32 @@ const MyReviews = () => {
     fetchData();
   }, []);
 
-  console.log('user reiew', data);
+  console.log('user review', data);
 
   return (
     <View style={[appst.container, mrvit.container]}>
-      {data.length != 0 ? (
-        <View>
-          <View>
-            <FlatList
-              data={data}
-              renderItem={({item}) => <MyReviewItem item={item} />}
-              keyExtractor={item => item._id.toString()}
-            />
-          </View>
-        </View>
+      {loading ? (
+        <SkeletonToRating />
       ) : (
-        <View style={mrvit.viewBuying}>
-          <Image
-            style={mrvit.buying}
-            source={require('../../assets/images/buying_review.png')}
-          />
-          <Text style={ratingst.textRate}>No more ratings found.</Text>
-        </View>
+        <>
+          {data.length !== 0 ? (
+            <View>
+              <FlatList
+                data={data}
+                renderItem={({item}) => <MyReviewItem item={item} />}
+                keyExtractor={item => item._id.toString()}
+              />
+            </View>
+          ) : (
+            <View style={mrvit.viewBuying}>
+              <Image
+                style={mrvit.buying}
+                source={require('../../assets/images/buying_review.png')}
+              />
+              <Text style={ratingst.textRate}>No more ratings found.</Text>
+            </View>
+          )}
+        </>
       )}
     </View>
   );

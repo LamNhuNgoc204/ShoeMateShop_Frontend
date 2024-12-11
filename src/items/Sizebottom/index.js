@@ -1,4 +1,11 @@
-import {View, Text, TouchableOpacity, Image, ToastAndroid} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  ToastAndroid,
+  Alert,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {bottomSheetStyle} from './style';
 import appst from '../../constants/AppStyle';
@@ -6,6 +13,8 @@ import {addItemToCartApi} from '../../api/CartApi';
 import {useNavigation} from '@react-navigation/native';
 import {setOrderData, setToltalPrice} from '../../redux/reducer/cartReducer';
 import {useTranslation} from 'react-i18next';
+import {useSelector} from 'react-redux';
+import {formatPrice} from '../../utils/functions/formatData';
 
 const BottomSheetContent = ({
   dispatch,
@@ -22,7 +31,9 @@ const BottomSheetContent = ({
   const [sizeId, setsizeId] = useState('');
   const [sizeDetailId, setsizeDetailId] = useState('');
   const navigation = useNavigation();
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
+  const lag = i18n.language;
+  const isTokenValid = useSelector(state => state?.user?.isValidToken);
 
   useEffect(() => {
     if (sizes && sizes.length > 0 && !selectedSize) {
@@ -50,61 +61,103 @@ const BottomSheetContent = ({
     }
   };
 
+  // console.log('body', product._id, ' ', sizeDetailId, '-', quantity);
 
   const addToCart = async () => {
-    try {
-      const itemCart = {
-        product_id: product._id,
-        size_id: sizeDetailId,
-        quantity: quantity,
-      };
+    if (isTokenValid) {
+      try {
+        const itemCart = {
+          product_id: product._id,
+          size_id: sizeDetailId,
+          quantity: quantity,
+        };
 
-      const response = await addItemToCartApi(itemCart);
-      if (response.status) {
-        setSizeModalVisible(false);
-        ToastAndroid.show('Thêm vào giỏ hàng thành công', ToastAndroid.SHORT);
-        setSizeModalVisible(false);
-        closeBottomSheet();
-      } else {
-        setSizeModalVisible(false);
+        const response = await addItemToCartApi(itemCart);
+        if (response.status) {
+          setSizeModalVisible(false);
+          ToastAndroid.show('Thêm vào giỏ hàng thành công', ToastAndroid.SHORT);
+          setSizeModalVisible(false);
+          closeBottomSheet();
+        } else {
+          setSizeModalVisible(false);
+          ToastAndroid.show(
+            'Oops. Xảy ra lỗi rồi. Thử lại nhé :3',
+            ToastAndroid.SHORT,
+          );
+          setSizeModalVisible(false);
+          closeBottomSheet();
+        }
+      } catch (error) {
         ToastAndroid.show(
-          'Oops. Xảy ra lỗi rồi. Thử lại nhé :3',
+          'Lỗi trong quá trình thêm vào giỏ hàng',
           ToastAndroid.SHORT,
         );
         setSizeModalVisible(false);
-        closeBottomSheet();
       }
-    } catch (error) {
-      ToastAndroid.show(
-        'Lỗi trong quá trình thêm vào giỏ hàng',
-        ToastAndroid.SHORT,
+    } else {
+      // navigation.navigate('RequireLogin');
+      Alert.alert(
+        t('home.noti'),
+        t('cart.sub_title1'),
+        [
+          {
+            text: t('buttons.cancel'),
+            style: 'cancel',
+          },
+          {
+            text: 'OK',
+            onPress: async () => {
+              return navigation.replace('LoginScreen');
+            },
+          },
+        ],
+        {cancelable: false},
       );
-      setSizeModalVisible(false);
     }
   };
 
   // console.log('product', product?.size);
 
   const buyNow = () => {
-    const productOrder = [
-      {
-        message: 'Buy Now',
-        product_id: {
-          _id: product._id,
-          assets: img,
-          name: product.name,
-          price: product.price,
+    if (isTokenValid) {
+      const productOrder = [
+        {
+          message: 'Buy Now',
+          product_id: {
+            _id: product._id,
+            assets: img,
+            name: product.name,
+            price: product.price,
+          },
+          quantity: quantity,
+          size_id: {_id: sizeDetailId, name: selectedSize},
         },
-        quantity: quantity,
-        size_id: {_id: sizeDetailId, name: selectedSize},
-      },
-    ];
+      ];
 
-    // console.log('productOrder', productOrder);
-    dispatch(setOrderData(productOrder));
-    dispatch(setToltalPrice(product.price * quantity));
-    closeBottomSheet();
-    navigation.navigate('CheckOutScreen');
+      // console.log('productOrder', productOrder);
+      dispatch(setOrderData(productOrder));
+      dispatch(setToltalPrice(product.price * quantity));
+      closeBottomSheet();
+      navigation.navigate('CheckOutScreen');
+    } else {
+      Alert.alert(
+        t('home.noti'),
+        t('cart.sub_title1'),
+        [
+          {
+            text: t('buttons.cancel'),
+            style: 'cancel',
+          },
+          {
+            text: 'OK',
+            onPress: async () => {
+              return navigation.replace('LoginScreen');
+            },
+          },
+        ],
+        {cancelable: false},
+      );
+    }
   };
 
   return (
@@ -120,7 +173,9 @@ const BottomSheetContent = ({
         />
         <View style={bottomSheetStyle.colContainer}>
           <Text style={bottomSheetStyle.priceText}>
-            ${product.price && product.price.toLocaleString('vi-VN')}
+            {lag === 'en' && '$'}
+            {product.price && formatPrice(product.price, lag)}
+            {lag === 'vi' && ' VNĐ '}
           </Text>
           <View style={bottomSheetStyle.handleCountContainer}>
             <TouchableOpacity

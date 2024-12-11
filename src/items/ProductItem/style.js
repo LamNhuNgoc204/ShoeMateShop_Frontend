@@ -1,9 +1,9 @@
-import { Dimensions, StyleSheet } from "react-native";
-import { fonts } from "../../constants/fonts";
-import { colors } from "../../constants/colors";
+import {Dimensions, StyleSheet} from 'react-native';
+import {fonts} from '../../constants/fonts';
+import {colors} from '../../constants/colors';
 
-const { width, height } = Dimensions.get('window')
-const productWidth = (width - 60) / 2
+const {width, height} = Dimensions.get('window');
+const productWidth = (width - 60) / 2;
 
 const productStyle = StyleSheet.create({
     container: {
@@ -67,6 +67,5 @@ const productStyle = StyleSheet.create({
     }
     
 })
-
 
 export default productStyle;

@@ -20,6 +20,7 @@ import {useTranslation} from 'react-i18next';
 import ProductList from '../Product/ProductList';
 import {shuffleArray} from '../../utils/functions/formatData';
 import {addItemToCartApi} from '../../api/CartApi';
+import {gotoCart} from '../../utils/functions/navigationHelper';
 
 const Cancalled = ({navigation}) => {
   const {t} = useTranslation();
@@ -43,10 +44,14 @@ const Cancalled = ({navigation}) => {
   }, [navigation]);
 
   useEffect(() => {
-    if (products.products && products.products.length) {
-      setListProduct(shuffleArray([...products.products]));
+    if (Array.isArray(products?.products?.data)) {
+      if (products?.products?.data && products?.products?.data?.length) {
+        setListProduct(shuffleArray(products?.products?.data));
+      }
     }
   }, []);
+
+  // console.log('listProduct=>>', listProduct);
 
   const fetchOrder = async () => {
     setLoading(false);
@@ -95,7 +100,7 @@ const Cancalled = ({navigation}) => {
           'Thêm tất cả sản phẩm vào giỏ hàng thành công',
           ToastAndroid.SHORT,
         );
-        navigation.navigate('CartScreen');
+        gotoCart();
       }
     } catch (error) {
       ToastAndroid.show(

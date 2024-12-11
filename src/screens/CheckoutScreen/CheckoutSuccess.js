@@ -80,7 +80,7 @@ const CheckoutSuccess = ({navigation}) => {
           </View>
         </View>
         <View style={{marginTop: 20, marginBottom: 20}}>
-          <ProductList listProduct={productState.products} />
+          <ProductList listProduct={productState?.products?.data} />
         </View>
       </ScrollView>
     </View>

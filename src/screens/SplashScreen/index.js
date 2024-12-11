@@ -1,11 +1,14 @@
-import {View, Image} from 'react-native';
+import {View, Image, Alert} from 'react-native';
 import React, {useEffect} from 'react';
 import appst from '../../constants/AppStyle';
 import splashStyle from './style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AxiosInstance from '../../helpers/AxiosInstance';
+import {useTranslation} from 'react-i18next';
 
 const SplashScreen = ({navigation}) => {
+  const {t} = useTranslation();
+
   useEffect(() => {
     const checkAppStatus = async () => {
       try {
@@ -17,13 +20,26 @@ const SplashScreen = ({navigation}) => {
           const response = await AxiosInstance().post('/auth/protected', {
             token,
           });
-          if (response.status === 200) {
+          if (response.status) {
             // Token hợp lệ => vào Home
-            navigation.replace('BottomNav');
+            await AsyncStorage.setItem('token', token);
+            return navigation.replace('BottomNav');
           } else {
             // Token hết hạn => về Login
-            await AsyncStorage.removeItem('token');
-            navigation.replace('LoginScreen');
+            Alert.alert(
+              t('notifications.title'),
+              t('login.sub_title1'),
+              [
+                {
+                  text: 'OK',
+                  onPress: async () => {
+                    await AsyncStorage.removeItem('token');
+                    return navigation.replace('LoginScreen');
+                  },
+                },
+              ],
+              {cancelable: false},
+            );
           }
         } else if (isFirstLaunch === null) {
           // Lần đầu vào app => vào onboarding

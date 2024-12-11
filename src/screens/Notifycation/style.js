@@ -13,6 +13,31 @@ const st = StyleSheet.create({
     width: 150,
     height: 150,
   },
+  container2: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 100,
+    marginHorizontal: 30,
+  },
+  icon: {
+    width: 100,
+    height: 100,
+  },
+  text1: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: 'black',
+    fontFamily: fonts.pp_regular,
+  },
+  text2: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: colors.primary,
+    textDecorationColor: colors.primary,
+    textDecorationLine: 'underline',
+    fontFamily: fonts.pp_bold,
+  },
 });
 
 export default st;

@@ -12,9 +12,6 @@ const MyReviewItem = ({item}) => {
   const reviewer = item.reviewer_id;
   const product = item.product_id;
 
-  console.log('item user review', item);
-  console.log('product', product);
-
   const ArrayRating = length => {
     let arr = [];
     for (let i = 0; i < length; i++) {
@@ -23,24 +20,9 @@ const MyReviewItem = ({item}) => {
     return arr;
   };
 
-  console.log('iimages', item.images);
-
-  const images = [
-    {
-      uri: 'https://i.pinimg.com/236x/73/45/82/734582c9077c5dd4b4181e6911e980c3.jpg',
-      type: 'video',
-      duration: '0:14',
-    },
-    {
-      uri: 'https://i.pinimg.com/236x/73/45/82/734582c9077c5dd4b4181e6911e980c3.jpg',
-    },
-    {
-      uri: 'https://i.pinimg.com/236x/73/45/82/734582c9077c5dd4b4181e6911e980c3.jpg',
-    },
-    {
-      uri: 'https://i.pinimg.com/236x/73/45/82/734582c9077c5dd4b4181e6911e980c3.jpg',
-    },
-  ];
+  // console.log('item user review', item);
+  // console.log('product', product);
+  // console.log('iimages', item.images);
 
   return (
     <View style={[mrvit.itemContainer]}>
@@ -111,7 +93,7 @@ const MyReviewItem = ({item}) => {
             source={
               product && product.assets[0]
                 ? {uri: product.assets[0]}
-                : require('../../../assets/images/onboard3.png')
+                : require('../../../assets/images/placeholder_image.jpg')
             }
           />
           <Text numberOfLines={1} style={mrvit.pdName}>

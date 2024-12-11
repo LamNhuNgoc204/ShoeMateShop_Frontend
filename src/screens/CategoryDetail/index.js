@@ -9,6 +9,7 @@ import FilterPanel from '../../components/FilterPanel';
 import {getProductOfCategoryAction} from '../../redux/actions/categoriesAction';
 import AxiosInstance from '../../helpers/AxiosInstance';
 import {useTranslation} from 'react-i18next';
+import CateDetailSkeleton from '../../placeholders/product/category';
 
 const CategoryDetail = ({route, navigation}) => {
   const [filterOpen, setFilterOpen] = useState(false);
@@ -21,14 +22,19 @@ const CategoryDetail = ({route, navigation}) => {
   const [brands, setBrands] = useState([]);
   const [cateName, setCateName] = useState('');
   const {t} = useTranslation();
+  const [loading, setLoading] = useState(false);
 
   const getProductOfCategory = async () => {
     try {
+      setLoading(true);
       const response = await getProductOfCategoryAction(categoryId);
+      // console.log('Product cate: ', response[0]);
+
       setProducts(response);
     } catch (error) {
       console.log(error.message);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -53,7 +59,7 @@ const CategoryDetail = ({route, navigation}) => {
     } else {
       newList.push(brandId);
     }
-    console.log('newList: ', newList);
+    // console.log('newList: ', newList);
     setListSelectedBrand(newList);
   };
 
@@ -64,7 +70,7 @@ const CategoryDetail = ({route, navigation}) => {
     } else {
       newList.push(index);
     }
-    console.log('newList: ', newList);
+    // console.log('newList: ', newList);
     setListSelectedStar(newList);
   };
 
@@ -140,50 +146,57 @@ const CategoryDetail = ({route, navigation}) => {
         iconLeft={require('../../assets/icons/ic_back.png')}
         onIconLeftPress={onBack}
       />
-      <View
-        style={[
-          categoryDetailStyle.marginTop16,
-          categoryDetailStyle.headerView,
-        ]}>
-        <Text style={categoryDetailStyle.textContainer}>
-          {cateName} {`\n`}
-          <Text style={categoryDetailStyle.subContent}>
-            {products.length}{t('search.product')}
-          </Text>
-        </Text>
+      {loading ? (
+        <CateDetailSkeleton />
+      ) : (
+        <>
+          <View
+            style={[
+              categoryDetailStyle.marginTop16,
+              categoryDetailStyle.headerView,
+            ]}>
+            <Text style={categoryDetailStyle.textContainer}>
+              {cateName} {`\n`}
+              <Text style={categoryDetailStyle.subContent}>
+                {products.length}
+                {t('search.product')}
+              </Text>
+            </Text>
 
-        <TouchableOpacity onPress={onOpenFilter}>
-          <Image
-            style={categoryDetailStyle.icon52}
-            source={require('../../assets/icons/ic_filter.png')}
+            <TouchableOpacity onPress={onOpenFilter}>
+              <Image
+                style={categoryDetailStyle.icon52}
+                source={require('../../assets/icons/ic_filter.png')}
+              />
+            </TouchableOpacity>
+          </View>
+
+          <FlatList
+            data={products}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({item, index}) => (
+              <ProductItem product={item} index={index} />
+            )}
+            showsVerticalScrollIndicator={false}
+            numColumns={2}
+            style={categoryDetailStyle.marginTop16}
           />
-        </TouchableOpacity>
-      </View>
-
-      <FlatList
-        data={products}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({item, index}) => (
-          <ProductItem product={item} index={index} />
-        )}
-        showsVerticalScrollIndicator={false}
-        numColumns={2}
-        style={categoryDetailStyle.marginTop16}
-      />
-      <FilterPanel
-        onConfirmPress={onFilterPress}
-        listBrand={brands}
-        minPrice={minPrice}
-        maxPrice={maxPrice}
-        onMaxPriceChange={onMaxPriceChange}
-        onMinPriceChange={onMinChange}
-        onStarPress={onStarPress}
-        listSelectedStar={listSelectedStar}
-        listSelectedBrand={listSelectedBrand}
-        onBrandPress={onBrandPress}
-        isOpen={filterOpen}
-        onClosePress={onCloseFilterPress}
-      />
+          <FilterPanel
+            onConfirmPress={onFilterPress}
+            listBrand={brands}
+            minPrice={minPrice}
+            maxPrice={maxPrice}
+            onMaxPriceChange={onMaxPriceChange}
+            onMinPriceChange={onMinChange}
+            onStarPress={onStarPress}
+            listSelectedStar={listSelectedStar}
+            listSelectedBrand={listSelectedBrand}
+            onBrandPress={onBrandPress}
+            isOpen={filterOpen}
+            onClosePress={onCloseFilterPress}
+          />
+        </>
+      )}
     </View>
   );
 };

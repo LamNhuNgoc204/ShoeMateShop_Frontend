@@ -28,9 +28,6 @@ const ToPay = ({navigation}) => {
 
   const scrollViewRef = useRef(null);
 
-  const dispatch = useDispatch();
-  const state = useSelector(order => order.order);
-
   useEffect(() => {
     const unsubscribe = navigation.addListener('tabPress', () => {
       if (scrollViewRef.current) {
@@ -41,10 +38,14 @@ const ToPay = ({navigation}) => {
   }, [navigation]);
 
   useEffect(() => {
-    if (products.products && products.products.length) {
-      setListProduct(shuffleArray([...products.products]));
+    if (Array.isArray(products?.products?.data)) {
+      if (products?.products?.data && products?.products?.data?.length) {
+        setListProduct(shuffleArray(products?.products?.data));
+      }
     }
   }, []);
+  
+  // console.log('listProduct=>>', listProduct);
 
   const fetchOrder = async () => {
     setLoading(false);

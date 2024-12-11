@@ -3,15 +3,17 @@ import React from 'react';
 import appst from '../../constants/AppStyle';
 import {oddt} from '../../screens/OrderDetail/style';
 import {useTranslation} from 'react-i18next';
+import {formatPrice} from '../../utils/functions/formatData';
 
 const OrderItemDetail = ({item}) => {
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
+  const lag = i18n.language;
   const data = item.item && item.item.product;
 
   // console.log('item', data);
 
   return (
-    <View style={appst.rowStart}>
+    <View style={[appst.rowStart, {marginBottom: 10}]}>
       <Image
         style={oddt.img}
         source={
@@ -33,7 +35,9 @@ const OrderItemDetail = ({item}) => {
           <Text style={oddt.text5}>
             {t('products.price')}:{' '}
             <Text style={oddt.text6}>
-              ${data.price && data.price.toLocaleString('vi-VN')}
+              {lag === 'en' && '$'}
+              {data.price && formatPrice(data.price, lag)}
+              {lag === 'vi' && ' VNĐ '}
             </Text>
           </Text>
           <Text style={oddt.text5}>

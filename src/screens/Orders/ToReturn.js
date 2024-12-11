@@ -14,7 +14,6 @@ import {odst} from './style';
 import {useSelector} from 'react-redux';
 import OrderItem from '../../items/OrderItem/OrderItem';
 import {useTranslation} from 'react-i18next';
-import ProductItem from '../../items/ProductItem';
 import ProductList from '../Product/ProductList';
 import {shuffleArray} from '../../utils/functions/formatData';
 
@@ -39,7 +38,7 @@ const ToReturn = ({navigation}) => {
 
   useEffect(() => {
     if (products.products && products.products.length) {
-      setListProduct(shuffleArray([...products.products]));
+      setListProduct(shuffleArray(products?.products?.data));
     }
   }, []);
 

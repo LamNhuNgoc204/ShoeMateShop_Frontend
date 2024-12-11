@@ -12,10 +12,12 @@ import {sizes} from '../../constants';
 import {fonts} from '../../constants/fonts';
 import {useTranslation} from 'react-i18next';
 import ToReturn from './ToReturn';
+import {useSelector} from 'react-redux';
 
 const OrderScreen = ({navigation, route}) => {
   const {t} = useTranslation();
   const TopTab = createMaterialTopTabNavigator();
+  const isTokenValid = useSelector(state => state?.user?.isValidToken);
 
   const initialRoute = route?.params?.initialRoute || t('orders.pay');
 
@@ -25,7 +27,7 @@ const OrderScreen = ({navigation, route}) => {
     }
   }, [route.params?.initialRoute]);
 
-  console.log('initialRoute', initialRoute);
+  // console.log('initialRoute', initialRoute);
 
   return (
     <View style={[appst.container]}>
@@ -33,8 +35,12 @@ const OrderScreen = ({navigation, route}) => {
         iconLeft={require('../../assets/icons/back.png')}
         leftOnPress={() => navigation.navigate('BottomNav')}
         name={t('profiles.order_history')}
-        iconRight={require('../../assets/icons/search.png')}
-        rightOnPress={() => navigation.navigate('')}
+        iconRight={require('../../assets/icons/mesage.png')}
+        rightOnPress={() => {
+          isTokenValid
+            ? navigation.navigate('MessageScreen')
+            : navigation.navigate('RequireLogin');
+        }}
       />
       <TopTab.Navigator
         // initialRouteName={initialRoute}

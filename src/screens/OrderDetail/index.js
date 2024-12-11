@@ -7,7 +7,6 @@ import {
   ToastAndroid,
   TouchableOpacity,
   Modal,
-  Button,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import appst from '../../constants/AppStyle';
@@ -17,22 +16,72 @@ import {spacing} from '../../constants';
 import {CustomedButton} from '../../components';
 import {useTranslation} from 'react-i18next';
 import OrderDetailSkeleton from '../../placeholders/product/order/OrderDetail';
-import {cancelOrder, getOrderDetail} from '../../api/OrderApi';
+import {
+  cancelOrder,
+  getOrderDetail,
+  updateOrderStatus,
+} from '../../api/OrderApi';
 import OrderItemDetail from '../../items/OrderItem/OrderItemDetail';
-import {formatDate} from '../../utils/functions/formatData';
-import {handleOrderDetail} from '../../utils/functions/order';
+import {formatDate, formatPrice} from '../../utils/functions/formatData';
 import Loading from '../../components/Loading';
+import odit from '../../items/OrderItem/style';
+import {addItemToCartApi} from '../../api/CartApi';
+import {ActivityIndicator} from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native';
 
-const OrderDetail = ({route, navigation}) => {
+const OrderDetail = ({route}) => {
   const {item} = route.params;
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
+  const lag = i18n.language;
   const [loading, setLoading] = useState(false);
   const [orderDetail, setOrderDetail] = useState({});
   const [titleButton, setTitleButton] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [isCancel, setisCancel] = useState(false);
-  
+  const navigation = useNavigation();
+  const [isOverlayLoading, setIsOverlayLoading] = useState(false);
 
+  const addToCart = async () => {
+    setIsOverlayLoading(true);
+    // console.log('productForCart==>', item?.orderDetails);
+
+    try {
+      if (Array.isArray(item?.orderDetails)) {
+        for (const product of item?.orderDetails) {
+          const itemCart = {
+            product_id: product?.product?.id,
+            size_id: product?.product?.size_id,
+            quantity: product?.product?.pd_quantity,
+          };
+          const response = await addItemToCartApi(itemCart);
+          if (!response.status) {
+            ToastAndroid.show(
+              `Không thể thêm sản phẩm: ${product?.product?.name}`,
+              ToastAndroid.SHORT,
+            );
+          }
+        }
+        ToastAndroid.show(
+          'Thêm tất cả sản phẩm vào giỏ hàng thành công',
+          ToastAndroid.SHORT,
+        );
+        navigation.reset({
+          // Đảm bảo tab này là tab đầu tiên khi reset
+          index: 0,
+          routes: [{name: 'BottomNav', params: {screen: 'CartScreen'}}],
+        });
+      }
+    } catch (error) {
+      console.log('Lỗi them sp vào giỏ hàng: ', error);
+
+      ToastAndroid.show(
+        'Lỗi trong quá trình thêm vào giỏ hàng',
+        ToastAndroid.SHORT,
+      );
+    } finally {
+      setIsOverlayLoading(false);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,7 +92,7 @@ const OrderDetail = ({route, navigation}) => {
         if (response.orderStatus === 'pending') {
           setTitleButton('orders.cancelled');
         } else if (response.orderStatus === 'processing') {
-          setTitleButton('orders.processing');
+          setTitleButton('orders.status_process');
         } else if (response.orderStatus === 'shipped') {
           setTitleButton('orders.track');
         }
@@ -89,6 +138,12 @@ const OrderDetail = ({route, navigation}) => {
     );
   };
 
+  const orderTotal = orderDetail?.products?.reduce((total, product) => {
+    const price = product.product?.price || 0;
+    const quantity = product.product?.pd_quantity || 0;
+    return total + price * quantity;
+  }, 0);
+
   return (
     <View style={appst.container}>
       {isCancel ? (
@@ -102,12 +157,7 @@ const OrderDetail = ({route, navigation}) => {
           />
           <View style={{flex: 1}}>
             {loading ? (
-              <View
-                style={{
-                  flex: 1,
-                  height: '100%',
-                  justifyContent: 'space-between',
-                }}>
+              <View style={oddt.body1}>
                 <ScrollView>
                   <View style={oddt.itemContainer}>
                     <View style={oddt.row}>
@@ -116,7 +166,7 @@ const OrderDetail = ({route, navigation}) => {
                         style={oddt.location}
                       />
                       <View>
-                        <Text style={oddt.text1}>{t('checkout.address')}:</Text>
+                        <Text style={oddt.txt1}>{t('checkout.address')}:</Text>
                         <Text>
                           <Text style={oddt.text2}>
                             <Text style={oddt.text3}>
@@ -137,7 +187,7 @@ const OrderDetail = ({route, navigation}) => {
                         <Text style={oddt.text4}>{t('orders.code')}</Text>
                         <Text style={oddt.text4}>
                           {orderDetail.orderCode &&
-                            orderDetail.orderCode.slice(0, 10)}
+                            orderDetail.orderCode.toUpperCase()}
                         </Text>
                       </View>
                       <FlatList
@@ -155,11 +205,20 @@ const OrderDetail = ({route, navigation}) => {
                         {t('orders.status')}:{' '}
                         <Text style={oddt.text6}>
                           {orderDetail.statusShip === 'pending'
-                            ? t('orders.pending')
+                            ? `${t('orders.pending')}`
                             : ''}
                         </Text>
                       </Text>
-                      <Text style={oddt.text7}>{t('orders.order_total')}</Text>
+                      <View style={[appst.rowCenter]}>
+                        <Text style={oddt.text7}>
+                          {t('orders.order_total')}
+                        </Text>
+                        <Text style={oddt.text7}>
+                          {lag === 'en' && '$'}
+                          {formatPrice(orderTotal, lag)}
+                          {lag === 'vi' && ' VNĐ '}
+                        </Text>
+                      </View>
                       <View style={oddt.view2}>
                         <Text style={oddt.text7}>{t('orders.fees')}</Text>
                         <View style={[appst.rowCenter]}>
@@ -197,8 +256,11 @@ const OrderDetail = ({route, navigation}) => {
                       <Item
                         content1={t('orders.total')}
                         content2={
-                          '$' + orderDetail.total_price &&
-                          orderDetail.total_price.toLocaleString('vi-VN')
+                          lag === 'en'
+                            ? '$' + formatPrice(orderDetail.total_price, lag)
+                            : lag === 'vi'
+                            ? formatPrice(orderDetail.total_price, lag) + ' VNĐ'
+                            : ''
                         }
                       />
                       <Item
@@ -213,8 +275,11 @@ const OrderDetail = ({route, navigation}) => {
                       <Item
                         content1={t('orders.shipprice')}
                         content2={
-                          '$' + orderDetail.shipCost &&
-                          orderDetail.shipCost.toLocaleString('vi-VN')
+                          lag === 'en'
+                            ? '$' + formatPrice(orderDetail.shipCost, lag)
+                            : lag === 'vi'
+                            ? formatPrice(orderDetail.shipCost, lag) + ' VNĐ'
+                            : ''
                         }
                       />
                     </View>
@@ -240,6 +305,14 @@ const OrderDetail = ({route, navigation}) => {
                           )}
                         />
                       )}
+                      {orderDetail.timestamps.deliveredAt && (
+                        <Item2
+                          contetn1={t('orders.delivery')}
+                          content2={formatDate(
+                            orderDetail.timestamps.deliveredAt,
+                          )}
+                        />
+                      )}
                       {orderDetail.timestamps.completedAt && (
                         <Item2
                           contetn1={t('orders.complete')}
@@ -259,21 +332,94 @@ const OrderDetail = ({route, navigation}) => {
                     </View>
                   </View>
                 </ScrollView>
-                <CustomedButton
-                  disabled={orderDetail.orderStatus === 'processing' && true}
-                  title={t(titleButton)}
-                  style={
-                    orderDetail.orderStatus === 'processing'
-                      ? oddt.disable
-                      : oddt.press
-                  }
-                  titleStyle={
-                    orderDetail.orderStatus === 'processing'
-                      ? oddt.titleDisable
-                      : oddt.titleStyle
-                  }
-                  onPress={() => handleOrderDetail()}
-                />
+
+                {orderDetail.orderStatus === 'completed' ? (
+                  <View style={[appst.rowCenter, {marginHorizontal: 10}]}>
+                    <TouchableOpacity
+                      onPress={() => addToCart()}
+                      style={[odit.press, oddt.button]}>
+                      <Text style={odit.textTouch}>
+                        {true ? t('orders.return') : t('buttons.btn_buy_again')}
+                      </Text>
+                    </TouchableOpacity>
+                    {item.isReviewed ? (
+                      <TouchableOpacity
+                        onPress={() => navigation.navigate('ProductReviews')}
+                        style={[odit.press, oddt.button]}>
+                        <Text style={odit.textTouch}>{t('review.see')}</Text>
+                      </TouchableOpacity>
+                    ) : (
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('MultiProductReviewForm', {
+                            products: item.orderDetails,
+                          })
+                        }
+                        style={[odit.press, oddt.button]}>
+                        <Text style={odit.textTouch}>{t('review.review')}</Text>
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                ) : orderDetail.orderStatus === 'delivered' ? (
+                  <View style={[appst.rowCenter, {marginHorizontal: 10}]}>
+                    <TouchableOpacity
+                      style={[odit.press, odit.press1, oddt.button]}>
+                      <Text style={[odit.textTouch, odit.textTouch1]}>
+                        {t('orders.return')}
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate('OrderScreen', {
+                          initialRoute: t('orders.completed'),
+                        });
+                        updateOrderStatus(item._id);
+                      }}
+                      style={[odit.press, oddt.button]}>
+                      <Text style={odit.textTouch}>{t('orders.received')}</Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : (
+                  orderDetail.orderStatus === 'cancelled' && (
+                    <View style={[appst.center, {marginHorizontal: 10}]}>
+                      <TouchableOpacity
+                        onPress={() => addToCart()}
+                        style={[
+                          odit.press,
+                          {
+                            width: '90%',
+                            height: 40,
+                          },
+                        ]}>
+                        <Text style={odit.textTouch}>
+                          {t('buttons.btn_buy_again')}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  )
+                )}
+
+                {orderDetail.orderStatus !== 'completed' &&
+                  orderDetail.orderStatus !== 'delivered' &&
+                  orderDetail.orderStatus !== 'cancelled' && (
+                    <CustomedButton
+                      disabled={
+                        orderDetail.orderStatus === 'processing' && true
+                      }
+                      title={t(titleButton)}
+                      style={
+                        orderDetail.orderStatus === 'processing'
+                          ? oddt.disable
+                          : oddt.press
+                      }
+                      titleStyle={
+                        orderDetail.orderStatus === 'processing'
+                          ? oddt.titleDisable
+                          : oddt.titleStyle
+                      }
+                      onPress={() => handleOrderDetail()}
+                    />
+                  )}
               </View>
             ) : (
               <OrderDetailSkeleton />
@@ -286,8 +432,8 @@ const OrderDetail = ({route, navigation}) => {
             transparent={true}
             visible={modalVisible}
             onRequestClose={() => setModalVisible(false)}>
-            <View style={styles.overlay}>
-              <View style={styles.modalView}>
+            <View style={oddt.overlay}>
+              <View style={oddt.modalView}>
                 <Text style={oddt.modalText1}>{t('home.noti')}</Text>
                 <Text style={oddt.modalText}>{t('nothing.cancel_order')}</Text>
                 <Image
@@ -298,16 +444,12 @@ const OrderDetail = ({route, navigation}) => {
                   <TouchableOpacity
                     style={oddt.modalbuttons}
                     onPress={confirmCancelOrder}>
-                    <Text style={{color: 'white', fontWeight: 'bold'}}>
-                      {t('buttons.btn_ok')}
-                    </Text>
+                    <Text style={oddt.text1}>{t('buttons.btn_ok')}</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={oddt.modalbuttons}
                     onPress={() => setModalVisible(false)}>
-                    <Text style={{color: 'white', fontWeight: 'bold'}}>
-                      {t('buttons.close')}
-                    </Text>
+                    <Text style={oddt.text1}>{t('buttons.close')}</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -315,24 +457,20 @@ const OrderDetail = ({route, navigation}) => {
           </Modal>
         </View>
       )}
+
+      <Modal transparent={true} visible={isOverlayLoading}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          }}>
+          <ActivityIndicator size="large" color="#fff" />
+        </View>
+      </Modal>
     </View>
   );
 };
 
-const styles = {
-  overlay: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // semi-transparent background
-  },
-  modalView: {
-    width: '80%',
-    padding: 20,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    alignItems: 'center',
-    elevation: 5,
-  },
-};
 export default OrderDetail;

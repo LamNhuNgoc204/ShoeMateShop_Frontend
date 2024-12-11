@@ -6,6 +6,8 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import SweetAlert from 'react-native-sweet-alert';
 import {deleteOneItemCard, updateCartItem} from '../../api/CartApi';
 import {useNavigation} from '@react-navigation/native';
+import {formatPrice} from '../../utils/functions/formatData';
+import {useTranslation} from 'react-i18next';
 
 const ItemCart = ({
   item,
@@ -21,6 +23,8 @@ const ItemCart = ({
 }) => {
   const [productQuantity, setProductQuantity] = useState(item.quantity);
   const navigation = useNavigation();
+  const {i18n} = useTranslation();
+  const lag = i18n.language;
 
   const handlePress = () => {
     onCheckedChange(item, !isChecked);
@@ -199,7 +203,11 @@ const ItemCart = ({
         }
         style={itCart.container}>
         <View style={[itCart.viewContainer, appst.rowStart]}>
-          <TouchableOpacity onPress={handlePress}>
+          <TouchableOpacity
+            onPress={e => {
+              e.stopPropagation();
+              handlePress();
+            }}>
             <Image
               style={appst.icon24}
               source={
@@ -222,15 +230,27 @@ const ItemCart = ({
               {item && item.product_id.name}
             </Text>
             <Text style={itCart.price}>
-              ${item.product_id.price.toLocaleString('vi-VN')}
+              {lag === 'en' && '$'}
+              {item?.product_id?.price &&
+                formatPrice(item?.product_id?.price, lag)}
+              {lag === 'vi' && ' VNĐ '}
             </Text>
             <Text style={itCart.price}>Size: {item.size_id.name}</Text>
             <View style={[appst.rowCenter, itCart.view]}>
-              <TouchableOpacity onPress={tangSL}>
+              <TouchableOpacity
+                onPress={e => {
+                  e.stopPropagation();
+                  tangSL();
+                }}>
                 <Image source={require('../../assets/icons/increase.png')} />
               </TouchableOpacity>
               <Text style={itCart.quatity}>{productQuantity}</Text>
-              <TouchableOpacity style={{padding: 5}} onPress={giamSL}>
+              <TouchableOpacity
+                style={{padding: 5}}
+                onPress={e => {
+                  e.stopPropagation();
+                  giamSL();
+                }}>
                 <Image source={require('../../assets/icons/decrease.png')} />
               </TouchableOpacity>
             </View>

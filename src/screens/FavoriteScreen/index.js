@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {View, Text, FlatList} from 'react-native';
+import {View, Text, FlatList, Image, TouchableOpacity} from 'react-native';
 import {fvst} from './style';
 import Header from '../../components/Header';
 import appst from '../../constants/AppStyle';
@@ -8,23 +8,15 @@ import ProductItem from '../../items/ProductItem';
 import {addProductInWishlist, removeFromWishlist} from '../../api/ProductApi';
 import {useDispatch, useSelector} from 'react-redux';
 import {setWishlistLocal} from '../../redux/reducer/productReducer';
+import {checkTokenValidity} from '../../utils/functions/checkToken';
 
 const FavoriteScreen = ({navigation}) => {
   const {t} = useTranslation();
-  const [token, setToken] = useState(null);
   const productsState = useSelector(state => state.products);
   const useAppDispatch = () => useDispatch();
   const dispatch = useAppDispatch();
   const [wishList, setWishList] = useState([]);
-
-  // useEffect(() => {
-  // const fetchToken = async () => {
-  //   const storedToken = await AsyncStorage.getItem('token');
-  //   setToken(storedToken);
-  // };
-
-  // fetchToken();
-  // }, []);
+  const isTokenValid = useSelector(state => state?.user?.isValidToken);
 
   useEffect(() => {
     setWishList(productsState.wishlist);
@@ -55,62 +47,45 @@ const FavoriteScreen = ({navigation}) => {
         name={t('home.favorite')}
         iconRight={require('../../assets/icons/favorite.png')}
       />
-      <View style={{padding: 20}}>
-        {wishList.length !== 0 ? (
-          <FlatList
-            data={wishList}
-            renderItem={({item, index}) => (
-              <ProductItem
-                wishlist={wishList}
-                product={item}
-                index={index}
-                handleHeartPress={handleHeartPress}
-              />
-            )}
-            keyExtractor={(item, index) =>
-              item._id ? item._id : index.toString()
-            }
-            numColumns={2}
-            showsVerticalScrollIndicator={false}
-          />
-        ) : (
-          <Text>
-            Bạn chưa thêm sản phẩm nào vào danh sách yêu thích cả. Đến trang chủ
-            ngay
-          </Text>
-        )}
-      </View>
-      {/* {token !== null ? (
-        <View style={[appst.center]}>
-          <FlatList
-            data={[1, 2, 3, 4, 5]}
-            renderItem={({item, index}) => (
-              <ProductItem product={item} index={index} />
-            )}
-            keyExtractor={item => item.id}
-            numColumns={2}
-            showsVerticalScrollIndicator={false}
-          />
+      {isTokenValid ? (
+        <View style={{padding: 20}}>
+          {wishList.length !== 0 ? (
+            <FlatList
+              data={wishList}
+              renderItem={({item, index}) => (
+                <ProductItem
+                  wishlist={wishList}
+                  product={item}
+                  index={index}
+                  handleHeartPress={handleHeartPress}
+                />
+              )}
+              keyExtractor={(item, index) =>
+                item._id ? item._id : index.toString()
+              }
+              numColumns={2}
+              showsVerticalScrollIndicator={false}
+            />
+          ) : (
+            <Text>{t('favorite.sub_title')}</Text>
+          )}
         </View>
       ) : (
-        <View
-          style={{
-            width: '100%',
-            height: '100%',
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <Text style={{color: 'black'}}>
-            Hãy đăng nhập để lưu trữ những sản phẩm yêu thích của bạn nhé
-          </Text>
-          <Text
-            style={{color: 'black'}}
-            onPress={() => navigation.replace('LoginScreen')}>
-            Đến trang đăng nhập
-          </Text>
+        <View style={fvst.container2}>
+          <Image
+            style={fvst.icon}
+            source={require('../../assets/icons/blank_fv.png')}
+          />
+          <Text style={fvst.text1}>{t('favorite.sub_title1')}</Text>
+          <TouchableOpacity
+            style={fvst.button}
+            onPress={() => {
+              navigation.replace('LoginScreen');
+            }}>
+            <Text style={fvst.buttonText}>{t('buttons.btn_signin')}</Text>
+          </TouchableOpacity>
         </View>
-      )} */}
+      )}
     </View>
   );
 };

@@ -8,6 +8,7 @@ const {width, height} = Dimensions.get('window');
 const pddt = StyleSheet.create({
   container: {
     backgroundColor: colors.background_secondary,
+    paddingTop: 5,
   },
   pdImg: {
     width: width,
@@ -75,7 +76,7 @@ const pddt = StyleSheet.create({
     fontFamily: fonts.rlw_regular,
     fontSize: sizes.size14,
     color: colors.color707B81,
-    marginVertical: spacing.md,
+    marginVertical: 5,
     textAlign: 'justify',
     lineHeight: 20,
   },

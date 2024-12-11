@@ -5,6 +5,7 @@ import appst from '../../constants/AppStyle';
 import {spacing} from '../../constants';
 import {gotoOrderDetail} from '../../utils/functions/handleOrder';
 import {useTranslation} from 'react-i18next';
+import {formatPrice} from '../../utils/functions/formatData';
 
 const OrderItem = ({
   addToCart,
@@ -16,12 +17,15 @@ const OrderItem = ({
   navigation,
   updateOrderStatus,
 }) => {
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
+  const lag = i18n.language;
+  // console.log(i18n.language);
 
   const orderDetail = item.orderDetails && item.orderDetails[0];
   const product = orderDetail && orderDetail.product;
   const productForCart = item?.orderDetails;
   // console.log('item orderDetail------>: ', item?.orderDetails);
+  // console.log('item ------>: ', item);
 
   const quantities =
     item.orderDetails &&
@@ -63,10 +67,9 @@ const OrderItem = ({
           <Text style={odit.text}>
             {t('products.price')}:{' '}
             <Text style={odit.text1}>
-              {product &&
-                product.price &&
-                product.price.toLocaleString('vi-VN')}
-              đ
+              {lag === 'en' && '$'}
+              {product && product.price && formatPrice(product.price, lag)}
+              {lag === 'vi' && ' VNĐ '}
             </Text>
           </Text>
         </View>
@@ -77,9 +80,11 @@ const OrderItem = ({
           {totalQuantity} {t('orders.unit')}
         </Text>
         <Text style={odit.total}>
-          Total Price:{' '}
+          {t('products.total')}:{' '}
           <Text style={odit.price}>
-            {item.total_price && item.total_price.toLocaleString('vi-VN')}đ
+            {lag === 'en' && '$'}
+            {item.total_price && formatPrice(item.total_price, lag)}
+            {lag === 'vi' && ' VNĐ '}
           </Text>
         </Text>
       </View>
@@ -111,7 +116,10 @@ const OrderItem = ({
                     </Text>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    onPress={() => updateOrderStatus(item._id)}
+                    onPress={e => {
+                      e.stopPropagation();
+                      updateOrderStatus(item._id);
+                    }}
                     style={[
                       odit.press,
                       {paddingHorizontal: 5, marginLeft: 10},
@@ -148,7 +156,10 @@ const OrderItem = ({
           {!cancel && (
             <View style={appst.rowEnd}>
               <TouchableOpacity
-                onPress={() => addToCart(productForCart)}
+                onPress={e => {
+                  e.stopPropagation();
+                  addToCart(productForCart);
+                }}
                 style={[odit.press, {paddingHorizontal: 10}]}>
                 <Text style={odit.textTouch}>
                   {true ? t('orders.return') : t('buttons.btn_buy_again')}
@@ -156,17 +167,21 @@ const OrderItem = ({
               </TouchableOpacity>
               {item.isReviewed ? (
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('ProductReviews')}
+                  onPress={e => {
+                    e.stopPropagation();
+                    navigation.navigate('ProductReviews');
+                  }}
                   style={[odit.press, {paddingHorizontal: 5, marginLeft: 10}]}>
                   <Text style={odit.textTouch}>{t('review.see')}</Text>
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity
-                  onPress={() =>
+                  onPress={e => {
+                    e.stopPropagation();
                     navigation.navigate('MultiProductReviewForm', {
                       products: item.orderDetails,
-                    })
-                  }
+                    });
+                  }}
                   style={[odit.press, {paddingHorizontal: 5, marginLeft: 10}]}>
                   <Text style={odit.textTouch}>{t('review.review')}</Text>
                 </TouchableOpacity>
@@ -177,16 +192,20 @@ const OrderItem = ({
           {cancel && (
             <View style={appst.rowEnd}>
               <TouchableOpacity
-                onPress={() =>
-                  gotoOrderDetail('CancelDetail', navigation, item)
-                }
+                onPress={e => {
+                  e.stopPropagation();
+                  gotoOrderDetail('CancelDetail', navigation, item);
+                }}
                 style={[odit.press, odit.press1, {paddingHorizontal: 10}]}>
                 <Text style={[odit.textTouch, odit.textTouch1]}>
                   {t('orders.watch_order_detail')}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => addToCart(productForCart)}
+                onPress={e => {
+                  e.stopPropagation();
+                  addToCart(productForCart);
+                }}
                 style={[odit.press, {paddingHorizontal: 5, marginLeft: 10}]}>
                 <Text style={odit.textTouch}>{t('buttons.btn_buy_again')}</Text>
               </TouchableOpacity>

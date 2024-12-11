@@ -27,6 +27,8 @@ const BuyAgain = () => {
   const [loading, setLoading] = useState(false);
   const listProduct = useSelector(state => state.products.products);
 
+  //Chưa có api nha
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(false);

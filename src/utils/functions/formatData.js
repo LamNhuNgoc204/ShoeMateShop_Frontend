@@ -13,4 +13,27 @@ export function formatDate(isoString) {
 }
 
 // Tron mang
-export const shuffleArray = array => array.sort(() => Math.random() - 0.5);
+// export const shuffleArray = array => array.sort(() => Math.random() - 0.5);
+export const shuffleArray = array => {
+  const newArray = [...array]; // Tạo bản sao mảng
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+};
+
+// Hàm format giá tiền
+export const formatPrice = (price, language) => {
+  if (!price) return null;
+  if (language === 'en') {
+    // en, đổi sang USD
+    const usdPrice = price / 24000; // 1 USD = 24,000 VNĐ
+    return usdPrice.toLocaleString('en-US');
+    // , {
+    //   style: 'currency',
+    //   currency: 'USD',
+    // }
+  }
+  return price.toLocaleString('vi-VN');
+};

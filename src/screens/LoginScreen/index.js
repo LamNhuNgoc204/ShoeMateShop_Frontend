@@ -19,7 +19,7 @@ import CustomTextInput from '../../components/Input';
 import {login, loginWithGG} from '../../redux/thunks/UserThunks';
 import DropdownComponent from '../../components/ButtonLanguages';
 import {validateFieldsLogin} from '../../utils/functions/validData';
-import {handleNavigate} from '../../utils/functions/navigationHelper';
+import {checkTokenValidity} from '../../utils/functions/checkToken';
 
 GoogleSignin.configure({
   webClientId:
@@ -58,7 +58,6 @@ const LoginScreen = () => {
           index: 0,
           routes: [{name: 'BottomNav'}],
         });
-        // navigation.navigate('BottomNav');
       }
     } else {
       ToastAndroid.show('Đăng nhập thất bại', ToastAndroid.SHORT);
@@ -83,9 +82,21 @@ const LoginScreen = () => {
   };
 
   useEffect(() => {
-    if (authState.user) {
-      navigation.navigate('BottomNav');
-    }
+    const checkAuth = async () => {
+      const isTokenValid = await checkTokenValidity();
+      if (isTokenValid) {
+        if (authState.user) {
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'BottomNav'}],
+          });
+        }
+      } else {
+        return;
+      }
+    };
+
+    checkAuth();
   }, [authState?.user]);
 
   return (
@@ -165,7 +176,7 @@ const LoginScreen = () => {
           {t('titles.new_users')}
           <Text
             style={styles.text8}
-            onPress={() => handleNavigate(navigation, 'SignUpScreen')}>
+            onPress={() => navigation.navigate('SignUpScreen')}>
             {t('buttons.btn_create_account')}
           </Text>
         </Text>

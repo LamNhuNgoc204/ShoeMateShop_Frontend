@@ -18,15 +18,6 @@ import CustomTextInput from '../../components/Input';
 import {loginWithGG, register} from '../../redux/thunks/UserThunks';
 import {validateFields} from '../../utils/functions/validData';
 import DropdownComponent from '../../components/ButtonLanguages';
-import {handleNavigate} from '../../utils/functions/navigationHelper';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-
-GoogleSignin.configure({
-  webClientId:
-    '376658898807-l5sdnif3gi80l9e9o07ldiv5kitk03mn.apps.googleusercontent.com',
-});
-
-
 
 const SignUpScreen = () => {
   const {t} = useTranslation();
@@ -160,7 +151,7 @@ const SignUpScreen = () => {
           {t('titles.have_account')}{' '}
           <Text
             style={styles.text8}
-            onPress={() => handleNavigate(navigation, 'LoginScreen')}>
+            onPress={() => navigation.navigate('LoginScreen')}>
             {t('buttons.btn_signin')}
           </Text>
         </Text>

@@ -1,4 +1,4 @@
-import {View, Image, Text, Alert} from 'react-native';
+import {View, Image, Text, Alert, Linking} from 'react-native';
 import React, {useState} from 'react';
 import appst from '../../../../constants/AppStyle';
 import Header from '../../../../components/Header';
@@ -21,7 +21,7 @@ const ZaloPayScreen = ({navigation}) => {
         amount: cartState.priceToPay,
       };
       const response = await AxiosInstance().post('/payment', body);
-      // console.log('payment -------', response);
+      console.log('payment -------', response);
 
       // Nhận URL thanh toán từ ZaloPay
       if (response.data.return_code === 1) {
@@ -36,8 +36,17 @@ const ZaloPayScreen = ({navigation}) => {
     }
   };
 
+  // const openPaymentUrl = () => {
+  //   navigation.navigate('ZaloPayWebView', {paymentUrl});
+  // };
+
   const openPaymentUrl = () => {
-    navigation.navigate('ZaloPayWebView', {paymentUrl});
+    if (paymentUrl) {
+      // Mở trực tiếp URL thanh toán ZaloPay trong trình duyệt
+      Linking.openURL(paymentUrl).catch(err =>
+        console.error('Failed to open URL', err),
+      );
+    }
   };
 
   return (

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Pressable, StyleSheet, Text, View, Image} from 'react-native';
+import {Pressable, StyleSheet, View, Image} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Svg, {Path} from 'react-native-svg';
 import HomeScreen from '../screens/HomeScreen';
@@ -24,13 +24,10 @@ const TabBarComponent = ({onPress, isCartScreen, children}) => {
 
 const BottomNav = () => {
   const [activeTab, setActiveTab] = useState('Home');
-  const [homeKey, setHomeKey] = useState(0);
 
   const AnimatedTabBar = ({
     state: {index: activeIndex, routes},
     navigation,
-    descriptors,
-    insets,
   }) => {
     const {bottom} = useSafeAreaInsets();
 
@@ -90,6 +87,7 @@ const BottomNav = () => {
                       style={{
                         width: 24,
                         height: 24,
+                        padding: 10,
                         // tintColor: activeIndex === index ? '#0F6DFA' : '#000',
                       }}
                     />

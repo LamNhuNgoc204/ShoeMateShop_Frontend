@@ -20,7 +20,7 @@ export const oddt = StyleSheet.create({
   location: {
     marginRight: spacing.sm,
   },
-  text1: {
+  txt1: {
     fontFamily: fonts.rlw_semibold,
     fontSize: sizes.size14,
     color: colors.black,
@@ -47,7 +47,7 @@ export const oddt = StyleSheet.create({
     marginBottom: spacing.sm,
   },
   text4: {
-    fontFamily: fonts.rlw_semibold,
+    fontFamily: fonts.pp_semibold,
     fontSize: sizes.size15,
     color: colors.black,
   },
@@ -77,10 +77,10 @@ export const oddt = StyleSheet.create({
     fontFamily: fonts.pp_regular,
   },
   text7: {
-    fontFamily: fonts.rlw_bold,
+    fontFamily: fonts.pp_bold,
     color: colors.black,
-    fontSize: sizes.size14,
-    marginVertical: spacing.xm,
+    fontSize: 13,
+    marginTop: spacing.xm,
   },
   text8: {
     fontFamily: fonts.rlw_semibold,
@@ -88,7 +88,7 @@ export const oddt = StyleSheet.create({
     color: colors.black,
   },
   view2: {
-    marginHorizontal: spacing.xm,
+    // marginHorizontal: spacing.xm,
   },
   icon: {
     width: 15,
@@ -169,5 +169,33 @@ export const oddt = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     marginVertical: 10,
+  },
+  body1: {
+    flex: 1,
+    height: '100%',
+    justifyContent: 'space-between',
+  },
+  button: {
+    paddingHorizontal: 10,
+    width: '47%',
+    height: 40,
+  },
+  text1: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  overlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalView: {
+    width: '80%',
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignItems: 'center',
+    elevation: 5,
   },
 });

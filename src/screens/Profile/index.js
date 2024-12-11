@@ -9,18 +9,23 @@ import ChildItem from './ChildItems';
 import ChildItemGadget from './Mygadget';
 import {PROFILE} from '../../api/mockData';
 import appst from '../../constants/AppStyle';
-import {handleNavigate} from '../../utils/functions/navigationHelper';
 import ProductList from '../Product/ProductList';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfileScreen = () => {
   const {t} = useTranslation();
   const navigation = useNavigation();
   const {user, avatar} = useSelector(state => state.user);
   const productState = useSelector(state => state.products);
+  const isTokenValid = useSelector(state => state?.user?.isValidToken);
 
   const renderItem = ({item}) => (
     <ChildItem
-      onPress={() => navigation.navigate(item.navigateTo, item.navigateTo == "MessageScreen" ? {product: null} : {})}
+      onPress={() => {
+        isTokenValid
+          ? navigation.navigate(item.navigateTo, item.navigateTo == "MessageScreen" ? {product: null} : {})
+          : navigation.navigate('RequireLogin');
+      }}
       iconSource={item.iconSource}
       text={t(item.text)}
     />
@@ -29,31 +34,65 @@ const ProfileScreen = () => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.profile}>
-        <View style={appst.rowStart}>
+        {isTokenValid ? (
+          <View style={appst.rowStart}>
+            <Image
+              style={styles.avatar}
+              source={{
+                uri: avatar
+                  ? avatar
+                  : 'https://i.pinimg.com/enabled_hi/564x/d4/35/42/d435423c9386e708c678b7663656b9c0.jpg',
+              }}
+            />
+            <View style={styles.info}>
+              <Text style={styles.name}>{user && user.name}</Text>
+              <Text style={styles.email}>{user && user.email}</Text>
+            </View>
+          </View>
+        ) : (
           <Image
             style={styles.avatar}
             source={{
-              uri: avatar
-                ? avatar
-                : 'https://i.pinimg.com/enabled_hi/564x/d4/35/42/d435423c9386e708c678b7663656b9c0.jpg',
+              uri: 'https://i.pinimg.com/enabled_hi/564x/d4/35/42/d435423c9386e708c678b7663656b9c0.jpg',
             }}
           />
-          <View style={styles.info}>
-            <Text style={styles.name}>{user && user.name}</Text>
-            <Text style={styles.email}>{user && user.email}</Text>
+        )}
+
+        {isTokenValid ? (
+          <TouchableOpacity
+            onPress={() => navigation.navigate('SettingScreen')}>
+            <Image
+              style={appst.icon30}
+              source={require('../../assets/icons/setting.png')}
+            />
+          </TouchableOpacity>
+        ) : (
+          <View style={appst.rowStart}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={async () => {
+                await AsyncStorage.removeItem('token');
+                navigation.replace('LoginScreen');
+              }}>
+              <Text style={styles.buttonText}>{t('buttons.btn_signin')}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={async () => {
+                navigation.navigate('SignUpScreen');
+              }}>
+              <Text style={styles.buttonText}>{t('buttons.btn_signup')}</Text>
+            </TouchableOpacity>
           </View>
-        </View>
-        <TouchableOpacity
-          onPress={() => handleNavigate(navigation, 'SettingScreen')}>
-          <Image
-            style={appst.icon30}
-            source={require('../../assets/icons/setting.png')}
-          />
-        </TouchableOpacity>
+        )}
       </View>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate('HomeWallet')}
+        onPress={() => {
+          isTokenValid
+            ? navigation.navigate('HomeWallet')
+            : navigation.navigate('RequireLogin');
+        }}
         style={styles.myGadget}>
         <Image
           style={styles.ic_mygadget}
@@ -63,7 +102,11 @@ const ProfileScreen = () => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate('Voucher')}
+        onPress={() => {
+          isTokenValid
+            ? navigation.navigate('Voucher')
+            : navigation.navigate('RequireLogin');
+        }}
         style={styles.myGadget}>
         <Image
           style={styles.ic_mygadget}
@@ -74,30 +117,44 @@ const ProfileScreen = () => {
 
       <View style={styles.childsMyGadget}>
         <ChildItemGadget
-          onPress={() =>
-            navigation.navigate('OrderScreen', {initialRoute: t('orders.pay')})
-          }
+          onPress={() => {
+            isTokenValid
+              ? navigation.navigate('OrderScreen', {
+                  initialRoute: t('orders.pay'),
+                })
+              : navigation.navigate('RequireLogin');
+          }}
           iconSource={require('../../assets/icons/icons8-wallet-24.png')}
           text={t('orders.pay')}
         />
         <ChildItemGadget
-          onPress={() =>
-            navigation.navigate('OrderScreen', {initialRoute: t('orders.ship')})
-          }
+          onPress={() => {
+            isTokenValid
+              ? navigation.navigate('OrderScreen', {
+                  initialRoute: t('orders.ship'),
+                })
+              : navigation.navigate('RequireLogin');
+          }}
           iconSource={require('../../assets/icons/icons8-box-24.png')}
           text={t('orders.ship')}
         />
         <ChildItemGadget
-          onPress={() =>
-            navigation.navigate('OrderScreen', {
-              initialRoute: t('orders.completed'),
-            })
-          }
+          onPress={() => {
+            isTokenValid
+              ? navigation.navigate('OrderScreen', {
+                  initialRoute: t('orders.completed'),
+                })
+              : navigation.navigate('RequireLogin');
+          }}
           iconSource={require('../../assets/icons/icons8-delivered-24.png')}
           text={t('orders.completed')}
         />
         <ChildItemGadget
-          onPress={() => navigation.navigate('MyRating')}
+          onPress={() => {
+            isTokenValid
+              ? navigation.navigate('MyRating')
+              : navigation.navigate('RequireLogin');
+          }}
           iconSource={require('../../assets/icons/icons8-star-24.png')}
           text={t('profiles.rate')}
         />
@@ -111,7 +168,7 @@ const ProfileScreen = () => {
       />
 
       <View style={{marginTop: 10}}>
-        <ProductList listProduct={productState.products} />
+        <ProductList listProduct={productState?.products?.data} />
       </View>
     </ScrollView>
   );
