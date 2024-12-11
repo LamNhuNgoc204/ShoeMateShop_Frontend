@@ -22,9 +22,9 @@ const productStyle = StyleSheet.create({
     },
     image: {
         width: '100%',
-        height: 100,
+        height: 150,
         borderRadius: 20,
-        resizeMode: 'contain'
+        resizeMode: 'cover'
     },
     text14: {
         fontFamily: fonts.pp_medium,

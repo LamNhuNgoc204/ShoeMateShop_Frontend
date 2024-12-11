@@ -47,7 +47,9 @@ const SettingScreen = () => {
           leftOnPress={() => navigation.goBack()}
           iconRight={require('../../assets/icons/mesage.png')}
           rightOnPress={() => {
-            navigation.navigate('MessageScreen');
+            navigation.navigate('MessageScreen', {
+              product: null
+            });
           }}
         />
         <FlatList

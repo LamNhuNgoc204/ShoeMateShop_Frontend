@@ -72,7 +72,7 @@ const SearchResult = ({ navigation, route }) => {
   const onBack = () => {
     navigation.reset({
       index: 0,
-      routes: [{ name: 'HomeScreen' }],
+      routes: [{ name: 'BottomNav' }],
     });
     
   }
@@ -157,6 +157,7 @@ const SearchResult = ({ navigation, route }) => {
         onEditPress={()=> {
           navigation.navigate('SearchScreen');
         }}
+        editable={false}
         onChangeText={(txt) => setkeyText(txt)}
         onIconLeftPress={onBack}
         onIconRightPress={onOpenFilter}

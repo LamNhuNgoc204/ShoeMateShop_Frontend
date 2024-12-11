@@ -20,7 +20,7 @@ const ProfileScreen = () => {
 
   const renderItem = ({item}) => (
     <ChildItem
-      onPress={() => navigation.navigate(item.navigateTo)}
+      onPress={() => navigation.navigate(item.navigateTo, item.navigateTo == "MessageScreen" ? {product: null} : {})}
       iconSource={item.iconSource}
       text={t(item.text)}
     />
