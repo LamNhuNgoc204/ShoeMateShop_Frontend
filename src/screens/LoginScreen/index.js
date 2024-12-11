@@ -49,6 +49,14 @@ const LoginScreen = () => {
     const resultAction = await dispatch(login(body));
     if (login.fulfilled.match(resultAction)) {
       const { user } = resultAction.payload;
+      if (!user?.isVerified) {
+        navigation.navigate('OtpVerification', { email });
+      } else {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'BottomNav' }],
+        });
+      }
       ToastAndroid.show('Đăng nhập thành công', ToastAndroid.SHORT);
     } else {
       ToastAndroid.show('Đăng nhập thất bại', ToastAndroid.SHORT);
@@ -89,16 +97,8 @@ const LoginScreen = () => {
 
 
     checkAuth();
-    const user = authState?.user;
 
-    if (!user?.isVerified) {
-      navigation.navigate('OtpVerification', { email });
-    } else {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'BottomNav' }],
-      });
-    }
+    
   }, [authState?.user]);
 
   return (
