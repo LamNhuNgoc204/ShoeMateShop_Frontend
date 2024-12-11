@@ -98,7 +98,15 @@ const LoginScreen = () => {
 
     checkAuth();
 
-    
+    const user = authState?.user;
+    if (user?.isVerified) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'BottomNav' }],
+      });
+    }
+
+
   }, [authState?.user]);
 
   return (
