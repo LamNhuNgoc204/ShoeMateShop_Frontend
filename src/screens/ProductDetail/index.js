@@ -141,7 +141,7 @@ const ProductDetail = props => {
 
 
     const createDeepLink = () => {
-      return `mateshoe://product/${product._id}`;
+      return `https://open-deeplink-production.up.railway.app/product/${product._id}`;
     };
   
     const shareProduct = async () => {

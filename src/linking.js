@@ -1,3 +1,4 @@
+
 const config = {
   screens: {
     HomeScreen: {
@@ -7,6 +8,12 @@ const config = {
       path: 'profile/:id',
       parse: {
         id: id => `${id}`,
+      },
+    },
+    ProductDetail: {
+      path: 'product/:index',
+      parse: {
+        index: index => `${index}`,
       },
     },
     Notifications: 'notifications',

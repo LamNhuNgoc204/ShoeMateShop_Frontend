@@ -23,6 +23,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AxiosInstance from '../../helpers/AxiosInstance';
 import ProductList from '../Product/ProductList';
 import {shuffleArray} from '../../utils/functions/formatData';
+import { checkTokenValidity } from '../../utils/functions/checkToken';
+import { setValidToken } from '../../redux/reducer/userReducer';
 
 const HomeScreen = ({navigation, route}) => {
   const {t} = useTranslation();
@@ -31,7 +33,6 @@ const HomeScreen = ({navigation, route}) => {
   const [listProduct, setListProduct] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
-  const navigation = useNavigation();
 
   const state = useSelector(state => state.products);
   const dispatch = useDispatch();
@@ -210,7 +211,9 @@ const HomeScreen = ({navigation, route}) => {
         editable={false}
         iconRight={require('../../assets/icons/mesage.png')}
         onIconRightPress={() => {
-          navigation.navigate('MessageScreen');
+          navigation.navigate('MessageScreen',{
+            product: null
+          });
         }}
       />
       {route?.params?.reload ? (
