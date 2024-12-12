@@ -9,12 +9,15 @@ import styleItem from './styleItem';
 import AxiosInstance from '../../helpers/AxiosInstance';
 import {useNavigation} from '@react-navigation/native';
 const VoucherScreen = ({route}) => {
-  const totalOrderValue = route.params.totalOrderValue;
+  const totalOrderValue = route?.params?.totalOrderValue || 0;
   const navigation = useNavigation();
   const [vouchers, setVouchers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
  const handleApplyVoucher =async (item) => {
+   if (totalOrderValue==0) {
+    navigation.navigate('CartScreen');
+   } else {
     try {
       const response = await AxiosInstance().post('/vouchers/apply', {
         voucher_code: item.voucher_code,
@@ -31,6 +34,7 @@ const VoucherScreen = ({route}) => {
     } catch (error) {
       ToastAndroid.show('Bạn đã sủ dụng voucher này rồi', ToastAndroid.SHORT);
     }
+   }
   }
 
 

@@ -11,30 +11,31 @@ import {PROFILE} from '../../api/mockData';
 import appst from '../../constants/AppStyle';
 import {handleNavigate} from '../../utils/functions/navigationHelper';
 import ProductList from '../Product/ProductList';
-import AxiosInstance from "../../helpers/AxiosInstance"
+import AxiosInstance from "../../helpers/AxiosInstance";
+
 const ProfileScreen = () => {
   const {t} = useTranslation();
   const navigation = useNavigation();
   const {user, avatar} = useSelector(state => state.user);
   const productState = useSelector(state => state.products);
 
+  // Hàm điều hướng tới ví
+  const handleToWallet = async () => {
+    try {
+      const response = await AxiosInstance().get('/wallet/balance');
 
- const handleToWallet =  async() => {
-    const response = await AxiosInstance().get('/wallet/balance');
-
-    if (response.status) {
-      navigation.navigate('HomeWallet');
-    
-    } else {
-      navigation.navigate('SetupWallet');
-      console.log("chưa có ví");
+      if (response.status) {
+        navigation.navigate('HomeWallet');
+      } else {
+        navigation.navigate('SetupWallet');
+        console.log('Chưa có ví');
+      }
+    } catch (error) {
+      console.error('Lỗi khi gọi API:', error);
     }
-
-    
-
   };
 
-
+  // Hàm render cho FlatList
   const renderItem = ({item}) => (
     <ChildItem
       onPress={() => navigation.navigate(item.navigateTo)}
@@ -69,9 +70,7 @@ const ProfileScreen = () => {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity
-        onPress={handleToWallet}
-        style={styles.myGadget}>
+      <TouchableOpacity onPress={handleToWallet} style={styles.myGadget}>
         <Image
           style={styles.ic_mygadget}
           source={require('../../assets/icons/icons8-wallet.png')}
@@ -128,7 +127,10 @@ const ProfileScreen = () => {
       />
 
       <View style={{marginTop: 10}}>
-        <ProductList listProduct={productState.products} />
+        {/* Kiểm tra và truyền dữ liệu hợp lệ vào ProductList */}
+        <ProductList
+          listProduct={Array.isArray(productState.products) ? productState.products : []}
+        />
       </View>
     </ScrollView>
   );

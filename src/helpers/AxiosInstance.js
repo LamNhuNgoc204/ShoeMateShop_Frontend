@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 
 const AxiosInstance = (contentType = 'application/json') => {
   const axiosInstance = axios.create({
-    baseURL: `http://192.168.52.1:3000/`,
+    baseURL: `http://172.20.10.3:3000/`,
   });
   axiosInstance.interceptors.request.use(
     async config => {
