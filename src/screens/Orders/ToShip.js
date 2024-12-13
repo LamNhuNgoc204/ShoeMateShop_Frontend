@@ -8,6 +8,8 @@ import {
   Image,
   RefreshControl,
   ToastAndroid,
+  Modal,
+  ActivityIndicator,
 } from 'react-native';
 import {odst} from './style';
 import appst from '../../constants/AppStyle';
@@ -21,6 +23,8 @@ import OrderHistorySkeleton from '../../placeholders/product/order/OrderHistory.
 import {useTranslation} from 'react-i18next';
 import ProductList from '../Product/ProductList.js';
 import {shuffleArray} from '../../utils/functions/formatData.js';
+import {gotoCart} from '../../utils/functions/navigationHelper.js';
+import {addItemToCartApi} from '../../api/CartApi.js';
 
 const ToShip = ({navigation}) => {
   const {t} = useTranslation();
@@ -30,6 +34,7 @@ const ToShip = ({navigation}) => {
   const [processOrders, setProcessOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [isOverlayLoading, setIsOverlayLoading] = useState(false);
 
   const scrollViewRef = useRef(null);
 
@@ -102,6 +107,42 @@ const ToShip = ({navigation}) => {
     }
   };
 
+  const addToCart = async productForCart => {
+    setIsOverlayLoading(true);
+    // console.log('productForCart==>', productForCart);
+
+    try {
+      if (Array.isArray(productForCart)) {
+        for (const product of productForCart) {
+          const itemCart = {
+            product_id: product?.product?.id,
+            size_id: product?.product?.size_id,
+            quantity: product?.product?.pd_quantity,
+          };
+          const response = await addItemToCartApi(itemCart);
+          if (!response.status) {
+            ToastAndroid.show(
+              `Không thể thêm sản phẩm: ${product?.product?.name}`,
+              ToastAndroid.SHORT,
+            );
+          }
+        }
+        ToastAndroid.show(
+          'Thêm tất cả sản phẩm vào giỏ hàng thành công',
+          ToastAndroid.SHORT,
+        );
+        gotoCart();
+      }
+    } catch (error) {
+      ToastAndroid.show(
+        'Lỗi trong quá trình thêm vào giỏ hàng',
+        ToastAndroid.SHORT,
+      );
+    } finally {
+      setIsOverlayLoading(false);
+    }
+  };
+
   return (
     <View style={appst.container}>
       {loading ? (
@@ -117,6 +158,7 @@ const ToShip = ({navigation}) => {
               data={processOrders}
               renderItem={({item}) => (
                 <OrderItem
+                  addToCart={addToCart}
                   item={item}
                   navigation={navigation}
                   ship={true}
@@ -145,6 +187,19 @@ const ToShip = ({navigation}) => {
       ) : (
         <OrderHistorySkeleton />
       )}
+
+      {/* Cho them gio hang */}
+      <Modal transparent={true} visible={isOverlayLoading}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          }}>
+          <ActivityIndicator size="large" color="#fff" />
+        </View>
+      </Modal>
     </View>
   );
 };

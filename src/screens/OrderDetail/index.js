@@ -353,6 +353,7 @@ const OrderDetail = ({route}) => {
                         onPress={() =>
                           navigation.navigate('MultiProductReviewForm', {
                             products: item.orderDetails,
+                            orderId: item._id,
                           })
                         }
                         style={[odit.press, oddt.button]}>

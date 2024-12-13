@@ -7,7 +7,7 @@ import ReviewItem from '../../items/ReviewItem/MultiProductReviewItem';
 import {createMultipleReviews} from '../../api/reviewAPI';
 
 const MultiProductReviewForm = ({route, navigation}) => {
-  const {products} = route.params;
+  const {products, orderId} = route.params;
   // console.log('products ====================>>>>>', products);
   const {t} = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
@@ -41,7 +41,10 @@ const MultiProductReviewForm = ({route, navigation}) => {
   const submitAllReviews = async () => {
     console.log('Submit review');
     try {
-      const response = await createMultipleReviews({reviews: data});
+      const response = await createMultipleReviews({
+        reviews: data,
+        orderId: orderId,
+      });
       if (response) {
         Alert.alert('Bạn đã đánh giá sản phẩm');
         navigation.navigate('MyRating', {initialRoute: t('review.to_review')});

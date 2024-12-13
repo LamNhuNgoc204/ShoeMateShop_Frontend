@@ -58,12 +58,12 @@ const Cancalled = ({navigation}) => {
     try {
       const response = await getOrderCancell();
       if (response.status) {
-        setCancelOrders(response?.data?.reverse());
-        setLoading(true);
+        setCancelOrders(response?.data);
       }
     } catch (error) {
-      setLoading(true);
       console.log('Get order error: ', error);
+    } finally {
+      setLoading(true);
     }
   };
 
@@ -131,6 +131,7 @@ const Cancalled = ({navigation}) => {
                   item={item}
                   cancel={true}
                   navigation={navigation}
+                  setIsOverlayLoading={setIsOverlayLoading}
                 />
               )}
               keyExtractor={(item, index) =>

@@ -37,7 +37,7 @@ const ToReturn = ({navigation}) => {
   }, [navigation]);
 
   useEffect(() => {
-    if (products.products && products.products.length) {
+    if (products?.products?.data && products?.products?.data?.length) {
       setListProduct(shuffleArray(products?.products?.data));
     }
   }, []);

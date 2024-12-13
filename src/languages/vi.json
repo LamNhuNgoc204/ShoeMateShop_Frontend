@@ -118,7 +118,7 @@
     "total": "Tổng giá",
     "quantity": "Số lượng",
     "no_recently": "Chưa có sản phẩm xem gần đây.",
-    "review":"đánh giá"
+    "review": "đánh giá"
   },
   "form_input": {
     "name": "Tên của bạn",
@@ -207,7 +207,7 @@
     "total": "Tổng cộng",
     "shipprice": "Phí vận chuyển",
     "time": "Thời gian đặt hàng",
-    "shipping":"Thời gian đơn vị vận chuyển lấy hàng",
+    "shipping": "Thời gian đơn vị vận chuyển lấy hàng",
     "payment": "Thời gian thanh toán",
     "delivery": "Thời gian giao hàng",
     "complete": "Thời gian hoàn thành đơn",
@@ -234,7 +234,7 @@
     "received": "Đã nhận được hàng",
     "creating_order": "Đang tạo đơn hàng",
     "delivered": "Đơn hàng đã được giao thành công",
-    "status_process":"Đơn hàng đang xử lý"
+    "status_process": "Đơn hàng đang xử lý"
   },
   "rating": {
     "review": "Đánh giá của tôi",
