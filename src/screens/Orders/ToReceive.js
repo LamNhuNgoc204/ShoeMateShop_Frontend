@@ -38,8 +38,8 @@ const ToReceive = ({navigation}) => {
   }, [navigation]);
 
   useEffect(() => {
-    if (products.products && products.products.length) {
-      setListProduct(shuffleArray([...products.products]));
+    if (products?.products?.data && products?.products?.data?.length) {
+      setListProduct(shuffleArray(products?.products?.data));
     }
   }, []);
 

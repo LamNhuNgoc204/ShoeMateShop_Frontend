@@ -26,9 +26,9 @@ const ToShip = ({navigation}) => {
   const {t} = useTranslation();
   const useAppSelector = useSelector;
   const products = useAppSelector(state => state.products);
+  const [listProduct, setListProduct] = useState([]);
   const [processOrders, setProcessOrders] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [listProduct, setListProduct] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
   const scrollViewRef = useRef(null);
@@ -43,8 +43,8 @@ const ToShip = ({navigation}) => {
   }, [navigation]);
 
   useEffect(() => {
-    if (products.products && products.products.length) {
-      setListProduct(shuffleArray([...products.products]));
+    if (products?.products?.data && products?.products?.data?.length) {
+      setListProduct(shuffleArray(products?.products?.data));
     }
   }, []);
 
@@ -53,7 +53,7 @@ const ToShip = ({navigation}) => {
     try {
       const response = await getOrderProcess();
       if (response.status) {
-        setProcessOrders(response?.data?.reverse());
+        setProcessOrders(response?.data);
         setLoading(true);
       }
     } catch (error) {

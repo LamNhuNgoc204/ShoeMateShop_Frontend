@@ -21,9 +21,9 @@ const ToPay = ({navigation}) => {
   const {t} = useTranslation();
   const useAppSelector = useSelector;
   const products = useAppSelector(state => state.products);
+  const [listProduct, setListProduct] = useState([]);
   const [pendingOrders, setPendingOrders] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [listProduct, setListProduct] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
   const scrollViewRef = useRef(null);
@@ -44,7 +44,7 @@ const ToPay = ({navigation}) => {
       }
     }
   }, []);
-  
+
   // console.log('listProduct=>>', listProduct);
 
   const fetchOrder = async () => {
