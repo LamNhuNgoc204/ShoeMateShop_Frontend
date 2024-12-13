@@ -80,7 +80,8 @@ const CheckoutSuccess = ({navigation}) => {
           </View>
         </View>
         <View style={{marginTop: 20, marginBottom: 20}}>
-          <ProductList listProduct={productState.products} />
+       
+          <ProductList  listProduct={Array.isArray(productState.products) ? productState.products : []} />
         </View>
       </ScrollView>
     </View>

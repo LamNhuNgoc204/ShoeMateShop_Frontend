@@ -149,7 +149,15 @@ const CartScreen = ({navigation}) => {
                 <Text style={cartst.text}>Bat dau mua sam ngay</Text>
               </TouchableOpacity>
 
-              <ProductList listProduct={productState.products} />
+              <ProductList
+                listProduct={
+                  Array.isArray(productState.products)
+                    ? productState.products.filter(
+                        item => item._id !== product._id,
+                      )
+                    : []
+                }
+              />
             </ScrollView>
           ) : (
             <FlatList

@@ -75,20 +75,21 @@ const CheckOutScreen = ({route}) => {
       ToastAndroid.show(`${t('nothing.adress_war')}`, ToastAndroid.SHORT);
       return;
     }
-
+  
     setIsLoading(true);
-    // setisComplete(false);
-
-    const products = state.productOrder.map(item => ({
-      _id: item.product_id._id,
-      assets: item.product_id.assets,
-      name: item.product_id.name,
-      size_name: item.size_id.name,
-      price: item.product_id.price,
-      quantity: item.quantity,
-      size_id: item.size_id._id,
-    }));
-
+  
+    const products = Array.isArray(state.productOrder)
+    ? state.productOrder.map(item => ({
+        _id: item.product_id._id,
+        assets: item.product_id.assets,
+        name: item.product_id.name,
+        size_name: item.size_id.name,
+        price: item.product_id.price,
+        quantity: item.quantity,
+        size_id: item.size_id._id,
+      }))
+    : [];
+  
     const body = {
       products: products,
       method_id: state.payment && state.payment._id,
@@ -100,52 +101,64 @@ const CheckOutScreen = ({route}) => {
       address: addressDefault.address,
       voucher_code: responseVouchers.voucher_code,
     };
-
-    // console.log('body orrder: ', body);
-
-    const response = await createOrder(body);
-    if (response.status) {
-      setIsLoading(false);
-      // setisComplete(true);
-      if (state.payment && state.payment.payment_method === 'Zalo Pay') {
-        dispatch(setPriceToPay(tongchiphi));
-        dispatch(setOrderId(response.data.order._id));
-        // setisComplete(true);
-        // navigation.navigate('ZaloPayScreen');
-      } else if (
-        state.payment &&
-        state.payment.payment_method === 'Thanh toán khi nhận hàng'
-      ) {
-        // setModalVisible(true);
-        ToastAndroid.show('tao don thanh cong', ToastAndroid.show);
-        // setisComplete(true);
-        navigation.navigate('CheckoutSuccess');
-      } else if (
-        state.payment &&
-        state.payment.payment_method == 'Shoes Mate Wallet'
-      ) {
+  
+    try {
+      if (state.payment && state.payment.payment_method === 'Shoes Mate Wallet') {
         console.log('Shoes Mate Wallet');
-        
-         try {
-          const response = await AxiosInstance().post('/wallet/payment', {
-            amount: tongchiphi,
-          });
-          
-          if (response.status) {
-            ToastAndroid.show('Đặt hàng thành công', ToastAndroid.show);
-            navigation.navigate('CheckoutSuccess');
-          }else {
-            ToastAndroid.show('Vui lòng kiểm tra số dư', ToastAndroid.show);
-          }
-         } catch (error) {
-          console.log(error);
-         }
-        
+  
+        // Kiểm tra số dư hoặc trạng thái ví trước khi tạo đơn hàng
+        const walletResponse = await AxiosInstance().post('/wallet/payment', {
+          amount: tongchiphi,
+        });
+        console.log('walletResponse', walletResponse);
+        if (walletResponse.status) {
+          ToastAndroid.show('Đặt hàng thành công', ToastAndroid.SHORT);
+          navigation.navigate('CheckoutSuccess');
+          return;
+        } else if (walletResponse.code === 'Insufficientbalance') {
+          ToastAndroid.show('Không đủ số dư', ToastAndroid.SHORT);
+          setIsLoading(false);
+          return;
+        } else if (walletResponse.code === 'walletnotcreated') {
+          ToastAndroid.show('Vui lòng tạo ví trước khi thanh toán', ToastAndroid.SHORT);
+          setIsLoading(false);
+          return;
+        } else if (walletResponse.code === 'walletnotactive') {
+          ToastAndroid.show('Ví chưa được kích hoạt', ToastAndroid.SHORT);
+          setIsLoading(false);
+          return;
+        } else {
+          ToastAndroid.show('Có lỗi xảy ra, vui lòng thử lại sau', ToastAndroid.SHORT);
+          setIsLoading(false);
+          return;
+        }
+      }else{
+        const response = await createOrder(body);
+      if (response.status) {
+        setIsLoading(false);
+  
+        if (state.payment.payment_method === 'Zalo Pay') {
+          dispatch(setPriceToPay(tongchiphi));
+          dispatch(setOrderId(response.data.order._id));
+          navigation.navigate('ZaloPayScreen');
+        } else if (state.payment.payment_method === 'Thanh toán khi nhận hàng') {
+          ToastAndroid.show('Tạo đơn thành công', ToastAndroid.SHORT);
+          navigation.navigate('CheckoutSuccess');
+        }
+      } else {
+        ToastAndroid.show('Tạo đơn không thành công', ToastAndroid.SHORT);
       }
+      }
+  
+      // Nếu không sử dụng ví Shoes Mate Wallet, tiếp tục tạo đơn hàng
+      
+    } catch (error) {
+      console.log('Error:', error);
+      ToastAndroid.show('Đã xảy ra lỗi, vui lòng thử lại', ToastAndroid.SHORT);
+      setIsLoading(false);
     }
-
-    //check xem chon phuong thuc nao roi chuyen man hinh tuong ung
   };
+  
 
   const handeToVouchers = () => {
     navigation.navigate('Voucher', {totalOrderValue: state.totalPrice});

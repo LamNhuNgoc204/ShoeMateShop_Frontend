@@ -59,5 +59,17 @@ export default styles = StyleSheet.create({
         fontFamily: fonts.rlw_medium,
         marginTop: spacing.lg,
       },
+    
+  filterContainer: {
+    marginVertical: spacing.md,
+    paddingHorizontal: spacing.sm,
+  },
+  picker: {
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 8,
+    fontSize: 14,
+  },
 })
 

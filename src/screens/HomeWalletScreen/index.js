@@ -11,7 +11,8 @@ import AxiosInstance from '../../helpers/AxiosInstance';
 const HomeWallet = () => {
   const [balance, setBalance] = useState(0);
   const [transactions, setTransactions] = useState([]);
-  const [refreshing, setRefreshing] = useState(false); // State cho việc làm mới
+  const [refreshing, setRefreshing] = useState(false);
+  const [transactionType, setTransactionType] = useState(''); // Thêm state cho loại giao dịch
   const {t} = useTranslation();
   const navigation = useNavigation();
 
@@ -22,14 +23,18 @@ const HomeWallet = () => {
         setBalance(responseBalance.balance);
       }
 
-      const responseTransactions = await AxiosInstance().get('/wallet/transactions');
+      // Gửi tham số loại giao dịch vào API request
+      const responseTransactions = await AxiosInstance().get('/wallet/transactions', {
+        params: { type: transactionType },
+      });
+
       if (responseTransactions.status) {
         setTransactions(responseTransactions.transactions);
       }
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [transactionType]);
 
   useEffect(() => {
     fetchData();
@@ -64,7 +69,7 @@ const HomeWallet = () => {
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        } // Thêm thuộc tính refreshControl
+        }
         ListHeaderComponent={
           <>
             <View style={styles.viewBody}>

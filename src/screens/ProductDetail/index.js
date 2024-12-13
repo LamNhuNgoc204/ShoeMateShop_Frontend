@@ -47,9 +47,6 @@ const ProductDetail = props => {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [proId, setProId] = useState(index);
 
-
-
-
   const dispatch = useDispatch();
 
   const fetchProduct = async () => {
@@ -109,9 +106,9 @@ const ProductDetail = props => {
       );
     }) || [];
 
-    const onSetProduct = (product) => {
-      setProId(product._id)
-    }
+  const onSetProduct = product => {
+    setProId(product._id);
+  };
 
   return (
     <View style={[appst.container, pddt.container]}>
@@ -242,7 +239,16 @@ const ProductDetail = props => {
           </View>
 
           <View style={{marginTop: 15}}>
-            <ProductList onSetProduct={onSetProduct} listProduct={productState.products.filter((item)=>item._id != product._id)} />
+            <ProductList
+              onSetProduct={onSetProduct}
+              listProduct={
+                Array.isArray(productState.products)
+                  ? productState.products.filter(
+                      item => item._id !== product._id,
+                    )
+                  : []
+              }
+            />
           </View>
         </ScrollView>
       ) : (
@@ -251,11 +257,12 @@ const ProductDetail = props => {
 
       <View style={[pddt.footer, appst.rowCenter]}>
         <View style={[appst.rowCenter]}>
-          <TouchableOpacity onPress={() => {
-            navigation.navigate('MessageScreen', {
-              product: product
-            })
-          }}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('MessageScreen', {
+                product: product,
+              });
+            }}>
             <Image
               source={require('../../assets/icons/chatwithshop.png')}
               style={pddt.chat}
