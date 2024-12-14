@@ -301,7 +301,9 @@
     "cancel_order": "Đơn hàng đã bị hủy",
     "remove_item_cart": "Xóa sản phẩm này?",
     "title_item_cart": "Oops. Bạn có chắc chắn muốn xóa sản phẩm này không?",
-    "subTitle_cart": "Oops. Đang xảy ra lỗi rồi. Bạn đợi một chút nhé <3"
+    "subTitle_cart": "Oops. Đang xảy ra lỗi rồi. Bạn thử lại sau nhé <3",
+    "limit_quantity": "Bạn đã đặt số lượng tối đa!",
+    "addtocart_succ": "Thêm vào giỏ hàng thành công!"
   },
   "ship": {
     "infor": "Thông tin vận chuyển",
