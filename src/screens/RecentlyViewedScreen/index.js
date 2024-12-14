@@ -61,6 +61,20 @@ const RecentlyViewedScreen = () => {
     }
   };
 
+  const renderItem = React.useCallback(
+    ({item, index}) => {
+      return (
+        <ProductItem
+          product={item.productId}
+          index={index}
+          wishlist={state.wishlist}
+          handleHeartPress={handleHeartPress}
+        />
+      );
+    },
+    [state.wishlist, handleHeartPress],
+  );
+
   return (
     <View style={styles.container}>
       <Header
@@ -74,17 +88,23 @@ const RecentlyViewedScreen = () => {
           products.length > 0 ? (
             <FlatList
               data={modifiedListProduct}
-              renderItem={({item, index}) => (
-                <ProductItem
-                  product={item.productId}
-                  index={index}
-                  wishlist={state.wishlist}
-                  handleHeartPress={handleHeartPress}
-                />
-              )}
+              renderItem={
+                renderItem
+                //   ({item, index}) => (
+                //   <ProductItem
+                //     product={item.productId}
+                //     index={index}
+                //     wishlist={state.wishlist}
+                //     handleHeartPress={handleHeartPress}
+                //   />
+                // )
+              }
               keyExtractor={(item, index) => item._id || index.toString()}
               numColumns={2}
               showsVerticalScrollIndicator={false}
+              initialNumToRender={10} // Render trước 10 item
+              maxToRenderPerBatch={5} // Render thêm 5 item mỗi lần
+              windowSize={5} // Giữ 5 màn hình item trong bộ nhớ
             />
           ) : (
             <View style={[appst.container, appst.center]}>
