@@ -80,8 +80,8 @@ const ItemCart = ({
     } else {
       SweetAlert.showAlertWithOptions(
         {
-          title: 'Remove Item?',
-          subTitle: `Oops. Bạn có chắc chắn muốn xóa sản phẩm này không?`,
+          title: t('toast.remove_item_cart'),
+          subTitle: t('toast.title_item_cart'),
           confirmButtonTitle: 'OK',
           confirmButtonColor: '#000',
           style: 'error',
@@ -115,7 +115,7 @@ const ItemCart = ({
       } catch (error) {
         SweetAlert.showAlertWithOptions({
           title: 'Oops...',
-          subTitle: `Oops. Đang xảy ra lỗi ${error} rồi. Bạn đợi một chút nhé <3`,
+          subTitle: t('toast.subTitle_cart'),
           confirmButtonTitle: 'OK',
           confirmButtonColor: '#000',
           style: 'error',
@@ -140,30 +140,44 @@ const ItemCart = ({
   const swipeableRef = useRef(null);
 
   const deleteItemFromCard = async () => {
-    try {
-      const body = {
-        product_id: item.product_id._id,
-        size_id: item.size_id._id,
-      };
-      console.log('body delete cart: ', body);
+    SweetAlert.showAlertWithOptions(
+      {
+        title: t('toast.remove_item_cart'),
+        subTitle: t('toast.title_item_cart'),
+        confirmButtonTitle: 'OK',
+        confirmButtonColor: '#000',
+        style: 'error',
+        cancellable: true,
+      },
+      async () => {
+        try {
+          const body = {
+            product_id: item.product_id._id,
+            size_id: item.size_id._id,
+          };
+          // console.log('body delete cart: ', body);
 
-      const response = await deleteOneItemCard(body);
+          const response = await deleteOneItemCard(body);
 
-      if (response.status) {
-        setCards(prevCards => prevCards.filter(cart => cart._id !== item._id));
-        setCheckedProducts(prevChecked =>
-          prevChecked.filter(cart => cart._id !== item._id),
-        );
-        ToastAndroid.show('Da xoa sp', ToastAndroid.SHORT);
-        if (swipeableRef.current) {
-          swipeableRef.current.close();
+          if (response.status) {
+            setCards(prevCards =>
+              prevCards.filter(cart => cart._id !== item._id),
+            );
+            setCheckedProducts(prevChecked =>
+              prevChecked.filter(cart => cart._id !== item._id),
+            );
+            ToastAndroid.show(`${t('toast.del_cart')}`, ToastAndroid.SHORT);
+            if (swipeableRef.current) {
+              swipeableRef.current.close();
+            }
+          } else {
+            ToastAndroid.show(`${t('toast.del_err')}`, ToastAndroid.SHORT);
+          }
+        } catch (error) {
+          console.log('error delete item card->', error);
         }
-      } else {
-        ToastAndroid.show('Loi server', ToastAndroid.SHORT);
-      }
-    } catch (error) {
-      console.log('error delete item card->', error);
-    }
+      },
+    );
   };
 
   const rightSwipeable = () => {

@@ -296,7 +296,12 @@
     "cancel_order": "Bạn có chắc chắn muốn hủy đơn hàng này không?"
   },
   "toast": {
-    "cancel_order": "Đơn hàng đã bị hủy"
+    "del_err": "Xảy ra lỗi. Vui lòng thử lại sau nhé!",
+    "del_cart": "Đã xóa sản phẩm thành công",
+    "cancel_order": "Đơn hàng đã bị hủy",
+    "remove_item_cart": "Xóa sản phẩm này?",
+    "title_item_cart": "Oops. Bạn có chắc chắn muốn xóa sản phẩm này không?",
+    "subTitle_cart": "Oops. Đang xảy ra lỗi rồi. Bạn đợi một chút nhé <3"
   },
   "ship": {
     "infor": "Thông tin vận chuyển",
