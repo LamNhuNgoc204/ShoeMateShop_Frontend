@@ -28,13 +28,17 @@ export const deleteAllCart = async () => {
 };
 
 export const deleteOneItemCard = async body => {
-  const response = await AxiosInstance().delete(
-    '/cart/remove-product-from-cart',
-    {
-      data: body,
-    },
-  );
-  return response;
+  try {
+    const response = await AxiosInstance().delete(
+      '/cart/remove-product-from-cart',
+      {
+        data: body,
+      },
+    );
+    return response;
+  } catch (error) {
+    console.error('Error deleting item from cart: ', error);
+  }
 };
 
 export const getShippingDefault = async () => {

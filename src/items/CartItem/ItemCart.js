@@ -23,7 +23,7 @@ const ItemCart = ({
 }) => {
   const [productQuantity, setProductQuantity] = useState(item.quantity);
   const navigation = useNavigation();
-  const {i18n} = useTranslation();
+  const {t, i18n} = useTranslation();
   const lag = i18n.language;
 
   const handlePress = () => {
@@ -148,12 +148,16 @@ const ItemCart = ({
       console.log('body delete cart: ', body);
 
       const response = await deleteOneItemCard(body);
+
       if (response.status) {
         setCards(prevCards => prevCards.filter(cart => cart._id !== item._id));
         setCheckedProducts(prevChecked =>
           prevChecked.filter(cart => cart._id !== item._id),
         );
         ToastAndroid.show('Da xoa sp', ToastAndroid.SHORT);
+        if (swipeableRef.current) {
+          swipeableRef.current.close();
+        }
       } else {
         ToastAndroid.show('Loi server', ToastAndroid.SHORT);
       }
@@ -235,9 +239,17 @@ const ItemCart = ({
                 formatPrice(item?.product_id?.price, lag)}
               {lag === 'vi' && ' VNĐ '}
             </Text>
-            <Text style={itCart.price}>Size: {item.size_id.name}</Text>
-            <View style={[appst.rowCenter, itCart.view]}>
+            <Text style={itCart.price}>
+              {t('products.size')}: {item.size_id.name}
+            </Text>
+            <View
+              style={[
+                appst.rowCenter,
+                itCart.view,
+                {pointerEvents: 'box-none'},
+              ]}>
               <TouchableOpacity
+                style={{padding: 6}}
                 onPress={e => {
                   e.stopPropagation();
                   tangSL();
@@ -246,7 +258,7 @@ const ItemCart = ({
               </TouchableOpacity>
               <Text style={itCart.quatity}>{productQuantity}</Text>
               <TouchableOpacity
-                style={{padding: 5}}
+                style={{padding: 6}}
                 onPress={e => {
                   e.stopPropagation();
                   giamSL();
