@@ -48,7 +48,7 @@ const ToReceive = ({navigation}) => {
     try {
       const response = await getOrderCompeleted();
       if (response.status) {
-        setCompletedOrders(response?.data?.reverse());
+        setCompletedOrders(response?.data);
         setLoading(true);
       }
     } catch (error) {

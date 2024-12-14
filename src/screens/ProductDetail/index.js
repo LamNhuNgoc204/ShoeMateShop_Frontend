@@ -19,7 +19,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import BottomSheetContent from '../../items/Sizebottom';
 import ProductSkeleton from '../../placeholders/product/detail';
-import {addRecentView} from '../../api/ProductApi';
+import {addRecentView, getSimilarPd} from '../../api/ProductApi';
 import {useTranslation} from 'react-i18next';
 import ProductList from '../Product/ProductList';
 import {formatPrice} from '../../utils/functions/formatData';
@@ -30,9 +30,7 @@ const ProductDetail = props => {
 
   const navigation = useNavigation();
   const {index} = props.route.params;
-  const useAppSelector = useSelector;
   const bottomSheetRef = useRef(null);
-  const productState = useAppSelector(state => state.products);
   const [selectedImage, setSelectedImage] = useState(
     product && product.assets[0],
   );
@@ -45,6 +43,7 @@ const ProductDetail = props => {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [listReview, setListReview] = useState([]);
   const isTokenValid = useSelector(state => state?.user?.isValidToken);
+  const [lstProducts, setlstProducts] = useState([]);
 
   const fetchListReview = async () => {
     try {
@@ -58,6 +57,15 @@ const ProductDetail = props => {
       }
     } catch (error) {
       console.log('fetch reviews error: ', error);
+    }
+  };
+
+  const fetchSimilarPd = async () => {
+    try {
+      const response = await getSimilarPd(index);
+      setlstProducts(response);
+    } catch (error) {
+      console.log('fetch similar pd error: ', error);
     }
   };
 
@@ -77,6 +85,7 @@ const ProductDetail = props => {
         // addRecentView(index),
         AxiosInstance().get(`/products/detail/${index}`),
         fetchListReview(),
+        fetchSimilarPd(),
       ]);
 
       // console.log('Thêm sản phẩm vào danh sách xem gần đây:', addpdView);
@@ -97,6 +106,7 @@ const ProductDetail = props => {
 
   // console.log(product);
   // console.log('listReview', listReview);
+  // console.log('lstProducts===========>', lstProducts[0]);
 
   const handleSheetChanges = useCallback(index => {
     console.log('handleSheetChanges', index);
@@ -284,7 +294,7 @@ const ProductDetail = props => {
           </View>
 
           <View style={{marginTop: 15}}>
-            <ProductList listProduct={productState?.products?.data} />
+            <ProductList listProduct={lstProducts} />
           </View>
         </ScrollView>
       ) : (
@@ -293,7 +303,7 @@ const ProductDetail = props => {
 
       <View style={[pddt.footer, appst.rowCenter]}>
         <View style={[appst.rowCenter]}>
-          <TouchableOpacity>
+          <TouchableOpacity style={{marginLeft: 5}}>
             <Image
               source={require('../../assets/icons/chatwithshop.png')}
               style={pddt.chat}
