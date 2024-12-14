@@ -100,7 +100,7 @@ const Cancalled = ({navigation}) => {
           'Thêm tất cả sản phẩm vào giỏ hàng thành công',
           ToastAndroid.SHORT,
         );
-        gotoCart();
+        gotoCart(navigation);
       }
     } catch (error) {
       ToastAndroid.show(

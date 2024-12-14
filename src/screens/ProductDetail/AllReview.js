@@ -94,7 +94,7 @@ const AllReview = ({route}) => {
         iconLeft={require('../../assets/icons/back.png')}
         leftOnPress={() => navigation.goBack()}
         name={t('review.all_review')}
-        rightOnPress={() => gotoCart()}
+        rightOnPress={() => gotoCart(navigation)}
         iconRight={require('../../assets/icons/mycart.png')}
         backgroundColor={'#fff'}
       />
