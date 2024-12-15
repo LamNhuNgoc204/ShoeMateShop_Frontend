@@ -1,11 +1,10 @@
 import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import Header from '../../components/Header';
 import appst from '../../constants/AppStyle';
 import {useTranslation} from 'react-i18next';
 import NotiMainSkeleton from '../../placeholders/noti';
 import st from './style';
-import {checkTokenValidity} from '../../utils/functions/checkToken';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 
@@ -60,5 +59,3 @@ const Notifycation = () => {
 };
 
 export default Notifycation;
-
-const styles = StyleSheet.create({});

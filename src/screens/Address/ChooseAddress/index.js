@@ -67,8 +67,8 @@ const ChooseAddress = ({navigation, route}) => {
     try {
       SweetAlert.showAlertWithOptions(
         {
-          title: 'Remove Item?',
-          subTitle: `Oops. Bạn có chắc chắn muốn xóa địa chỉ này không?`,
+          title: t('toast.del_address'),
+          subTitle: t('toast.title_del_address'),
           confirmButtonTitle: 'OK',
           confirmButtonColor: '#000',
           style: 'error',
@@ -84,7 +84,10 @@ const ChooseAddress = ({navigation, route}) => {
               );
               setAddresses(updatedAddresses);
 
-              ToastAndroid.show('Xóa địa chỉ thành công', ToastAndroid.SHORT);
+              ToastAndroid.show(
+                `${t('toast.del_add_succ')}`,
+                ToastAndroid.SHORT,
+              );
             }
           } catch (error) {
             console.log('Error removing item from address:', error);
@@ -113,10 +116,7 @@ const ChooseAddress = ({navigation, route}) => {
               : {...item, isDefault: false},
           );
           setAddresses(updatedAddresses);
-          ToastAndroid.show(
-            'Đổi địa chỉ mặc định thành công',
-            ToastAndroid.SHORT,
-          );
+          ToastAndroid.show(`${t('toast.change_add')}`, ToastAndroid.SHORT);
           setIsSetDefault(false);
         }
       } catch (error) {

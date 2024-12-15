@@ -3,8 +3,11 @@ import {View, Text, TouchableOpacity, Image} from 'react-native';
 import itship from './style';
 import appst from '../../constants/AppStyle';
 import {colors} from '../../constants/colors';
+import {useTranslation} from 'react-i18next';
 
 const ShipItem = ({item, id, isDefault, onSelect}) => {
+  const {t} = useTranslation();
+
   return (
     <TouchableOpacity
       onPress={() => onSelect(item.item)}
@@ -16,11 +19,9 @@ const ShipItem = ({item, id, isDefault, onSelect}) => {
             <Text style={{color: colors.primary}}>{item.item.cost}d</Text>
           </Text>
           <Text style={{color: 'black'}}>
-            Dam bao nhan hang tu {item.item.deliveryTime}{' '}
+            {t('ship.day')} {item.item.deliveryTime}{' '}
           </Text>
-          <Text>
-            Kenh giao hang co the can them thoi gian xu ly do thoi tiet
-          </Text>
+          <Text>{t('ship.ship')}</Text>
         </View>
       </View>
 

@@ -103,7 +103,7 @@ const CheckOutScreen = ({navigation}) => {
         state.payment &&
         state.payment.payment_method === 'Thanh toán khi nhận hàng'
       ) {
-        ToastAndroid.show('tao don thanh cong', ToastAndroid.show);
+        ToastAndroid.show(`${t('toast.create_od')}`, ToastAndroid.show);
         navigation.navigate('CheckoutSuccess');
       }
     }
@@ -191,7 +191,9 @@ const CheckOutScreen = ({navigation}) => {
               <Text style={c_outst.text6}>{t('checkout.vouchers')}</Text>
             </View>
             <View style={[appst.rowCenter]}>
-              <Text style={c_outst.text7}>Use 1 Voucher</Text>
+              <Text style={c_outst.text7}>
+                {t('voucher.use')} 1 {t('voucher.vc')}
+              </Text>
               <Image
                 style={appst.icon24}
                 source={require('../../assets/icons/arrow_right.png')}
@@ -199,7 +201,7 @@ const CheckOutScreen = ({navigation}) => {
             </View>
           </View>
 
-          <View style={[appst.rowCenter, c_outst.body3, c_outst.borderBottom]}>
+          {/* <View style={[appst.rowCenter, c_outst.body3, c_outst.borderBottom]}>
             <View style={appst.rowCenter}>
               <Image
                 style={appst.icon24}
@@ -211,7 +213,7 @@ const CheckOutScreen = ({navigation}) => {
               onValueChange={value => setIsswitch(value)}
               value={isswitch}
             />
-          </View>
+          </View> */}
 
           <View style={[c_outst.body3, c_outst.borderBottom]}>
             <TouchableOpacity

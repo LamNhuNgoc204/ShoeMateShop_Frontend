@@ -33,7 +33,7 @@ const SettingScreen = () => {
       await AsyncStorage.removeItem('token');
       navigation.replace('LoginScreen');
     } catch (error) {
-      ToastAndroid.show('Xảy ra lỗi. Thử lại sau', ToastAndroid.SHORT);
+      ToastAndroid.show(`${t('toast.del_err')}`, ToastAndroid.SHORT);
     }
   };
 
