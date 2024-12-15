@@ -1,16 +1,17 @@
 import {StyleSheet} from 'react-native';
-import { sizes, spacing } from '../../../constants';
-import { colors } from '../../../constants/colors';
-import { fonts } from '../../../constants/fonts';
+import {sizes, spacing} from '../../../constants';
+import {colors} from '../../../constants/colors';
+import {fonts} from '../../../constants/fonts';
 
 export default anst = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: spacing.lg,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: 8,
   },
   viewBody: {
-    marginTop: sizes.size26,
+    marginTop: 10,
   },
   title: {
     fontSize: 20,
@@ -20,7 +21,6 @@ export default anst = StyleSheet.create({
   },
   pickerContainer: {
     marginBottom: 20,
-    backgroundColor: 'white',
     borderRadius: 10,
   },
   input: {
@@ -29,7 +29,7 @@ export default anst = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     paddingHorizontal: 10,
-    marginBottom: spacing.xl,
+    backgroundColor: '#ccc',
   },
   label: {
     fontSize: sizes.size16,
@@ -49,5 +49,11 @@ export default anst = StyleSheet.create({
     fontSize: sizes.size16,
     fontFamily: fonts.rlw_bold,
     paddingVertical: spacing.md,
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginBottom: 15,
+    marginTop: -25,
   },
 });

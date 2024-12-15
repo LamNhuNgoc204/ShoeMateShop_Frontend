@@ -143,13 +143,23 @@
   "address": {
     "province": "Tỉnh",
     "sub_province": "Chọn tỉnh",
-    "district": "Quận",
-    "sub_district": "Chọn quận",
-    "commune": "Xã",
-    "sub_commune": "Chọn xã",
+    "district": "Quận/huyện",
+    "sub_district": "Chọn quận/huyện",
+    "commune": "Phường/xã",
+    "sub_commune": "Chọn phường/xã",
     "detail": "Đường/Thôn",
     "required": "Bắt buộc",
-    "default": "Mặc định"
+    "default": "Mặc định",
+    "name_er": "Vui lòng nhập họ và tên",
+    "phone_err": "Vui lòng nhập số điện thoại",
+    "phone_error": "Số điện thoại không hợp lệ",
+    "addres_error": "Vui lòng nhập địa chỉ chi tiết",
+    "province_error": "Vui lòng chọn tỉnh",
+    "district_error": "Vui lòng chọn huyện",
+    "ward_err": "Vui lòng chọn phường",
+    "add_succ": "Thêm địa chỉ thành công",
+    "add": "Thêm địa chỉ giao hàng",
+    "no_address":"Bạn chưa có địa chỉ nào. Vui lòng thêm địa chỉ mới"
   },
   "titles": {
     "signin": "Chào mừng trở lại!",
