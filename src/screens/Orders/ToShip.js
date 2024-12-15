@@ -25,6 +25,7 @@ import ProductList from '../Product/ProductList.js';
 import {shuffleArray} from '../../utils/functions/formatData.js';
 import {gotoCart} from '../../utils/functions/navigationHelper.js';
 import {addItemToCartApi} from '../../api/CartApi.js';
+import { useFocusEffect } from '@react-navigation/native';
 
 const ToShip = ({navigation}) => {
   const {t} = useTranslation();
@@ -70,6 +71,12 @@ const ToShip = ({navigation}) => {
   useEffect(() => {
     fetchOrder();
   }, []);
+
+   useFocusEffect(
+      useCallback(() => {
+        fetchOrder();
+      }, []),
+    );
 
   // console.log('processOrders', processOrders);
   const onRefresh = useCallback(() => {

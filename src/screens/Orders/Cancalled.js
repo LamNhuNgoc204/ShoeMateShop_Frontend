@@ -21,6 +21,7 @@ import ProductList from '../Product/ProductList';
 import {shuffleArray} from '../../utils/functions/formatData';
 import {addItemToCartApi} from '../../api/CartApi';
 import {gotoCart} from '../../utils/functions/navigationHelper';
+import {useFocusEffect} from '@react-navigation/native';
 
 const Cancalled = ({navigation}) => {
   const {t} = useTranslation();
@@ -70,6 +71,12 @@ const Cancalled = ({navigation}) => {
   useEffect(() => {
     fetchOrder();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchOrder();
+    }, []),
+  );
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);

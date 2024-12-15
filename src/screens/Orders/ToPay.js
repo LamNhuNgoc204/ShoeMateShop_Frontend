@@ -16,6 +16,7 @@ import OrderHistorySkeleton from '../../placeholders/product/order/OrderHistory.
 import {useTranslation} from 'react-i18next';
 import ProductList from '../Product/ProductList.js';
 import {shuffleArray} from '../../utils/functions/formatData.js';
+import {useFocusEffect} from '@react-navigation/native';
 
 const ToPay = ({navigation}) => {
   const {t} = useTranslation();
@@ -70,6 +71,12 @@ const ToPay = ({navigation}) => {
     setRefreshing(true);
     fetchOrder().then(() => setRefreshing(false));
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchOrder();
+    }, []),
+  );
 
   return (
     <View style={appst.container}>
