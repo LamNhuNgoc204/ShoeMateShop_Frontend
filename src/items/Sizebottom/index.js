@@ -195,17 +195,23 @@ const BottomSheetContent = ({
           {sizes &&
             sizes.map((size, i) => {
               const isSelected = selectedSize === size.sizeId.name;
+              const isOutOfStock = size.quantity === 0;
+
               return (
                 <TouchableOpacity
                   onPress={() => {
-                    setsizeDetailId(size.sizeId._id);
-                    setSelectedSize(size.sizeId.name);
-                    setsizeId(size._id);
+                    if (!isOutOfStock) {
+                      setsizeDetailId(size.sizeId._id);
+                      setSelectedSize(size.sizeId.name);
+                      setsizeId(size._id);
+                    }
                   }}
+                  disabled={isOutOfStock} 
                   key={i.toString()}
                   style={[
                     bottomSheetStyle.sizeTouchableOpacity,
                     isSelected && bottomSheetStyle.sizeSelct,
+                    isOutOfStock && bottomSheetStyle.sizeDisabled,
                   ]}>
                   <Text
                     style={[

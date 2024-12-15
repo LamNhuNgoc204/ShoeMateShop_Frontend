@@ -37,6 +37,7 @@ const CartScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(false);
   const isTokenValid = useSelector(state => state?.user?.isValidToken);
+  
 
   const fetchCard = async () => {
     try {

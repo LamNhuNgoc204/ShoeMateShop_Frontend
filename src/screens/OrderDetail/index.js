@@ -28,6 +28,7 @@ import odit from '../../items/OrderItem/style';
 import {addItemToCartApi} from '../../api/CartApi';
 import {ActivityIndicator} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 
 const OrderDetail = ({route}) => {
   const {item} = route.params;
@@ -40,6 +41,7 @@ const OrderDetail = ({route}) => {
   const [isCancel, setisCancel] = useState(false);
   const navigation = useNavigation();
   const [isOverlayLoading, setIsOverlayLoading] = useState(false);
+  const lstProducts = useSelector(state => state?.products?.products?.data);
 
   const addToCart = async () => {
     setIsOverlayLoading(true);

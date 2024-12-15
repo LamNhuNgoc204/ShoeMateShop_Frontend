@@ -8,6 +8,7 @@ import {deleteOneItemCard, updateCartItem} from '../../api/CartApi';
 import {useNavigation} from '@react-navigation/native';
 import {formatPrice} from '../../utils/functions/formatData';
 import {useTranslation} from 'react-i18next';
+import {useSelector} from 'react-redux';
 
 const ItemCart = ({
   item,
@@ -25,6 +26,7 @@ const ItemCart = ({
   const navigation = useNavigation();
   const {t, i18n} = useTranslation();
   const lag = i18n.language;
+  const lstProducts = useSelector(state => state?.products?.products?.data);
 
   const handlePress = () => {
     onCheckedChange(item, !isChecked);
@@ -55,8 +57,26 @@ const ItemCart = ({
   }, [checkedProducts]);
 
   const tangSL = async () => {
+    //lstProducts
     setProductQuantity(prev => {
       const newQuantity = prev + 1;
+      const productInList = lstProducts.find(
+        pd => pd._id === item.product_id._id,
+      );
+
+      if (productInList) {
+        // Lấy số lượng có sẵn của sản phẩm
+        const size = productInList.size.find(
+          s => s?.sizeId?._id.toString() === item.size_id._id,
+        );
+        const availableQuantity = size?.quantity || 0;
+
+        if (newQuantity > availableQuantity) {
+          ToastAndroid.show(`${t('toast.max_pd')}`, ToastAndroid.SHORT);
+          return prev; // trả về sl hiện tại và không cho tăng tiếp
+        }
+      }
+
       // Cập nhật tổng giá khi quantity thay đổi
       const updatedCards = checkedProducts.map(cart =>
         cart._id === item._id ? {...cart, quantity: newQuantity} : cart,

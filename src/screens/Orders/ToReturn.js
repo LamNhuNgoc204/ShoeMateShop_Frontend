@@ -16,7 +16,7 @@ import OrderItem from '../../items/OrderItem/OrderItem';
 import {useTranslation} from 'react-i18next';
 import ProductList from '../Product/ProductList';
 import {shuffleArray} from '../../utils/functions/formatData';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 
 const ToReturn = ({navigation}) => {
   const {t} = useTranslation();
@@ -25,6 +25,7 @@ const ToReturn = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const [listProduct, setListProduct] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const lstProducts = useSelector(state => state?.products?.products?.data);
 
   const scrollViewRef = useRef(null);
 
@@ -61,11 +62,11 @@ const ToReturn = ({navigation}) => {
     fetchOrder();
   }, []);
 
-   useFocusEffect(
-      useCallback(() => {
-        fetchOrder();
-      }, []),
-    );
+  useFocusEffect(
+    useCallback(() => {
+      fetchOrder();
+    }, []),
+  );
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
