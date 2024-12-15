@@ -22,32 +22,46 @@ import {useTranslation} from 'react-i18next';
 import {useDispatch, useSelector} from 'react-redux';
 import {setOrderId, setPriceToPay} from '../../redux/reducer/cartReducer';
 import {createOrder} from '../../api/OrderApi';
+import AxiosInstance from '../../helpers/AxiosInstance';
+
 import {
   getAdressDefault,
   getPaymentDefault,
   getShipDefault,
 } from '../../redux/thunks/CartThunks';
 import LoadingModal from '../../components/Modal/LoadingModal';
-import {formatPrice} from '../../utils/functions/formatData';
+import {useNavigation} from '@react-navigation/native';
+import { formatPrice } from '../../utils/functions/formatData';
 
-const CheckOutScreen = ({navigation}) => {
+const CheckOutScreen = ({route}) => {
+  const {responseVoucher} = route.params || {};
   const state = useSelector(state => state.cart);
+  const [responseVouchers, setResponseVouchers] = useState({});
   const dispatch = useDispatch();
-
+  const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const {t, i18n} = useTranslation();
   const lag = i18n.language;
   const [isswitch, setIsswitch] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const addressDefault = state.address;
+  var tongchiphi = 0;
   // const [isComplete, setisComplete] = useState(false);
 
   // console.log('addressDefault', addressDefault);
   // console.log('state.ship', state.ship);
+  useEffect(() => {
+    if (responseVoucher) {
+      setResponseVouchers(responseVoucher);
+    }
+  }, [responseVoucher]);
 
   const ship = state.ship && state.ship.cost && state.ship.cost;
-  const tongchiphi = state.totalPrice + ship;
 
+  tongchiphi = state.totalPrice + ship;
+  if (responseVoucher) {
+    tongchiphi = responseVoucher.discountedPrice + ship;
+  }
   useEffect(() => {
     const getInforDefault = async () => {
       await Promise.all([
@@ -64,20 +78,21 @@ const CheckOutScreen = ({navigation}) => {
       ToastAndroid.show(`${t('nothing.adress_war')}`, ToastAndroid.SHORT);
       return;
     }
-
+  
     setIsLoading(true);
-    // setisComplete(false);
-
-    const products = state.productOrder.map(item => ({
-      _id: item.product_id._id,
-      assets: item.product_id.assets,
-      name: item.product_id.name,
-      size_name: item.size_id.name,
-      price: item.product_id.price,
-      quantity: item.quantity,
-      size_id: item.size_id._id,
-    }));
-
+  
+    const products = Array.isArray(state.productOrder)
+    ? state.productOrder.map(item => ({
+        _id: item.product_id._id,
+        assets: item.product_id.assets,
+        name: item.product_id.name,
+        size_name: item.size_id.name,
+        price: item.product_id.price,
+        quantity: item.quantity,
+        size_id: item.size_id._id,
+      }))
+    : [];
+  
     const body = {
       products: products,
       method_id: state.payment && state.payment._id,
@@ -87,28 +102,69 @@ const CheckOutScreen = ({navigation}) => {
       receiver: addressDefault.recieverName,
       receiverPhone: addressDefault.recieverPhoneNumber,
       address: addressDefault.address,
+      voucher_code: responseVouchers.voucher_code,
     };
-
-    // console.log('body orrder: ', body);
-
-    const response = await createOrder(body);
-    if (response.status) {
-      setIsLoading(false);
-      // setisComplete(true);
-      if (state.payment && state.payment.payment_method === 'Zalo Pay') {
-        dispatch(setPriceToPay(tongchiphi));
-        dispatch(setOrderId(response.data.order._id));
-        navigation.navigate('ZaloPayScreen');
-      } else if (
-        state.payment &&
-        state.payment.payment_method === 'Thanh toán khi nhận hàng'
-      ) {
-        ToastAndroid.show('tao don thanh cong', ToastAndroid.show);
-        navigation.navigate('CheckoutSuccess');
+  
+    try {
+      if (state.payment && state.payment.payment_method === 'Shoes Mate Wallet') {
+        console.log('Shoes Mate Wallet');
+  
+        // Kiểm tra số dư hoặc trạng thái ví trước khi tạo đơn hàng
+        const walletResponse = await AxiosInstance().post('/wallet/payment', {
+          amount: tongchiphi,
+        });
+        console.log('walletResponse', walletResponse);
+        if (walletResponse.status) {
+          ToastAndroid.show('Đặt hàng thành công', ToastAndroid.SHORT);
+          navigation.navigate('CheckoutSuccess');
+          return;
+        } else if (walletResponse.code === 'Insufficientbalance') {
+          ToastAndroid.show('Không đủ số dư', ToastAndroid.SHORT);
+          setIsLoading(false);
+          return;
+        } else if (walletResponse.code === 'walletnotcreated') {
+          ToastAndroid.show('Vui lòng tạo ví trước khi thanh toán', ToastAndroid.SHORT);
+          setIsLoading(false);
+          return;
+        } else if (walletResponse.code === 'walletnotactive') {
+          ToastAndroid.show('Ví chưa được kích hoạt', ToastAndroid.SHORT);
+          setIsLoading(false);
+          return;
+        } else {
+          ToastAndroid.show('Có lỗi xảy ra, vui lòng thử lại sau', ToastAndroid.SHORT);
+          setIsLoading(false);
+          return;
+        }
+      }else{
+        const response = await createOrder(body);
+      if (response.status) {
+        setIsLoading(false);
+  
+        if (state.payment.payment_method === 'Zalo Pay') {
+          dispatch(setPriceToPay(tongchiphi));
+          dispatch(setOrderId(response.data.order._id));
+          navigation.navigate('ZaloPayScreen');
+        } else if (state.payment.payment_method === 'Thanh toán khi nhận hàng') {
+          ToastAndroid.show('Tạo đơn thành công', ToastAndroid.SHORT);
+          navigation.navigate('CheckoutSuccess');
+        }
+      } else {
+        ToastAndroid.show('Tạo đơn không thành công', ToastAndroid.SHORT);
       }
+      }
+  
+      // Nếu không sử dụng ví Shoes Mate Wallet, tiếp tục tạo đơn hàng
+      
+    } catch (error) {
+      console.log('Error:', error);
+      ToastAndroid.show('Đã xảy ra lỗi, vui lòng thử lại', ToastAndroid.SHORT);
+      setIsLoading(false);
     }
+  };
+  
 
-    //check xem chon phuong thuc nao roi chuyen man hinh tuong ung
+  const handeToVouchers = () => {
+    navigation.navigate('Voucher', {totalOrderValue: state.totalPrice});
   };
 
   return (
@@ -180,7 +236,9 @@ const CheckOutScreen = ({navigation}) => {
             />
           </View>
 
-          <View style={[appst.rowCenter, c_outst.body3, c_outst.borderBottom]}>
+          <TouchableOpacity
+            style={[appst.rowCenter, c_outst.body3, c_outst.borderBottom]}
+            onPress={handeToVouchers}>
             <View style={appst.rowCenter}>
               <Image
                 style={appst.icon24}
@@ -189,27 +247,15 @@ const CheckOutScreen = ({navigation}) => {
               <Text style={c_outst.text6}>{t('checkout.vouchers')}</Text>
             </View>
             <View style={[appst.rowCenter]}>
-              <Text style={c_outst.text7}>Use 1 Voucher</Text>
+              <Text style={c_outst.text7}>
+                {(responseVoucher && 'Use 1 Voucher') || ''}
+              </Text>
               <Image
                 style={appst.icon24}
                 source={require('../../assets/icons/arrow_right.png')}
               />
             </View>
-          </View>
-
-          <View style={[appst.rowCenter, c_outst.body3, c_outst.borderBottom]}>
-            <View style={appst.rowCenter}>
-              <Image
-                style={appst.icon24}
-                source={require('../../assets/icons/points.png')}
-              />
-              <Text style={c_outst.text6}>Redeem 3500 Points</Text>
-            </View>
-            <Switch
-              onValueChange={value => setIsswitch(value)}
-              value={isswitch}
-            />
-          </View>
+          </TouchableOpacity>
 
           <View style={[c_outst.body3, c_outst.borderBottom]}>
             <TouchableOpacity
@@ -285,10 +331,15 @@ const CheckOutScreen = ({navigation}) => {
               </Text>
             </View>
             <View style={[appst.rowCenter, c_outst.view4Text]}>
-              <Text style={c_outst.textTitle}>
-                {t('checkout.shipping_discount')}
+              <Text style={c_outst.textTitle}>{t('Áp dụng voucher')}</Text>
+              <Text style={c_outst.textPrice}>
+                {' '}
+                -
+                {(responseVouchers.discountAmount &&
+                  responseVouchers.discountAmount.toLocaleString('vi-VN')) ||
+                  '0'}{' '}
+                VNĐ
               </Text>
-              <Text style={c_outst.textPrice}>$ 0</Text>
             </View>
             <View style={[appst.rowCenter, c_outst.view4Text]}>
               <Text style={[c_outst.textTitle, c_outst.textTitle1]}>

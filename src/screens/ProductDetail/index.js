@@ -135,9 +135,9 @@ const ProductDetail = props => {
       );
     }) || [];
 
-    const onSetProduct = (product) => {
-      setProId(product._id)
-    }
+  const onSetProduct = product => {
+    setProId(product._id);
+  };
 
 
     const createDeepLink = () => {
@@ -336,11 +336,12 @@ const ProductDetail = props => {
 
       <View style={[pddt.footer, appst.rowCenter]}>
         <View style={[appst.rowCenter]}>
-          <TouchableOpacity onPress={() => {
-            navigation.navigate('MessageScreen', {
-              product: product
-            })
-          }}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('MessageScreen', {
+                product: product,
+              });
+            }}>
             <Image
               source={require('../../assets/icons/chatwithshop.png')}
               style={pddt.chat}

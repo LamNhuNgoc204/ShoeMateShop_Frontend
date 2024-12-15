@@ -4,6 +4,28 @@ import {colors} from '../../constants/colors';
 import {sizes, spacing} from '../../constants';
 
 export default styles = StyleSheet.create({
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  checkbox: {
+    width: 20,
+    height: 20,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 10,
+  },
+  selectedCheckbox: {
+    borderColor: '#007AFF',
+    backgroundColor: '#007AFF',
+  },
+  checkboxTick: {
+    color: '#fff',
+    fontSize: 14,
+  },
+  
     container: {
         flex: 1,
         padding: spacing.lg,
@@ -87,7 +109,7 @@ export default styles = StyleSheet.create({
         borderColor: colors.background_blue,
       },
       valueButtonText: {
-        fontSize: sizes.size18,
+        fontSize: sizes.size14,
         color: colors.text_black2B,
       },
       line: {

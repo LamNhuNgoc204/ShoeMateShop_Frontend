@@ -30,6 +30,7 @@ const CustomModal = ({
             title={textbutton}
             titleStyle={modalst.closeButtonText}
             style={modalst.closeButton}
+            onPress={closeModal}
             // onPress={() => navigation.navigate()}
           />
         </View>

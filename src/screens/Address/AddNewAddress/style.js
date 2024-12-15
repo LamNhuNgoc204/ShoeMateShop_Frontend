@@ -19,7 +19,7 @@ export default anst = StyleSheet.create({
     fontFamily: fonts.rlw_medium,
   },
   pickerContainer: {
-    marginBottom: 20,
+    marginBottom: 10,
     backgroundColor: 'white',
     borderRadius: 10,
   },

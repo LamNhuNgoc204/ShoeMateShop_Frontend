@@ -40,6 +40,7 @@ import ChooseLanguage from '../screens/Languages';
 import CancelDetail from '../screens/Orders/CancelDetail';
 import MultiProductReviewForm from '../screens/Review/MultiProductReviewForm';
 import ProductReviews from '../screens/Review/ProductReviews';
+import SetupWallet from '../screens/WalletSetUp';
 import HelpScreen from '../screens/SettingScreen/Other/HelpScreen';
 import AboutScreen from '../screens/SettingScreen/Other/AboutScreen';
 import PrivacyScreen from '../screens/SettingScreen/Other/PrivacyScreen';
@@ -54,6 +55,11 @@ import DeleteAccountScreen from '../screens/SettingScreen/Other/DeleteAccountScr
 import BuyAgain from '../screens/Profile/BuyAgain';
 import AllReview from '../screens/ProductDetail/AllReview';
 import RequireLogin from '../screens/Required/RequireLogin';
+import TransferSuccessScreen from '../screens/TransferSuccess/Transfersuccess';
+import TransactionDetailScreen from '../screens/TransactionDetailScreen/TransactionDetailScreen';
+import OtpVerificationPassWord from '../screens/OtpVerificationPassWord';
+import ZaloPayPayment from '../screens/Demo/Demo';
+import ProfileScreen from '../screens/Profile';
 
 const Stack = createNativeStackNavigator();
 
@@ -82,6 +88,15 @@ const StackNav = () => {
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="SettingScreen" component={SettingScreen} />
+      <Stack.Screen name="TransferSuccessScreen" component={TransferSuccessScreen} />
+     <Stack.Screen name="SetupWallet" component={SetupWallet} />
+     <Stack.Screen name="TransactionDetailScreen" component={TransactionDetailScreen} />
+     <Stack.Screen name="OtpVerificationPassWord" component={OtpVerificationPassWord} />
+     <Stack.Screen name="ZaloPayPayment" component={ZaloPayPayment} />
+
+
+
+
       <Stack.Screen
         name="RecentlyViewedScreen"
         component={RecentlyViewedScreen}

@@ -1,39 +1,35 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
-import VoucherBgSvg from './VoucherBg'
-import style from './style'
+import {View, Text, Image, TouchableOpacity} from 'react-native';
+import React from 'react';
+import VoucherBgSvg from './VoucherBg';
+import styleItem from './styleItem';
 
-const ButtonClaim = ({isClaimed}) => {
+const VoucherItem = () => {
   return (
-    <TouchableOpacity style={[style.buttonClaimContainer, isClaimed && style.bgClaimed]}>
-      <Text style={[style.buttonClaimText, isClaimed && style.textClaimed]}>Claim</Text>
-    </TouchableOpacity>
-  )
-}
-
-const VoucherItem = ({ortherStyle}) => {
-  return (
-    <View style={[style.container, ortherStyle]}>
-      <VoucherBgSvg style={style.svgbg} />
-      <View style={style.headerContainer}>
-        <Text style={style.voucherTxt}>Voucher</Text>
-        <Text style={style.validText}>Valid Until 5.16.20</Text>
+    <View style={[styleItem.container]}>
+      <VoucherBgSvg style={styleItem.svgbg} />
+      <View style={styleItem.headerContainer}>
+        <Text style={styleItem.voucherTxt}>Voucher</Text>
+        <Text style={styleItem.validText}>Valid Until 5.16.20</Text>
       </View>
-      <View style={style.bottomView}>
-        <View
-          style={style.flexRow}
-        >
+      <View style={styleItem.bottomView}>
+        <View style={styleItem.flexRow}>
           <Image source={require('../../assets/icons/bag_icon.png')} />
-          <Text style={style.firstPurchase}>First Purchase</Text>
+          <Text style={styleItem.firstPurchase}>First Purchase</Text>
         </View>
 
-        <View style={style.headerContainer}>
-          <Text style={style.endow}>5% off for your next order</Text>
-          <ButtonClaim/>
+        <View style={styleItem.headerContainer}>
+          <Text style={styleItem.endow}>5% off for your next order</Text>
+          <TouchableOpacity
+            style={[styleItem.buttonClaimContainer]}>
+            <Text
+              style={[styleItem.buttonClaimText]}>
+              Apply
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
-  )
-}
+  );
+};
 
-export default VoucherItem
+export default VoucherItem;

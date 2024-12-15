@@ -10,7 +10,6 @@ import ChildItemGadget from './Mygadget';
 import {PROFILE} from '../../api/mockData';
 import appst from '../../constants/AppStyle';
 import ProductList from '../Product/ProductList';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfileScreen = () => {
   const {t} = useTranslation();
@@ -19,6 +18,23 @@ const ProfileScreen = () => {
   const productState = useSelector(state => state.products);
   const isTokenValid = useSelector(state => state?.user?.isValidToken);
 
+  // Hàm điều hướng tới ví
+  const handleToWallet = async () => {
+    try {
+      const response = await AxiosInstance().get('/wallet/balance');
+
+      if (response.status) {
+        navigation.navigate('HomeWallet');
+      } else {
+        navigation.navigate('SetupWallet');
+        console.log('Chưa có ví');
+      }
+    } catch (error) {
+      console.error('Lỗi khi gọi API:', error);
+    }
+  };
+
+  // Hàm render cho FlatList
   const renderItem = ({item}) => (
     <ChildItem
       onPress={() => {
@@ -88,11 +104,7 @@ const ProfileScreen = () => {
       </View>
 
       <TouchableOpacity
-        onPress={() => {
-          isTokenValid
-            ? navigation.navigate('HomeWallet')
-            : navigation.navigate('RequireLogin');
-        }}
+        onPress={() => navigation.navigate('HomeWallet')}
         style={styles.myGadget}>
         <Image
           style={styles.ic_mygadget}
@@ -168,7 +180,7 @@ const ProfileScreen = () => {
       />
 
       <View style={{marginTop: 10}}>
-        <ProductList listProduct={productState?.products?.data} />
+        <ProductList listProduct={productState.products} />
       </View>
     </ScrollView>
   );
