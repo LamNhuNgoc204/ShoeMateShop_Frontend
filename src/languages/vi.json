@@ -1,6 +1,5 @@
 {
-  "app_name": "Nike",
-  "menu": {},
+  "app_name": "ShoeMate",
   "buttons": {
     "default": "Mặc định",
     "btn_signin": "Đăng nhập",
@@ -295,6 +294,23 @@
     "verify_error": "Xác minh tài khoản thất bại!",
     "sub_noti": "Đăng nhập để nhận thông báo về đơn hàng của bạn."
   },
+  "search": {
+    "product": " sản phẩm được tìm thấy",
+    "filter": "Bộ lọc tìm kiếm",
+    "brand": "Thương hiệu",
+    "price": "Giá sản phẩm",
+    "rate": "Đánh giá",
+    "min_price": "Tối thiểu",
+    "max_price": "Tối đa"
+  },
+  "onboard": {
+    "buttonTitle1": "Bắt đầu",
+    "buttonTitle2": "Tiếp theo",
+    "title1": "Khởi đầu hành trình\ncùng ShoeMate",
+    "content1": "Kết hợp hoàn hảo giữa hiệu suất thể thao,\nphong cách và sự linh hoạt. Khám phá ngay!",
+    "title2": "Nâng tầm cuộc chơi",
+    "content2": "Khám phá các thương hiệu nổi tiếng\ndành riêng cho những nhà vô địch như bạn."
+  },
   "messages": {
     "title": "Tin nhắn",
     "sub_title": "Bạn không có tin nhắn nào",
@@ -341,8 +357,8 @@
     "login_fail": "Đăng nhập thất bại",
     "sp": "Hỗ trợ",
     "chosse_ship": "Vui lòng chọn phương thức vận chuyển",
-    "logup_succ":"Đăng ký thành công",
-    "logup_fail":"Đăng ký thất bại. "
+    "logup_succ": "Đăng ký thành công",
+    "logup_fail": "Đăng ký thất bại. "
   },
   "ship": {
     "infor": "Thông tin vận chuyển",
@@ -351,26 +367,11 @@
     "day": "Đảm bảo nhận hàng từ",
     "ship": "Bên giao hàng có thể sẽ cần thêm thời gian do điều kiện thời tiết"
   },
-  "search": {
-    "product": " sản phẩm được tìm thấy",
-    "filter": "Bộ lọc tìm kiếm",
-    "brand": "Thương hiệu",
-    "price": "Giá sản phẩm",
-    "rate": "Đánh giá",
-    "min_price": "Tối thiểu",
-    "max_price": "Tối đa"
-  },
+
   "common": {
     "warning": "Cảnh báo"
   },
-  "onboard": {
-    "buttonTitle1": "Bắt đầu",
-    "buttonTitle2": "Tiếp theo",
-    "title1": "Khởi đầu hành trình\ncùng ShoeMate",
-    "content1": "Kết hợp hoàn hảo giữa hiệu suất thể thao,\nphong cách và sự linh hoạt. Khám phá ngay!",
-    "title2": "Nâng tầm cuộc chơi",
-    "content2": "Khám phá các thương hiệu nổi tiếng\ndành riêng cho những nhà vô địch như bạn."
-  },
+
   "help": {
     "title": "Trợ giúp"
   },
