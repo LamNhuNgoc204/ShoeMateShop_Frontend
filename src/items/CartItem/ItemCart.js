@@ -214,6 +214,21 @@ const ItemCart = ({
   };
 
   // console.log('item', item);
+  const [isOutOfStock, setIsOutOfStock] = useState(false);
+  useEffect(() => {
+    const productInList = lstProducts.find(
+      pd => pd._id === item.product_id._id,
+    );
+    if (productInList) {
+      const size = productInList.size.find(
+        s => s?.sizeId?._id.toString() === item.size_id._id,
+      );
+      const availableQuantity = size?.quantity || 0;
+      if (availableQuantity <= 0) {
+        setIsOutOfStock(true);
+      }
+    }
+  }, [lstProducts, item.product_id._id, item.size_id._id]);
 
   return (
     <Swipeable
@@ -236,12 +251,20 @@ const ItemCart = ({
         }
       }}>
       <TouchableOpacity
+        disabled={isOutOfStock}
         onPress={() =>
           navigation.navigate('ProductDetail', {index: item?.product_id?._id})
         }
         style={itCart.container}>
-        <View style={[itCart.viewContainer, appst.rowStart]}>
+        <View
+          style={[
+            itCart.viewContainer,
+            appst.rowStart,
+            isOutOfStock && {opacity: 0.8, backgroundColor: '#dfdfdf'},
+          ]}>
           <TouchableOpacity
+            style={isOutOfStock && {opacity: 0.8, backgroundColor: '#dfdfdf'}}
+            disabled={isOutOfStock}
             onPress={e => {
               e.stopPropagation();
               handlePress();
@@ -263,44 +286,59 @@ const ItemCart = ({
                 : 'https://i.pinimg.com/236x/6a/f1/ec/6af1ec6645410a41d5339508a83b86f9.jpg',
             }}
           />
-          <View style={[appst.columnSb, itCart.viewQuatity]}>
-            <Text numberOfLines={1} style={itCart.name}>
-              {item && item.product_id.name}
-            </Text>
-            <Text style={itCart.price}>
-              {lag === 'en' && '$'}
-              {item?.product_id?.price &&
-                formatPrice(item?.product_id?.price, lag)}
-              {lag === 'vi' && ' VNĐ '}
-            </Text>
-            <Text style={itCart.price}>
-              {t('products.size')}: {item.size_id.name}
-            </Text>
-            <View
-              style={[
-                appst.rowCenter,
-                itCart.view,
-                {pointerEvents: 'box-none'},
-              ]}>
-              <TouchableOpacity
-                style={{padding: 6}}
-                onPress={e => {
-                  e.stopPropagation();
-                  tangSL();
-                }}>
-                <Image source={require('../../assets/icons/increase.png')} />
-              </TouchableOpacity>
-              <Text style={itCart.quatity}>{productQuantity}</Text>
-              <TouchableOpacity
-                style={{padding: 6}}
-                onPress={e => {
-                  e.stopPropagation();
-                  giamSL();
-                }}>
-                <Image source={require('../../assets/icons/decrease.png')} />
-              </TouchableOpacity>
+          {isOutOfStock ? (
+            <View style={[appst.columnSb, itCart.viewQuatity]}>
+              <Text numberOfLines={1} style={itCart.name}>
+                {item && item.product_id.name}
+              </Text>
+              <Text style={itCart.price}>
+                {lag === 'en' && '$'}
+                {item?.product_id?.price &&
+                  formatPrice(item?.product_id?.price, lag)}
+                {lag === 'vi' && ' VNĐ '}
+              </Text>
+              <Text style={itCart.price}>{t('products.out_of_product')}</Text>
             </View>
-          </View>
+          ) : (
+            <View style={[appst.columnSb, itCart.viewQuatity]}>
+              <Text numberOfLines={1} style={itCart.name}>
+                {item && item.product_id.name}
+              </Text>
+              <Text style={itCart.price}>
+                {lag === 'en' && '$'}
+                {item?.product_id?.price &&
+                  formatPrice(item?.product_id?.price, lag)}
+                {lag === 'vi' && ' VNĐ '}
+              </Text>
+              <Text style={itCart.price}>
+                {t('products.size')}: {item.size_id.name}
+              </Text>
+              <View
+                style={[
+                  appst.rowCenter,
+                  itCart.view,
+                  {pointerEvents: 'box-none'},
+                ]}>
+                <TouchableOpacity
+                  style={{padding: 6}}
+                  onPress={e => {
+                    e.stopPropagation();
+                    tangSL();
+                  }}>
+                  <Image source={require('../../assets/icons/increase.png')} />
+                </TouchableOpacity>
+                <Text style={itCart.quatity}>{productQuantity}</Text>
+                <TouchableOpacity
+                  style={{padding: 6}}
+                  onPress={e => {
+                    e.stopPropagation();
+                    giamSL();
+                  }}>
+                  <Image source={require('../../assets/icons/decrease.png')} />
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
         </View>
       </TouchableOpacity>
     </Swipeable>

@@ -118,7 +118,8 @@
     "total": "Tổng giá",
     "quantity": "Số lượng",
     "no_recently": "Chưa có sản phẩm xem gần đây.",
-    "review": "đánh giá"
+    "review": "đánh giá",
+    "out_of_product": "Sản phẩm này đã hết"
   },
   "form_input": {
     "name": "Tên của bạn",
@@ -304,9 +305,9 @@
     "subTitle_cart": "Oops. Đang xảy ra lỗi rồi. Bạn thử lại sau nhé <3",
     "limit_quantity": "Bạn đã đặt số lượng tối đa!",
     "addtocart_succ": "Thêm vào giỏ hàng thành công!",
-    "addtocart_fail":"Không thể thêm sản phẩm",
-    "out_of_stock":"Các sản phẩm này hiện tại đã hết hàng",
-    "max_pd":"Bạn đã đạt số lượng tối đa"
+    "addtocart_fail": "Không thể thêm sản phẩm",
+    "out_of_stock": "Các sản phẩm này hiện tại đã hết hàng",
+    "max_pd": "Bạn đã đạt số lượng tối đa"
   },
   "ship": {
     "infor": "Thông tin vận chuyển",
