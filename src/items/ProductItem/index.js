@@ -6,7 +6,13 @@ import {checkTokenValidity} from '../../utils/functions/checkToken';
 import {useTranslation} from 'react-i18next';
 import {formatPrice} from '../../utils/functions/formatData';
 
-const ProductItem = ({handleHeartPress, product, style, wishlist = []}) => {
+const ProductItem = ({
+  updateIndex,
+  handleHeartPress,
+  product,
+  style,
+  wishlist = [],
+}) => {
   const [liked, setLiked] = React.useState(false);
   const navigation = useNavigation();
   const {t, i18n} = useTranslation();
@@ -54,6 +60,10 @@ const ProductItem = ({handleHeartPress, product, style, wishlist = []}) => {
     imageAssets && imageAssets.length > 0 ? imageAssets[0] : null;
 
   function onProductDetail() {
+    if (updateIndex) {
+      updateIndex(product?._id);
+      return;
+    }
     navigation.navigate('ProductDetail', {index: product?._id});
   }
 

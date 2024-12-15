@@ -237,7 +237,7 @@ const AllReview = ({route}) => {
 
       {/* Danh sách đánh giá */}
       {filteredReviews.length !== 0 ? (
-        <>
+        <View >
           <FlatList
             data={filteredReviews}
             renderItem={({item}) => <ItemReview item={item} />}
@@ -250,7 +250,7 @@ const AllReview = ({route}) => {
             />{' '}
             {t('review.not_found')}
           </Text>
-        </>
+        </View>
       ) : (
         <View style={styles.view1}>
           <Image
