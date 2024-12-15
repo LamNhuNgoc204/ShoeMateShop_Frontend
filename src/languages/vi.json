@@ -213,6 +213,8 @@
     "delivery": "Thời gian giao hàng",
     "complete": "Thời gian hoàn thành đơn",
     "timeCancel": "Thời gian hủy đơn hàng",
+    "timeReturn": "Thời gian yêu cầu hoàn đơn",
+    "timeReturnComp": "Thời gian yêu cầu hoàn đơn",
     "cancelled": "Hủy đơn hàng",
     "order_detail": "Chi tiết đơn hàng",
     "pending": "Chờ xử lý",
@@ -235,7 +237,10 @@
     "received": "Đã nhận được hàng",
     "creating_order": "Đang tạo đơn hàng",
     "delivered": "Đơn hàng đã được giao thành công",
-    "status_process": "Đơn hàng đang xử lý"
+    "status_process": "Đơn hàng đang xử lý",
+    "wait_return": "Yêu cầu đã được chấp nhận. Đang xử lý",
+    "reject_return": "Yêu cầu đã bị từ chối",
+    "return_succ": "Đơn hàng đã được xử lý"
   },
   "rating": {
     "review": "Đánh giá của tôi",
@@ -307,7 +312,11 @@
     "addtocart_succ": "Thêm vào giỏ hàng thành công!",
     "addtocart_fail": "Không thể thêm sản phẩm",
     "out_of_stock": "Các sản phẩm này hiện tại đã hết hàng",
-    "max_pd": "Bạn đã đạt số lượng tối đa"
+    "max_pd": "Bạn đã đạt số lượng tối đa",
+    "returnRq": "Đã gửi yêu cầu hoàn hàng",
+    "confirm_order": "Đã xác nhận nhận hàng",
+    "handle_return": "Đang xử lý hoàn hàng",
+    "return_succ": "Hoàn tất hoàn hàng"
   },
   "ship": {
     "infor": "Thông tin vận chuyển",

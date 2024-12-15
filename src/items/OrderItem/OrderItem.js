@@ -38,6 +38,7 @@ const OrderItem = ({
   // console.log('totalQuantity', totalQuantity);
 
   // console.log('product order', item);
+  // console.log('item.returnRequest', item.returnRequest);
 
   return (
     <TouchableOpacity
@@ -90,13 +91,13 @@ const OrderItem = ({
         </Text>
       </View>
 
-      {!receive && !cancel ? (
+      {!receive && !cancel && !refunded ? (
         <>
           {ship ? (
             <View>
               <View style={[appst.rowCenter, odit.view2]}>
                 <Text style={odit.textWait}>
-                  {item.status === 'pending'
+                  {!item.returnRequest && item.status === 'pending'
                     ? t('orders.wait_confirm')
                     : item.status === 'processing'
                     ? t('orders.proccessed_status')
@@ -180,7 +181,7 @@ const OrderItem = ({
           )}
 
           {/* ĐƠN ĐÃ HOÀN THÀNH */}
-          {!cancel && (
+          {!cancel && !refunded && (
             <View style={appst.rowEnd}>
               {item?.timestamps?.completedAt &&
                 // Kiểm tra xem đã qua 1 ngày kể từ ngày giao hàng
@@ -258,12 +259,31 @@ const OrderItem = ({
           )}
 
           {refunded && (
-            <TouchableOpacity
-              style={[odit.press, odit.press1, {paddingHorizontal: 10}]}>
-              <Text style={[odit.textTouch, odit.textTouch1]}>
-                {t('orders.watch_order_detail')}
-              </Text>
-            </TouchableOpacity>
+            <View
+              style={[
+                {
+                  width: '100%',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                },
+              ]}>
+              {item.returnRequest && (
+                <Text style={odit.textWait}>
+                  {item.returnRequest && item.returnRequest.status === 'pending'
+                    ? t('orders.wait_confirm')
+                    : item.returnRequest.status === 'accepted'
+                    ? t('orders.wait_return')
+                    : item.returnRequest.status === 'rejected'
+                    ? t('orders.reject_return')
+                    : t('orders.return_succ')}
+                </Text>
+              )}
+              <Image
+                style={appst.icon24}
+                source={require('../../assets/icons/chevron_right.png')}
+              />
+            </View>
           )}
         </View>
       )}

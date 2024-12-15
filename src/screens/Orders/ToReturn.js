@@ -25,7 +25,6 @@ const ToReturn = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const [listProduct, setListProduct] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
-  const lstProducts = useSelector(state => state?.products?.products?.data);
 
   const scrollViewRef = useRef(null);
 

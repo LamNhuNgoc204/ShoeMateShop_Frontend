@@ -105,7 +105,7 @@ const ToShip = ({navigation}) => {
     try {
       const response = await handleReturnRq(id, reason);
       if (response.status) {
-        ToastAndroid.show('Đã gửi yêu cầu hoàn hàng', ToastAndroid.SHORT);
+        ToastAndroid.show(`${t('toast.returnRq')}`, ToastAndroid.SHORT);
         navigation.navigate('OrderScreen', {
           initialRoute: t('orders.return'),
         });

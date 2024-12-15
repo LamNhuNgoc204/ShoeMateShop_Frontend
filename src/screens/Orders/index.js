@@ -27,7 +27,7 @@ const OrderScreen = ({navigation, route}) => {
     }
   }, [route.params?.initialRoute]);
 
-  // console.log('initialRoute', initialRoute);
+  console.log('initialRoute', initialRoute);
 
   return (
     <View style={[appst.container]}>
