@@ -480,98 +480,102 @@ const OrderDetail = ({route}) => {
                       </TouchableOpacity>
                     )}
                   </View>
-                ) : orderDetail.orderStatus === 'delivered' ? (
-                  <View style={[appst.rowCenter, {marginHorizontal: 10}]}>
-                    <>
-                      {orderDetail?.timestamps?.deliveredAt &&
-                        // Kiểm tra xem đã qua 1 ngày kể từ ngày giao hàng
-                        (new Date() -
-                          new Date(orderDetail?.timestamps?.deliveredAt) >
-                        24 * 60 * 60 * 1000 ? (
-                          <TouchableOpacity
-                            onPress={e => {
-                              e.stopPropagation();
-                              addToCart();
-                            }}
-                            style={[odit.press, oddt.button]}>
-                            <Text style={[odit.textTouch]}>
-                              {t('buttons.btn_buy_again')}
-                            </Text>
-                          </TouchableOpacity>
-                        ) : (
-                          <TouchableOpacity
-                            onPress={e => {
-                              e.stopPropagation();
-                              requestReturnOrder(item._id, 'Khác');
-                            }}
-                            style={[odit.press, odit.press1, oddt.button]}>
-                            <Text style={[odit.textTouch, odit.textTouch1]}>
-                              {t('orders.return')}
-                            </Text>
-                          </TouchableOpacity>
-                        ))}
-                    </>
-                    <TouchableOpacity
-                      onPress={async () => {
-                        cofirmOrder(item._id);
-                        navigation.navigate('OrderScreen', {
-                          initialRoute: t('orders.completed'),
-                        });
-                      }}
-                      style={[odit.press, oddt.button]}>
-                      <Text style={odit.textTouch}>{t('orders.received')}</Text>
-                    </TouchableOpacity>
-                  </View>
                 ) : (
-                  orderDetail.orderStatus === 'cancelled' && (
-                    <View style={[appst.center, {marginHorizontal: 10}]}>
+                  orderDetail.orderStatus === 'delivered' && (
+                    <View style={[appst.rowCenter, {marginHorizontal: 10}]}>
+                      <>
+                        {orderDetail?.timestamps?.deliveredAt &&
+                          // Kiểm tra xem đã qua 1 ngày kể từ ngày giao hàng
+                          (new Date() -
+                            new Date(orderDetail?.timestamps?.deliveredAt) >
+                          24 * 60 * 60 * 1000 ? (
+                            <TouchableOpacity
+                              onPress={e => {
+                                e.stopPropagation();
+                                addToCart();
+                              }}
+                              style={[odit.press, oddt.button]}>
+                              <Text style={[odit.textTouch]}>
+                                {t('buttons.btn_buy_again')}
+                              </Text>
+                            </TouchableOpacity>
+                          ) : (
+                            <TouchableOpacity
+                              onPress={e => {
+                                e.stopPropagation();
+                                requestReturnOrder(item._id, 'Khác');
+                              }}
+                              style={[odit.press, odit.press1, oddt.button]}>
+                              <Text style={[odit.textTouch, odit.textTouch1]}>
+                                {t('orders.return')}
+                              </Text>
+                            </TouchableOpacity>
+                          ))}
+                      </>
                       <TouchableOpacity
-                        onPress={() => addToCart()}
-                        style={[
-                          odit.press,
-                          {
-                            width: '90%',
-                            height: 40,
-                          },
-                        ]}>
+                        onPress={async () => {
+                          cofirmOrder(item._id);
+                          navigation.navigate('OrderScreen', {
+                            initialRoute: t('orders.completed'),
+                          });
+                        }}
+                        style={[odit.press, oddt.button]}>
                         <Text style={odit.textTouch}>
-                          {t('buttons.btn_buy_again')}
+                          {t('orders.received')}
                         </Text>
                       </TouchableOpacity>
                     </View>
                   )
                 )}
 
-                {orderDetail.orderStatus !== 'completed' &&
-                orderDetail.orderStatus !== 'delivered' &&
-                orderDetail.orderStatus !== 'cancelled' &&
-                !orderDetail.returnRequest ? (
+                {orderDetail.orderStatus === 'processing' &&
+                  !orderDetail.returnRequest.requestDate && (
+                    <CustomedButton
+                      disabled={
+                        orderDetail.orderStatus === 'processing' && true
+                      }
+                      title={t(titleButton)}
+                      style={
+                        orderDetail.orderStatus === 'processing'
+                          ? oddt.disable
+                          : oddt.press
+                      }
+                      titleStyle={
+                        orderDetail.orderStatus === 'processing'
+                          ? oddt.titleDisable
+                          : oddt.titleStyle
+                      }
+                      onPress={() => handleOrderDetail()}
+                    />
+                  )}
+
+                {orderDetail.orderStatus === 'pending' && (
                   <CustomedButton
-                    disabled={orderDetail.orderStatus === 'processing' && true}
                     title={t(titleButton)}
-                    style={
-                      orderDetail.orderStatus === 'processing'
-                        ? oddt.disable
-                        : oddt.press
-                    }
-                    titleStyle={
-                      orderDetail.orderStatus === 'processing'
-                        ? oddt.titleDisable
-                        : oddt.titleStyle
-                    }
+                    style={oddt.press}
+                    titleStyle={oddt.titleStyle}
                     onPress={() => handleOrderDetail()}
                   />
-                ) : (
+                )}
+
+                {orderDetail.orderStatus === 'cancelled' && (
                   <CustomedButton
                     title={t('buttons.btn_buy_again')}
                     style={oddt.press}
                     titleStyle={oddt.titleStyle}
-                    onPress={e => {
-                      e.stopPropagation();
-                      addToCart();
-                    }}
+                    onPress={() => addToCart()}
                   />
                 )}
+
+                {orderDetail.returnRequest.requestDate &&
+                  orderDetail.returnRequest && (
+                    <CustomedButton
+                      title={t('buttons.btn_buy_again')}
+                      style={oddt.press}
+                      titleStyle={oddt.titleStyle}
+                      onPress={() => addToCart()}
+                    />
+                  )}
               </View>
             ) : (
               <OrderDetailSkeleton />

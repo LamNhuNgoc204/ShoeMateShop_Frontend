@@ -20,7 +20,6 @@ const OrderItem = ({
 }) => {
   const {t, i18n} = useTranslation();
   const lag = i18n.language;
-  // console.log(i18n.language);
 
   const orderDetail = item.orderDetails && item.orderDetails[0];
   const product = orderDetail && orderDetail.product;
@@ -240,7 +239,7 @@ const OrderItem = ({
               <TouchableOpacity
                 onPress={e => {
                   e.stopPropagation();
-                  gotoOrderDetail('CancelDetail', navigation, item);
+                  navigation.navigate('CancelDetail', {item: item});
                 }}
                 style={[odit.press, odit.press1, {paddingHorizontal: 10}]}>
                 <Text style={[odit.textTouch, odit.textTouch1]}>

@@ -180,6 +180,11 @@ export const oddt = StyleSheet.create({
     width: '47%',
     height: 40,
   },
+  textt1: {
+    color: 'black',
+    fontWeight: 'bold',
+    marginBottom: 2,
+  },
   text1: {
     color: 'white',
     fontWeight: 'bold',
