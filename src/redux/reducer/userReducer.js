@@ -18,6 +18,7 @@ const UserSlice = createSlice({
     logout: state => {
       state.user = null;
       state.token = null;
+      state.infor = null;
     },
     setAvatarUser: (state, action) => {
       state.avatar = action.payload;

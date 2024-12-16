@@ -13,11 +13,11 @@ import {useNavigation} from '@react-navigation/native';
 import styles from './style';
 import appst from '../../constants/AppStyle';
 import {CustomedButton} from '../../components';
-import {updateInformation} from '../../api/UserApi';
+import {getUserInfo, updateInformation} from '../../api/UserApi';
 import CustomTextInput from '../../components/Input';
 import {chooseAvatar} from '../../utils/functions/uploadImage';
 import {isValidPhoneNumber} from '../../utils/validate/ValidNumber';
-import {setAvatarUser} from '../../redux/reducer/userReducer';
+import {setAvatarUser, setUserInfor} from '../../redux/reducer/userReducer';
 
 const EditProfile = () => {
   const {t} = useTranslation();
@@ -29,6 +29,19 @@ const EditProfile = () => {
   const [phoneNumber, setPhoneNumber] = useState(user && user.phoneNumber);
   const [errorName, setErrorName] = useState('');
   const [errorPhone, setErrorPhone] = useState('');
+
+  async function getInfor() {
+    try {
+      const res = await getUserInfo();
+      console.log(res);
+
+      if (res) {
+        dispatch(setUserInfor(res));
+      }
+    } catch (error) {
+      console.log('LỖi lấy thông tin user: ', error);
+    }
+  }
 
   const updateInfor = async () => {
     setErrorName('');
@@ -53,6 +66,7 @@ const EditProfile = () => {
 
       const response = await updateInformation(body);
       if (response) {
+        getInfor();
         dispatch(setAvatarUser(avatar));
         ToastAndroid.show(`${t('toast.update_succ')}`, ToastAndroid.SHORT);
         navigation.goBack();
