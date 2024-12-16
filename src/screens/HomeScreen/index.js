@@ -190,7 +190,7 @@ const HomeScreen = ({navigation, route}) => {
 
   // console.log('product data', state, '-----', listProduct);
   // console.log('state?.products?.data ===========', state?.products?.data);
-  // console.log('listProduct===========', listProduct);
+  // console.log('listProduct===========', listProduct[0]);
 
   const goToPage = page => {
     if (page < BANNERS.length && pagerRef.current) {

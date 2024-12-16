@@ -5,7 +5,6 @@ import {
   Image,
   ScrollView,
   FlatList,
-  Switch,
   ToastAndroid,
   Modal,
   ActivityIndicator,
@@ -29,9 +28,8 @@ import {
   getPaymentDefault,
   getShipDefault,
 } from '../../redux/thunks/CartThunks';
-import LoadingModal from '../../components/Modal/LoadingModal';
 import {useNavigation} from '@react-navigation/native';
-import { formatPrice } from '../../utils/functions/formatData';
+import {formatPrice} from '../../utils/functions/formatData';
 
 const CheckOutScreen = ({route}) => {
   const {responseVoucher} = route.params || {};
@@ -47,6 +45,7 @@ const CheckOutScreen = ({route}) => {
   const addressDefault = state.address;
   var tongchiphi = 0;
   // const [isComplete, setisComplete] = useState(false);
+  const lstProducts = useSelector(state => state?.products?.products?.data);
 
   // console.log('addressDefault', addressDefault);
   // console.log('state.ship', state.ship);
@@ -78,21 +77,21 @@ const CheckOutScreen = ({route}) => {
       ToastAndroid.show(`${t('nothing.adress_war')}`, ToastAndroid.SHORT);
       return;
     }
-  
+
     setIsLoading(true);
-  
+
     const products = Array.isArray(state.productOrder)
-    ? state.productOrder.map(item => ({
-        _id: item.product_id._id,
-        assets: item.product_id.assets,
-        name: item.product_id.name,
-        size_name: item.size_id.name,
-        price: item.product_id.price,
-        quantity: item.quantity,
-        size_id: item.size_id._id,
-      }))
-    : [];
-  
+      ? state.productOrder.map(item => ({
+          _id: item.product_id._id,
+          assets: item.product_id.assets,
+          name: item.product_id.name,
+          size_name: item.size_id.name,
+          price: item.product_id.price,
+          quantity: item.quantity,
+          size_id: item.size_id._id,
+        }))
+      : [];
+
     const body = {
       products: products,
       method_id: state.payment && state.payment._id,
@@ -104,11 +103,14 @@ const CheckOutScreen = ({route}) => {
       address: addressDefault.address,
       voucher_code: responseVouchers.voucher_code,
     };
-  
+
     try {
-      if (state.payment && state.payment.payment_method === 'Shoes Mate Wallet') {
+      if (
+        state.payment &&
+        state.payment.payment_method === 'Shoes Mate Wallet'
+      ) {
         console.log('Shoes Mate Wallet');
-  
+
         // Kiểm tra số dư hoặc trạng thái ví trước khi tạo đơn hàng
         const walletResponse = await AxiosInstance().post('/wallet/payment', {
           amount: tongchiphi,
@@ -123,7 +125,10 @@ const CheckOutScreen = ({route}) => {
           setIsLoading(false);
           return;
         } else if (walletResponse.code === 'walletnotcreated') {
-          ToastAndroid.show('Vui lòng tạo ví trước khi thanh toán', ToastAndroid.SHORT);
+          ToastAndroid.show(
+            'Vui lòng tạo ví trước khi thanh toán',
+            ToastAndroid.SHORT,
+          );
           setIsLoading(false);
           return;
         } else if (walletResponse.code === 'walletnotactive') {
@@ -131,37 +136,39 @@ const CheckOutScreen = ({route}) => {
           setIsLoading(false);
           return;
         } else {
-          ToastAndroid.show('Có lỗi xảy ra, vui lòng thử lại sau', ToastAndroid.SHORT);
+          ToastAndroid.show(
+            'Có lỗi xảy ra, vui lòng thử lại sau',
+            ToastAndroid.SHORT,
+          );
           setIsLoading(false);
           return;
         }
-      }else{
-        const response = await createOrder(body);
-      if (response.status) {
-        setIsLoading(false);
-  
-        if (state.payment.payment_method === 'Zalo Pay') {
-          dispatch(setPriceToPay(tongchiphi));
-          dispatch(setOrderId(response.data.order._id));
-          navigation.navigate('ZaloPayScreen');
-        } else if (state.payment.payment_method === 'Thanh toán khi nhận hàng') {
-          ToastAndroid.show('Tạo đơn thành công', ToastAndroid.SHORT);
-          navigation.navigate('CheckoutSuccess');
-        }
       } else {
-        ToastAndroid.show('Tạo đơn không thành công', ToastAndroid.SHORT);
+        const response = await createOrder(body);
+        if (response.status) {
+          setIsLoading(false);
+          if (state.payment.payment_method === 'Zalo Pay') {
+            dispatch(setPriceToPay(tongchiphi));
+            dispatch(setOrderId(response.data.order._id));
+            navigation.navigate('ZaloPayScreen');
+          } else if (
+            state.payment.payment_method === 'Thanh toán khi nhận hàng'
+          ) {
+            ToastAndroid.show('Tạo đơn thành công', ToastAndroid.SHORT);
+            navigation.navigate('CheckoutSuccess');
+          }
+        } else {
+          ToastAndroid.show('Tạo đơn không thành công', ToastAndroid.SHORT);
+        }
       }
-      }
-  
+
       // Nếu không sử dụng ví Shoes Mate Wallet, tiếp tục tạo đơn hàng
-      
     } catch (error) {
       console.log('Error:', error);
       ToastAndroid.show('Đã xảy ra lỗi, vui lòng thử lại', ToastAndroid.SHORT);
       setIsLoading(false);
     }
   };
-  
 
   const handeToVouchers = () => {
     navigation.navigate('Voucher', {totalOrderValue: state.totalPrice});
@@ -250,8 +257,10 @@ const CheckOutScreen = ({route}) => {
             </View>
             <View style={[appst.rowCenter]}>
               <Text style={c_outst.text7}>
-                {(responseVoucher && `${t('voucher.use')} 1 ${t('voucher.vc')}`) || ''}
-                              </Text>
+                {(responseVoucher &&
+                  `${t('voucher.use')} 1 ${t('voucher.vc')}`) ||
+                  ''}
+              </Text>
               <Image
                 style={appst.icon24}
                 source={require('../../assets/icons/arrow_right.png')}

@@ -311,7 +311,8 @@
     "get_vc_err": "An error occurred. Please try again later!",
     "key": "Please enter a search keyword",
     "not_found": "No suitable voucher found",
-    "vcc": "No vouchers are currently available"
+    "vcc": "No vouchers are currently available",
+    "vc": "Voucher"
   },
   "onboard": {
     "buttonTitle1": "Get Started",
@@ -368,7 +369,8 @@
     "sp": "Support",
     "chosse_ship": "Please choose a shipping method",
     "logup_succ": "Registration successful",
-    "logup_fail": "Registration failed."
+    "logup_fail": "Registration failed.",
+    "choose_size": "Please select the appropriate size"
   },
   "ship": {
     "infor": "Shipping information",

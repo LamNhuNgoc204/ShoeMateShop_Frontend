@@ -8,7 +8,7 @@ const initialState = {
   products: [],
   categories: [],
   wishlist: [],
-  
+  purchased: [],
 };
 
 const ProductSlice = createSlice({
@@ -31,6 +31,12 @@ const ProductSlice = createSlice({
           );
         }
       }
+    },
+    setPurchased: (state, action) => {
+      state.purchased = [...state.purchased, action.payload];
+    },
+    updateProducts: (state, action) => {
+      state.products = action.payload;
     },
   },
   extraReducers: builder => {
@@ -74,5 +80,10 @@ const ProductSlice = createSlice({
   },
 });
 
-export const {setWishlistLocal, removeFromWishlistLocal} = ProductSlice.actions;
+export const {
+  setWishlistLocal,
+  removeFromWishlistLocal,
+  setPurchased,
+  updateProducts,
+} = ProductSlice.actions;
 export default ProductSlice.reducer;

@@ -35,14 +35,6 @@ const BottomSheetContent = ({
   const lag = i18n.language;
   const isTokenValid = useSelector(state => state?.user?.isValidToken);
 
-  useEffect(() => {
-    if (sizes && sizes.length > 0 && !selectedSize) {
-      setSelectedSize(sizes[0].sizeId.name);
-      setsizeDetailId(sizes[0].sizeId._id);
-      setsizeId(sizes[0]._id);
-    }
-  }, [sizes, selectedSize, setSelectedSize, setsizeId]);
-
   const decreaseQuantity = () => {
     if (quantity > 1) {
       setQuantity(prev => Math.max(prev - 1, 1));
@@ -66,26 +58,39 @@ const BottomSheetContent = ({
   const addToCart = async () => {
     if (isTokenValid) {
       try {
-        const itemCart = {
-          product_id: product._id,
-          size_id: sizeDetailId,
-          quantity: quantity,
-        };
+        if (sizeDetailId) {
+          const itemCart = {
+            product_id: product._id,
+            size_id: sizeDetailId,
+            quantity: quantity,
+          };
 
-        const response = await addItemToCartApi(itemCart);
-        if (response.status) {
-          setSizeModalVisible(false);
-          ToastAndroid.show(`${t('toast.addtocart_succ')}`, ToastAndroid.SHORT);
-          setSizeModalVisible(false);
-          closeBottomSheet();
+          const response = await addItemToCartApi(itemCart);
+          if (response.status) {
+            ToastAndroid.show(
+              `${t('toast.addtocart_succ')}`,
+              ToastAndroid.SHORT,
+            );
+            setSizeModalVisible(false);
+            closeBottomSheet();
+          } else {
+            ToastAndroid.show(
+              `${t('toast.subTitle_cart')}`,
+              ToastAndroid.SHORT,
+            );
+            setSizeModalVisible(false);
+            closeBottomSheet();
+          }
         } else {
-          setSizeModalVisible(false);
-          ToastAndroid.show(`${t('toast.subTitle_cart')}`, ToastAndroid.SHORT);
-          setSizeModalVisible(false);
-          closeBottomSheet();
+          ToastAndroid.show(`${t('toast.choose_size')}`, ToastAndroid.SHORT);
         }
       } catch (error) {
         ToastAndroid.show(`${t('toast.del_err')}`, ToastAndroid.SHORT);
+      } finally {
+        setSelectedSize('');
+        setsizeDetailId('');
+        setsizeId('');
+        closeBottomSheet();
         setSizeModalVisible(false);
       }
     } else {
@@ -206,7 +211,7 @@ const BottomSheetContent = ({
                       setsizeId(size._id);
                     }
                   }}
-                  disabled={isOutOfStock} 
+                  disabled={isOutOfStock}
                   key={i.toString()}
                   style={[
                     bottomSheetStyle.sizeTouchableOpacity,

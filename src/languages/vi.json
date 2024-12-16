@@ -310,7 +310,8 @@
     "get_vc_err": "Xảy ra lỗi. Vui lòng thử lại sau!",
     "key": "Vui lòng nhập từ khóa tìm kiếm",
     "not_found": "Không tìm thấy mã giảm giá phù hợp",
-    "vcc": "Hiện tại chưa có voucher nào khả dụng"
+    "vcc": "Hiện tại chưa có voucher nào khả dụng",
+    "vc": "Mã giảm giá"
   },
   "onboard": {
     "buttonTitle1": "Bắt đầu",
@@ -348,7 +349,7 @@
     "limit_quantity": "Bạn đã đặt số lượng tối đa!",
     "addtocart_succ": "Thêm vào giỏ hàng thành công!",
     "addtocart_fail": "Không thể thêm sản phẩm",
-    "out_of_stock": "Các sản phẩm này hiện tại đã hết hàng",
+    "out_of_stock": "Sản phẩm này hiện tại đã hết hàng",
     "max_pd": "Bạn đã đạt số lượng tối đa",
     "returnRq": "Đã gửi yêu cầu hoàn hàng",
     "confirm_order": "Đã xác nhận nhận hàng",
@@ -367,7 +368,8 @@
     "sp": "Hỗ trợ",
     "chosse_ship": "Vui lòng chọn phương thức vận chuyển",
     "logup_succ": "Đăng ký thành công",
-    "logup_fail": "Đăng ký thất bại. "
+    "logup_fail": "Đăng ký thất bại. ",
+    "choose_size": "Vui lòng chọn kích thước phù hợp"
   },
   "ship": {
     "infor": "Thông tin vận chuyển",
