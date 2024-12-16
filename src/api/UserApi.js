@@ -52,3 +52,15 @@ export const setUserAddressDefault = async addressId => {
     console.log('Delete address failed: ', error);
   }
 };
+
+export const getUserInfo = async () => {
+  ///user-infor
+  try {
+    const res = await AxiosInstance().get('/users/user-infor');
+    if (res.status) {
+      return res.data;
+    }
+  } catch (error) {
+    console.log('Get user infor err: ', error);
+  }
+};

@@ -8,6 +8,7 @@ const initialState = {
   products: [],
   categories: [],
   wishlist: [],
+  
 };
 
 const ProductSlice = createSlice({

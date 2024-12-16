@@ -14,9 +14,9 @@ import ProductList from '../Product/ProductList';
 const ProfileScreen = () => {
   const {t} = useTranslation();
   const navigation = useNavigation();
-  const {user, avatar} = useSelector(state => state.user);
-  const productState = useSelector(state => state.products);
+  const {user, avatar, infor} = useSelector(state => state.user);
   const isTokenValid = useSelector(state => state?.user?.isValidToken);
+  const lstProducts = useSelector(state => state?.products?.products?.data);
 
   // Hàm điều hướng tới ví
   const handleToWallet = async () => {
@@ -64,8 +64,8 @@ const ProfileScreen = () => {
               }}
             />
             <View style={styles.info}>
-              <Text style={styles.name}>{user && user.name}</Text>
-              <Text style={styles.email}>{user && user.email}</Text>
+              <Text style={styles.name}>{user && infor?.name}</Text>
+              <Text style={styles.email}>{user && infor?.email}</Text>
             </View>
           </View>
         ) : (
@@ -183,7 +183,7 @@ const ProfileScreen = () => {
       />
 
       <View style={{marginTop: 10}}>
-        <ProductList listProduct={productState?.products?.data} />
+        <ProductList listProduct={lstProducts} />
       </View>
     </ScrollView>
   );

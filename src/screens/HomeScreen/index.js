@@ -24,7 +24,12 @@ import AxiosInstance from '../../helpers/AxiosInstance';
 import ProductList from '../Product/ProductList';
 import {shuffleArray} from '../../utils/functions/formatData';
 import {checkTokenValidity} from '../../utils/functions/checkToken';
-import {setValidToken} from '../../redux/reducer/userReducer';
+import {
+  setAvatarUser,
+  setUserInfor,
+  setValidToken,
+} from '../../redux/reducer/userReducer';
+import {getUserInfo} from '../../api/UserApi';
 
 const HomeScreen = ({navigation, route}) => {
   const {t} = useTranslation();
@@ -52,8 +57,23 @@ const HomeScreen = ({navigation, route}) => {
     }
   };
 
+  async function getInfor() {
+    try {
+      const res = await getUserInfo();
+      console.log(res);
+
+      if (res) {
+        dispatch(setUserInfor(res));
+        dispatch(setAvatarUser(res.avatar));
+      }
+    } catch (error) {
+      console.log('LỖi lấy thông tin user: ', error);
+    }
+  }
+
   useEffect(() => {
     uploadFCMToken();
+    getInfor();
   }, []);
 
   useEffect(() => {

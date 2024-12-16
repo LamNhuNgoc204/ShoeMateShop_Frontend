@@ -23,12 +23,12 @@ const ProductList = ({listProduct, isHome, onSetProduct}) => {
 
   useEffect(() => {
     const checkToken = async () => {
-      const isTokenValid = await checkTokenValidity();
-      if (isTokenValid) {
-        setWishLists(state.wishlist);
-      } else {
-        setWishLists([]);
-      }
+      // const isTokenValid = await checkTokenValidity();
+      // if (isTokenValid) {
+      setWishLists(state.wishlist);
+      // } else {
+      //   setWishLists([]);
+      // }
     };
 
     checkToken();

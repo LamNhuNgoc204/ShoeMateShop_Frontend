@@ -20,6 +20,7 @@ const OrderScreen = ({navigation, route}) => {
   const isTokenValid = useSelector(state => state?.user?.isValidToken);
 
   const initialRoute = route?.params?.initialRoute || t('orders.pay');
+  const {screenn} = route.params || '';
 
   useEffect(() => {
     if (route.params?.initialRoute) {
@@ -33,7 +34,13 @@ const OrderScreen = ({navigation, route}) => {
     <View style={[appst.container]}>
       <Header
         iconLeft={require('../../assets/icons/back.png')}
-        leftOnPress={() => navigation.navigate('BottomNav')}
+        leftOnPress={() => {
+          if (screenn === 'CheckoutSuccess') {
+            navigation.navigate('BottomNav');
+          } else {
+            navigation.goBack();
+          }
+        }}
         name={t('profiles.order_history')}
         iconRight={require('../../assets/icons/mesage.png')}
         rightOnPress={() => {

@@ -65,7 +65,9 @@ const CheckoutSuccess = ({navigation}) => {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => navigation.navigate('OrderScreen')}
+              onPress={() =>
+                navigation.navigate('OrderScreen', {screenn: 'CheckoutSuccess'})
+              }
               style={{
                 paddingVertical: 5,
                 paddingHorizontal: 40,

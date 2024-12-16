@@ -8,6 +8,7 @@ const initialState = {
   token: null,
   avatar: null,
   isValidToken: false,
+  infor: null,
 };
 
 const UserSlice = createSlice({
@@ -23,6 +24,9 @@ const UserSlice = createSlice({
     },
     setValidToken: (state, action) => {
       state.isValidToken = action.payload;
+    },
+    setUserInfor: (state, action) => {
+      state.infor = action.payload;
     },
   },
   extraReducers: builder => {
@@ -80,5 +84,6 @@ const UserSlice = createSlice({
   },
 });
 
-export const {logout, setAvatarUser, setValidToken} = UserSlice.actions;
+export const {logout, setAvatarUser, setValidToken, setUserInfor} =
+  UserSlice.actions;
 export default UserSlice.reducer;
