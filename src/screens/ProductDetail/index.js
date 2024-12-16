@@ -19,7 +19,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import BottomSheetContent from '../../items/Sizebottom';
 import ProductSkeleton from '../../placeholders/product/detail';
-import {addRecentView} from '../../api/ProductApi';
+import {addRecentView, getSimilarPd} from '../../api/ProductApi';
 import {useTranslation} from 'react-i18next';
 import ProductList from '../Product/ProductList';
 import Share from 'react-native-share';
@@ -31,9 +31,9 @@ const ProductDetail = props => {
 
   const navigation = useNavigation();
   const {index} = props.route.params;
-  const useAppSelector = useSelector;
+  const [currentIndex, setCurrentIndex] = useState(index);
+
   const bottomSheetRef = useRef(null);
-  const productState = useAppSelector(state => state.products);
   const [selectedImage, setSelectedImage] = useState(
     product && product.assets[0],
   );
@@ -50,11 +50,20 @@ const ProductDetail = props => {
 
   const [listReview, setListReview] = useState([]);
   const isTokenValid = useSelector(state => state?.user?.isValidToken);
+  const [lstProducts, setlstProducts] = useState([]);
+
+  const updateIndex = newIndex => {
+    setLoading(true);
+    if (newIndex) {
+      setCurrentIndex(newIndex);
+      setLoading(false);
+    }
+  };
 
   const fetchListReview = async () => {
     try {
       const response = await AxiosInstance().get(
-        `/reviews/get-list-product-reviews/${index}`,
+        `/reviews/get-list-product-reviews/${currentIndex}`,
       );
       // console.log('response =>', response);
 
@@ -66,12 +75,25 @@ const ProductDetail = props => {
     }
   };
 
+  const fetchSimilarPd = async () => {
+    try {
+      const response = await getSimilarPd(currentIndex);
+      setlstProducts(response);
+    } catch (error) {
+      console.log('fetch similar pd error: ', error);
+    }
+  };
+
   const dispatch = useDispatch();
 
   const fetchProduct = async () => {
+    console.log('Fetching product for index:', currentIndex);
+
     try {
+      setLoading(true);
+
       if (isTokenValid) {
-        await addRecentView(index);
+        await addRecentView(currentIndex);
       } else {
         console.log(
           'Token hết hạn, bỏ qua thêm sản phẩm vào danh sách gần đây',
@@ -80,8 +102,9 @@ const ProductDetail = props => {
 
       const [response] = await Promise.all([
         // addRecentView(index),
-        AxiosInstance().get(`/products/detail/${index}`),
+        AxiosInstance().get(`/products/detail/${currentIndex}`),
         fetchListReview(),
+        fetchSimilarPd(),
       ]);
 
       // console.log('Thêm sản phẩm vào danh sách xem gần đây:', addpdView);
@@ -96,12 +119,19 @@ const ProductDetail = props => {
   };
 
   useEffect(() => {
-    fetchProduct();
-    return () => {};
-  }, [proId]);
+    if (currentIndex) {
+      fetchProduct();
+    }
+  }, [currentIndex]);
 
+  useEffect(() => {
+    fetchProduct();
+  }, []);
+
+  console.log('currentIndex---', currentIndex);
   // console.log(product);
   // console.log('listReview', listReview);
+  // console.log('lstProducts===========>', lstProducts[0]);
 
   const handleSheetChanges = useCallback(index => {
     console.log('handleSheetChanges', index);
@@ -327,7 +357,10 @@ const ProductDetail = props => {
           </View>
 
           <View style={{marginTop: 15}}>
-            <ProductList onSetProduct={onSetProduct} listProduct={productState?.products?.data} />
+            <ProductList
+              listProduct={lstProducts}
+              updateIndex={value => updateIndex(value)}
+            />
           </View>
         </ScrollView>
       ) : (
@@ -336,12 +369,7 @@ const ProductDetail = props => {
 
       <View style={[pddt.footer, appst.rowCenter]}>
         <View style={[appst.rowCenter]}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('MessageScreen', {
-                product: product,
-              });
-            }}>
+          <TouchableOpacity style={{marginLeft: 5}}>
             <Image
               source={require('../../assets/icons/chatwithshop.png')}
               style={pddt.chat}

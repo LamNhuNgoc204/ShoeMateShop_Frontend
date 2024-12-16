@@ -16,10 +16,10 @@ const OrderItem = ({
   refunded,
   navigation,
   updateOrderStatus,
+  requestReturnOrder,
 }) => {
   const {t, i18n} = useTranslation();
   const lag = i18n.language;
-  // console.log(i18n.language);
 
   const orderDetail = item.orderDetails && item.orderDetails[0];
   const product = orderDetail && orderDetail.product;
@@ -36,7 +36,8 @@ const OrderItem = ({
     quantities && quantities.reduce((acc, detail) => acc + detail, 0);
   // console.log('totalQuantity', totalQuantity);
 
-  // console.log('product order', product);
+  // console.log('product order', item);
+  // console.log('item.returnRequest', item.returnRequest);
 
   return (
     <TouchableOpacity
@@ -89,13 +90,13 @@ const OrderItem = ({
         </Text>
       </View>
 
-      {!receive && !cancel ? (
+      {!receive && !cancel && !refunded ? (
         <>
           {ship ? (
             <View>
               <View style={[appst.rowCenter, odit.view2]}>
                 <Text style={odit.textWait}>
-                  {item.status === 'pending'
+                  {!item.returnRequest && item.status === 'pending'
                     ? t('orders.wait_confirm')
                     : item.status === 'processing'
                     ? t('orders.proccessed_status')
@@ -106,15 +107,41 @@ const OrderItem = ({
                   source={require('../../assets/icons/chevron_right.png')}
                 />
               </View>
+
               {/* Cập nhật status khi đơn hàng đã được giao */}
               {item.status === 'delivered' && (
                 <View style={[appst.rowEnd, {paddingHorizontal: 10}]}>
-                  <TouchableOpacity
-                    style={[odit.press, odit.press1, {paddingHorizontal: 10}]}>
-                    <Text style={[odit.textTouch, odit.textTouch1]}>
-                      {t('orders.return')}
-                    </Text>
-                  </TouchableOpacity>
+                  {item?.timestamps?.deliveredAt &&
+                    // Kiểm tra xem đã qua 1 ngày kể từ ngày giao hàng
+                    (new Date() - new Date(item?.timestamps?.deliveredAt) >
+                    24 * 60 * 60 * 1000 ? (
+                      <TouchableOpacity
+                        onPress={e => {
+                          e.stopPropagation();
+                          addToCart(productForCart);
+                        }}
+                        style={[odit.press, {paddingHorizontal: 10}]}>
+                        <Text style={[odit.textTouch]}>
+                          {t('buttons.btn_buy_again')}
+                        </Text>
+                      </TouchableOpacity>
+                    ) : (
+                      <TouchableOpacity
+                        onPress={e => {
+                          e.stopPropagation();
+                          requestReturnOrder(item._id, 'Khác');
+                        }}
+                        style={[
+                          odit.press,
+                          odit.press1,
+                          {paddingHorizontal: 10},
+                        ]}>
+                        <Text style={[odit.textTouch, odit.textTouch1]}>
+                          {t('orders.return')}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+
                   <TouchableOpacity
                     onPress={e => {
                       e.stopPropagation();
@@ -153,18 +180,35 @@ const OrderItem = ({
           )}
 
           {/* ĐƠN ĐÃ HOÀN THÀNH */}
-          {!cancel && (
+          {!cancel && !refunded && (
             <View style={appst.rowEnd}>
-              <TouchableOpacity
-                onPress={e => {
-                  e.stopPropagation();
-                  addToCart(productForCart);
-                }}
-                style={[odit.press, {paddingHorizontal: 10}]}>
-                <Text style={odit.textTouch}>
-                  {true ? t('orders.return') : t('buttons.btn_buy_again')}
-                </Text>
-              </TouchableOpacity>
+              {item?.timestamps?.completedAt &&
+                // Kiểm tra xem đã qua 1 ngày kể từ ngày giao hàng
+                (new Date() - new Date(item?.timestamps?.completedAt) >
+                24 * 60 * 60 * 1000 ? (
+                  <TouchableOpacity
+                    onPress={e => {
+                      e.stopPropagation();
+                      addToCart(productForCart);
+                    }}
+                    style={[odit.press, {paddingHorizontal: 10}]}>
+                    <Text style={odit.textTouch}>
+                      {t('buttons.btn_buy_again')}
+                    </Text>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    onPress={e => {
+                      e.stopPropagation();
+                      requestReturnOrder(item._id, 'Khác');
+                    }}
+                    style={[odit.press, odit.press1, {paddingHorizontal: 10}]}>
+                    <Text style={[odit.textTouch, odit.textTouch1]}>
+                      {t('orders.return')}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+
               {item.isReviewed ? (
                 <TouchableOpacity
                   onPress={e => {
@@ -180,6 +224,7 @@ const OrderItem = ({
                     e.stopPropagation();
                     navigation.navigate('MultiProductReviewForm', {
                       products: item.orderDetails,
+                      orderId: item._id,
                     });
                   }}
                   style={[odit.press, {paddingHorizontal: 5, marginLeft: 10}]}>
@@ -194,7 +239,7 @@ const OrderItem = ({
               <TouchableOpacity
                 onPress={e => {
                   e.stopPropagation();
-                  gotoOrderDetail('CancelDetail', navigation, item);
+                  navigation.navigate('CancelDetail', {item: item});
                 }}
                 style={[odit.press, odit.press1, {paddingHorizontal: 10}]}>
                 <Text style={[odit.textTouch, odit.textTouch1]}>
@@ -211,13 +256,33 @@ const OrderItem = ({
               </TouchableOpacity>
             </View>
           )}
+
           {refunded && (
-            <TouchableOpacity
-              style={[odit.press, odit.press1, {paddingHorizontal: 10}]}>
-              <Text style={[odit.textTouch, odit.textTouch1]}>
-                {t('orders.watch_order_detail')}
-              </Text>
-            </TouchableOpacity>
+            <View
+              style={[
+                {
+                  width: '100%',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                },
+              ]}>
+              {item.returnRequest && (
+                <Text style={odit.textWait}>
+                  {item.returnRequest && item.returnRequest.status === 'pending'
+                    ? t('orders.wait_confirm')
+                    : item.returnRequest.status === 'accepted'
+                    ? t('orders.wait_return')
+                    : item.returnRequest.status === 'rejected'
+                    ? t('orders.reject_return')
+                    : t('orders.return_succ')}
+                </Text>
+              )}
+              <Image
+                style={appst.icon24}
+                source={require('../../assets/icons/chevron_right.png')}
+              />
+            </View>
           )}
         </View>
       )}

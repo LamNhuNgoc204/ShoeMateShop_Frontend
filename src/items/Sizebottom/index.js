@@ -57,7 +57,7 @@ const BottomSheetContent = ({
     if (quantity < availableQuantity) {
       setQuantity(prev => prev + 1);
     } else if (quantity === availableQuantity) {
-      ToastAndroid.show('Bạn đã đặt số lượng tối đa', ToastAndroid.SHORT);
+      ToastAndroid.show(`${t('toast.limit_quantity')}`, ToastAndroid.SHORT);
     }
   };
 
@@ -75,23 +75,17 @@ const BottomSheetContent = ({
         const response = await addItemToCartApi(itemCart);
         if (response.status) {
           setSizeModalVisible(false);
-          ToastAndroid.show('Thêm vào giỏ hàng thành công', ToastAndroid.SHORT);
+          ToastAndroid.show(`${t('toast.addtocart_succ')}`, ToastAndroid.SHORT);
           setSizeModalVisible(false);
           closeBottomSheet();
         } else {
           setSizeModalVisible(false);
-          ToastAndroid.show(
-            'Oops. Xảy ra lỗi rồi. Thử lại nhé :3',
-            ToastAndroid.SHORT,
-          );
+          ToastAndroid.show(`${t('toast.subTitle_cart')}`, ToastAndroid.SHORT);
           setSizeModalVisible(false);
           closeBottomSheet();
         }
       } catch (error) {
-        ToastAndroid.show(
-          'Lỗi trong quá trình thêm vào giỏ hàng',
-          ToastAndroid.SHORT,
-        );
+        ToastAndroid.show(`${t('toast.del_err')}`, ToastAndroid.SHORT);
         setSizeModalVisible(false);
       }
     } else {
@@ -196,22 +190,28 @@ const BottomSheetContent = ({
       <View style={bottomSheetStyle.line} />
 
       <View style={bottomSheetStyle.bottomContainer}>
-        <Text style={bottomSheetStyle.sizeText}>Size</Text>
+        <Text style={bottomSheetStyle.sizeText}>{t('products.size')}</Text>
         <View style={{flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
           {sizes &&
             sizes.map((size, i) => {
               const isSelected = selectedSize === size.sizeId.name;
+              const isOutOfStock = size.quantity === 0;
+
               return (
                 <TouchableOpacity
                   onPress={() => {
-                    setsizeDetailId(size.sizeId._id);
-                    setSelectedSize(size.sizeId.name);
-                    setsizeId(size._id);
+                    if (!isOutOfStock) {
+                      setsizeDetailId(size.sizeId._id);
+                      setSelectedSize(size.sizeId.name);
+                      setsizeId(size._id);
+                    }
                   }}
+                  disabled={isOutOfStock} 
                   key={i.toString()}
                   style={[
                     bottomSheetStyle.sizeTouchableOpacity,
                     isSelected && bottomSheetStyle.sizeSelct,
+                    isOutOfStock && bottomSheetStyle.sizeDisabled,
                   ]}>
                   <Text
                     style={[

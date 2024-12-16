@@ -6,8 +6,10 @@ import mrvit from '../../items/ReviewItem/MyReviewsItem/style';
 import ratingst from './style';
 import {getAllUserReview} from '../../api/reviewAPI';
 import SkeletonToRating from '../../placeholders/reviews/SkeletonToRating';
+import {useTranslation} from 'react-i18next';
 
 const MyReviews = () => {
+  const {t} = useTranslation();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
 
@@ -52,7 +54,7 @@ const MyReviews = () => {
                 style={mrvit.buying}
                 source={require('../../assets/images/buying_review.png')}
               />
-              <Text style={ratingst.textRate}>No more ratings found.</Text>
+              <Text style={ratingst.textRate}>{t('review.not_found')}</Text>
             </View>
           )}
         </>

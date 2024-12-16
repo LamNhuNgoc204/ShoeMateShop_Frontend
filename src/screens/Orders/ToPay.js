@@ -16,14 +16,15 @@ import OrderHistorySkeleton from '../../placeholders/product/order/OrderHistory.
 import {useTranslation} from 'react-i18next';
 import ProductList from '../Product/ProductList.js';
 import {shuffleArray} from '../../utils/functions/formatData.js';
+import {useFocusEffect} from '@react-navigation/native';
 
 const ToPay = ({navigation}) => {
   const {t} = useTranslation();
   const useAppSelector = useSelector;
   const products = useAppSelector(state => state.products);
+  const [listProduct, setListProduct] = useState([]);
   const [pendingOrders, setPendingOrders] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [listProduct, setListProduct] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
   const scrollViewRef = useRef(null);
@@ -44,7 +45,7 @@ const ToPay = ({navigation}) => {
       }
     }
   }, []);
-  
+
   // console.log('listProduct=>>', listProduct);
 
   const fetchOrder = async () => {
@@ -70,6 +71,12 @@ const ToPay = ({navigation}) => {
     setRefreshing(true);
     fetchOrder().then(() => setRefreshing(false));
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchOrder();
+    }, []),
+  );
 
   return (
     <View style={appst.container}>

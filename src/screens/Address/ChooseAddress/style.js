@@ -17,7 +17,6 @@ const c_adst = StyleSheet.create({
   body1: {
     backgroundColor: colors.background_primary,
   },
-  flat: {},
   viewFooter: {
     flexDirection: 'row',
     paddingVertical: spacing.sm,

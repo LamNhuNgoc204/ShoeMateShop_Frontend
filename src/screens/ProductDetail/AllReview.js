@@ -94,7 +94,7 @@ const AllReview = ({route}) => {
         iconLeft={require('../../assets/icons/back.png')}
         leftOnPress={() => navigation.goBack()}
         name={t('review.all_review')}
-        rightOnPress={() => gotoCart()}
+        rightOnPress={() => gotoCart(navigation)}
         iconRight={require('../../assets/icons/mycart.png')}
         backgroundColor={'#fff'}
       />
@@ -237,7 +237,7 @@ const AllReview = ({route}) => {
 
       {/* Danh sách đánh giá */}
       {filteredReviews.length !== 0 ? (
-        <>
+        <View >
           <FlatList
             data={filteredReviews}
             renderItem={({item}) => <ItemReview item={item} />}
@@ -250,7 +250,7 @@ const AllReview = ({route}) => {
             />{' '}
             {t('review.not_found')}
           </Text>
-        </>
+        </View>
       ) : (
         <View style={styles.view1}>
           <Image

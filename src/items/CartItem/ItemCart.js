@@ -8,6 +8,7 @@ import {deleteOneItemCard, updateCartItem} from '../../api/CartApi';
 import {useNavigation} from '@react-navigation/native';
 import {formatPrice} from '../../utils/functions/formatData';
 import {useTranslation} from 'react-i18next';
+import {useSelector} from 'react-redux';
 
 const ItemCart = ({
   item,
@@ -23,8 +24,9 @@ const ItemCart = ({
 }) => {
   const [productQuantity, setProductQuantity] = useState(item.quantity);
   const navigation = useNavigation();
-  const {i18n} = useTranslation();
+  const {t, i18n} = useTranslation();
   const lag = i18n.language;
+  const lstProducts = useSelector(state => state?.products?.products?.data);
 
   const handlePress = () => {
     onCheckedChange(item, !isChecked);
@@ -55,8 +57,26 @@ const ItemCart = ({
   }, [checkedProducts]);
 
   const tangSL = async () => {
+    //lstProducts
     setProductQuantity(prev => {
       const newQuantity = prev + 1;
+      const productInList = lstProducts.find(
+        pd => pd._id === item.product_id._id,
+      );
+
+      if (productInList) {
+        // Lấy số lượng có sẵn của sản phẩm
+        const size = productInList.size.find(
+          s => s?.sizeId?._id.toString() === item.size_id._id,
+        );
+        const availableQuantity = size?.quantity || 0;
+
+        if (newQuantity > availableQuantity) {
+          ToastAndroid.show(`${t('toast.max_pd')}`, ToastAndroid.SHORT);
+          return prev; // trả về sl hiện tại và không cho tăng tiếp
+        }
+      }
+
       // Cập nhật tổng giá khi quantity thay đổi
       const updatedCards = checkedProducts.map(cart =>
         cart._id === item._id ? {...cart, quantity: newQuantity} : cart,
@@ -80,8 +100,8 @@ const ItemCart = ({
     } else {
       SweetAlert.showAlertWithOptions(
         {
-          title: 'Remove Item?',
-          subTitle: `Oops. Bạn có chắc chắn muốn xóa sản phẩm này không?`,
+          title: t('toast.remove_item_cart'),
+          subTitle: t('toast.title_item_cart'),
           confirmButtonTitle: 'OK',
           confirmButtonColor: '#000',
           style: 'error',
@@ -115,7 +135,7 @@ const ItemCart = ({
       } catch (error) {
         SweetAlert.showAlertWithOptions({
           title: 'Oops...',
-          subTitle: `Oops. Đang xảy ra lỗi ${error} rồi. Bạn đợi một chút nhé <3`,
+          subTitle: t('toast.subTitle_cart'),
           confirmButtonTitle: 'OK',
           confirmButtonColor: '#000',
           style: 'error',
@@ -140,26 +160,44 @@ const ItemCart = ({
   const swipeableRef = useRef(null);
 
   const deleteItemFromCard = async () => {
-    try {
-      const body = {
-        product_id: item.product_id._id,
-        size_id: item.size_id._id,
-      };
-      console.log('body delete cart: ', body);
+    SweetAlert.showAlertWithOptions(
+      {
+        title: t('toast.remove_item_cart'),
+        subTitle: t('toast.title_item_cart'),
+        confirmButtonTitle: 'OK',
+        confirmButtonColor: '#000',
+        style: 'error',
+        cancellable: true,
+      },
+      async () => {
+        try {
+          const body = {
+            product_id: item.product_id._id,
+            size_id: item.size_id._id,
+          };
+          // console.log('body delete cart: ', body);
 
-      const response = await deleteOneItemCard(body);
-      if (response.status) {
-        setCards(prevCards => prevCards.filter(cart => cart._id !== item._id));
-        setCheckedProducts(prevChecked =>
-          prevChecked.filter(cart => cart._id !== item._id),
-        );
-        ToastAndroid.show('Da xoa sp', ToastAndroid.SHORT);
-      } else {
-        ToastAndroid.show('Loi server', ToastAndroid.SHORT);
-      }
-    } catch (error) {
-      console.log('error delete item card->', error);
-    }
+          const response = await deleteOneItemCard(body);
+
+          if (response.status) {
+            setCards(prevCards =>
+              prevCards.filter(cart => cart._id !== item._id),
+            );
+            setCheckedProducts(prevChecked =>
+              prevChecked.filter(cart => cart._id !== item._id),
+            );
+            ToastAndroid.show(`${t('toast.del_cart')}`, ToastAndroid.SHORT);
+            if (swipeableRef.current) {
+              swipeableRef.current.close();
+            }
+          } else {
+            ToastAndroid.show(`${t('toast.del_err')}`, ToastAndroid.SHORT);
+          }
+        } catch (error) {
+          console.log('error delete item card->', error);
+        }
+      },
+    );
   };
 
   const rightSwipeable = () => {
@@ -176,6 +214,21 @@ const ItemCart = ({
   };
 
   // console.log('item', item);
+  const [isOutOfStock, setIsOutOfStock] = useState(false);
+  useEffect(() => {
+    const productInList = lstProducts.find(
+      pd => pd._id === item.product_id._id,
+    );
+    if (productInList) {
+      const size = productInList.size.find(
+        s => s?.sizeId?._id.toString() === item.size_id._id,
+      );
+      const availableQuantity = size?.quantity || 0;
+      if (availableQuantity <= 0) {
+        setIsOutOfStock(true);
+      }
+    }
+  }, [lstProducts, item.product_id._id, item.size_id._id]);
 
   return (
     <Swipeable
@@ -198,12 +251,20 @@ const ItemCart = ({
         }
       }}>
       <TouchableOpacity
+        disabled={isOutOfStock}
         onPress={() =>
           navigation.navigate('ProductDetail', {index: item?.product_id?._id})
         }
         style={itCart.container}>
-        <View style={[itCart.viewContainer, appst.rowStart]}>
+        <View
+          style={[
+            itCart.viewContainer,
+            appst.rowStart,
+            isOutOfStock && {opacity: 0.8, backgroundColor: '#dfdfdf'},
+          ]}>
           <TouchableOpacity
+            style={isOutOfStock && {opacity: 0.8, backgroundColor: '#dfdfdf'}}
+            disabled={isOutOfStock}
             onPress={e => {
               e.stopPropagation();
               handlePress();
@@ -225,36 +286,59 @@ const ItemCart = ({
                 : 'https://i.pinimg.com/236x/6a/f1/ec/6af1ec6645410a41d5339508a83b86f9.jpg',
             }}
           />
-          <View style={[appst.columnSb, itCart.viewQuatity]}>
-            <Text numberOfLines={1} style={itCart.name}>
-              {item && item.product_id.name}
-            </Text>
-            <Text style={itCart.price}>
-              {lag === 'en' && '$'}
-              {item?.product_id?.price &&
-                formatPrice(item?.product_id?.price, lag)}
-              {lag === 'vi' && ' VNĐ '}
-            </Text>
-            <Text style={itCart.price}>Size: {item.size_id.name}</Text>
-            <View style={[appst.rowCenter, itCart.view]}>
-              <TouchableOpacity
-                onPress={e => {
-                  e.stopPropagation();
-                  tangSL();
-                }}>
-                <Image source={require('../../assets/icons/increase.png')} />
-              </TouchableOpacity>
-              <Text style={itCart.quatity}>{productQuantity}</Text>
-              <TouchableOpacity
-                style={{padding: 5}}
-                onPress={e => {
-                  e.stopPropagation();
-                  giamSL();
-                }}>
-                <Image source={require('../../assets/icons/decrease.png')} />
-              </TouchableOpacity>
+          {isOutOfStock ? (
+            <View style={[appst.columnSb, itCart.viewQuatity]}>
+              <Text numberOfLines={1} style={itCart.name}>
+                {item && item.product_id.name}
+              </Text>
+              <Text style={itCart.price}>
+                {lag === 'en' && '$'}
+                {item?.product_id?.price &&
+                  formatPrice(item?.product_id?.price, lag)}
+                {lag === 'vi' && ' VNĐ '}
+              </Text>
+              <Text style={itCart.price}>{t('products.out_of_product')}</Text>
             </View>
-          </View>
+          ) : (
+            <View style={[appst.columnSb, itCart.viewQuatity]}>
+              <Text numberOfLines={1} style={itCart.name}>
+                {item && item.product_id.name}
+              </Text>
+              <Text style={itCart.price}>
+                {lag === 'en' && '$'}
+                {item?.product_id?.price &&
+                  formatPrice(item?.product_id?.price, lag)}
+                {lag === 'vi' && ' VNĐ '}
+              </Text>
+              <Text style={itCart.price}>
+                {t('products.size')}: {item.size_id.name}
+              </Text>
+              <View
+                style={[
+                  appst.rowCenter,
+                  itCart.view,
+                  {pointerEvents: 'box-none'},
+                ]}>
+                <TouchableOpacity
+                  style={{padding: 6}}
+                  onPress={e => {
+                    e.stopPropagation();
+                    tangSL();
+                  }}>
+                  <Image source={require('../../assets/icons/increase.png')} />
+                </TouchableOpacity>
+                <Text style={itCart.quatity}>{productQuantity}</Text>
+                <TouchableOpacity
+                  style={{padding: 6}}
+                  onPress={e => {
+                    e.stopPropagation();
+                    giamSL();
+                  }}>
+                  <Image source={require('../../assets/icons/decrease.png')} />
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
         </View>
       </TouchableOpacity>
     </Swipeable>

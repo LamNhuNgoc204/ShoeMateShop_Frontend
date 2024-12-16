@@ -19,6 +19,7 @@ import OrderDetailSkeleton from '../../placeholders/product/order/OrderDetail';
 import {
   cancelOrder,
   getOrderDetail,
+  handleReturnRq,
   updateOrderStatus,
 } from '../../api/OrderApi';
 import OrderItemDetail from '../../items/OrderItem/OrderItemDetail';
@@ -28,6 +29,8 @@ import odit from '../../items/OrderItem/style';
 import {addItemToCartApi} from '../../api/CartApi';
 import {ActivityIndicator} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+import {gotoCart} from '../../utils/functions/navigationHelper';
 
 const OrderDetail = ({route}) => {
   const {item} = route.params;
@@ -40,44 +43,86 @@ const OrderDetail = ({route}) => {
   const [isCancel, setisCancel] = useState(false);
   const navigation = useNavigation();
   const [isOverlayLoading, setIsOverlayLoading] = useState(false);
+  const lstProducts = useSelector(state => state?.products?.products?.data);
 
   const addToCart = async () => {
     setIsOverlayLoading(true);
     // console.log('productForCart==>', item?.orderDetails);
+    let allOutOfStock = true;
 
     try {
       if (Array.isArray(item?.orderDetails)) {
         for (const product of item?.orderDetails) {
+          const productId = product?.product?.id;
+          const productSizeId = product?.product?.size_id;
+          const productQuantity = product?.product?.pd_quantity;
+
+          // Tìm sản phẩm trong lstProducts theo productId và productSizeId
+          const productInList = lstProducts.find(
+            item =>
+              item._id === productId &&
+              item.size.some(
+                size => size.sizeId._id.toString() === productSizeId,
+              ),
+          );
+
+          // Kiểm tra nếu sản phẩm có trong lstProducts và lấy số lượng tương ứng
+          let quantityToAdd = productQuantity;
+
+          if (productInList) {
+            // Tìm size trong mảng size của sản phẩm
+            const size = productInList.size.find(
+              s => s.sizeId._id.toString() === productSizeId,
+            );
+
+            console.log('----size-----', size);
+
+            if (size) {
+              const availableQuantity = size.quantity;
+              console.log('availableQuantity =>          ', availableQuantity);
+
+              // Lấy số lượng nhỏ hơn hoặc bằng số lượng có sẵn
+              quantityToAdd = Math.min(productQuantity, availableQuantity);
+
+              if (quantityToAdd > 0) {
+                allOutOfStock = false;
+              }
+            }
+          }
+
+          if (quantityToAdd === 0) {
+            continue;
+          }
+
           const itemCart = {
-            product_id: product?.product?.id,
-            size_id: product?.product?.size_id,
-            quantity: product?.product?.pd_quantity,
+            product_id: productId,
+            size_id: productSizeId,
+            quantity: quantityToAdd,
           };
+
+          console.log('itemCart==============>', itemCart);
+
           const response = await addItemToCartApi(itemCart);
           if (!response.status) {
             ToastAndroid.show(
-              `Không thể thêm sản phẩm: ${product?.product?.name}`,
+              `${t('toast.addtocart_fail')}: ${product?.product?.name}`,
               ToastAndroid.SHORT,
             );
           }
         }
-        ToastAndroid.show(
-          'Thêm tất cả sản phẩm vào giỏ hàng thành công',
-          ToastAndroid.SHORT,
-        );
-        navigation.reset({
-          // Đảm bảo tab này là tab đầu tiên khi reset
-          index: 0,
-          routes: [{name: 'BottomNav', params: {screen: 'CartScreen'}}],
-        });
+
+        if (allOutOfStock) {
+          console.log('Sản phẩm này hết hàng, không thêm vào giỏ hàng');
+          ToastAndroid.show(`${t('toast.out_of_stock')}`, ToastAndroid.SHORT);
+        } else {
+          ToastAndroid.show(`${t('toast.addtocart_succ')}`, ToastAndroid.SHORT);
+          gotoCart(navigation);
+        }
       }
     } catch (error) {
-      console.log('Lỗi them sp vào giỏ hàng: ', error);
+      console.log('lỗi thêm giỏ hàng received: ', error);
 
-      ToastAndroid.show(
-        'Lỗi trong quá trình thêm vào giỏ hàng',
-        ToastAndroid.SHORT,
-      );
+      ToastAndroid.show(`${t('toast.del_err')}`, ToastAndroid.SHORT);
     } finally {
       setIsOverlayLoading(false);
     }
@@ -143,6 +188,35 @@ const OrderDetail = ({route}) => {
     const quantity = product.product?.pd_quantity || 0;
     return total + price * quantity;
   }, 0);
+
+  const requestReturnOrder = async (id, reason) => {
+    try {
+      const response = await handleReturnRq(id, reason);
+      if (response.status) {
+        ToastAndroid.show(`${t('toast.returnRq')}`, ToastAndroid.SHORT);
+        navigation.navigate('OrderScreen', {
+          initialRoute: t('orders.return'),
+        });
+      }
+    } catch (error) {
+      console.log('request status order error: ', error);
+    }
+  };
+
+  const cofirmOrder = async id => {
+    try {
+      const response = await updateOrderStatus(id, 'completed');
+      if (response.status) {
+        ToastAndroid.show(`${t('toast.confirm_order')}`, ToastAndroid.SHORT);
+        navigation.navigate('OrderScreen', {
+          initialRoute: t('orders.completed'),
+        });
+      }
+    } catch (error) {
+      console.log('update status order error: ', error);
+    }
+  };
+  // console.log('orderDetail-------', orderDetail);
 
   return (
     <View style={appst.container}>
@@ -329,19 +403,64 @@ const OrderDetail = ({route}) => {
                           )}
                         />
                       )}
+                      {orderDetail.returnRequest.requestDate && (
+                        <Item2
+                          contetn1={t('orders.timeReturn')}
+                          content2={formatDate(
+                            orderDetail.returnRequest.requestDate,
+                          )}
+                        />
+                      )}
+                      {orderDetail.timestamps.completedRefundedAt && (
+                        <Item2
+                          contetn1={t('orders.timeReturnComp')}
+                          content2={formatDate(
+                            orderDetail.timestamps.completedRefundedAt,
+                          )}
+                        />
+                      )}
                     </View>
                   </View>
                 </ScrollView>
 
                 {orderDetail.orderStatus === 'completed' ? (
                   <View style={[appst.rowCenter, {marginHorizontal: 10}]}>
-                    <TouchableOpacity
+                    <>
+                      {orderDetail?.timestamps?.completedAt &&
+                        // Kiểm tra xem đã qua 1 ngày kể từ ngày giao hàng
+                        (new Date() -
+                          new Date(orderDetail?.timestamps?.completedAt) >
+                        24 * 60 * 60 * 1000 ? (
+                          <TouchableOpacity
+                            onPress={e => {
+                              e.stopPropagation();
+                              addToCart();
+                            }}
+                            style={[odit.press, oddt.button]}>
+                            <Text style={[odit.textTouch]}>
+                              {t('buttons.btn_buy_again')}
+                            </Text>
+                          </TouchableOpacity>
+                        ) : (
+                          <TouchableOpacity
+                            onPress={e => {
+                              e.stopPropagation();
+                              requestReturnOrder(item._id, 'Khác');
+                            }}
+                            style={[odit.press, oddt.button]}>
+                            <Text style={[odit.textTouch]}>
+                              {t('orders.return')}
+                            </Text>
+                          </TouchableOpacity>
+                        ))}
+                    </>
+                    {/* <TouchableOpacity
                       onPress={() => addToCart()}
                       style={[odit.press, oddt.button]}>
                       <Text style={odit.textTouch}>
                         {true ? t('orders.return') : t('buttons.btn_buy_again')}
                       </Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     {item.isReviewed ? (
                       <TouchableOpacity
                         onPress={() => navigation.navigate('ProductReviews')}
@@ -353,6 +472,7 @@ const OrderDetail = ({route}) => {
                         onPress={() =>
                           navigation.navigate('MultiProductReviewForm', {
                             products: item.orderDetails,
+                            orderId: item._id,
                           })
                         }
                         style={[odit.press, oddt.button]}>
@@ -360,48 +480,56 @@ const OrderDetail = ({route}) => {
                       </TouchableOpacity>
                     )}
                   </View>
-                ) : orderDetail.orderStatus === 'delivered' ? (
-                  <View style={[appst.rowCenter, {marginHorizontal: 10}]}>
-                    <TouchableOpacity
-                      style={[odit.press, odit.press1, oddt.button]}>
-                      <Text style={[odit.textTouch, odit.textTouch1]}>
-                        {t('orders.return')}
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => {
-                        navigation.navigate('OrderScreen', {
-                          initialRoute: t('orders.completed'),
-                        });
-                        updateOrderStatus(item._id);
-                      }}
-                      style={[odit.press, oddt.button]}>
-                      <Text style={odit.textTouch}>{t('orders.received')}</Text>
-                    </TouchableOpacity>
-                  </View>
                 ) : (
-                  orderDetail.orderStatus === 'cancelled' && (
-                    <View style={[appst.center, {marginHorizontal: 10}]}>
+                  orderDetail.orderStatus === 'delivered' && (
+                    <View style={[appst.rowCenter, {marginHorizontal: 10}]}>
+                      <>
+                        {orderDetail?.timestamps?.deliveredAt &&
+                          // Kiểm tra xem đã qua 1 ngày kể từ ngày giao hàng
+                          (new Date() -
+                            new Date(orderDetail?.timestamps?.deliveredAt) >
+                          24 * 60 * 60 * 1000 ? (
+                            <TouchableOpacity
+                              onPress={e => {
+                                e.stopPropagation();
+                                addToCart();
+                              }}
+                              style={[odit.press, oddt.button]}>
+                              <Text style={[odit.textTouch]}>
+                                {t('buttons.btn_buy_again')}
+                              </Text>
+                            </TouchableOpacity>
+                          ) : (
+                            <TouchableOpacity
+                              onPress={e => {
+                                e.stopPropagation();
+                                requestReturnOrder(item._id, 'Khác');
+                              }}
+                              style={[odit.press, odit.press1, oddt.button]}>
+                              <Text style={[odit.textTouch, odit.textTouch1]}>
+                                {t('orders.return')}
+                              </Text>
+                            </TouchableOpacity>
+                          ))}
+                      </>
                       <TouchableOpacity
-                        onPress={() => addToCart()}
-                        style={[
-                          odit.press,
-                          {
-                            width: '90%',
-                            height: 40,
-                          },
-                        ]}>
+                        onPress={async () => {
+                          cofirmOrder(item._id);
+                          navigation.navigate('OrderScreen', {
+                            initialRoute: t('orders.completed'),
+                          });
+                        }}
+                        style={[odit.press, oddt.button]}>
                         <Text style={odit.textTouch}>
-                          {t('buttons.btn_buy_again')}
+                          {t('orders.received')}
                         </Text>
                       </TouchableOpacity>
                     </View>
                   )
                 )}
 
-                {orderDetail.orderStatus !== 'completed' &&
-                  orderDetail.orderStatus !== 'delivered' &&
-                  orderDetail.orderStatus !== 'cancelled' && (
+                {orderDetail.orderStatus === 'processing' &&
+                  !orderDetail.returnRequest.requestDate && (
                     <CustomedButton
                       disabled={
                         orderDetail.orderStatus === 'processing' && true
@@ -418,6 +546,34 @@ const OrderDetail = ({route}) => {
                           : oddt.titleStyle
                       }
                       onPress={() => handleOrderDetail()}
+                    />
+                  )}
+
+                {orderDetail.orderStatus === 'pending' && (
+                  <CustomedButton
+                    title={t(titleButton)}
+                    style={oddt.press}
+                    titleStyle={oddt.titleStyle}
+                    onPress={() => handleOrderDetail()}
+                  />
+                )}
+
+                {orderDetail.orderStatus === 'cancelled' && (
+                  <CustomedButton
+                    title={t('buttons.btn_buy_again')}
+                    style={oddt.press}
+                    titleStyle={oddt.titleStyle}
+                    onPress={() => addToCart()}
+                  />
+                )}
+
+                {orderDetail.returnRequest.requestDate &&
+                  orderDetail.returnRequest && (
+                    <CustomedButton
+                      title={t('buttons.btn_buy_again')}
+                      style={oddt.press}
+                      titleStyle={oddt.titleStyle}
+                      onPress={() => addToCart()}
                     />
                   )}
               </View>

@@ -38,7 +38,7 @@ const LoginScreen = () => {
 
   const handleLogin = async () => {
     if (!validateFieldsLogin(email, password, setErrors)) {
-      ToastAndroid.show('Vui lòng điền đầy đủ thông tin', ToastAndroid.SHORT);
+      ToastAndroid.show(`${t('toast.type')}`, ToastAndroid.SHORT);
       return;
     }
     const body = {
@@ -48,9 +48,11 @@ const LoginScreen = () => {
 
     const resultAction = await dispatch(login(body));
     if (login.fulfilled.match(resultAction)) {
-      const { user } = resultAction.payload;
-      if (!user?.isVerified) {
-        navigation.navigate('OtpVerification', { email });
+      const {user} = resultAction.payload;
+      ToastAndroid.show(`${t('toast.login_succ')}`, ToastAndroid.SHORT);
+
+      if (!user.isVerified) {
+        navigation.navigate('OtpVerification', {email});
       } else {
         navigation.reset({
           index: 0,
@@ -59,7 +61,7 @@ const LoginScreen = () => {
       }
       ToastAndroid.show('Đăng nhập thành công', ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show('Đăng nhập thất bại', ToastAndroid.SHORT);
+      ToastAndroid.show(`${t('toast.login_fail')}`, ToastAndroid.SHORT);
     }
   };
 

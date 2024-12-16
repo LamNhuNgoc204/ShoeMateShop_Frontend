@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, Image, ToastAndroid} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  ToastAndroid,
+  ScrollView,
+} from 'react-native';
 import PickerSelect from 'react-native-picker-select';
 import CustomTextInput from '../../../components/Input';
 import {CustomedButton} from '../../../components';
@@ -8,8 +15,11 @@ import {useTranslation} from 'react-i18next';
 import styles from './style';
 import {useNavigation} from '@react-navigation/native';
 import AxiosInstance from '../../../helpers/AxiosInstance';
+import {useDispatch} from 'react-redux';
+import {setAddress} from '../../../redux/reducer/cartReducer';
 
-const AddNewAddress = () => {
+const AddNewAddress = ({route}) => {
+  const {screen} = route.params;
   const navigation = useNavigation();
   const {t} = useTranslation();
   const [provinces, setProvinces] = useState([]);
@@ -21,7 +31,16 @@ const AddNewAddress = () => {
   const [fullName, setFullName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [addressDetail, setAddressDetail] = useState('');
-  const [address, setAddress] = useState('');
+  const dispatch = useDispatch();
+
+  const [errors, setErrors] = useState({
+    fullName: '',
+    phoneNumber: '',
+    addressDetail: '',
+    province: '',
+    district: '',
+    ward: '',
+  });
 
   useEffect(() => {
     fetch('https://esgoo.net/api-tinhthanh/1/0.htm')
@@ -61,27 +80,64 @@ const AddNewAddress = () => {
     }
   }, [selectedDistrict]);
 
+  const validateField = (field, value) => {
+    let error = '';
+
+    switch (field) {
+      case 'fullName':
+        if (!value) {
+          error = t('address.name_er');
+        }
+        break;
+      case 'phoneNumber':
+        if (!value) {
+          error = t('address.phone_err');
+        } else if (!/(84|0[3|5|7|8|9])+([0-9]{8})\b/g.test(value)) {
+          error = t('address.phone_error');
+        }
+        break;
+      case 'addressDetail':
+        if (!value) {
+          error = t('address.addres_error');
+        }
+        break;
+      case 'province':
+        if (!value) {
+          error = t('address.province_error');
+        }
+        break;
+      case 'district':
+        if (!value) {
+          error = t('address.district_error');
+        }
+        break;
+      case 'ward':
+        if (!value) {
+          error = t('address.ward_err');
+        }
+        break;
+      default:
+        break;
+    }
+
+    setErrors(prev => ({...prev, [field]: error}));
+  };
+
   const saveChanges = async () => {
-    // Kiểm tra các trường không được để trống
-    if (!fullName || !phoneNumber || !addressDetail || !selectedProvince || !selectedDistrict || !selectedWard) {
-      ToastAndroid.show('Vui lòng điền đầy đủ thông tin', ToastAndroid.SHORT);
+    // Kiểm tra lỗi cho tất cả các trường
+    validateField('fullName', fullName);
+    validateField('phoneNumber', phoneNumber);
+    validateField('addressDetail', addressDetail);
+    validateField('province', selectedProvince);
+    validateField('district', selectedDistrict);
+    validateField('ward', selectedWard);
+
+    // Kiểm tra nếu có lỗi thì dừng việc lưu
+    const hasErrors = Object.values(errors).some(error => error !== '');
+    if (hasErrors) {
       return;
     }
-  
-    // Tên phải có ít nhất 6 ký tự
-    if (fullName.length <= 6) {
-      ToastAndroid.show('Tên phải dài hơn 6 ký tự', ToastAndroid.SHORT);
-      return;
-    }
-  
-    // Số điện thoại phải bắt đầu bằng số 0 và có độ dài là 10
-    const phoneRegex = /^0\d{9}$/;
-    if (!phoneRegex.test(phoneNumber)) {
-      ToastAndroid.show('Số điện thoại phải bắt đầu bằng số 0 và có 10 chữ số', ToastAndroid.SHORT);
-      return;
-    }
-  
-    // Nếu tất cả điều kiện hợp lệ
+
     const address = `${addressDetail},${findWardName(
       selectedWard,
     )},${findDistrictName(selectedDistrict)},${findProvinceName(
@@ -89,6 +145,8 @@ const AddNewAddress = () => {
     )}`;
     setAddress(address);
   
+    console.log('Address:', address);
+
     try {
       const body = {
         address: address,
@@ -102,16 +160,23 @@ const AddNewAddress = () => {
       if (response.status) {
         setFullName('');
         setPhoneNumber('');
-        setAddress('');
         setAddressDetail('');
         setSelectedProvince('');
         setSelectedWard('');
         setSelectedDistrict('');
-        ToastAndroid.show('Thêm địa chỉ thành công', ToastAndroid.SHORT);
-  
-        navigation.navigate('ChooseAddress', {
-          newAddressItem: response.data,
-        });
+        setErrors(null);
+        ToastAndroid.show(`${t('address.add_succ')}`, ToastAndroid.SHORT);
+
+        if (screen === 'ChooseAddress') {
+          navigation.navigate('ChooseAddress', {
+            newAddressItem: response.data,
+          });
+        }
+
+        if (screen === 'CheckOutScreen') {
+          dispatch(setAddress(response.data));
+          navigation.navigate('CheckOutScreen');
+        }
       } else {
         ToastAndroid.show('Lỗi server, vui lòng thử lại', ToastAndroid.SHORT);
       }
@@ -137,7 +202,7 @@ const AddNewAddress = () => {
     return ward ? ward.full_name : '';
   };
   return (
-    <View style={styles.container}>
+    <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
       <View style={appst.rowCenter}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
@@ -152,62 +217,98 @@ const AddNewAddress = () => {
         <CustomTextInput
           label={t('form_input.fullname')}
           placeholder={t('form_input.placeholder_fullname')}
-          onChangeText={text => setFullName(text)}
+          onChangeText={text => {
+            setFullName(text);
+            validateField('fullName', text);
+          }}
         />
+        {errors?.fullName ? (
+          <Text style={styles.errorText}>{errors.fullName}</Text>
+        ) : null}
         <CustomTextInput
           label={t('form_input.phone')}
           placeholder={t('form_input.placeholder_phone')}
           keyboardType="numeric"
-          onChangeText={text => setPhoneNumber(text)}
+          onChangeText={text => {
+            setPhoneNumber(text);
+            validateField('phoneNumber', text);
+          }}
         />
+        {errors?.phoneNumber ? (
+          <Text style={styles.errorText}>{errors.phoneNumber}</Text>
+        ) : null}
 
         <View style={styles.pickerContainer}>
-          <Text style={styles.label}>Chọn Tỉnh:</Text>
+          <Text style={styles.label}>{t('address.sub_province')}:</Text>
           <PickerSelect
             value={selectedProvince}
-            onValueChange={value => setSelectedProvince(value)}
+            onValueChange={value => {
+              setSelectedProvince(value);
+              validateField('province', value);
+            }}
             items={provinces.map(province => ({
               label: province.full_name,
               value: province.id,
             }))}
-            placeholder={{label: 'Tỉnh Thành', value: ''}}
+            placeholder={{label: t('address.province'), value: ''}}
             style={styles.input}
           />
         </View>
+        {errors?.province ? (
+          <Text style={styles.errorText}>{errors.province}</Text>
+        ) : null}
 
         <View style={styles.pickerContainer}>
-          <Text style={styles.label}>Chọn Huyện:</Text>
+          <Text style={styles.label}>{t('address.sub_district')}:</Text>
           <PickerSelect
             value={selectedDistrict}
-            onValueChange={value => setSelectedDistrict(value)}
+            onValueChange={value => {
+              setSelectedDistrict(value);
+              validateField('district', value);
+            }}
             items={districts.map(district => ({
               label: district.full_name,
               value: district.id,
             }))}
-            placeholder={{label: 'Quận Huyện', value: ''}}
+            placeholder={{label: t('address.district'), value: ''}}
             style={styles.input}
           />
         </View>
+        {errors?.district ? (
+          <Text style={styles.errorText}>{errors.district}</Text>
+        ) : null}
 
         <View style={styles.pickerContainer}>
-          <Text style={styles.label}>Chọn Phường:</Text>
+          <Text style={styles.label}>{t('address.sub_commune')}:</Text>
           <PickerSelect
             value={selectedWard}
-            onValueChange={value => setSelectedWard(value)}
+            onValueChange={value => {
+              setSelectedWard(value);
+              validateField('ward', value);
+            }}
             items={wards.map(ward => ({
               label: ward.full_name,
               value: ward.id,
             }))}
-            placeholder={{label: 'Phường Xã', value: ''}}
+            placeholder={{label: t('address.commune'), value: ''}}
             style={styles.input}
           />
         </View>
+        {errors?.ward ? (
+          <Text style={styles.errorText}>{errors.ward}</Text>
+        ) : null}
 
         <CustomTextInput
-          label="Detail address"
+          label={t('address.detail')}
           placeholder="123, Nguyen Hue"
-          onChangeText={text => setAddressDetail(text)}
+          onChangeText={text => {
+            setAddressDetail(text);
+            validateField('addressDetail', text);
+          }}
         />
+        {errors?.addressDetail ? (
+          <Text style={styles.errorText}>{errors.addressDetail}</Text>
+        ) : null}
 
         <CustomedButton
           title={t('buttons.btn_save_change')}
@@ -216,7 +317,7 @@ const AddNewAddress = () => {
           style={styles.press}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

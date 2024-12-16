@@ -21,6 +21,7 @@ import ProductList from '../Product/ProductList';
 import {shuffleArray} from '../../utils/functions/formatData';
 import {addItemToCartApi} from '../../api/CartApi';
 import {gotoCart} from '../../utils/functions/navigationHelper';
+import {useFocusEffect} from '@react-navigation/native';
 
 const Cancalled = ({navigation}) => {
   const {t} = useTranslation();
@@ -31,6 +32,7 @@ const Cancalled = ({navigation}) => {
   const [listProduct, setListProduct] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [isOverlayLoading, setIsOverlayLoading] = useState(false);
+  const lstProducts = useSelector(state => state?.products?.products?.data);
 
   const scrollViewRef = useRef(null);
 
@@ -58,18 +60,24 @@ const Cancalled = ({navigation}) => {
     try {
       const response = await getOrderCancell();
       if (response.status) {
-        setCancelOrders(response?.data?.reverse());
-        setLoading(true);
+        setCancelOrders(response?.data);
       }
     } catch (error) {
-      setLoading(true);
       console.log('Get order error: ', error);
+    } finally {
+      setLoading(true);
     }
   };
 
   useEffect(() => {
     fetchOrder();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchOrder();
+    }, []),
+  );
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -79,34 +87,84 @@ const Cancalled = ({navigation}) => {
   const addToCart = async productForCart => {
     setIsOverlayLoading(true);
     // console.log('productForCart==>', productForCart);
+    // lstProducts
+    let allOutOfStock = true;
 
     try {
       if (Array.isArray(productForCart)) {
         for (const product of productForCart) {
+          const productId = product?.product?.id;
+          const productSizeId = product?.product?.size_id;
+          const productQuantity = product?.product?.pd_quantity;
+
+          // Tìm sản phẩm trong lstProducts theo productId và productSizeId
+          const productInList = lstProducts.find(
+            item =>
+              item._id === productId &&
+              item.size.some(
+                size => size.sizeId._id.toString() === productSizeId,
+              ),
+          );
+
+          console.log('productInList====>', productInList);
+
+          // Kiểm tra nếu sản phẩm có trong lstProducts và lấy số lượng tương ứng
+          let quantityToAdd = productQuantity;
+
+          if (productInList) {
+            // Tìm size trong mảng size của sản phẩm
+            const size = productInList.size.find(
+              s => s.sizeId._id.toString() === productSizeId,
+            );
+
+            console.log('----size-----', size);
+
+            if (size) {
+              const availableQuantity = size.quantity;
+              console.log('availableQuantity =>          ', availableQuantity);
+
+              // Lấy số lượng nhỏ hơn hoặc bằng số lượng có sẵn
+              quantityToAdd = Math.min(productQuantity, availableQuantity);
+
+              if (quantityToAdd > 0) {
+                allOutOfStock = false;
+              }
+            }
+          }
+
+          if (quantityToAdd === 0) {
+            continue;
+          }
+
           const itemCart = {
-            product_id: product?.product?.id,
-            size_id: product?.product?.size_id,
-            quantity: product?.product?.pd_quantity,
+            product_id: productId,
+            size_id: productSizeId,
+            quantity: quantityToAdd,
           };
+
+          console.log('itemCart==============>', itemCart);
+
           const response = await addItemToCartApi(itemCart);
           if (!response.status) {
             ToastAndroid.show(
-              `Không thể thêm sản phẩm: ${product?.product?.name}`,
+              `${t('toast.addtocart_fail')}: ${product?.product?.name}`,
               ToastAndroid.SHORT,
             );
           }
         }
-        ToastAndroid.show(
-          'Thêm tất cả sản phẩm vào giỏ hàng thành công',
-          ToastAndroid.SHORT,
-        );
-        gotoCart();
+
+        if (allOutOfStock) {
+          console.log('Sản phẩm này hết hàng, không thêm vào giỏ hàng');
+          ToastAndroid.show(`${t('toast.out_of_stock')}`, ToastAndroid.SHORT);
+        } else {
+          ToastAndroid.show(`${t('toast.addtocart_succ')}`, ToastAndroid.SHORT);
+          gotoCart(navigation);
+        }
       }
     } catch (error) {
-      ToastAndroid.show(
-        'Lỗi trong quá trình thêm vào giỏ hàng',
-        ToastAndroid.SHORT,
-      );
+      console.log('lỗi thêm giỏ hàng received: ', error);
+
+      ToastAndroid.show(`${t('toast.del_err')}`, ToastAndroid.SHORT);
     } finally {
       setIsOverlayLoading(false);
     }
@@ -131,6 +189,7 @@ const Cancalled = ({navigation}) => {
                   item={item}
                   cancel={true}
                   navigation={navigation}
+                  setIsOverlayLoading={setIsOverlayLoading}
                 />
               )}
               keyExtractor={(item, index) =>

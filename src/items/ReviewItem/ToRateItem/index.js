@@ -39,7 +39,7 @@ const RatingItem = ({item}) => {
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('MultiProductReviewForm', {
-                  products: item.product,
+                  products: item.product, orderId: item._id,
                 })
               }
               style={rtit.press}>

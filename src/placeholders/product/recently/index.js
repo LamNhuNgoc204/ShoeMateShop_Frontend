@@ -4,7 +4,7 @@ import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 const RecentlySkeleton = () => {
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <SkeletonPlaceholder>
         <View style={styles.productList}>
           {[...Array(10)].map((_, index) => (

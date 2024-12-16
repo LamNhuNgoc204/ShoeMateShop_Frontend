@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View, FlatList, Alert, Modal, ActivityIndicator} from 'react-native';
+import {
+  View,
+  FlatList,
+  Alert,
+  Modal,
+  ActivityIndicator,
+  ToastAndroid,
+} from 'react-native';
 import Header from '../../components/Header';
 import {useTranslation} from 'react-i18next';
 import appst from '../../constants/AppStyle';
@@ -7,7 +14,7 @@ import ReviewItem from '../../items/ReviewItem/MultiProductReviewItem';
 import {createMultipleReviews} from '../../api/reviewAPI';
 
 const MultiProductReviewForm = ({route, navigation}) => {
-  const {products} = route.params;
+  const {products, orderId} = route.params;
   // console.log('products ====================>>>>>', products);
   const {t} = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
@@ -41,12 +48,15 @@ const MultiProductReviewForm = ({route, navigation}) => {
   const submitAllReviews = async () => {
     console.log('Submit review');
     try {
-      const response = await createMultipleReviews({reviews: data});
+      const response = await createMultipleReviews({
+        reviews: data,
+        orderId: orderId,
+      });
       if (response) {
-        Alert.alert('Bạn đã đánh giá sản phẩm');
+        ToastAndroid.show(`${t('review.review_succ')}`, ToastAndroid.SHORT);
         navigation.navigate('MyRating', {initialRoute: t('review.to_review')});
       } else {
-        Alert.alert('Xảy ra lỗi');
+        ToastAndroid.show(`${t('toast.del_err')}`, ToastAndroid.SHORT);
       }
     } catch (error) {
       console.log('Error to review: ', error);

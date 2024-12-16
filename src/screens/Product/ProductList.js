@@ -10,7 +10,7 @@ import appst from '../../constants/AppStyle';
 import {odst} from '../Orders/style';
 import {checkTokenValidity} from '../../utils/functions/checkToken';
 
-const ProductList = ({listProduct, isHome, onSetProduct}) => {
+const ProductList = ({listProduct, isHome, updateIndex}) => {
   const {t} = useTranslation();
   const dispatch = useDispatch();
   const [wishLists, setWishLists] = useState([]);
@@ -60,6 +60,7 @@ const ProductList = ({listProduct, isHome, onSetProduct}) => {
           wishlist={wishLists}
           handleHeartPress={handleHeartPress}
           product={item}
+          updateIndex={updateIndex}
         />
       );
     },

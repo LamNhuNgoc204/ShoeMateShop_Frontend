@@ -180,13 +180,15 @@ const CheckOutScreen = ({route}) => {
           style={c_outst.viewBody}>
           {!addressDefault ? (
             <TouchableOpacity
-              onPress={() => navigation.navigate('AddNewAddress')}
+              onPress={() =>
+                navigation.navigate('AddNewAddress', {screen: 'CheckOutScreen'})
+              }
               style={[appst.rowStart, c_outst.wrapaddress]}>
               <Image
                 style={c_outst.address}
                 source={require('../../assets/icons/add_adr.png')}
               />
-              <Text style={c_outst.textAdress}>Thêm địa chỉ giao hàng</Text>
+              <Text style={c_outst.textAdress}>{t('address.add')}</Text>
             </TouchableOpacity>
           ) : (
             <View
@@ -248,7 +250,7 @@ const CheckOutScreen = ({route}) => {
             </View>
             <View style={[appst.rowCenter]}>
               <Text style={c_outst.text7}>
-                {(responseVoucher && 'Use 1 Voucher') || ''}
+                {t('voucher.use')} 1 {t('voucher.vc')}
               </Text>
               <Image
                 style={appst.icon24}
@@ -393,13 +395,6 @@ const CheckOutScreen = ({route}) => {
         textbutton={t('buttons.btn_back_to_shop')}
       />
 
-      {/* <LoadingModal
-        isComplete={isComplete}
-        visible={isLoading}
-        message={t('orders.creating_order')}
-        onLoadingComplete={onLoadingComplete}
-      /> */}
-      {/* Cho them gio hang */}
       <Modal transparent={true} visible={isLoading}>
         <View
           style={{

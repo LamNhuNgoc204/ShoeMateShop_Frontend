@@ -6,7 +6,13 @@ import {checkTokenValidity} from '../../utils/functions/checkToken';
 import {useTranslation} from 'react-i18next';
 import {formatPrice} from '../../utils/functions/formatData';
 
-const ProductItem = ({handleHeartPress, product, style, wishlist = [], onSetProduct}) => {
+const ProductItem = ({
+  updateIndex,
+  handleHeartPress,
+  product,
+  style,
+  wishlist = [],
+}) => {
   const [liked, setLiked] = React.useState(false);
   const navigation = useNavigation();
   const {t, i18n} = useTranslation();
@@ -54,10 +60,11 @@ const ProductItem = ({handleHeartPress, product, style, wishlist = [], onSetProd
     imageAssets && imageAssets.length > 0 ? imageAssets[0] : null;
 
   function onProductDetail() {
-    navigation.navigate('ProductDetail', {index: product._id});
-    if(onSetProduct) {
-      onSetProduct(product)
+    if (updateIndex) {
+      updateIndex(product?._id);
+      return;
     }
+    navigation.navigate('ProductDetail', {index: product?._id});
   }
 
   return (
@@ -108,9 +115,7 @@ const ProductItem = ({handleHeartPress, product, style, wishlist = [], onSetProd
                 productStyle.maxWidth100,
               ]}>
               <Text numberOfLines={1} ellipsizeMode="tail">
-                {lag === 'en' && (
-                  <Text style={productStyle.dolar}>$</Text>
-                )}
+                {lag === 'en' && <Text style={productStyle.dolar}>$</Text>}
                 <Text style={productStyle.text14}>
                   {product?.price && formatPrice(product?.price, lag)}
                 </Text>

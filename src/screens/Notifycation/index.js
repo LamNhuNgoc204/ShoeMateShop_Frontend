@@ -143,5 +143,3 @@ const Notifycation = ({ navigation }) => {
 };
 
 export default Notifycation;
-
-const styles = StyleSheet.create({});
