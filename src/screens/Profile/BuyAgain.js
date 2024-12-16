@@ -25,7 +25,7 @@ const BuyAgain = () => {
   const navigation = useNavigation();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
-  const listProduct = useSelector(state => state.products.products);
+  const listProduct = useSelector(state => state?.products?.products?.data);
 
   //Chưa có api nha
 
