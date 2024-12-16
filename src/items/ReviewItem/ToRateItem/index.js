@@ -13,7 +13,7 @@ const RatingItem = ({item}) => {
   // const productPreview = item && item.product;
 
   // console.log('product rating', product);
-  console.log('pd rating', pd);
+  // console.log('pd rating', pd);
   // console.log('item', item);
 
   // console.log('productPreview =>', item.product);

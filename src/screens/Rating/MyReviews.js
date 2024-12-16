@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, Image, Text, View} from 'react-native';
+import {
+  FlatList,
+  Image,
+  RefreshControl,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
 import appst from '../../constants/AppStyle';
 import MyReviewItem from '../../items/ReviewItem/MyReviewsItem';
 import mrvit from '../../items/ReviewItem/MyReviewsItem/style';
@@ -13,29 +20,39 @@ const MyReviews = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await getAllUserReview();
-        if (response) {
-          setData(response);
-          setLoading(false);
-        }
-      } catch (error) {
-        console.log('Không lấy được dữ liệu: ', error);
-      } finally {
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = await getAllUserReview();
+      if (response) {
+        setData(response);
         setLoading(false);
       }
-    };
+    } catch (error) {
+      console.log('Không lấy được dữ liệu: ', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
 
-  console.log('user review', data);
+  // console.log('user review', data);
+  const [refreshing, setRefreshing] = useState(false);
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await fetchData();
+    setRefreshing(false);
+  };
 
   return (
-    <View style={[appst.container, mrvit.container]}>
+    <ScrollView
+      style={[appst.container, mrvit.container]}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+      }>
       {loading ? (
         <SkeletonToRating />
       ) : (
@@ -59,7 +76,7 @@ const MyReviews = () => {
           )}
         </>
       )}
-    </View>
+    </ScrollView>
   );
 };
 

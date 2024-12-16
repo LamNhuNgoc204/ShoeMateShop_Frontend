@@ -1,4 +1,11 @@
-import {View, Text, FlatList, Image, ScrollView} from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  ScrollView,
+  RefreshControl,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import ratingst from './style';
 import RatingItem from '../../items/ReviewItem/ToRateItem';
@@ -9,36 +16,45 @@ import SkeletonToRating from '../../placeholders/reviews/SkeletonToRating';
 
 const ToRate = () => {
   const {t} = useTranslation();
-  const [rating, setRating] = useState([]);
   const [loading, setLoading] = useState(false);
   const [filteredRating, setfilteredRating] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const response = await getUnreviewedProductsInOrder();
-        if (response) {
-          setRating(response?.reverse());
-          const filteredRatings = response.filter(
-            order => order.product?.length > 0,
-          );
-          setfilteredRating(filteredRatings.reverse());
-        }
-      } catch (error) {
-        console.log('Get un review: ', error);
-        setLoading(true);
-      } finally {
-        setLoading(false);
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await getUnreviewedProductsInOrder();
+      if (response) {
+        const filteredRatings = response.filter(
+          order => order.product?.length > 0,
+        );
+        setfilteredRating(filteredRatings.reverse());
       }
-    };
+    } catch (error) {
+      console.log('Get un review: ', error);
+      setLoading(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchData();
   }, []);
 
-  console.log('rating: ', rating);
+  // console.log('rating: ', rating);
+  const [refreshing, setRefreshing] = useState(false);
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await fetchData();
+    setRefreshing(false);
+  };
 
   return (
-    <ScrollView style={appst.container}>
+    <ScrollView
+      style={appst.container}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+      }>
       {loading ? (
         <SkeletonToRating />
       ) : (
