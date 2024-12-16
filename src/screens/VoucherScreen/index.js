@@ -174,7 +174,7 @@ const SearchSection = ({searchQuery, setSearchQuery, onSearch}) => {
         <Text style={style.btnText}>Search</Text>
       </TouchableOpacity>
     </View>
-  );
-};
+  )
+}
 
 export default VoucherScreen;
