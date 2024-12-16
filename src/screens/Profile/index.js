@@ -39,7 +39,10 @@ const ProfileScreen = () => {
     <ChildItem
       onPress={() => {
         isTokenValid
-          ? navigation.navigate(item.navigateTo, item.navigateTo == "MessageScreen" ? {product: null} : {})
+          ? navigation.navigate(
+              item.navigateTo,
+              item.navigateTo == 'MessageScreen' ? {product: null} : {},
+            )
           : navigation.navigate('RequireLogin');
       }}
       iconSource={item.iconSource}
@@ -180,7 +183,7 @@ const ProfileScreen = () => {
       />
 
       <View style={{marginTop: 10}}>
-        <ProductList listProduct={productState.products} />
+        <ProductList listProduct={productState?.products?.data} />
       </View>
     </ScrollView>
   );

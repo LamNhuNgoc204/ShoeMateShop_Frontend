@@ -116,7 +116,7 @@ const ItemReview = ({item}) => {
                 <TouchableOpacity
                   style={appst.rowEnd}
                   onPress={toggleResponseVisibility}>
-                  <Text style={pddtit.readMore}>Phản hồi từ người bán</Text>
+                  <Text style={pddtit.readMore}>{t('review.responder')}</Text>
                   <Image
                     style={[appst.icon20, {marginTop: 10}]}
                     source={require('../../../assets/icons/arrrow_down.png')}
@@ -136,13 +136,13 @@ const ItemReview = ({item}) => {
                       borderRadius: 8,
                     }}>
                     <View style={appst.rowStart}>
-                      <Image
+                      {/* <Image
                         style={appst.icon30}
                         source={require('../../../assets/icons/logo.png')}
-                      />
+                      /> */}
                       <Text
                         style={{fontSize: 16, marginLeft: 5, color: '#333'}}>
-                        Phản hồi từ người bán
+                        {t('review.responder')}
                       </Text>
                     </View>
                     <Text style={pddtit.responseText}>
@@ -153,7 +153,7 @@ const ItemReview = ({item}) => {
                   <TouchableOpacity
                     style={appst.rowEnd}
                     onPress={toggleResponseVisibility}>
-                    <Text style={pddtit.readMore}>Ẩn phản hồi</Text>
+                    <Text style={pddtit.readMore}>{t('review.hide_rv')}</Text>
                     <Image
                       style={[appst.icon20, {marginTop: 10}]}
                       source={require('../../../assets/icons/arrrow_up.png')}

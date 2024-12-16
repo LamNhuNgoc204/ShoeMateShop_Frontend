@@ -103,7 +103,7 @@ const AllReview = ({route}) => {
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        style={[styles.filterContainer, {flexWrap: 'wrap'}]}>
+        style={[styles.filterContainer]}>
         <TouchableOpacity style={styles.resetButton} onPress={resetFilter}>
           <Text style={styles.resetText}>{t('review.all')}</Text>
         </TouchableOpacity>
@@ -234,14 +234,15 @@ const AllReview = ({route}) => {
           </View>
         </View>
       </Modal>
-
+      <ScrollView showsVerticalScrollIndicator={false}></ScrollView>
       {/* Danh sách đánh giá */}
       {filteredReviews.length !== 0 ? (
-        <View >
+        <ScrollView style={{height: '85%'}}>
           <FlatList
             data={filteredReviews}
             renderItem={({item}) => <ItemReview item={item} />}
             keyExtractor={item => item._id}
+            scrollEnabled={false}
           />
           <Text style={styles.text1}>
             <Image
@@ -250,7 +251,7 @@ const AllReview = ({route}) => {
             />{' '}
             {t('review.not_found')}
           </Text>
-        </View>
+        </ScrollView>
       ) : (
         <View style={styles.view1}>
           <Image
@@ -298,6 +299,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     backgroundColor: '#D0E7F8',
     marginVertical: 5,
+    height: 60,
   },
   ratingButton: {
     paddingHorizontal: 15,

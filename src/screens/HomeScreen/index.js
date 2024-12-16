@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { View, Image } from 'react-native';
-import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {View, Image} from 'react-native';
+import {useTranslation} from 'react-i18next';
+import {useDispatch, useSelector} from 'react-redux';
+import {FlatList, ScrollView} from 'react-native-gesture-handler';
 import PagerView from 'react-native-pager-view';
 
 import homeStyle from './style';
@@ -12,8 +12,8 @@ import {
   fetchProductsThunk,
   fetchWishlist,
 } from '../../redux/thunks/productThunks';
-import { getCategoryThunk } from '../../redux/thunks/categoryThunk';
-import { BANNERS } from '../../api/mockData';
+import {getCategoryThunk} from '../../redux/thunks/categoryThunk';
+import {BANNERS} from '../../api/mockData';
 import Category from '../../items/Category';
 import HomeSkeleton from '../../placeholders/home';
 import {useFocusEffect} from '@react-navigation/native';
@@ -23,8 +23,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AxiosInstance from '../../helpers/AxiosInstance';
 import ProductList from '../Product/ProductList';
 import {shuffleArray} from '../../utils/functions/formatData';
-import { checkTokenValidity } from '../../utils/functions/checkToken';
-import { setValidToken } from '../../redux/reducer/userReducer';
+import {checkTokenValidity} from '../../utils/functions/checkToken';
+import {setValidToken} from '../../redux/reducer/userReducer';
 
 const HomeScreen = ({navigation, route}) => {
   const {t} = useTranslation();
@@ -37,22 +37,20 @@ const HomeScreen = ({navigation, route}) => {
   const state = useSelector(state => state.products);
   const dispatch = useDispatch();
 
-
   const uploadFCMToken = async () => {
     console.log('upload token....');
     const fcmToken = await messaging().getToken();
     const preToken = await AsyncStorage.getItem('fcm_token');
     await AsyncStorage.setItem('fcm_token', fcmToken);
     const response = await AxiosInstance().post('/users/refresh-fcm', {
-      token: fcmToken
-    })
+      token: fcmToken,
+    });
     if (response.status) {
       console.log('refresh token thành công');
     } else {
       console.log('refresh token thất bại');
     }
-  }
-
+  };
 
   useEffect(() => {
     uploadFCMToken();
@@ -65,15 +63,14 @@ const HomeScreen = ({navigation, route}) => {
       if (preToken !== fcmToken) {
         await AsyncStorage.setItem('fcm_token', fcmToken);
         const response = await AxiosInstance().post('/users/refresh-fcm', {
-          token: fcmToken
-        })
+          token: fcmToken,
+        });
         if (response.status === 200) {
           console.log('refresh token thành công');
         } else {
           console.log('refresh token thất bại');
         }
       }
-
     });
 
     // Cleanup khi component unmount
@@ -145,7 +142,7 @@ const HomeScreen = ({navigation, route}) => {
         ];
 
         // Chỉ gọi wishlist nếu token hợp lệ
-        if (isTokenValid && !state.wishlist.length) {
+        if (isTokenValid) {
           thunks.push(dispatch(fetchWishlist()));
         }
 
@@ -211,15 +208,15 @@ const HomeScreen = ({navigation, route}) => {
         editable={false}
         iconRight={require('../../assets/icons/mesage.png')}
         onIconRightPress={() => {
-          navigation.navigate('MessageScreen',{
-            product: null
+          navigation.navigate('MessageScreen', {
+            product: null,
           });
         }}
       />
       {route?.params?.reload ? (
         <Loading />
       ) : (
-        <View style={{ flex: 1 }}>
+        <View style={{flex: 1}}>
           {loading ? (
             <HomeSkeleton />
           ) : (
@@ -241,7 +238,7 @@ const HomeScreen = ({navigation, route}) => {
                 </PagerView>
                 <FlatList
                   data={BANNERS}
-                  renderItem={({ item, index }) => (
+                  renderItem={({item, index}) => (
                     <View
                       style={[
                         homeStyle.indicatorDot,
@@ -264,7 +261,7 @@ const HomeScreen = ({navigation, route}) => {
                     scrollEnabled={false}
                     style={homeStyle.marginTop15}
                     data={categories}
-                    renderItem={({ item, index }) => {
+                    renderItem={({item, index}) => {
                       if (index % 2 === 0) {
                         return (
                           <Category
@@ -274,7 +271,7 @@ const HomeScreen = ({navigation, route}) => {
                             category={item}
                             style={[
                               index < categories.length - 2 &&
-                              homeStyle.marginRight30,
+                                homeStyle.marginRight30,
                               homeStyle.marginBottom15,
                             ]}
                           />
@@ -289,7 +286,7 @@ const HomeScreen = ({navigation, route}) => {
                   <FlatList
                     scrollEnabled={false}
                     data={categories}
-                    renderItem={({ item, index }) => {
+                    renderItem={({item, index}) => {
                       if (index % 2 === 1) {
                         return (
                           <Category
@@ -299,7 +296,7 @@ const HomeScreen = ({navigation, route}) => {
                             category={item}
                             style={[
                               index < categories.length - 2 &&
-                              homeStyle.marginRight30,
+                                homeStyle.marginRight30,
                             ]}
                           />
                         );

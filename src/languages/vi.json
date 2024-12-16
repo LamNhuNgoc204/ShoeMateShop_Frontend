@@ -279,7 +279,9 @@
     "type": "Phân loại",
     "no_reviews": "Không có đánh giá phù hợp",
     "filter_by_size": "Lọc theo kích thước",
-    "review_succ": "Đánh giá sản phẩm thành công"
+    "review_succ": "Đánh giá sản phẩm thành công",
+    "responder": "Phản hồi từ người bán:",
+    "hide_rv": "Ẩn phản hồi"
   },
   "notifications": {
     "title": "Thông báo",
@@ -301,7 +303,14 @@
     "price": "Giá sản phẩm",
     "rate": "Đánh giá",
     "min_price": "Tối thiểu",
-    "max_price": "Tối đa"
+    "max_price": "Tối đa",
+    "loading": "Đang tải...",
+    "use_vc": "Sử dụng voucher thành công",
+    "used_vc": "Bạn đã sử dụng voucher này rồi",
+    "get_vc_err": "Xảy ra lỗi. Vui lòng thử lại sau!",
+    "key": "Vui lòng nhập từ khóa tìm kiếm",
+    "not_found": "Không tìm thấy mã giảm giá phù hợp",
+    "vcc": "Hiện tại chưa có voucher nào khả dụng"
   },
   "onboard": {
     "buttonTitle1": "Bắt đầu",
@@ -403,7 +412,8 @@
   },
   "voucher": {
     "use": "Sử dụng",
-    "vc": "mã giảm giá"
+    "vc": "mã giảm giá",
+    "end_date": "Ngày hết hạn:"
   },
   "validate": {
     "require": "Thông tin này là bắt buộc",

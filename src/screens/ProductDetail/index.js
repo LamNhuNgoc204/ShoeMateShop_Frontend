@@ -46,24 +46,14 @@ const ProductDetail = props => {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [proId, setProId] = useState(index);
 
-
-
   const [listReview, setListReview] = useState([]);
   const isTokenValid = useSelector(state => state?.user?.isValidToken);
   const [lstProducts, setlstProducts] = useState([]);
 
-  const updateIndex = newIndex => {
-    setLoading(true);
-    if (newIndex) {
-      setCurrentIndex(newIndex);
-      setLoading(false);
-    }
-  };
-
   const fetchListReview = async () => {
     try {
       const response = await AxiosInstance().get(
-        `/reviews/get-list-product-reviews/${currentIndex}`,
+        `/reviews/get-list-product-reviews/${proId}`,
       );
       // console.log('response =>', response);
 
@@ -77,7 +67,7 @@ const ProductDetail = props => {
 
   const fetchSimilarPd = async () => {
     try {
-      const response = await getSimilarPd(currentIndex);
+      const response = await getSimilarPd(proId);
       setlstProducts(response);
     } catch (error) {
       console.log('fetch similar pd error: ', error);
@@ -87,13 +77,13 @@ const ProductDetail = props => {
   const dispatch = useDispatch();
 
   const fetchProduct = async () => {
-    console.log('Fetching product for index:', currentIndex);
+    console.log('Fetching product for index:', proId);
 
     try {
       setLoading(true);
 
       if (isTokenValid) {
-        await addRecentView(currentIndex);
+        await addRecentView(proId);
       } else {
         console.log(
           'Token hết hạn, bỏ qua thêm sản phẩm vào danh sách gần đây',
@@ -102,7 +92,7 @@ const ProductDetail = props => {
 
       const [response] = await Promise.all([
         // addRecentView(index),
-        AxiosInstance().get(`/products/detail/${currentIndex}`),
+        AxiosInstance().get(`/products/detail/${proId}`),
         fetchListReview(),
         fetchSimilarPd(),
       ]);
@@ -117,12 +107,6 @@ const ProductDetail = props => {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    if (currentIndex) {
-      fetchProduct();
-    }
-  }, [currentIndex]);
 
   useEffect(() => {
     fetchProduct();
@@ -168,228 +152,239 @@ const ProductDetail = props => {
 
   const onSetProduct = product => {
     setProId(product._id);
+    setCurrentIndex(product._id);
   };
 
+  const createDeepLink = () => {
+    return `https://open-deeplink-production.up.railway.app/product/${product._id}`;
+  };
 
-    const createDeepLink = () => {
-      return `https://open-deeplink-production.up.railway.app/product/${product._id}`;
+  const shareProduct = async () => {
+    const deepLink = createDeepLink();
+
+    const shareOptions = {
+      url: deepLink,
     };
-  
-    const shareProduct = async () => {
-      const deepLink = createDeepLink();
-  
-      const shareOptions = {
-        url: deepLink,
-      };
-  
-      try {
-        const result = await Share.open(shareOptions);
-        console.log('Chia sẻ thành công', result);
-      } catch (error) {
-        console.log('Lỗi chia sẻ:', error);
-      }
-    };
+
+    try {
+      const result = await Share.open(shareOptions);
+      console.log('Chia sẻ thành công', result);
+    } catch (error) {
+      console.log('Lỗi chia sẻ:', error);
+    }
+  };
   // console.log('product.reviewsOfProduct====>', product.reviewsOfProduct);
 
   return (
     <View style={[appst.container, pddt.container]}>
-      <Header
-        iconLeft={require('../../assets/icons/back.png')}
-        leftOnPress={() => {
-          try {
-            navigation.goBack()
-          } catch (error) {
-            navigation.navigate('BottomNav')
-          }
-        }}
-        name={product.name}
-        rightOnPress={() => {
-          navigation.reset({
-            index: 0,
-            routes: [{name: 'BottomNav', params: {screen: 'CartScreen'}}],
-          });
-        }}
-        iconRight={require('../../assets/icons/mycart.png')}
-        backgroundColor={colors.background_secondary}
-      />
       {!loading ? (
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={{flex: 1, marginBottom: spacing.md, marginTop: 5}}>
-          <View>
-            {imageAssets.length > 0 ? (
-              <FlatList
-                horizontal
-                pagingEnabled
-                showsHorizontalScrollIndicator={false}
-                data={product.assets}
-                extraData={selectedImage}
-                renderItem={({item}) => (
-                  <Image style={pddt.pdImg} source={{uri: item}} />
-                )}
-                keyExtractor={(item, index) => item._id || index.toString()}
-              />
-            ) : (
-              <Image
-                style={pddt.pdImg}
-                source={require('../../assets/images/placeholder_image.jpg')}
-              />
-            )}
-            {product && product.assets && product.assets.length > 0 && (
-              <FlatList
-                style={pddt.flatItem}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                data={product.assets}
-                extraData={selectedImage}
-                keyExtractor={(item, index) => index.toString()}
-                ItemSeparatorComponent={<View style={{marginHorizontal: 5}} />}
-                renderItem={({item, index}) => {
-                  return (
-                    <TouchableOpacity onPress={() => setSelectedImage(item)}>
-                      <Image style={pddt.controlItem} source={{uri: item}} />
-                    </TouchableOpacity>
-                  );
-                }}
-                contentContainerStyle={<View style={{marginHorizontal: 5}} />}
-              />
-            )}
-          </View>
-
-          <View style={pddt.body}>
-            <Text style={pddt.bestSl}>{t('products.best_seller')}</Text>
-            <View style={[appst.rowCenter, pddt.body1]}>
-              <View style={{flex: 1}}>
-                <Text
-                  // numberOfLines={1}
-                  maxFontSizeMultiplier={5}
-                  style={pddt.name}>
-                  {product.name}
-                </Text>
-                <Text style={pddt.price}>
-                  {lag === 'en' && '$'}
-                  {product.price && formatPrice(product.price, lag)}
-                  {lag === 'vi' && ' VNĐ '}
-                </Text>
-              </View>
-              <View style={[pddt.iconfav, appst.center]}>
-                {product.isFavorite ? (
-                  <Image
-                    source={require('../../assets/icons/heart_select.png')}
-                  />
-                ) : (
-                  <Image source={require('../../assets/icons/favorite.png')} />
-                )}
-              </View>
-
-              <View style={{width: 5}}/>
-              <TouchableOpacity onPress={shareProduct} style={[pddt.iconfav, appst.center]}>
-              <Image
-                    style={{width: 20, height: 20}}
-                    resizeMode='contain'
-                    source={require('../../assets/icons/share.png')}
-                  />
-              </TouchableOpacity>
-            </View>
-
-            <View style={[appst.rowStart]}>
-              <Image
-                source={require('../../assets/icons/star.png')}
-                style={appst.icon20}
-              />
-              <Text style={pddt.textStar}>
-                {product && product.avgRating}/5
-              </Text>
-              <Text style={pddt.bought}>
-                {t('products.sold')} (
-                {product && product.sold < 100 ? product.sold : '100+'})
-              </Text>
-            </View>
-
-            <View style={pddt.viewDes}>
-              <Text
-                numberOfLines={isDescriptionExpanded ? undefined : 3}
-                style={pddt.des}>
-                {product.description}
-              </Text>
-              {product.description.length > 100 && (
-                <TouchableOpacity
-                  onPress={() =>
-                    setIsDescriptionExpanded(!isDescriptionExpanded)
-                  }>
-                  <Text style={pddt.readmore}>
-                    {isDescriptionExpanded
-                      ? t('products.read_less')
-                      : t('buttons.read_more')}
-                  </Text>
-                </TouchableOpacity>
+        <>
+          <Header
+            iconLeft={require('../../assets/icons/back.png')}
+            leftOnPress={() => {
+              try {
+                navigation.goBack();
+              } catch (error) {
+                navigation.navigate('BottomNav');
+              }
+            }}
+            name={product.name}
+            rightOnPress={() => {
+              navigation.reset({
+                index: 0,
+                routes: [{name: 'BottomNav', params: {screen: 'CartScreen'}}],
+              });
+            }}
+            iconRight={require('../../assets/icons/mycart.png')}
+            backgroundColor={colors.background_secondary}
+          />
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{flex: 1, marginBottom: spacing.md, marginTop: 5}}>
+            <View>
+              {imageAssets.length > 0 ? (
+                <FlatList
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  data={product.assets}
+                  extraData={selectedImage}
+                  renderItem={({item}) => (
+                    <Image style={pddt.pdImg} source={{uri: item}} />
+                  )}
+                  keyExtractor={(item, index) => item._id || index.toString()}
+                />
+              ) : (
+                <Image
+                  style={pddt.pdImg}
+                  source={require('../../assets/images/placeholder_image.jpg')}
+                />
+              )}
+              {product && product.assets && product.assets.length > 0 && (
+                <FlatList
+                  style={pddt.flatItem}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  data={product.assets}
+                  extraData={selectedImage}
+                  keyExtractor={(item, index) => index.toString()}
+                  ItemSeparatorComponent={
+                    <View style={{marginHorizontal: 5}} />
+                  }
+                  renderItem={({item, index}) => {
+                    return (
+                      <TouchableOpacity onPress={() => setSelectedImage(item)}>
+                        <Image style={pddt.controlItem} source={{uri: item}} />
+                      </TouchableOpacity>
+                    );
+                  }}
+                  contentContainerStyle={<View style={{marginHorizontal: 5}} />}
+                />
               )}
             </View>
-          </View>
 
-          <View style={pddt.body2}>
-            <Text style={[pddt.reviewTitle, pddt.pdHorizon]}>
-              {t('products.reviews')}
-            </Text>
-            {listReview.length !== 0 ? (
-              <View>
-                <FlatList
-                  data={listReview?.slice(0, 3)}
-                  renderItem={({item}) => <ItemReview item={item} />}
-                  extraData={item => item._id}
-                  scrollEnabled={false}
-                />
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('AllProductReview', {
-                      lstReview: listReview,
-                    })
-                  }>
-                  <Text style={pddt.text1}>
-                    {t('products.see_all')} ({product.reviewsOfProduct.length})
+            <View style={pddt.body}>
+              <Text style={pddt.bestSl}>{t('products.best_seller')}</Text>
+              <View style={[appst.rowCenter, pddt.body1]}>
+                <View style={{flex: 1}}>
+                  <Text
+                    // numberOfLines={1}
+                    maxFontSizeMultiplier={5}
+                    style={pddt.name}>
+                    {product.name}
                   </Text>
+                  <Text style={pddt.price}>
+                    {lag === 'en' && '$'}
+                    {product.price && formatPrice(product.price, lag)}
+                    {lag === 'vi' && ' VNĐ '}
+                  </Text>
+                </View>
+                <View style={[pddt.iconfav, appst.center]}>
+                  {product.isFavorite ? (
+                    <Image
+                      source={require('../../assets/icons/heart_select.png')}
+                    />
+                  ) : (
+                    <Image
+                      source={require('../../assets/icons/favorite.png')}
+                    />
+                  )}
+                </View>
+
+                <View style={{width: 5}} />
+                <TouchableOpacity
+                  onPress={shareProduct}
+                  style={[pddt.iconfav, appst.center]}>
+                  <Image
+                    style={{width: 20, height: 20}}
+                    resizeMode="contain"
+                    source={require('../../assets/icons/share.png')}
+                  />
                 </TouchableOpacity>
               </View>
-            ) : (
-              <Text style={{padding: 10, textAlign: 'center'}}>
-                {t('review.no_review')}
-              </Text>
-            )}
-          </View>
 
-          <View style={{marginTop: 15}}>
-            <ProductList onSetProduct={onSetProduct} listProduct={lstProducts} />
-                      </View>
-        </ScrollView>
+              <View style={[appst.rowStart]}>
+                <Image
+                  source={require('../../assets/icons/star.png')}
+                  style={appst.icon20}
+                />
+                <Text style={pddt.textStar}>
+                  {product && product.avgRating}/5
+                </Text>
+                <Text style={pddt.bought}>
+                  {t('products.sold')} (
+                  {product && product.sold < 100 ? product.sold : '100+'})
+                </Text>
+              </View>
+
+              <View style={pddt.viewDes}>
+                <Text
+                  numberOfLines={isDescriptionExpanded ? undefined : 3}
+                  style={pddt.des}>
+                  {product.description}
+                </Text>
+                {product.description.length > 100 && (
+                  <TouchableOpacity
+                    onPress={() =>
+                      setIsDescriptionExpanded(!isDescriptionExpanded)
+                    }>
+                    <Text style={pddt.readmore}>
+                      {isDescriptionExpanded
+                        ? t('products.read_less')
+                        : t('buttons.read_more')}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              </View>
+            </View>
+
+            <View style={pddt.body2}>
+              <Text style={[pddt.reviewTitle, pddt.pdHorizon]}>
+                {t('products.reviews')}
+              </Text>
+              {listReview.length !== 0 ? (
+                <View>
+                  <FlatList
+                    data={listReview?.slice(0, 3)}
+                    renderItem={({item}) => <ItemReview item={item} />}
+                    extraData={item => item._id}
+                    scrollEnabled={false}
+                  />
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate('AllProductReview', {
+                        lstReview: listReview,
+                      })
+                    }>
+                    <Text style={pddt.text1}>
+                      {t('products.see_all')} ({product.reviewsOfProduct.length}
+                      )
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <Text style={{padding: 10, textAlign: 'center'}}>
+                  {t('review.no_review')}
+                </Text>
+              )}
+            </View>
+
+            <View style={{marginTop: 15}}>
+              <ProductList
+                onSetProduct={onSetProduct}
+                listProduct={lstProducts}
+              />
+            </View>
+          </ScrollView>
+          <View style={[pddt.footer, appst.rowCenter]}>
+            <View style={[appst.rowCenter]}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('MessageScreen', {
+                    product: product,
+                  });
+                }}>
+                <Image
+                  source={require('../../assets/icons/chatwithshop.png')}
+                  style={pddt.chat}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => onOpenSheet()}
+                style={[pddt.pressAddtocart, appst.center]}>
+                <Text style={pddt.txtPress}>{t('buttons.btn_addtocart')}</Text>
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity
+              onPress={() => onOpenSheet()}
+              style={[pddt.pressBuynow, appst.center]}>
+              <Text style={pddt.txtPress}>{t('buttons.btn_buynow')}</Text>
+            </TouchableOpacity>
+          </View>
+        </>
       ) : (
         <ProductSkeleton />
       )}
-
-      <View style={[pddt.footer, appst.rowCenter]}>
-        <View style={[appst.rowCenter]}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('MessageScreen', {
-                product: product,
-              });
-            }}>
-            <Image
-              source={require('../../assets/icons/chatwithshop.png')}
-              style={pddt.chat}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => onOpenSheet()}
-            style={[pddt.pressAddtocart, appst.center]}>
-            <Text style={pddt.txtPress}>{t('buttons.btn_addtocart')}</Text>
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity
-          onPress={() => onOpenSheet()}
-          style={[pddt.pressBuynow, appst.center]}>
-          <Text style={pddt.txtPress}>{t('buttons.btn_buynow')}</Text>
-        </TouchableOpacity>
-      </View>
 
       {/* Modal for selecting size */}
       <BottomSheet

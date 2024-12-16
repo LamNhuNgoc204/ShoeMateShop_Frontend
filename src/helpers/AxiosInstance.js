@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const AxiosInstance = (contentType = 'application/json') => {
   const axiosInstance = axios.create({
-    baseURL: `http://192.168.52.1:3000/`,
+    baseURL: `http://192.168.1.68:3000/`,
   });
 
   axiosInstance.interceptors.request.use(
@@ -61,8 +61,8 @@ const AxiosInstance = (contentType = 'application/json') => {
   axiosInstance.interceptors.response.use(
     res => res.data,
     err => {
-      console.error('API call failed:', err.response?.data || err.message);
-      return Promise.reject(err);
+      // console.error('API call failed:', err.response?.data || err.message);
+      // return Promise.reject(err);
     },
   );
   return axiosInstance;

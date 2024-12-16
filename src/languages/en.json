@@ -279,7 +279,9 @@
     "type": "Type",
     "no_reviews": "No matching reviews",
     "filter_by_size": "Filter by Size",
-    "review_succ": "Product review successful"
+    "review_succ": "Product review submitted successfully",
+    "responder": "Seller's response:",
+    "hide_rv": "Hide response"
   },
 
   "notifications": {
@@ -302,7 +304,14 @@
     "price": "Product price",
     "rate": "Rating",
     "min_price": "Minimum",
-    "max_price": "Maximum"
+    "max_price": "Maximum",
+    "loading": "Loading...",
+    "use_vc": "Voucher applied successfully",
+    "used_vc": "You have already used this voucher",
+    "get_vc_err": "An error occurred. Please try again later!",
+    "key": "Please enter a search keyword",
+    "not_found": "No suitable voucher found",
+    "vcc": "No vouchers are currently available"
   },
   "onboard": {
     "buttonTitle1": "Get Started",
@@ -402,7 +411,8 @@
   },
   "voucher": {
     "use": "Use",
-    "vc": "discount code"
+    "vc": "discount code",
+    "end_date": "Expiration date:"
   },
   "validate": {
     "require": "This information is required",
