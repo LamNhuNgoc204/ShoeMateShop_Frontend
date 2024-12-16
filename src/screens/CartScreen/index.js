@@ -15,13 +15,14 @@ import Header from '../../components/Header';
 import appst from '../../constants/AppStyle';
 import {CustomedButton} from '../../components';
 import ItemCart from '../../items/CartItem/ItemCart';
-import {getUserCard} from '../../api/CartApi';
+import {clearCart, getUserCard} from '../../api/CartApi';
 import {useDispatch, useSelector} from 'react-redux';
 import {setOrderData, setToltalPrice} from '../../redux/reducer/cartReducer';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import CartPlaceholder from '../../placeholders/product/cart';
 import ProductList from '../Product/ProductList';
 import {formatPrice} from '../../utils/functions/formatData';
+import SweetAlert from 'react-native-sweet-alert';
 
 const CartScreen = () => {
   const navigation = useNavigation();
@@ -122,6 +123,31 @@ const CartScreen = () => {
     }
   };
 
+  const handleDeleteAllCart = async () => {
+    SweetAlert.showAlertWithOptions(
+      {
+        title: t('toast.del_carts'),
+        subTitle: t('toast.del_cart_title'),
+        confirmButtonTitle: 'OK',
+        confirmButtonColor: '#000',
+        style: 'error',
+        cancellable: true,
+      },
+      async () => {
+        try {
+          const res = await clearCart();
+          if (res) {
+            ToastAndroid.show(`${t('toast.del_all_cart')}`, ToastAndroid.SHORT);
+          } else {
+            ToastAndroid.show(`${t('toast.del_err')}`, ToastAndroid.SHORT);
+          }
+        } catch (error) {
+          console.log('Lỗi xóa giỏ hàng: ', error);
+        }
+      },
+    );
+  };
+
   return (
     <View style={[appst.container, cartst.container]}>
       <View style={cartst.header}>
@@ -130,6 +156,7 @@ const CartScreen = () => {
           background={'#fff'}
           iconLeft={require('../../assets/icons/back.png')}
           iconRight={require('../../assets/icons/del_card.png')}
+          rightOnPress={handleDeleteAllCart}
           name={t('home.cart')}
         />
       </View>

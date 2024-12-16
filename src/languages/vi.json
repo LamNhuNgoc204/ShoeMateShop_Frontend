@@ -369,7 +369,10 @@
     "chosse_ship": "Vui lòng chọn phương thức vận chuyển",
     "logup_succ": "Đăng ký thành công",
     "logup_fail": "Đăng ký thất bại. ",
-    "choose_size": "Vui lòng chọn kích thước phù hợp"
+    "choose_size": "Vui lòng chọn kích thước phù hợp",
+    "del_all_cart": "Tất cả sản phẩm đã được xóa khỏi giỏ hàng!",
+    "del_carts": "Xóa toàn bộ giỏ hàng?",
+    "del_cart_title": "Tất cả sản phẩm trong giỏ hàng của bạn sẽ bị xóa vĩnh viễn!"
   },
   "ship": {
     "infor": "Thông tin vận chuyển",

@@ -75,3 +75,13 @@ export const getPaymentMethodDefault = async () => {
     console.log(' Get ship default err: ', error);
   }
 };
+
+export const clearCart = async () => {
+  ///clear-cart
+  try {
+    const response = await AxiosInstance().delete('/cart/clear-cart');
+    return response.status;
+  } catch (error) {
+    console.error('Error deleting item from cart: ', error);
+  }
+};
