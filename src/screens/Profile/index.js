@@ -183,7 +183,7 @@ const ProfileScreen = () => {
       />
 
       <View style={{marginTop: 10}}>
-        <ProductList listProduct={lstProducts} />
+        <ProductList listProduct={lstProducts || []} />
       </View>
     </ScrollView>
   );

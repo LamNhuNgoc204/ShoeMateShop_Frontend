@@ -1,4 +1,4 @@
-import {View, Text, FlatList, Image} from 'react-native';
+import {View, Text, FlatList, Image, ScrollView} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import ratingst from './style';
 import RatingItem from '../../items/ReviewItem/ToRateItem';
@@ -38,7 +38,7 @@ const ToRate = () => {
   console.log('rating: ', rating);
 
   return (
-    <View style={appst.container}>
+    <ScrollView style={appst.container}>
       {loading ? (
         <SkeletonToRating />
       ) : (
@@ -47,8 +47,8 @@ const ToRate = () => {
             <>
               <View>
                 <FlatList
-                  style={ratingst.flatRate}
-                  data={rating}
+                  style={[ratingst.flatRate]}
+                  data={filteredRating}
                   renderItem={({item}) => <RatingItem item={item} />}
                   keyExtractor={item => item._id.toString()}
                   scrollEnabled={false}
@@ -75,7 +75,7 @@ const ToRate = () => {
           )}
         </>
       )}
-    </View>
+    </ScrollView>
   );
 };
 

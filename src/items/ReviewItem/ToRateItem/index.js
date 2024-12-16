@@ -7,18 +7,20 @@ import {useNavigation} from '@react-navigation/native';
 
 const RatingItem = ({item}) => {
   const {t} = useTranslation();
-  const product = item && item.product && item.product[0];
+  const product = item && item.product && item.product;
   const navigation = useNavigation();
-  const pd = product && product.product;
+  const pd = product && product[0].product;
   // const productPreview = item && item.product;
 
   // console.log('product rating', product);
-  // console.log('pd rating', pd);
-  console.log('productPreview =>', item.product);
+  console.log('pd rating', pd);
+  // console.log('item', item);
+
+  // console.log('productPreview =>', item.product);
 
   return (
     <>
-      {!pd && (
+      {pd && (
         <View style={rtit.container}>
           <Text style={rtit.code}>
             {t('rating.code')}: {item._id && item._id.toUpperCase()}
@@ -32,14 +34,15 @@ const RatingItem = ({item}) => {
                   : require('../../../assets/images/placeholder_image.jpg')
               }
             />
-            <Text style={rtit.name}>{pd && pd.name}</Text>
+            <Text style={rtit.name}>{pd?.name}</Text>
           </View>
           <View style={[appst.rowCenter, rtit.view]}>
             <Text style={rtit.time}>7 days left to review</Text>
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('MultiProductReviewForm', {
-                  products: item.product, orderId: item._id,
+                  products: item.product,
+                  orderId: item._id,
                 })
               }
               style={rtit.press}>
