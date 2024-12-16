@@ -66,7 +66,7 @@ const OnBoardScreen = ({navigation}) => {
       pagerRef.current.setPage(page);
       setCurrentPage(page);
     } else {
-      navigation.navigate('BottomNav');
+      navigation.navigate('LoginScreen');
     }
   };
 

@@ -66,7 +66,7 @@ const Stack = createNativeStackNavigator();
 const StackNav = () => {
   return (
     <Stack.Navigator
-      initialRouteName="LoginScreen"
+      initialRouteName="SplashScreen"
       screenOptions={{headerShown: false}}>
       <Stack.Screen name="SplashScreen" component={SplashScreen} />
       <Stack.Screen name="OnBoardScreen" component={OnBoardScreen} />
@@ -88,14 +88,20 @@ const StackNav = () => {
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="SettingScreen" component={SettingScreen} />
-      <Stack.Screen name="TransferSuccessScreen" component={TransferSuccessScreen} />
-     <Stack.Screen name="SetupWallet" component={SetupWallet} />
-     <Stack.Screen name="TransactionDetailScreen" component={TransactionDetailScreen} />
-     <Stack.Screen name="OtpVerificationPassWord" component={OtpVerificationPassWord} />
-     <Stack.Screen name="ZaloPayPayment" component={ZaloPayPayment} />
-
-
-
+      <Stack.Screen
+        name="TransferSuccessScreen"
+        component={TransferSuccessScreen}
+      />
+      <Stack.Screen name="SetupWallet" component={SetupWallet} />
+      <Stack.Screen
+        name="TransactionDetailScreen"
+        component={TransactionDetailScreen}
+      />
+      <Stack.Screen
+        name="OtpVerificationPassWord"
+        component={OtpVerificationPassWord}
+      />
+      <Stack.Screen name="ZaloPayPayment" component={ZaloPayPayment} />
 
       <Stack.Screen
         name="RecentlyViewedScreen"

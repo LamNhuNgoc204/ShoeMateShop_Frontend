@@ -77,7 +77,11 @@ const OtpVerification = () => {
           t('notifications.verify_success'),
           ToastAndroid.SHORT,
         );
-        navigation.navigate('BottomNav');
+        navigation.navigate("LoginScreen")
+        // navigation.reset({
+        //   index: 0,
+        //   routes: [{name: 'BottomNav'}],
+        // });
       }
     } catch (error) {
       ToastAndroid.show(t('notifications.verify_error'), ToastAndroid.SHORT);

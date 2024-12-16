@@ -13,41 +13,42 @@ const SplashScreen = ({navigation}) => {
     const checkAppStatus = async () => {
       try {
         const isFirstLaunch = await AsyncStorage.getItem('isFirstLaunch');
-        const token = await AsyncStorage.getItem('token');
+        // const token = await AsyncStorage.getItem('token');
 
-        if (token) {
-          // Kiểm tra token
-          const response = await AxiosInstance().post('/auth/protected', {
-            token,
-          });
-          if (response.status) {
-            // Token hợp lệ => vào Home
-            await AsyncStorage.setItem('token', token);
-            return navigation.replace('BottomNav');
-          } else {
-            // Token hết hạn => về Login
-            Alert.alert(
-              t('notifications.title'),
-              t('login.sub_title1'),
-              [
-                {
-                  text: 'OK',
-                  onPress: async () => {
-                    await AsyncStorage.removeItem('token');
-                    return navigation.replace('LoginScreen');
-                  },
-                },
-              ],
-              {cancelable: false},
-            );
-          }
-        } else if (isFirstLaunch === null) {
+        // if (token) {
+        //   // Kiểm tra token
+        //   const response = await AxiosInstance().post('/auth/protected', {
+        //     token,
+        //   });
+        //   if (response.status) {
+        //     // Token hợp lệ => vào Home
+        //     await AsyncStorage.setItem('token', token);
+        //     return navigation.replace('BottomNav');
+        //   } else {
+        //     // Token hết hạn => về Login
+        //     Alert.alert(
+        //       t('notifications.title'),
+        //       t('login.sub_title1'),
+        //       [
+        //         {
+        //           text: 'OK',
+        //           onPress: async () => {
+        //             await AsyncStorage.removeItem('token');
+        //             return navigation.replace('LoginScreen');
+        //           },
+        //         },
+        //       ],
+        //       {cancelable: false},
+        //     );
+        //   }
+        // } else
+        if (isFirstLaunch === null) {
           // Lần đầu vào app => vào onboarding
           AsyncStorage.setItem('isFirstLaunch', 'false');
           navigation.replace('OnBoardScreen');
         } else {
           // Không phải lần đầu, chưa đăng nhập => vào Home
-          navigation.replace('BottomNav');
+          navigation.replace('LoginScreen');
         }
       } catch (error) {
         console.log('Error checking token', error);

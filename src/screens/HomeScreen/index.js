@@ -92,12 +92,13 @@ const HomeScreen = ({navigation, route}) => {
           const thunks = [
             dispatch(fetchProductsThunk()),
             dispatch(getCategoryThunk()),
+            dispatch(fetchWishlist()),
           ];
 
           // Thêm fetchWishlist nếu token hợp lệ
-          if (isTokenValid) {
-            thunks.push(dispatch(fetchWishlist()));
-          }
+          // if (isTokenValid) {
+          //   thunks.push(dispatch(fetchWishlist()));
+          // }
 
           await Promise.all(thunks);
           setLoading(false);
@@ -192,7 +193,7 @@ const HomeScreen = ({navigation, route}) => {
       } else {
         goToPage(currentPage + 1);
       }
-    }, 3000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [currentPage, BANNERS.length]);
