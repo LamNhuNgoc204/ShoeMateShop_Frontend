@@ -16,6 +16,7 @@ import OrderItem from '../../items/OrderItem/OrderItem';
 import {useTranslation} from 'react-i18next';
 import ProductList from '../Product/ProductList';
 import {shuffleArray} from '../../utils/functions/formatData';
+import {useFocusEffect} from '@react-navigation/native';
 
 const ToReturn = ({navigation}) => {
   const {t} = useTranslation();
@@ -37,7 +38,7 @@ const ToReturn = ({navigation}) => {
   }, [navigation]);
 
   useEffect(() => {
-    if (products.products && products.products.length) {
+    if (products?.products?.data && products?.products?.data?.length) {
       setListProduct(shuffleArray(products?.products?.data));
     }
   }, []);
@@ -59,6 +60,12 @@ const ToReturn = ({navigation}) => {
   useEffect(() => {
     fetchOrder();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchOrder();
+    }, []),
+  );
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);

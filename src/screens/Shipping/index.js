@@ -48,7 +48,7 @@ const ShipScreen = ({navigation, route}) => {
       dispatch(setShipping(selectedShipping));
       navigation.navigate('CheckOutScreen');
     } else {
-      alert('Vui lòng chọn phương thức vận chuyển!');
+      alert(`${t('toast.chosse_ship')}`);
     }
   };
 

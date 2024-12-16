@@ -33,19 +33,19 @@ const SignUpScreen = () => {
 
   const handleSignUp = () => {
     if (!validateFields(name, email, password, setErrors)) {
-      ToastAndroid.show('Vui lòng điền đầy đủ thông tin', ToastAndroid.SHORT);
+      ToastAndroid.show(`${t('toast.type')}`, ToastAndroid.SHORT);
       return;
     }
 
     dispatch(register({email, password, name}))
       .unwrap()
       .then(() => {
-        ToastAndroid.show('Register successfully', ToastAndroid.SHORT);
+        ToastAndroid.show(`${t('toast.logup_succ')}`, ToastAndroid.SHORT);
         navigation.navigate('OtpVerification', {email});
       })
       .catch(error => {
         ToastAndroid.show(
-          'Register failed: ' + error.message,
+          `${t('toast.logup_fail')}` + error.message,
           ToastAndroid.SHORT,
         );
       });

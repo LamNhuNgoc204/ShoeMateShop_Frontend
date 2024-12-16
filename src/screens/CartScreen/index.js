@@ -114,7 +114,7 @@ const CartScreen = () => {
 
   const handleOrder = () => {
     if (checkedProducts.length == 0) {
-      ToastAndroid.show('Vui long chon sp', ToastAndroid.SHORT);
+      ToastAndroid.show(`${t('toast.choose_pd')}`, ToastAndroid.SHORT);
     } else {
       dispatch(setOrderData(checkedProducts));
       dispatch(setToltalPrice(totalPrice));

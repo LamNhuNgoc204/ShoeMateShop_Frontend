@@ -35,12 +35,12 @@ const EditProfile = () => {
     setErrorPhone('');
 
     if (!name) {
-      setErrorName('Thong tin nay la bat buoc');
+      setErrorName(`${t('validate.require')}`);
       return;
     }
 
     if (phoneNumber && !isValidPhoneNumber(phoneNumber)) {
-      setErrorPhone('Số điện thoại không hợp lệ');
+      setErrorPhone(`${t('validate.phone_err')}`);
       return;
     }
 
@@ -54,10 +54,10 @@ const EditProfile = () => {
       const response = await updateInformation(body);
       if (response) {
         dispatch(setAvatarUser(avatar));
-        ToastAndroid.show('Cap nhat thanh cong', ToastAndroid.SHORT);
+        ToastAndroid.show(`${t('toast.update_succ')}`, ToastAndroid.SHORT);
         navigation.goBack();
       } else {
-        Alert.alert('Thu lai');
+        ToastAndroid.show(`${t('toast.del_err')}`, ToastAndroid.SHORT);
       }
     } catch (error) {
       console.log('Update error: ', error);

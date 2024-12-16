@@ -72,3 +72,16 @@ export const getUnreviewedProductsInOrder = async () => {
     console.log('getUnreviewedProductsInOrder err: ', error);
   }
 };
+
+export const getSimilarPd = async productId => {
+  try {
+    const response = await AxiosInstance().get(
+      `/products/similar-product/${productId}`,
+    );
+    if (response.status) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log('getSimilarPd err: ', error);
+  }
+};

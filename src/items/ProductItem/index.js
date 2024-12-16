@@ -108,9 +108,7 @@ const ProductItem = ({handleHeartPress, product, style, wishlist = [], onSetProd
                 productStyle.maxWidth100,
               ]}>
               <Text numberOfLines={1} ellipsizeMode="tail">
-                {lag === 'en' && (
-                  <Text style={productStyle.dolar}>$</Text>
-                )}
+                {lag === 'en' && <Text style={productStyle.dolar}>$</Text>}
                 <Text style={productStyle.text14}>
                   {product?.price && formatPrice(product?.price, lag)}
                 </Text>

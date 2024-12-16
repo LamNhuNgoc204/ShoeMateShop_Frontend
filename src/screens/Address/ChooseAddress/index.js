@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   ToastAndroid,
+  ScrollView,
 } from 'react-native';
 import appst from '../../../constants/AppStyle';
 import c_adst from './style';
@@ -66,8 +67,8 @@ const ChooseAddress = ({navigation, route}) => {
     try {
       SweetAlert.showAlertWithOptions(
         {
-          title: 'Remove Item?',
-          subTitle: `Oops. Bạn có chắc chắn muốn xóa địa chỉ này không?`,
+          title: t('toast.del_address'),
+          subTitle: t('toast.title_del_address'),
           confirmButtonTitle: 'OK',
           confirmButtonColor: '#000',
           style: 'error',
@@ -83,7 +84,10 @@ const ChooseAddress = ({navigation, route}) => {
               );
               setAddresses(updatedAddresses);
 
-              ToastAndroid.show('Xóa địa chỉ thành công', ToastAndroid.SHORT);
+              ToastAndroid.show(
+                `${t('toast.del_add_succ')}`,
+                ToastAndroid.SHORT,
+              );
             }
           } catch (error) {
             console.log('Error removing item from address:', error);
@@ -112,10 +116,7 @@ const ChooseAddress = ({navigation, route}) => {
               : {...item, isDefault: false},
           );
           setAddresses(updatedAddresses);
-          ToastAndroid.show(
-            'Đổi địa chỉ mặc định thành công',
-            ToastAndroid.SHORT,
-          );
+          ToastAndroid.show(`${t('toast.change_add')}`, ToastAndroid.SHORT);
           setIsSetDefault(false);
         }
       } catch (error) {
@@ -141,7 +142,7 @@ const ChooseAddress = ({navigation, route}) => {
               <SkeletonLoader />
             ) : (
               <View style={c_adst.viewBody}>
-                <View style={c_adst.body1}>
+                <ScrollView style={[c_adst.body1, c_adst.viewBody]}>
                   {addresses && addresses.length > 0 ? (
                     <FlatList
                       style={c_adst.flat}
@@ -156,20 +157,25 @@ const ChooseAddress = ({navigation, route}) => {
                         />
                       )}
                       extraData={item => item.id}
+                      scrollEnabled={false}
                       ItemSeparatorComponent={
                         <View style={c_adst.borderBottom} />
                       }
                     />
                   ) : (
                     <Text style={{textAlign: 'center', paddingBottom: 10}}>
-                      Ban chua co dia chi nao. Vui long them dia chi moi
+                      {t('address.no_address')}
                     </Text>
                   )}
 
                   <View style={c_adst.borderBottom} />
                   <TouchableOpacity
                     style={[c_adst.viewFooter, appst.center]}
-                    onPress={() => navigation.navigate('AddNewAddress')}>
+                    onPress={() =>
+                      navigation.navigate('AddNewAddress', {
+                        screen: 'ChooseAddress',
+                      })
+                    }>
                     <Image
                       style={appst.icon30}
                       source={require('../../../assets/icons/add_adr.png')}
@@ -178,7 +184,7 @@ const ChooseAddress = ({navigation, route}) => {
                       {t('buttons.btn_new_address')}
                     </Text>
                   </TouchableOpacity>
-                </View>
+                </ScrollView>
               </View>
             )}
           </View>

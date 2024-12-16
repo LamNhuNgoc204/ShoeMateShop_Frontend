@@ -1,6 +1,5 @@
 {
-  "app_name": "Nike",
-  "menu": {},
+  "app_name": "ShoeMate",
   "buttons": {
     "default": "Mặc định",
     "btn_signin": "Đăng nhập",
@@ -118,7 +117,9 @@
     "total": "Tổng giá",
     "quantity": "Số lượng",
     "no_recently": "Chưa có sản phẩm xem gần đây.",
-    "review":"đánh giá"
+    "review": "đánh giá",
+    "out_of_product": "Sản phẩm này đã hết",
+    "no_pd": "Chưa có sản phẩm"
   },
   "form_input": {
     "name": "Tên của bạn",
@@ -142,13 +143,23 @@
   "address": {
     "province": "Tỉnh",
     "sub_province": "Chọn tỉnh",
-    "district": "Quận",
-    "sub_district": "Chọn quận",
-    "commune": "Xã",
-    "sub_commune": "Chọn xã",
+    "district": "Quận/huyện",
+    "sub_district": "Chọn quận/huyện",
+    "commune": "Phường/xã",
+    "sub_commune": "Chọn phường/xã",
     "detail": "Đường/Thôn",
     "required": "Bắt buộc",
-    "default": "Mặc định"
+    "default": "Mặc định",
+    "name_er": "Vui lòng nhập họ và tên",
+    "phone_err": "Vui lòng nhập số điện thoại",
+    "phone_error": "Số điện thoại không hợp lệ",
+    "addres_error": "Vui lòng nhập địa chỉ chi tiết",
+    "province_error": "Vui lòng chọn tỉnh",
+    "district_error": "Vui lòng chọn huyện",
+    "ward_err": "Vui lòng chọn phường",
+    "add_succ": "Thêm địa chỉ thành công",
+    "add": "Thêm địa chỉ giao hàng",
+    "no_address": "Bạn chưa có địa chỉ nào. Vui lòng thêm địa chỉ mới"
   },
   "titles": {
     "signin": "Chào mừng trở lại!",
@@ -207,11 +218,13 @@
     "total": "Tổng cộng",
     "shipprice": "Phí vận chuyển",
     "time": "Thời gian đặt hàng",
-    "shipping":"Thời gian đơn vị vận chuyển lấy hàng",
+    "shipping": "Thời gian đơn vị vận chuyển lấy hàng",
     "payment": "Thời gian thanh toán",
     "delivery": "Thời gian giao hàng",
     "complete": "Thời gian hoàn thành đơn",
     "timeCancel": "Thời gian hủy đơn hàng",
+    "timeReturn": "Thời gian yêu cầu hoàn đơn",
+    "timeReturnComp": "Thời gian yêu cầu hoàn đơn",
     "cancelled": "Hủy đơn hàng",
     "order_detail": "Chi tiết đơn hàng",
     "pending": "Chờ xử lý",
@@ -234,7 +247,10 @@
     "received": "Đã nhận được hàng",
     "creating_order": "Đang tạo đơn hàng",
     "delivered": "Đơn hàng đã được giao thành công",
-    "status_process":"Đơn hàng đang xử lý"
+    "status_process": "Đơn hàng đang xử lý",
+    "wait_return": "Yêu cầu đã được chấp nhận. Đang xử lý",
+    "reject_return": "Yêu cầu đã bị từ chối",
+    "return_succ": "Đơn hàng đã được xử lý"
   },
   "rating": {
     "review": "Đánh giá của tôi",
@@ -262,7 +278,8 @@
     "select_stars": "Sao",
     "type": "Phân loại",
     "no_reviews": "Không có đánh giá phù hợp",
-    "filter_by_size": "Lọc theo kích thước"
+    "filter_by_size": "Lọc theo kích thước",
+    "review_succ": "Đánh giá sản phẩm thành công"
   },
   "notifications": {
     "title": "Thông báo",
@@ -276,6 +293,23 @@
     "verify_success": "Bạn đã xác thực tài khoản thành công!",
     "verify_error": "Xác minh tài khoản thất bại!",
     "sub_noti": "Đăng nhập để nhận thông báo về đơn hàng của bạn."
+  },
+  "search": {
+    "product": " sản phẩm được tìm thấy",
+    "filter": "Bộ lọc tìm kiếm",
+    "brand": "Thương hiệu",
+    "price": "Giá sản phẩm",
+    "rate": "Đánh giá",
+    "min_price": "Tối thiểu",
+    "max_price": "Tối đa"
+  },
+  "onboard": {
+    "buttonTitle1": "Bắt đầu",
+    "buttonTitle2": "Tiếp theo",
+    "title1": "Khởi đầu hành trình\ncùng ShoeMate",
+    "content1": "Kết hợp hoàn hảo giữa hiệu suất thể thao,\nphong cách và sự linh hoạt. Khám phá ngay!",
+    "title2": "Nâng tầm cuộc chơi",
+    "content2": "Khám phá các thương hiệu nổi tiếng\ndành riêng cho những nhà vô địch như bạn."
   },
   "messages": {
     "title": "Tin nhắn",
@@ -296,33 +330,48 @@
     "cancel_order": "Bạn có chắc chắn muốn hủy đơn hàng này không?"
   },
   "toast": {
-    "cancel_order": "Đơn hàng đã bị hủy"
+    "del_err": "Xảy ra lỗi. Vui lòng thử lại sau nhé!",
+    "del_cart": "Đã xóa sản phẩm thành công",
+    "cancel_order": "Đơn hàng đã bị hủy",
+    "remove_item_cart": "Xóa sản phẩm này?",
+    "title_item_cart": "Oops. Bạn có chắc chắn muốn xóa sản phẩm này không?",
+    "subTitle_cart": "Oops. Đang xảy ra lỗi rồi. Bạn thử lại sau nhé <3",
+    "limit_quantity": "Bạn đã đặt số lượng tối đa!",
+    "addtocart_succ": "Thêm vào giỏ hàng thành công!",
+    "addtocart_fail": "Không thể thêm sản phẩm",
+    "out_of_stock": "Các sản phẩm này hiện tại đã hết hàng",
+    "max_pd": "Bạn đã đạt số lượng tối đa",
+    "returnRq": "Đã gửi yêu cầu hoàn hàng",
+    "confirm_order": "Đã xác nhận nhận hàng",
+    "handle_return": "Đang xử lý hoàn hàng",
+    "return_succ": "Hoàn tất hoàn hàng",
+    "del_address": "Xóa địa chỉ này?",
+    "title_del_address": "Oops. Bạn có chắc chắn muốn xóa địa chỉ này không?",
+    "del_add_succ": "Xóa địa chỉ thành công",
+    "change_add": "Đổi địa chỉ mặc định thành công",
+    "choose_pd": "Vui lòng chọn sản phẩm",
+    "create_od": "Tạo đơn thành công",
+    "update_succ": "Cập nhật thành công",
+    "type": "Vui lòng điền đầy đủ thông tin",
+    "login_succ": "Đăng nhập thành công",
+    "login_fail": "Đăng nhập thất bại",
+    "sp": "Hỗ trợ",
+    "chosse_ship": "Vui lòng chọn phương thức vận chuyển",
+    "logup_succ": "Đăng ký thành công",
+    "logup_fail": "Đăng ký thất bại. "
   },
   "ship": {
     "infor": "Thông tin vận chuyển",
     "shipments": "Các phương thức vận chuyển của shop",
-    "method": "Phương thức vận chuyển"
+    "method": "Phương thức vận chuyển",
+    "day": "Đảm bảo nhận hàng từ",
+    "ship": "Bên giao hàng có thể sẽ cần thêm thời gian do điều kiện thời tiết"
   },
-  "search": {
-    "product": " sản phẩm được tìm thấy",
-    "filter": "Bộ lọc tìm kiếm",
-    "brand": "Thương hiệu",
-    "price": "Giá sản phẩm",
-    "rate": "Đánh giá",
-    "min_price": "Tối thiểu",
-    "max_price": "Tối đa"
-  },
+
   "common": {
     "warning": "Cảnh báo"
   },
-  "onboard": {
-    "buttonTitle1": "Bắt đầu",
-    "buttonTitle2": "Tiếp theo",
-    "title1": "Khởi đầu hành trình\ncùng ShoeMate",
-    "content1": "Kết hợp hoàn hảo giữa hiệu suất thể thao,\nphong cách và sự linh hoạt. Khám phá ngay!",
-    "title2": "Nâng tầm cuộc chơi",
-    "content2": "Khám phá các thương hiệu nổi tiếng\ndành riêng cho những nhà vô địch như bạn."
-  },
+
   "help": {
     "title": "Trợ giúp"
   },
@@ -351,5 +400,19 @@
   "cart": {
     "sub_title": "Bắt đầu mua sắm ngay",
     "sub_title1": "Vui lòng đăng nhập để bắt đầu mua sắm cùng ShoeMate nhé"
+  },
+  "voucher": {
+    "use": "Sử dụng",
+    "vc": "mã giảm giá"
+  },
+  "validate": {
+    "require": "Thông tin này là bắt buộc",
+    "phone_err": "Số điện thoại không hợp lệ!"
+  },
+  "payment": {
+    "continue": "Tiếp tục thanh toán với Zalo",
+    "click": "Bấm xác nhận để tiếp tục",
+    "button": "Thanh toán Zalo Pay",
+    "open_web": "Mở trang thanh toán"
   }
 }

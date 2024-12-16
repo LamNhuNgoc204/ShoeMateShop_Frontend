@@ -47,7 +47,7 @@ const BuyAgain = () => {
   return (
     <View style={styles.container}>
       <Header
-        name={'Mua lại'}
+        name={t('buttons.btn_buy_again')}
         iconLeft={require('../../assets/icons/back.png')}
         leftOnPress={() => navigation.goBack()}
       />
@@ -72,7 +72,7 @@ const BuyAgain = () => {
                   style={st.img}
                   source={require('../../assets/images/no_recent.png')}
                 />
-                <Text style={st.text}>Chưa có sản phẩm</Text>
+                <Text style={st.text}>{t('products.no_pd')}</Text>
               </View>
             )
           ) : (

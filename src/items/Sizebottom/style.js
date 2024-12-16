@@ -83,7 +83,7 @@ export const bottomSheetStyle = StyleSheet.create({
     borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
-    width:'48%'
+    width: '48%',
   },
   bottomContainer: {
     flex: 1,
@@ -129,5 +129,9 @@ export const bottomSheetStyle = StyleSheet.create({
   },
   sizeSelct: {
     backgroundColor: colors.primary,
+  },
+  sizeDisabled: {
+    backgroundColor: '#dfdfdf',
+    opacity: '0.5',
   },
 });

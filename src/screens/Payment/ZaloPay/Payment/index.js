@@ -6,8 +6,10 @@ import zalo from './style';
 import {CustomedButton} from '../../../../components';
 import {useSelector} from 'react-redux';
 import AxiosInstance from '../../../../helpers/AxiosInstance';
+import {useTranslation} from 'react-i18next';
 
 const ZaloPayScreen = ({navigation}) => {
+  const {t} = useTranslation();
   const [paymentUrl, setPaymentUrl] = useState(null);
   const user = useSelector(state => state.user.user);
   const cartState = useSelector(state => state.cart);
@@ -63,20 +65,20 @@ const ZaloPayScreen = ({navigation}) => {
           style={zalo.img}
           source={require('../../../../assets/images/zalo_pay_linh_vat.jpg')}
         />
-        <Text style={zalo.text1}>Tiep tuc thanh toan voi Zalo</Text>
-        <Text style={zalo.text2}>Bam xac nhan de tiep tuc</Text>
+        <Text style={zalo.text1}>{t('payment.continue')}</Text>
+        <Text style={zalo.text2}>{t('payment.click')}</Text>
       </View>
       <View>
         {!paymentUrl ? (
           <CustomedButton
-            title={'Thanh toán Zalo Pay'}
+            title={t('payment.button')}
             style={zalo.button}
             titleStyle={{color: 'white'}}
             onPress={handlePayment}
           />
         ) : (
           <CustomedButton
-            title={'Mở trang thanh toán'}
+            title={t('payment.open_web')}
             style={zalo.button}
             titleStyle={{color: 'white'}}
             onPress={openPaymentUrl}
