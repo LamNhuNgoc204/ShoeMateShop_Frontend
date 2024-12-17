@@ -16,6 +16,7 @@ import {logout, setAvatarUser} from '../../redux/reducer/userReducer';
 import {useDispatch} from 'react-redux';
 import {SETTING} from '../../api/mockData';
 import Header from '../../components/Header';
+import Toast from 'react-native-toast-message';
 
 const SettingScreen = () => {
   const {t} = useTranslation();
@@ -33,7 +34,10 @@ const SettingScreen = () => {
       await AsyncStorage.removeItem('token');
       navigation.replace('LoginScreen');
     } catch (error) {
-      ToastAndroid.show(`${t('toast.del_err')}`, ToastAndroid.SHORT);
+      Toast.show({
+        text1: `${t('toast.del_err')}`,
+        type: 'error',
+      });
     }
   };
 

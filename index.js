@@ -9,7 +9,7 @@ PushNotification.createChannel(
   {
     channelId: "fcm_fallback_notification_channel",
     channelName: "Important Notifications",
-    channelDescription: "Used for important notifications", 
+    channelDescription: "Used for important notifications",
     importance: 5,
     vibrate: true,
     playSound: true,
@@ -69,7 +69,7 @@ const notificationConfig = {
   alertAction: "view",
   category: "notification",
   userInteraction: false,
-  
+
   // Tắt badges và icons
   badge: 0,
   number: 0,
@@ -80,7 +80,7 @@ const notificationConfig = {
 // Xử lý foreground messages
 messaging().onMessage(async remoteMessage => {
   console.log('Received foreground message:', remoteMessage);
-  
+
   PushNotification.localNotification({
     ...notificationConfig,
     title: remoteMessage.notification?.title,
@@ -93,7 +93,7 @@ messaging().onMessage(async remoteMessage => {
 // Xử lý background messages
 messaging().setBackgroundMessageHandler(async remoteMessage => {
   console.log('Message handled in the background!', remoteMessage);
-  
+
   PushNotification.localNotification({
     ...notificationConfig,
     title: remoteMessage.notification?.title,
@@ -114,6 +114,20 @@ const checkPermission = async () => {
     console.log('Authorization status:', authStatus);
   }
 };
+
+// Lắng nghe sự kiện token được làm mới
+messaging().onTokenRefresh(async fcmToken => {
+  console.log('New fcmToken:', fcmToken);
+  await AsyncStorage.setItem('fcm_token', fcmToken);
+  const response = await AxiosInstance().post('/users/refresh-fcm', {
+    token: fcmToken,
+  });
+  if (response.status) {
+    console.log('refresh token thành công');
+  } else {
+    console.log('refresh token thất bại');
+  }
+});
 
 checkPermission();
 

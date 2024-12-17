@@ -18,6 +18,7 @@ import CustomTextInput from '../../components/Input';
 import {loginWithGG, register} from '../../redux/thunks/UserThunks';
 import {validateFields} from '../../utils/functions/validData';
 import DropdownComponent from '../../components/ButtonLanguages';
+import Toast from 'react-native-toast-message';
 
 const SignUpScreen = () => {
   const {t} = useTranslation();
@@ -33,21 +34,27 @@ const SignUpScreen = () => {
 
   const handleSignUp = () => {
     if (!validateFields(name, email, password, setErrors)) {
-      ToastAndroid.show(`${t('toast.type')}`, ToastAndroid.SHORT);
+      Toast.show({
+        text1: `${t('toast.type')}`,
+        type: 'error',
+      });
       return;
     }
 
     dispatch(register({email, password, name}))
       .unwrap()
       .then(() => {
-        ToastAndroid.show(`${t('toast.logup_succ')}`, ToastAndroid.SHORT);
+        Toast.show({
+          text1: `${t('toast.logup_succ')}`,
+          type: 'success',
+        });
         navigation.navigate('OtpVerification', {email});
       })
       .catch(error => {
-        ToastAndroid.show(
-          `${t('toast.logup_fail')}` + error.message,
-          ToastAndroid.SHORT,
-        );
+        Toast.show({
+          text1: `${t('toast.logup_fail')}` + error.message,
+          type: 'error'
+        });
       });
   };
 

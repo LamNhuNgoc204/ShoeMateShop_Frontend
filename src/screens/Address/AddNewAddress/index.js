@@ -17,6 +17,7 @@ import {useNavigation} from '@react-navigation/native';
 import AxiosInstance from '../../../helpers/AxiosInstance';
 import {useDispatch} from 'react-redux';
 import {setAddress} from '../../../redux/reducer/cartReducer';
+import Toast from 'react-native-toast-message';
 
 const AddNewAddress = ({route}) => {
   const {screen} = route.params;
@@ -163,7 +164,7 @@ const AddNewAddress = ({route}) => {
         setSelectedWard('');
         setSelectedDistrict('');
         setErrors(null);
-        ToastAndroid.show(`${t('address.add_succ')}`, ToastAndroid.SHORT);
+        Toast.show({text1: `${t('address.add_succ')}`, type: 'success'});
 
         if (screen === 'ChooseAddress') {
           navigation.navigate('ChooseAddress', {
@@ -176,10 +177,10 @@ const AddNewAddress = ({route}) => {
           navigation.navigate('CheckOutScreen');
         }
       } else {
-        ToastAndroid.show('Lỗi server, vui lòng thử lại', ToastAndroid.SHORT);
+        Toast.show({text1: 'Lỗi server, vui lòng thử lại', type: 'error'});
       }
     } catch (error) {
-      ToastAndroid.show('Có lỗi xảy ra, vui lòng thử lại', ToastAndroid.SHORT);
+      Toast.show({text1: 'Có lỗi xảy ra, vui lòng thử lại', type: 'error'});
       // console.error('Error adding address:', error);
     }
   };

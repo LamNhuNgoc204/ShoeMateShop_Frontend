@@ -13,6 +13,7 @@ import {useTranslation} from 'react-i18next';
 import appst from '../../constants/AppStyle';
 import CustomModal from './Modal';
 import AxiosInstance from "../../helpers/AxiosInstance"
+import Toast from 'react-native-toast-message';
 const ShopeePaySetup = () => {
 const navigation = useNavigation();
   const [isChecked, setIsChecked] = useState(false);
@@ -37,11 +38,11 @@ const navigation = useNavigation();
       });
 
       if (response.status) {
-        ToastAndroid.show('Ví đã được kích hoạt', ToastAndroid.SHORT);
+        Toast.show({text1: 'Ví đã được kích hoạt', type: 'success'});
         navigation.navigate('HomeWallet',{balance: response.balance});
       }
       else {
-          ToastAndroid.show('Vui lòng thử lại sau', ToastAndroid.SHORT);
+          Toast.show({type: 'error',text1: 'Vui lòng thử lại sau'});
       }
     } catch (error) {
       console.error(error);

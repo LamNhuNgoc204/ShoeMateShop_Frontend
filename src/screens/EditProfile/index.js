@@ -18,6 +18,7 @@ import CustomTextInput from '../../components/Input';
 import {chooseAvatar} from '../../utils/functions/uploadImage';
 import {isValidPhoneNumber} from '../../utils/validate/ValidNumber';
 import {setAvatarUser, setUserInfor} from '../../redux/reducer/userReducer';
+import Toast from 'react-native-toast-message';
 
 const EditProfile = () => {
   const {t} = useTranslation();
@@ -68,10 +69,10 @@ const EditProfile = () => {
       if (response) {
         getInfor();
         dispatch(setAvatarUser(avatar));
-        ToastAndroid.show(`${t('toast.update_succ')}`, ToastAndroid.SHORT);
+        Toast.show({text2 :`${t('toast.update_succ')}`, type: 'success' });
         navigation.goBack();
       } else {
-        ToastAndroid.show(`${t('toast.del_err')}`, ToastAndroid.SHORT);
+        Toast.show({text1: `${t('toast.del_err')}`, type: 'error'});
       }
     } catch (error) {
       console.log('Update error: ', error);

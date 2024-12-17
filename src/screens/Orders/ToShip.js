@@ -26,6 +26,7 @@ import {shuffleArray} from '../../utils/functions/formatData.js';
 import {gotoCart} from '../../utils/functions/navigationHelper.js';
 import {addItemToCartApi} from '../../api/CartApi.js';
 import {useFocusEffect} from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 const ToShip = ({navigation}) => {
   const {t} = useTranslation();
@@ -89,7 +90,7 @@ const ToShip = ({navigation}) => {
     try {
       const response = await updateOrderStatus(id, 'completed');
       if (response.status) {
-        ToastAndroid.show('Đã xác nhận nhận hàng', ToastAndroid.SHORT);
+        Toast.show({text1: 'Đã xác nhận nhận hàng', type: 'success'});
         navigation.navigate('OrderScreen', {
           initialRoute: t('orders.completed'),
         });
@@ -105,7 +106,7 @@ const ToShip = ({navigation}) => {
     try {
       const response = await handleReturnRq(id, reason);
       if (response.status) {
-        ToastAndroid.show(`${t('toast.returnRq')}`, ToastAndroid.SHORT);
+        Toast.show({text1: `${t('toast.returnRq')}`, type: 'success'});
         navigation.navigate('OrderScreen', {
           initialRoute: t('orders.return'),
         });
@@ -177,25 +178,31 @@ const ToShip = ({navigation}) => {
 
           const response = await addItemToCartApi(itemCart);
           if (!response.status) {
-            ToastAndroid.show(
-              `${t('toast.addtocart_fail')}: ${product?.product?.name}`,
-              ToastAndroid.SHORT,
-            );
+            Toast.show({
+              text1: `${t('toast.addtocart_fail')}: ${product?.product?.name}`,
+              type: 'error'
+            });
           }
         }
 
         if (allOutOfStock) {
           console.log('Sản phẩm này hết hàng, không thêm vào giỏ hàng');
-          ToastAndroid.show(`${t('toast.out_of_stock')}`, ToastAndroid.SHORT);
+          Toast.show({text1: `${t('toast.out_of_stock')}`, type: 'error'});
         } else {
-          ToastAndroid.show(`${t('toast.addtocart_succ')}`, ToastAndroid.SHORT);
+          Toast.show({
+            text1: `${t('toast.addtocart_succ')}`,
+            type: 'success'
+          });
           gotoCart(navigation);
         }
       }
     } catch (error) {
       console.log('lỗi thêm giỏ hàng received: ', error);
 
-      ToastAndroid.show(`${t('toast.del_err')}`, ToastAndroid.SHORT);
+      Toast.show({
+        text1: `${t('toast.del_err')}`,
+        type: 'error'
+      });
     } finally {
       setIsOverlayLoading(false);
     }

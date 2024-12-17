@@ -15,6 +15,7 @@ import {CustomedButton} from '../../components';
 import {useTranslation} from 'react-i18next';
 import AxiosInstance from '../../helpers/AxiosInstance';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 
 const OtpVerificationPassWord = () => {
   const {t} = useTranslation();
@@ -40,21 +41,24 @@ const OtpVerificationPassWord = () => {
     try {
    const response =   await AxiosInstance().post('auth/resend-forgot-password-otp', {email});
     if (response.status) {
-      ToastAndroid.show(
-        t('notifications.send_otp_success'),
-        ToastAndroid.SHORT,
-      );
+      Toast.show({
+        text1: t('notifications.send_otp_success'),
+        type:'success',
+      });
       setResendOtp(true);
       setTimer(60);
     }
     else {
-      ToastAndroid.show(
-        t('notifications.send_otp_error'),
-        ToastAndroid.SHORT,
-      );
+      Toast.show({
+        text1:  t('notifications.send_otp_error'),
+        type:'error',
+      });
     }
     } catch (error) {
-      ToastAndroid.show(t('notifications.send_otp_error'), ToastAndroid.SHORT);
+      Toast.show({
+        text1: t('notifications.send_otp_error'),
+        type: 'error'
+      });
     }
   };
 
@@ -80,14 +84,17 @@ const OtpVerificationPassWord = () => {
       });
 
       if (response.status) {
-        ToastAndroid.show(
-          t('notifications.verify_success'),
-          ToastAndroid.SHORT,
-        );
+        Toast.show({
+          text1: t('notifications.verify_success'),
+          type:'success',
+        });
         navigation.navigate('NewPasswordScreen', {email});
       }
     } catch (error) {
-      ToastAndroid.show(t('notifications.verify_error'), ToastAndroid.SHORT);
+      Toast.show({
+        text1: t('notifications.verify_error'),
+        type: 'error'
+      });
     }
   };
 

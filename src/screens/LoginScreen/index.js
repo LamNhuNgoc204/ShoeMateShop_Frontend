@@ -5,7 +5,6 @@ import {
   Image,
   TouchableOpacity,
   ActivityIndicator,
-  ToastAndroid,
 } from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {useDispatch, useSelector} from 'react-redux';
@@ -20,6 +19,7 @@ import {login, loginWithGG} from '../../redux/thunks/UserThunks';
 import DropdownComponent from '../../components/ButtonLanguages';
 import {validateFieldsLogin} from '../../utils/functions/validData';
 import {checkTokenValidity} from '../../utils/functions/checkToken';
+import Toast from 'react-native-toast-message';
 
 GoogleSignin.configure({
   webClientId:
@@ -38,7 +38,7 @@ const LoginScreen = () => {
 
   const handleLogin = async () => {
     if (!validateFieldsLogin(email, password, setErrors)) {
-      ToastAndroid.show(`${t('toast.type')}`, ToastAndroid.SHORT);
+      Toast.show({text1: `${t('toast.type')}`, type: 'error'});
       return;
     }
     const body = {
@@ -57,9 +57,9 @@ const LoginScreen = () => {
           routes: [{name: 'BottomNav'}],
         });
       }
-      ToastAndroid.show(`${t('toast.login_succ')}`, ToastAndroid.SHORT);
+      Toast.show({text1: `${t('toast.login_succ')}`, type: 'success'});
     } else {
-      ToastAndroid.show(`${t('toast.login_fail')}`, ToastAndroid.SHORT);
+      Toast.show({text1: `${t('toast.login_fail')}`, type: 'error'});
     }
   };
 

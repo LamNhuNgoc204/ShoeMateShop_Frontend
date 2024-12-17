@@ -15,6 +15,7 @@ import {setOrderData, setToltalPrice} from '../../redux/reducer/cartReducer';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
 import {formatPrice} from '../../utils/functions/formatData';
+import Toast from 'react-native-toast-message';
 
 const BottomSheetContent = ({
   dispatch,
@@ -49,7 +50,7 @@ const BottomSheetContent = ({
     if (quantity < availableQuantity) {
       setQuantity(prev => prev + 1);
     } else if (quantity === availableQuantity) {
-      ToastAndroid.show(`${t('toast.limit_quantity')}`, ToastAndroid.SHORT);
+      Toast.show({text2 :'Thông báo' , text1: `${t('toast.limit_quantity')}`, type: 'error'});
     }
   };
 
@@ -67,25 +68,23 @@ const BottomSheetContent = ({
 
           const response = await addItemToCartApi(itemCart);
           if (response.status) {
-            ToastAndroid.show(
-              `${t('toast.addtocart_succ')}`,
-              ToastAndroid.SHORT,
+            Toast.show(
+              {text2 : `${t('toast.addtocart_succ')}`, type: 'success'}
             );
             setSizeModalVisible(false);
             closeBottomSheet();
           } else {
-            ToastAndroid.show(
-              `${t('toast.subTitle_cart')}`,
-              ToastAndroid.SHORT,
+            Toast.show(
+              {text1: `${t('toast.subTitle_cart')}`, type: "error"}
             );
             setSizeModalVisible(false);
             closeBottomSheet();
           }
         } else {
-          ToastAndroid.show(`${t('toast.choose_size')}`, ToastAndroid.SHORT);
+          Toast.show({text1: `${t('toast.choose_size')}`, type: 'error'});
         }
       } catch (error) {
-        ToastAndroid.show(`${t('toast.del_err')}`, ToastAndroid.SHORT);
+        Toast.show({text1: `${t('toast.del_err')}`, type: 'error'});
       } finally {
         setSelectedSize('');
         setsizeDetailId('');

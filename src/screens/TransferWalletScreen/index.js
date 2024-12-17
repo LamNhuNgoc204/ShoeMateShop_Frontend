@@ -16,6 +16,7 @@ import styles from './style';
 import CustomModal from './Modal';
 import { useNavigation } from '@react-navigation/native';
 import AxiosInstance from '../../helpers/AxiosInstance';
+import Toast from 'react-native-toast-message';
 
 const TransferWalletScreen = ({ route }) => {
   const { balance } = route.params;
@@ -67,23 +68,38 @@ const TransferWalletScreen = ({ route }) => {
 
   const validateInputs = () => {
     if (!email.trim()) {
-      ToastAndroid.show('Email không được để trống!', ToastAndroid.SHORT);
+      Toast.show({
+        text1: 'Email không được để trống!',
+        type: 'error',
+      });
       return false;
     }
     if (!name || name === 'Sai địa chỉ email') {
-      ToastAndroid.show('Email không hợp lệ hoặc chưa được xác thực!', ToastAndroid.SHORT);
+      Toast.show({
+        text1: 'Email không hợp lệ hoặc chưa được xác thực!',
+        type: 'error',
+      });
       return false;
     }
     if (!amount.trim()) {
-      ToastAndroid.show('Số tiền không được để trống!', ToastAndroid.SHORT);
+      Toast.show({
+        text1: 'Số tiền không được để trống!',
+        type: 'error'
+      });
       return false;
     }
     if (isNaN(amount) || parseFloat(amount) <= 0) {
-      ToastAndroid.show('Số tiền phải là một số hợp lệ!', ToastAndroid.SHORT);
+      Toast.show({
+        text1: 'Số tiền phải là một số hợp lệ!',
+        type: 'error'
+      });
       return false;
     }
     if (parseFloat(amount) > balance) {
-      ToastAndroid.show('Số tiền không được lớn hơn số dư!', ToastAndroid.SHORT);
+      Toast.show({
+        text1: 'Số tiền không được lớn hơn số dư!',
+        type: 'error'
+      });
       return false;
     }
     return true;
@@ -107,12 +123,18 @@ const TransferWalletScreen = ({ route }) => {
       if (response.status) {
         navigation.navigate('TransferSuccessScreen');
       } else {
-        ToastAndroid.show('Chuyển tiền thất bại!', ToastAndroid.SHORT);
+        Toast.show({
+          text1: 'Chuyển tiền thất bại!',
+          type: 'error'
+        });
       }
     } catch (error) {
       setLoading(false); 
       console.error('Error transferring money:', error);
-      ToastAndroid.show('Có lỗi xảy ra khi chuyển tiền!', ToastAndroid.SHORT);
+      Toast.show({
+        text1: 'Có lỗi xảy ra khi chuyển tiền!',
+        type: 'error'
+      });
     }
   };
 

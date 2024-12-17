@@ -12,6 +12,7 @@ import {useTranslation} from 'react-i18next';
 import appst from '../../constants/AppStyle';
 import ReviewItem from '../../items/ReviewItem/MultiProductReviewItem';
 import {createMultipleReviews} from '../../api/reviewAPI';
+import Toast from 'react-native-toast-message';
 
 const MultiProductReviewForm = ({route, navigation}) => {
   const {products, orderId} = route.params;
@@ -53,10 +54,13 @@ const MultiProductReviewForm = ({route, navigation}) => {
         orderId: orderId,
       });
       if (response) {
-        ToastAndroid.show(`${t('review.review_succ')}`, ToastAndroid.SHORT);
+        Toast.show({
+          text1: `${t('review.review_succ')}`,
+          type: 'success'
+        });
         navigation.navigate('MyRating', {initialRoute: t('review.to_review')});
       } else {
-        ToastAndroid.show(`${t('toast.del_err')}`, ToastAndroid.SHORT);
+        Toast.show({text2 :`${t('toast.del_err')}`, type: 'error'});
       }
     } catch (error) {
       console.log('Error to review: ', error);

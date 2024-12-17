@@ -13,6 +13,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging, { firebase } from '@react-native-firebase/messaging';
 import AxiosInstance from './src/helpers/AxiosInstance';
 
+import { LogBox } from 'react-native';
+
 
 
 const App = () => {
@@ -27,6 +29,10 @@ const App = () => {
     };
     getLanguage();
   }, []);
+
+
+  // Tắt tất cả cảnh báo
+  LogBox.ignoreAllLogs();
 
   async function checkPermission() {
     try {

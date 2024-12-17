@@ -14,6 +14,7 @@ import { CustomedButton } from '../../components';
 import styles from './style';
 import WebView from 'react-native-webview';
 import AxiosInstance from '../../helpers/AxiosInstance';
+import Toast from 'react-native-toast-message';
 const amoutdeposit = [
   { id: 1, amount: '100.000', value: 100000 },
   { id: 2, amount: '200.000', value: 200000 },
@@ -47,20 +48,20 @@ const DepositWalletScreen = ({ route }) => {
 
   const handleDeposit = async() => {
     if (!value) {
-      ToastAndroid.show('Tiền không được bỏ trống!', ToastAndroid.SHORT);
+      Toast.show({text2 : 'Tiền không được bỏ trống!', type: 'error'});
       return;
     }
 
     if (!selectedMethod) {
-      ToastAndroid.show('Vui lòng chọn ít nhất 1 phương thức thanh toán!', ToastAndroid.SHORT);
+      Toast.show({text1: 'Vui lòng chọn ít nhất 1 phương thức thanh toán!', type: 'error'});
       return;
     }
 
     if (selectedMethod === 'bank') {
-      ToastAndroid.show(
-        'Ngân hàng đang bảo trì, vui lòng chọn phương thức thanh toán khác!',
-        ToastAndroid.SHORT
-      );
+      Toast.show({
+       text1:  'Ngân hàng đang bảo trì, vui lòng chọn phương thức thanh toán khác!',
+       type: 'error'
+    });
       return;
     }
     try {
@@ -73,10 +74,10 @@ const DepositWalletScreen = ({ route }) => {
         setOrderUrl(order_url);
       
       } else {
-       ToastAndroid.show(response.message || 'Không thể tạo giao dịch.', ToastAndroid.SHORT);
+       Toast.show({text2 : response.message || 'Không thể tạo giao dịch.', type: 'error'});
       }
     } catch (error) {
-      ToastAndroid.show('Có lỗi xảy ra', ToastAndroid.SHORT);
+      Toast.show({text1: 'Có lỗi xảy ra', type: ''});
     }
 
   };
@@ -105,18 +106,18 @@ const DepositWalletScreen = ({ route }) => {
           transactionId: apptransid,
         });
         if (response.status) {
-          ToastAndroid.show('Nạp tiền thành công!', ToastAndroid.SHORT);
+          Toast.show({text1: 'Nạp tiền thành công!', type: 'success'});
           navigation.navigate('HomeWallet');
           setOrderUrl(null); 
 
         } else {
-          ToastAndroid.show('Nạp tiền thất bại!', ToastAndroid.SHORT);
+          Toast.show({text2 :'Nạp tiền thất bại!', type: 'error'});
         }
       } else {
-        ToastAndroid.show('Nạp tiền thất bại!', ToastAndroid.SHORT);
+        Toast.show({text2 : 'Nạp tiền thất bại!', type: 'error'});
       }
     } catch (error) {
-      ToastAndroid.show('Nạp tiền thất bại!', ToastAndroid.SHORT);
+      Toast.show({text1: 'Nạp tiền thất bại!', type: 'error'});
     }
   };
 
@@ -140,7 +141,7 @@ const DepositWalletScreen = ({ route }) => {
           } else {
           }
         }}
-        onError={err => ToastAndroid.show('Lỗi khi tải trang', ToastAndroid.SHORT)}
+        onError={err => Toast.show({text2 : 'Lỗi khi tải trang', type: 'error'})}
       />
       ):(
       

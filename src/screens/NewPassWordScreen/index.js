@@ -8,6 +8,7 @@ import Header from '../../components/Header';
 import {useTranslation} from 'react-i18next';
 import {useNavigation,useRoute} from '@react-navigation/native';
 import AxiosInstance from "../../helpers/AxiosInstance"
+import Toast from 'react-native-toast-message';
 const NewPassWordScreen = () => {
   const {t} = useTranslation();
   const navigation = useNavigation();
@@ -21,25 +22,28 @@ const NewPassWordScreen = () => {
   // Hàm validate mật khẩu
   const handleValidate = () => {
     if (!newPassword || !confirmPassword) {
-      ToastAndroid.show(
-       "Không được để trống mật khẩu",
-        ToastAndroid.SHORT,
+      Toast.show(
+       {
+        text1: "Không được để trống mật khẩu",
+        type: 'error'
+       }
       );
       return false;
     }
 
     if (newPassword.length < 6) {
-      ToastAndroid.show(
-        "Mật khẩu phải trên 6 kí tự",
-         ToastAndroid.SHORT,
-       );
+      Toast.show({
+        text1: "Mật khẩu phải trên 6 kí tự",
+        type: 'error'
+      });
       return false;
     }
 
     if (newPassword !== confirmPassword) {
-      ToastAndroid.show(
-        "Mật khẩu phải trùng nhau",
-         ToastAndroid.SHORT,
+      Toast.show({
+        text1: "Mật khẩu phải trùng nhau",
+        type: 'error'
+      }
        );
       return false;
     }
@@ -58,22 +62,22 @@ const NewPassWordScreen = () => {
         });
         if (response.status) {
           navigation.navigate('LoginScreen');
-          ToastAndroid.show(
-            "Đã cập nhật mật khẩu thành công,vui lòng đăng nhập lại", 
-             ToastAndroid.SHORT,
-           );
+          Toast.show({
+            text1: "Đã cập nhật mật khẩu thành công,vui lòng đăng nhập lại",
+            type:'success'
+          });
         }
         else {
-          ToastAndroid.show(
-            "Vui lòng thử lại sau", 
-             ToastAndroid.SHORT,
-           );
+          Toast.show({
+             text1: "Vui lòng thử lại sau", 
+             type: 'error'
+        });
         }
       } catch (error) {
-        ToastAndroid.show(
-          "Vui lòng thử lại sau nhé", 
-           ToastAndroid.SHORT,
-         );
+        Toast.show({
+          text1: "Vui lòng thử lại sau nhé",
+          type: 'error'
+        });
       }
      
      

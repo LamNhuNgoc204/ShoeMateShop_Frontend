@@ -22,6 +22,7 @@ import {shuffleArray} from '../../utils/functions/formatData';
 import {addItemToCartApi} from '../../api/CartApi';
 import {gotoCart} from '../../utils/functions/navigationHelper';
 import {useFocusEffect} from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 const Cancalled = ({navigation}) => {
   const {t} = useTranslation();
@@ -146,25 +147,28 @@ const Cancalled = ({navigation}) => {
 
           const response = await addItemToCartApi(itemCart);
           if (!response.status) {
-            ToastAndroid.show(
-              `${t('toast.addtocart_fail')}: ${product?.product?.name}`,
-              ToastAndroid.SHORT,
-            );
+            Toast.show({
+              text1: `${t('toast.addtocart_fail')}: ${product?.product?.name}`,
+              type: 'error'
+            });
           }
         }
 
         if (allOutOfStock) {
           console.log('Sản phẩm này hết hàng, không thêm vào giỏ hàng');
-          ToastAndroid.show(`${t('toast.out_of_stock')}`, ToastAndroid.SHORT);
+          Toast.show({
+            text1:`${t('toast.out_of_stock')}`,
+            type: 'error'
+          });
         } else {
-          ToastAndroid.show(`${t('toast.addtocart_succ')}`, ToastAndroid.SHORT);
+          Toast.show({text1: `${t('toast.addtocart_succ')}`, type: 'success'});
           gotoCart(navigation);
         }
       }
     } catch (error) {
       console.log('lỗi thêm giỏ hàng received: ', error);
 
-      ToastAndroid.show(`${t('toast.del_err')}`, ToastAndroid.SHORT);
+      Toast.show({text1: `${t('toast.del_err')}`, type: 'error'});
     } finally {
       setIsOverlayLoading(false);
     }

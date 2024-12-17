@@ -75,7 +75,7 @@ const UserSlice = createSlice({
         console.log('login with gg: successful!');
         state.isLoading = false;
         console.log('user: ', action.payload);
-        state.user = action.payload;
+        state.user = action.payload.user;
       })
       .addCase(loginWithGG.rejected, (state, action) => {
         console.log('login with gg: failure!');
