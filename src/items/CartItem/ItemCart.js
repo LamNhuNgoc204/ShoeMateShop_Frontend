@@ -187,12 +187,20 @@ const ItemCart = ({
             setCheckedProducts(prevChecked =>
               prevChecked.filter(cart => cart._id !== item._id),
             );
-            Toast.show({text1: `${t('toast.del_cart')}`, type: 'success'});
+            Toast.show({
+              text1: `${t('toast.del_cart')}`,
+              type: 'success',
+              position: 'bottom',
+            });
             if (swipeableRef.current) {
               swipeableRef.current.close();
             }
           } else {
-            Toast.show({text1: `${t('toast.del_err')}`, type: 'error'});
+            Toast.show({
+              text1: `${t('toast.del_err')}`,
+              type: 'error',
+              position: 'bottom',
+            });
           }
         } catch (error) {
           console.log('error delete item card->', error);

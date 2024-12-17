@@ -87,8 +87,8 @@ const ChooseAddress = ({navigation, route}) => {
 
               Toast.show({
                 text1: `${t('toast.del_add_succ')}`,
-                type: 'success'
-            });
+                type: 'success',
+              });
             }
           } catch (error) {
             console.log('Error removing item from address:', error);
@@ -117,7 +117,11 @@ const ChooseAddress = ({navigation, route}) => {
               : {...item, isDefault: false},
           );
           setAddresses(updatedAddresses);
-          Toast.show({text2 : `${t('toast.change_add')}`, type : 'success'});
+          Toast.show({
+            text2: `${t('toast.change_add')}`,
+            position: 'bottom',
+            type: 'success',
+          });
           setIsSetDefault(false);
         }
       } catch (error) {

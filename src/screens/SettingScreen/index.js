@@ -37,6 +37,7 @@ const SettingScreen = () => {
       Toast.show({
         text1: `${t('toast.del_err')}`,
         type: 'error',
+        position: 'bottom',
       });
     }
   };

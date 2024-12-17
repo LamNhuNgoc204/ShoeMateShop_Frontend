@@ -56,11 +56,16 @@ const MultiProductReviewForm = ({route, navigation}) => {
       if (response) {
         Toast.show({
           text1: `${t('review.review_succ')}`,
-          type: 'success'
+          type: 'success',
+          position: 'bottom',
         });
         navigation.navigate('MyRating', {initialRoute: t('review.to_review')});
       } else {
-        Toast.show({text2 :`${t('toast.del_err')}`, type: 'error'});
+        Toast.show({
+          text2: `${t('toast.del_err')}`,
+          type: 'error',
+          position: 'bottom',
+        });
       }
     } catch (error) {
       console.log('Error to review: ', error);

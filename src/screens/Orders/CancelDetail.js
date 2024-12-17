@@ -122,16 +122,25 @@ const CancelDetail = ({route}) => {
 
         if (allOutOfStock) {
           console.log('Sản phẩm này hết hàng, không thêm vào giỏ hàng');
-          Toast.show({text1: `${t('toast.out_of_stock')}`, type: 'error'});
+          Toast.show({
+            text1: `${t('toast.out_of_stock')}`,
+            type: 'error',
+            position: 'bottom',
+          });
         } else {
-          Toast.show({text1: `${t('toast.addtocart_succ')}`, type: 'success'});
+          Toast.show({
+            text1: `${t('toast.addtocart_succ')}`,
+            type: 'success',
+            position: 'bottom',
+          });
           gotoCart(navigation);
         }
       }
     } catch (error) {
       console.log('lỗi thêm giỏ hàng received: ', error);
 
-      Toast.show({ text1:  `${t('toast.del_err')}`, type: 'error'});
+      Toast.show({text1: `${t('toast.del_err')}`, type: 'error',
+      position: 'bottom',});
     } finally {
       setIsOverlayLoading(false);
     }

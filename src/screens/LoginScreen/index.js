@@ -35,11 +35,15 @@ const LoginScreen = () => {
   const {isLoading} = useSelector(state => state.user);
   const authState = useSelector(state => state.user);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-  console.log(isLoading)
+  console.log(isLoading);
 
   const handleLogin = async () => {
     if (!validateFieldsLogin(email, password, setErrors)) {
-      Toast.show({text1: `${t('toast.type')}`, type: 'error'});
+      Toast.show({
+        text1: `${t('toast.type')}`,
+        type: 'error',
+        position: 'bottom',
+      });
       return;
     }
     const body = {
@@ -50,8 +54,8 @@ const LoginScreen = () => {
     const resultAction = await dispatch(login(body));
     if (login.fulfilled.match(resultAction)) {
       const {user} = resultAction.payload;
-      console.log("user",user);
-      if (user?.isVerified==false) {
+      console.log('user', user);
+      if (user?.isVerified == false) {
         console.log('not verified', user?.isVerified);
         navigation.navigate('OtpVerification', {email});
       } else {
@@ -60,9 +64,17 @@ const LoginScreen = () => {
           routes: [{name: 'BottomNav'}],
         });
       }
-      Toast.show({text1: `${t('toast.login_succ')}`, type: 'success'});
+      Toast.show({
+        text1: `${t('toast.login_succ')}`,
+        type: 'success',
+        position: 'bottom',
+      });
     } else {
-      Toast.show({text1: `${t('toast.login_fail')}`, type: 'error'});
+      Toast.show({
+        text1: `${t('toast.login_fail')}`,
+        type: 'error',
+        position: 'bottom',
+      });
     }
   };
 

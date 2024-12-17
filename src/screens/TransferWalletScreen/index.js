@@ -72,7 +72,7 @@ const TransferWalletScreen = ({route}) => {
   const validateInputs = () => {
     if (!email.trim()) {
       Toast.show({
-        text1:  t('transferwallet.errorEmptyEmail'),
+        text1: t('transferwallet.errorEmptyEmail'),
         type: 'error',
         position: 'bottom',
       });
@@ -88,7 +88,7 @@ const TransferWalletScreen = ({route}) => {
     }
     if (!amount.trim()) {
       Toast.show({
-        text1:  t('transferwallet.errorEmptyAmount'),
+        text1: t('transferwallet.errorEmptyAmount'),
         type: 'error',
         position: 'bottom',
       });
@@ -96,7 +96,7 @@ const TransferWalletScreen = ({route}) => {
     }
     if (isNaN(amount) || parseFloat(amount) <= 0) {
       Toast.show({
-        text1:  t('transferwallet.errorInvalidAmount'),
+        text1: t('transferwallet.errorInvalidAmount'),
         type: 'error',
         position: 'bottom',
       });
@@ -132,7 +132,7 @@ const TransferWalletScreen = ({route}) => {
         navigation.navigate('TransferSuccessScreen');
       } else if (response.code == 'Invalidamount') {
         Toast.show({
-          text1:  t('transferwallet.errorInsufficientBalance'),
+          text1: t('transferwallet.errorInsufficientBalance'),
           type: 'error',
           position: 'bottom',
         });
@@ -160,7 +160,6 @@ const TransferWalletScreen = ({route}) => {
           type: 'error',
           position: 'bottom',
         });
-        
       } else if (response.code == 'Recipientwalletnotactive') {
         Toast.show({
           text1: t('transferwallet.errorRecipientNotActivated'),
@@ -171,6 +170,7 @@ const TransferWalletScreen = ({route}) => {
         Toast.show({
           text1: t('transferwallet.errorTransferFailed'),
           type: 'error',
+          position: 'bottom',
         });
       }
     } catch (error) {
@@ -178,6 +178,7 @@ const TransferWalletScreen = ({route}) => {
       Toast.show({
         text1: t('transferwallet.errorTransferError'),
         type: 'error',
+        position: 'bottom',
       });
     }
   };
@@ -201,7 +202,9 @@ const TransferWalletScreen = ({route}) => {
       </View>
       <View style={styles.viewBody}>
         <View style={styles.boxwallet}>
-          <Text style={styles.textwallet}>{t('transferwallet.walletBalance')}</Text>
+          <Text style={styles.textwallet}>
+            {t('transferwallet.walletBalance')}
+          </Text>
           <Text style={styles.textmoney}>{formatVND(balance)} VNĐ</Text>
         </View>
         <View style={{marginTop: spacing.lg}}>
@@ -276,7 +279,3 @@ const TransferWalletScreen = ({route}) => {
 };
 
 export default TransferWalletScreen;
-
-
-
-

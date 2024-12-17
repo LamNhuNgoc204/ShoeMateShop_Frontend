@@ -13,7 +13,7 @@ const SplashScreen = ({navigation}) => {
     const checkAppStatus = async () => {
       try {
         const isFirstLaunch = await AsyncStorage.getItem('isFirstLaunch');
-        // const token = await AsyncStorage.getItem('token');
+        const token = await AsyncStorage.getItem('token');
 
         // if (token) {
         //   // Kiểm tra token
@@ -48,7 +48,20 @@ const SplashScreen = ({navigation}) => {
           navigation.replace('OnBoardScreen');
         } else {
           // Không phải lần đầu, chưa đăng nhập => vào Home
-          navigation.replace('LoginScreen');
+
+          if (token) {
+            // Kiểm tra token
+            const response = await AxiosInstance().post('/auth/protected', {
+              token,
+            });
+            if (response.status) {
+              // Token hợp lệ => vào Home
+              await AsyncStorage.setItem('token', token);
+              return navigation.replace('BottomNav');
+            } else {
+              navigation.replace('LoginScreen');
+            }
+          }
         }
       } catch (error) {
         console.log('Error checking token', error);

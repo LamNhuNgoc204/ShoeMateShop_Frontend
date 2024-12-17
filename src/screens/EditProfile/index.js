@@ -69,10 +69,18 @@ const EditProfile = () => {
       if (response) {
         getInfor();
         dispatch(setAvatarUser(avatar));
-        Toast.show({text2 :`${t('toast.update_succ')}`, type: 'success' });
+        Toast.show({
+          text2: `${t('toast.update_succ')}`,
+          type: 'success',
+          position: 'bottom',
+        });
         navigation.goBack();
       } else {
-        Toast.show({text1: `${t('toast.del_err')}`, type: 'error'});
+        Toast.show({
+          text1: `${t('toast.del_err')}`,
+          type: 'error',
+          position: 'bottom',
+        });
       }
     } catch (error) {
       console.log('Update error: ', error);

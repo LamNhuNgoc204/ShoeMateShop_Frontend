@@ -90,7 +90,8 @@ const ToShip = ({navigation}) => {
     try {
       const response = await updateOrderStatus(id, 'completed');
       if (response.status) {
-        Toast.show({text1: 'Đã xác nhận nhận hàng', type: 'success'});
+        Toast.show({text1: 'Đã xác nhận nhận hàng', type: 'success',
+          position: 'bottom',});
         navigation.navigate('OrderScreen', {
           initialRoute: t('orders.completed'),
         });
@@ -106,7 +107,8 @@ const ToShip = ({navigation}) => {
     try {
       const response = await handleReturnRq(id, reason);
       if (response.status) {
-        Toast.show({text1: `${t('toast.returnRq')}`, type: 'success'});
+        Toast.show({text1: `${t('toast.returnRq')}`, type: 'success',
+        position: 'bottom',});
         navigation.navigate('OrderScreen', {
           initialRoute: t('orders.return'),
         });
@@ -180,18 +182,21 @@ const ToShip = ({navigation}) => {
           if (!response.status) {
             Toast.show({
               text1: `${t('toast.addtocart_fail')}: ${product?.product?.name}`,
-              type: 'error'
+              type: 'error',
+              position: 'bottom',
             });
           }
         }
 
         if (allOutOfStock) {
           console.log('Sản phẩm này hết hàng, không thêm vào giỏ hàng');
-          Toast.show({text1: `${t('toast.out_of_stock')}`, type: 'error'});
+          Toast.show({text1: `${t('toast.out_of_stock')}`, type: 'error',
+          position: 'bottom',});
         } else {
           Toast.show({
             text1: `${t('toast.addtocart_succ')}`,
-            type: 'success'
+            type: 'success',
+            position: 'bottom',
           });
           gotoCart(navigation);
         }
@@ -201,7 +206,8 @@ const ToShip = ({navigation}) => {
 
       Toast.show({
         text1: `${t('toast.del_err')}`,
-        type: 'error'
+        type: 'error',
+        position: 'bottom',
       });
     } finally {
       setIsOverlayLoading(false);

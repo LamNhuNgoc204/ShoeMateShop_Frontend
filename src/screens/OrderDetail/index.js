@@ -107,7 +107,8 @@ const OrderDetail = ({route}) => {
           if (!response.status) {
             Toast.show({
               text: `${t('toast.addtocart_fail')}: ${product?.product?.name}`,
-              type: 'error'
+              type: 'error',
+              position: 'bottom',
             });
           }
         }
@@ -116,17 +117,26 @@ const OrderDetail = ({route}) => {
           console.log('Sản phẩm này hết hàng, không thêm vào giỏ hàng');
           Toast.show({
             text1: `${t('toast.out_of_stock')}`,
-            type: 'error'
+            type: 'error',
+            position: 'bottom',
           });
         } else {
-          Toast.show({text1: `${t('toast.addtocart_succ')}`, type: 'success'});
+          Toast.show({
+            text1: `${t('toast.addtocart_succ')}`,
+            type: 'success',
+            position: 'bottom',
+          });
           gotoCart(navigation);
         }
       }
     } catch (error) {
       console.log('lỗi thêm giỏ hàng received: ', error);
 
-      Toast.show({text1: `${t('toast.del_err')}`, type: 'error'});
+      Toast.show({
+        text1: `${t('toast.del_err')}`,
+        type: 'error',
+        position: 'bottom',
+      });
     } finally {
       setIsOverlayLoading(false);
     }
@@ -157,7 +167,11 @@ const OrderDetail = ({route}) => {
     const response = await cancelOrder(item._id);
     if (response.status) {
       setisCancel(false);
-      Toast.show({text1: t('toast.cancel_order'), type: 'success'});
+      Toast.show({
+        text1: t('toast.cancel_order'),
+        type: 'success',
+        position: 'bottom',
+      });
       navigation.navigate('OrderScreen', {initialRoute: t('orders.cancel')});
     }
     setModalVisible(false);
@@ -197,7 +211,11 @@ const OrderDetail = ({route}) => {
     try {
       const response = await handleReturnRq(id, reason);
       if (response.status) {
-        Toast.show({text2 : `${t('toast.returnRq')}`, type: 'success'});
+        Toast.show({
+          text2: `${t('toast.returnRq')}`,
+          type: 'success',
+          position: 'bottom',
+        });
         navigation.navigate('OrderScreen', {
           initialRoute: t('orders.return'),
         });
@@ -211,7 +229,11 @@ const OrderDetail = ({route}) => {
     try {
       const response = await updateOrderStatus(id, 'completed');
       if (response.status) {
-        Toast.show({text1: `${t('toast.confirm_order')}`, type: 'success'});
+        Toast.show({
+          text1: `${t('toast.confirm_order')}`,
+          type: 'success',
+          position: 'bottom',
+        });
         navigation.navigate('OrderScreen', {
           initialRoute: t('orders.completed'),
         });

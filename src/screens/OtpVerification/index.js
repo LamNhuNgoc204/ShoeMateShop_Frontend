@@ -43,6 +43,7 @@ const OtpVerification = () => {
       Toast.show({
         text1: t('notifications.send_otp_success'),
         type: 'success',
+        position: 'bottom',
       });
       setResendOtp(true);
       setTimer(60);
@@ -50,6 +51,7 @@ const OtpVerification = () => {
       Toast.show({
         text1: t('notifications.send_otp_error'),
         type: 'error',
+        position: 'bottom',
       });
     }
   };
@@ -85,6 +87,7 @@ const OtpVerification = () => {
       Toast.show({
         text1: t('notifications.verify_error'),
         type: 'error',
+        position: 'bottom',
       });
     }
   };

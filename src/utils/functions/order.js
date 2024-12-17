@@ -11,7 +11,11 @@ export const handleOrderDetail = async (
   if (orderDetail.orderStatus === 'pending') {
     const response = await cancelOrder(index);
     if (response.status) {
-      Toast.show({text1: t('toast.cancel_order'), type: 'success'});
+      Toast.show({
+        text1: t('toast.cancel_order'),
+        type: 'success',
+        position: 'bottom',
+      });
       navigation.goBack();
     }
   }

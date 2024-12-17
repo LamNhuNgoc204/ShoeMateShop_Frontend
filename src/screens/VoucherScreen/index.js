@@ -82,14 +82,16 @@ const VoucherScreen = ({route}) => {
           setVouchers([]);
           Toast.show({
             text1: `${t('search.get_vc_err')}`,
-            type: 'error'
+            type: 'error',
+            position: 'bottom',
           });
         }
       } catch (error) {
         setVouchers([]);
         Toast.show({
           text1: `${t('search.get_vc_err')}`,
-          type: 'error'
+          type: 'error',
+          position: 'bottom',
         });
       } finally {
         setIsLoading(false);
@@ -103,7 +105,8 @@ const VoucherScreen = ({route}) => {
     if (!searchQuery.trim()) {
       Toast.show({
         text1: `${t('search.key')}`,
-        type: 'error'
+        type: 'error',
+        position: 'bottom',
       });
       return;
     }
@@ -119,14 +122,16 @@ const VoucherScreen = ({route}) => {
         setVouchers([]);
         Toast.show({
           text1: `${t('search.not_found')}`,
-          type: 'error'
+          type: 'error',
+          position: 'bottom',
         });
       }
     } catch (error) {
       setVouchers([]);
       Toast.show({
         text1: `${t('search.get_vc_err')}`,
-        type: 'error'
+        type: 'error',
+        position: 'bottom',
       });
     } finally {
       setIsLoading(false);

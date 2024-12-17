@@ -153,9 +153,12 @@ const AddNewAddress = ({route}) => {
         recieverName: fullName,
         isDefault: true,
       };
-  
-      const response = await AxiosInstance().post('/addresses/add-address', body);
-  
+
+      const response = await AxiosInstance().post(
+        '/addresses/add-address',
+        body,
+      );
+
       if (response.status) {
         setFullName('');
         setPhoneNumber('');
@@ -164,7 +167,11 @@ const AddNewAddress = ({route}) => {
         setSelectedWard('');
         setSelectedDistrict('');
         setErrors(null);
-        Toast.show({text1: `${t('address.add_succ')}`, type: 'success'});
+        Toast.show({
+          text1: `${t('address.add_succ')}`,
+          type: 'success',
+          position: 'bottom',
+        });
 
         if (screen === 'ChooseAddress') {
           navigation.navigate('ChooseAddress', {
@@ -177,14 +184,21 @@ const AddNewAddress = ({route}) => {
           navigation.navigate('CheckOutScreen');
         }
       } else {
-        Toast.show({text1: 'Lỗi server, vui lòng thử lại', type: 'error'});
+        Toast.show({
+          text1: 'Lỗi server, vui lòng thử lại',
+          type: 'error',
+          position: 'bottom',
+        });
       }
     } catch (error) {
-      Toast.show({text1: 'Có lỗi xảy ra, vui lòng thử lại', type: 'error'});
+      Toast.show({
+        text1: 'Có lỗi xảy ra, vui lòng thử lại',
+        type: 'error',
+        position: 'bottom',
+      });
       // console.error('Error adding address:', error);
     }
   };
-  
 
   const findProvinceName = value => {
     const province = provinces.find(province => province.id === value);

@@ -378,7 +378,8 @@
     "choose_size": "Vui lòng chọn kích thước phù hợp",
     "del_all_cart": "Tất cả sản phẩm đã được xóa khỏi giỏ hàng!",
     "del_carts": "Xóa toàn bộ giỏ hàng?",
-    "del_cart_title": "Tất cả sản phẩm trong giỏ hàng của bạn sẽ bị xóa vĩnh viễn!"
+    "del_cart_title": "Tất cả sản phẩm trong giỏ hàng của bạn sẽ bị xóa vĩnh viễn!",
+    "create_order": "Tạo đơn thành công"
   },
   "ship": {
     "infor": "Thông tin vận chuyển",

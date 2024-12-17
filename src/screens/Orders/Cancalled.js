@@ -149,7 +149,8 @@ const Cancalled = ({navigation}) => {
           if (!response.status) {
             Toast.show({
               text1: `${t('toast.addtocart_fail')}: ${product?.product?.name}`,
-              type: 'error'
+              type: 'error',
+              position: 'bottom',
             });
           }
         }

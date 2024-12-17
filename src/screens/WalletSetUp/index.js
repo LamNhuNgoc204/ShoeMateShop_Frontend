@@ -38,11 +38,13 @@ const navigation = useNavigation();
       });
 
       if (response.status) {
-        Toast.show({text1: 'Ví đã được kích hoạt', type: 'success'});
+        Toast.show({text1: 'Ví đã được kích hoạt', type: 'success',
+          position: 'bottom',});
         navigation.navigate('HomeWallet',{balance: response.balance});
       }
       else {
-          Toast.show({type: 'error',text1: 'Vui lòng thử lại sau'});
+          Toast.show({type: 'error',text1: 'Vui lòng thử lại sau',
+            position: 'bottom',});
       }
     } catch (error) {
       console.error(error);

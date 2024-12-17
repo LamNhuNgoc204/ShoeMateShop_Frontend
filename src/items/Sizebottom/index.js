@@ -50,7 +50,12 @@ const BottomSheetContent = ({
     if (quantity < availableQuantity) {
       setQuantity(prev => prev + 1);
     } else if (quantity === availableQuantity) {
-      Toast.show({text2 :'Thông báo' , text1: `${t('toast.limit_quantity')}`, type: 'error'});
+      Toast.show({
+        text2: 'Thông báo',
+        text1: `${t('toast.limit_quantity')}`,
+        type: 'error',
+        position: 'bottom',
+      });
     }
   };
 
@@ -68,23 +73,35 @@ const BottomSheetContent = ({
 
           const response = await addItemToCartApi(itemCart);
           if (response.status) {
-            Toast.show(
-              {text2 : `${t('toast.addtocart_succ')}`, type: 'success'}
-            );
+            Toast.show({
+              text2: `${t('toast.addtocart_succ')}`,
+              type: 'success',
+              position: 'bottom',
+            });
             setSizeModalVisible(false);
             closeBottomSheet();
           } else {
-            Toast.show(
-              {text1: `${t('toast.subTitle_cart')}`, type: "error"}
-            );
+            Toast.show({
+              text1: `${t('toast.subTitle_cart')}`,
+              type: 'error',
+              position: 'bottom',
+            });
             setSizeModalVisible(false);
             closeBottomSheet();
           }
         } else {
-          Toast.show({text1: `${t('toast.choose_size')}`, type: 'error'});
+          Toast.show({
+            text1: `${t('toast.choose_size')}`,
+            type: 'error',
+            position: 'bottom',
+          });
         }
       } catch (error) {
-        Toast.show({text1: `${t('toast.del_err')}`, type: 'error'});
+        Toast.show({
+          text1: `${t('toast.del_err')}`,
+          type: 'error',
+          position: 'bottom',
+        });
       } finally {
         setSelectedSize('');
         setsizeDetailId('');

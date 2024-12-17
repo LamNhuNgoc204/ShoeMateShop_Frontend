@@ -37,6 +37,7 @@ const SignUpScreen = () => {
       Toast.show({
         text1: `${t('toast.type')}`,
         type: 'error',
+        position: 'bottom',
       });
       return;
     }
@@ -47,13 +48,15 @@ const SignUpScreen = () => {
         Toast.show({
           text1: `${t('toast.logup_succ')}`,
           type: 'success',
+          position: 'bottom',
         });
         navigation.navigate('OtpVerification', {email});
       })
       .catch(error => {
         Toast.show({
           text1: `${t('toast.logup_fail')}` + error.message,
-          type: 'error'
+          type: 'error',
+          position: 'bottom',
         });
       });
   };

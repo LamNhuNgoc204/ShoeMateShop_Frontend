@@ -31,11 +31,13 @@ console.log(email);
       Toast.show({
         text1: "Email chưa được đăng kí",
         type: "error",
+        position: 'bottom',
       });
     }
    } catch (error) {
     console.log(error);
-    Toast.show({text1: "Vui lòng thử lại sau ", type: 'error'});
+    Toast.show({text1: "Vui lòng thử lại sau ", type: 'error',
+      position: 'bottom',});
    }
     
   };

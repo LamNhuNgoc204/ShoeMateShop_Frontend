@@ -44,6 +44,7 @@ const OtpVerificationPassWord = () => {
       Toast.show({
         text1: t('notifications.send_otp_success'),
         type:'success',
+        position: 'bottom',
       });
       setResendOtp(true);
       setTimer(60);
@@ -52,12 +53,14 @@ const OtpVerificationPassWord = () => {
       Toast.show({
         text1:  t('notifications.send_otp_error'),
         type:'error',
+        position: 'bottom',
       });
     }
     } catch (error) {
       Toast.show({
         text1: t('notifications.send_otp_error'),
-        type: 'error'
+        type: 'error',
+        position: 'bottom',
       });
     }
   };
@@ -87,13 +90,15 @@ const OtpVerificationPassWord = () => {
         Toast.show({
           text1: t('notifications.verify_success'),
           type:'success',
+          position: 'bottom',
         });
         navigation.navigate('NewPasswordScreen', {email});
       }
     } catch (error) {
       Toast.show({
         text1: t('notifications.verify_error'),
-        type: 'error'
+        type: 'error',
+        position: 'bottom',
       });
     }
   };

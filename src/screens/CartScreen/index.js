@@ -114,7 +114,11 @@ const CartScreen = () => {
 
   const handleOrder = () => {
     if (checkedProducts.length == 0) {
-      Toast.show({text1: `${t('toast.choose_pd')}`, type: 'success'});
+      Toast.show({
+        text1: `${t('toast.choose_pd')}`,
+        type: 'success',
+        position: 'bottom',
+      });
     } else {
       dispatch(setOrderData(checkedProducts));
       dispatch(setToltalPrice(totalPrice));
@@ -137,9 +141,17 @@ const CartScreen = () => {
           const res = await clearCart();
           if (res) {
             setCards([]);
-            Toast.show({text1: `${t('toast.del_all_cart')}`, type: 'success'});
+            Toast.show({
+              text1: `${t('toast.del_all_cart')}`,
+              type: 'success',
+              position: 'bottom',
+            });
           } else {
-            Toast.show({text1: `${t('toast.del_err')}`, type: 'error'});
+            Toast.show({
+              text1: `${t('toast.del_err')}`,
+              type: 'error',
+              position: 'bottom',
+            });
           }
         } catch (error) {
           console.log('Lỗi xóa giỏ hàng: ', error);
