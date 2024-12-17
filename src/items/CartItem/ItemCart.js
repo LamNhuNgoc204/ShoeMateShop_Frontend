@@ -11,7 +11,6 @@ import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
 import Toast from 'react-native-toast-message';
 
-
 const ItemCart = ({
   item,
   cards,
@@ -110,7 +109,7 @@ const ItemCart = ({
           cancellable: true,
         },
         () => {
-          setProductQuantity(0);
+          // setProductQuantity(0);
           setCheckedProducts(
             checkedProducts.filter(cart => cart._id !== item._id),
           );
