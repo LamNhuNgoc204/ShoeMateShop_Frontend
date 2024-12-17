@@ -51,7 +51,7 @@ const ProfileScreen = () => {
   );
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.profile}>
         {isTokenValid ? (
           <View style={appst.rowStart}>
@@ -106,9 +106,7 @@ const ProfileScreen = () => {
         )}
       </View>
 
-      <TouchableOpacity
-        onPress={handleToWallet}
-        style={styles.myGadget}>
+      <TouchableOpacity onPress={handleToWallet} style={styles.myGadget}>
         <Image
           style={styles.ic_mygadget}
           source={require('../../assets/icons/icons8-wallet.png')}
