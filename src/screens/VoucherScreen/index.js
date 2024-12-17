@@ -27,23 +27,24 @@ const VoucherScreen = ({route}) => {
           voucher_code: item.voucher_code,
           totalOrderValue: totalOrderValue,
         });
-        if (response.status) {
-          Toast.show({
-            text1: `${t('search.use_vc')}`,
-            type:'success',
-          });
+        console.log('response', response);
+        if (response.code =="success" ) {
+          ToastAndroid.show(`${t('search.use_vc')}`, ToastAndroid.SHORT);
           navigation.navigate('CheckOutScreen', {responseVoucher: response});
-        } else {
-          Toast.show({
-            text1: `${t('search.used_vc')}`,
-            type:'error',
-          });
+        }else if(response.code == "minordervalue") {
+
+          ToastAndroid.show(`Không đủ điều kiện sử dụng voucher`, ToastAndroid.SHORT);
+        }
+         else if(response.code == "usedBy") {
+          ToastAndroid.show(`${t('search.used_vc')}`, ToastAndroid.SHORT);
+        } else if(response.code == "quantity") {
+          ToastAndroid.show(`Số lượng voucher đã hết`, ToastAndroid.SHORT);
+        }else {
+          ToastAndroid.show(`Vui lòng thử lại sau`, ToastAndroid.SHORT); 
         }
       } catch (error) {
-        Toast.show({
-          text1: `${t('search.used_vc')}`,
-          type:'error',
-        });
+        console.log(error);
+        ToastAndroid.show(`${t('search.used_vc')}`, ToastAndroid.SHORT);
       }
     }
   };
@@ -159,7 +160,7 @@ const VoucherItem = ({item, handleApplyVoucher}) => {
     <View style={[styleItem.container]}>
       <VoucherBgSvg style={styleItem.svgbg} />
       <View style={styleItem.headerContainer}>
-        <Text style={styleItem.voucherTxt}>{t('search.vc')}</Text>
+        <Text style={styleItem.voucherTxt}>{t('voucher.vc')}</Text>
         <Text style={styleItem.validText}>{item.voucher_code}</Text>
       </View>
       <View style={styleItem.bottomView}>

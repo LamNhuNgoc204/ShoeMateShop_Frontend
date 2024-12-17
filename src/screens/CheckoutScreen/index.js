@@ -111,14 +111,17 @@ const CheckOutScreen = ({route}) => {
         state.payment.payment_method === 'Shoes Mate Wallet'
       ) {
         console.log('Shoes Mate Wallet');
-
+        const response = await createOrder(body);
+        console.log('response', response);
         // Kiểm tra số dư hoặc trạng thái ví trước khi tạo đơn hàng
         const walletResponse = await AxiosInstance().post('/wallet/payment', {
           amount: tongchiphi,
         });
         console.log('walletResponse', walletResponse);
-        if (walletResponse.status) {
-          Toast.show({text1: 'Đặt hàng thành công', type: 'success'});
+        // if (walletResponse.status) {
+        //   Toast.show({text1: 'Đặt hàng thành công', type: 'success'});
+        if (walletResponse.status && response.status) {
+          ToastAndroid.show('Đặt hàng thành công', ToastAndroid.SHORT);
           navigation.navigate('CheckoutSuccess');
           return;
         } else if (walletResponse.code === 'Insufficientbalance') {
