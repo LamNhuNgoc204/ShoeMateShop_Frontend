@@ -136,7 +136,8 @@ const CartScreen = () => {
         try {
           const res = await clearCart();
           if (res) {
-            Toast.show({text1:`${t('toast.del_all_cart')}`, type: 'success' });
+            setCards([]);
+            Toast.show({text1: `${t('toast.del_all_cart')}`, type: 'success'});
           } else {
             Toast.show({text1: `${t('toast.del_err')}`, type: 'error'});
           }

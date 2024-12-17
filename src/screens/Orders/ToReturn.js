@@ -48,7 +48,7 @@ const ToReturn = ({navigation}) => {
     try {
       const response = await getOrderReturn();
       if (response.status) {
-        setReturnOrder(response?.data?.reverse());
+        setReturnOrder(response?.data);
         setLoading(true);
       }
     } catch (error) {
