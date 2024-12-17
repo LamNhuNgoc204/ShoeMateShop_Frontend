@@ -127,7 +127,7 @@ const CheckOutScreen = ({route}) => {
           return;
         } else if (walletResponse.code == 'walletnotactive') {
           Toast.show({
-            text2: 'Ví chưa được kích hoạt',
+            text2: `${t('wallet.errors.notActive')}`,
             type: 'error',
             position: 'bottom',
           });
@@ -135,7 +135,7 @@ const CheckOutScreen = ({route}) => {
           return;
         } else if (walletResponse.code == 'Insufficientbalance') {
           Toast.show({
-            text2: 'Không đủ số dư',
+            text2: `${t('wallet.errors.insufficientBalance')}`,
             type: 'error',
             position: 'bottom',
           });
@@ -148,6 +148,7 @@ const CheckOutScreen = ({route}) => {
           Toast.show({
             text1: t('order.success'),
             type: 'success',
+            position: 'bottom',
           });
           navigation.navigate('CheckoutSuccess');
           return;
@@ -155,6 +156,7 @@ const CheckOutScreen = ({route}) => {
           Toast.show({
             text1: t('order.errors.general'),
             type: 'error',
+            position: 'bottom',
           });
           setIsLoading(false);
           return;
@@ -195,7 +197,7 @@ const CheckOutScreen = ({route}) => {
     } catch (error) {
       console.log('Error:', error);
       Toast.show({
-        text1: 'Đã xảy ra lỗi, vui lòng thử lại',
+        text1: `${t('toast.del_err')}`,
         type: 'error',
         position: 'bottom',
       });
