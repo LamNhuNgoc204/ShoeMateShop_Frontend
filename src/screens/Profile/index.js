@@ -10,7 +10,7 @@ import ChildItemGadget from './Mygadget';
 import {PROFILE} from '../../api/mockData';
 import appst from '../../constants/AppStyle';
 import ProductList from '../Product/ProductList';
-
+import AxiosInstance from '../../helpers/AxiosInstance';
 const ProfileScreen = () => {
   const {t} = useTranslation();
   const navigation = useNavigation();
@@ -107,7 +107,7 @@ const ProfileScreen = () => {
       </View>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate('HomeWallet')}
+        onPress={handleToWallet}
         style={styles.myGadget}>
         <Image
           style={styles.ic_mygadget}

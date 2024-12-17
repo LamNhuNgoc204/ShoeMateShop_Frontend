@@ -29,22 +29,43 @@ const VoucherScreen = ({route}) => {
         });
         console.log('response', response);
         if (response.code =="success" ) {
-          ToastAndroid.show(`${t('search.use_vc')}`, ToastAndroid.SHORT);
+          Toast.show({
+            type: 'success',
+            text1: t('search.use_vc'),
+            position: 'bottom',
+          });
+         
           navigation.navigate('CheckOutScreen', {responseVoucher: response});
         }else if(response.code == "minordervalue") {
 
-          ToastAndroid.show(`Không đủ điều kiện sử dụng voucher`, ToastAndroid.SHORT);
+          Toast.show({
+            type: 'error',
+            text1: t('search.voucher_condition_error'),
+            position: 'bottom',
+          });
         }
          else if(response.code == "usedBy") {
           ToastAndroid.show(`${t('search.used_vc')}`, ToastAndroid.SHORT);
         } else if(response.code == "quantity") {
-          ToastAndroid.show(`Số lượng voucher đã hết`, ToastAndroid.SHORT);
+          Toast.show({
+            text1: `${t('search.voucher_out_of_stock')}`,
+            type: 'error',
+            position: 'bottom',
+          });
         }else {
-          ToastAndroid.show(`Vui lòng thử lại sau`, ToastAndroid.SHORT); 
+          Toast.show({
+            text1: `${t('search.voucher_min_order')}`,
+            type: 'error',
+            position: 'bottom',
+          });
         }
       } catch (error) {
         console.log(error);
-        ToastAndroid.show(`${t('search.used_vc')}`, ToastAndroid.SHORT);
+        Toast.show({
+          text1: `${t('search.voucher_error')}`,
+          type: 'error',
+          position: 'bottom',
+        });
       }
     }
   };

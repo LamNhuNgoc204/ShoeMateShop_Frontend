@@ -1,11 +1,11 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-// import Icon from 'react-native-vector-icons/Ionicons';
+import {useTranslation} from 'react-i18next';
 
 const TransferSuccessScreen = () => {
   const navigation = useNavigation();
-
+  const {t} = useTranslation();
   return (
     <View style={styles.container}>
       <View style={styles.card}>
@@ -14,17 +14,16 @@ const TransferSuccessScreen = () => {
           style={styles.icon}
           resizeMode="contain"
         />
-        <Text style={styles.title}>Chuyển tiền thành công!</Text>
+        <Text style={styles.title}>{t('transferSuccess.title')}</Text>
         <Text style={styles.description}>
-          Giao dịch của bạn đã được xử lý và hoàn tất. Cảm ơn bạn đã sử dụng
-          dịch vụ của chúng tôi.
+        {t('transferSuccess.description')}
         </Text>
         <TouchableOpacity
           style={styles.button}
           onPress={() =>
             navigation.navigate('HomeWallet')
           }>
-          <Text style={styles.buttonText}>Quay về trang chủ</Text>
+          <Text style={styles.buttonText}>{t('transferSuccess.buttonText')}</Text>
         </TouchableOpacity>
       </View>
     </View>

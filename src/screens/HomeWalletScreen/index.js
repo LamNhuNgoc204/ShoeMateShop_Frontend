@@ -12,7 +12,7 @@ const HomeWallet = () => {
   const [balance, setBalance] = useState(0);
   const [transactions, setTransactions] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
-  const [transactionType, setTransactionType] = useState(''); // Thêm state cho loại giao dịch
+  const [transactionType, setTransactionType] = useState('');
   const {t} = useTranslation();
   const navigation = useNavigation();
 
@@ -87,7 +87,7 @@ const HomeWallet = () => {
                   <TouchableOpacity
                     style={styles.button}
                     onPress={() => navigation.navigate('TransferWalletScreen', {balance: balance})}>
-                    <Text style={styles.buttonText}>Chuyển tiền</Text>
+                    <Text style={styles.buttonText}>{t('wallets.transfer')}</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -99,5 +99,4 @@ const HomeWallet = () => {
     </View>
   );
 };
-
 export default HomeWallet;

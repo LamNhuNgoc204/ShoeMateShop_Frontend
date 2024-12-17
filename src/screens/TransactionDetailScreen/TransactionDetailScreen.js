@@ -8,10 +8,12 @@ import {
   Image,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
 
 const TransactionDetailScreen = ({route}) => {
   const {transaction} = route.params;
   const navigation = useNavigation();
+  const {t} = useTranslation();
 
   const formatVND = amount => {
     return Math.abs(amount)
@@ -25,8 +27,11 @@ const TransactionDetailScreen = ({route}) => {
   };
 
   const getTransactionTypeText = () => {
-    if (transaction.type === 'deposit') return 'Nạp tiền';
-    return transaction.amount < 0 ? 'Chuyển tiền' : 'Nhận tiền';
+    if (transaction.type === 'deposit') return t('transactionDetail.deposit');
+    if (transaction.type === 'payment') return t('transactionDetail.payment');
+    return transaction.amount < 0
+      ? t('transactionDetail.transfer')
+      : t('transactionDetail.receive');
   };
 
   return (
@@ -38,7 +43,7 @@ const TransactionDetailScreen = ({route}) => {
             source={require('../../assets/icons/ic_backwhite.png')}
           />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Chi tiết giao dịch</Text>
+        <Text style={styles.headerTitle}>{t('transactionDetail.headerTitle')}</Text>
         <View style={{width: 30}} />
       </View>
 
@@ -53,42 +58,41 @@ const TransactionDetailScreen = ({route}) => {
             {formatVND(transaction.amount)} VNĐ
           </Text>
           <Text
-  style={[
-    styles.statusText,
-    {
-      color:
-        transaction.type === 'deposit'
-          ? '#1E88E5'
-          : transaction.type === 'payment'
-          ? '#1E88E5'
-          : getStatusColor(),
-    },
-  ]}>
-  {transaction.type === 'deposit'
-    ? 'NẠP TIỀN'
-    : transaction.type === 'payment'
-    ? 'THANH TOÁN'
-    : getTransactionTypeText().toUpperCase()}
-</Text>
-
+            style={[
+              styles.statusText,
+              {
+                color:
+                  transaction.type === 'deposit'
+                    ? '#1E88E5'
+                    : transaction.type === 'payment'
+                    ? '#1E88E5'
+                    : getStatusColor(),
+              },
+            ]}>
+            {transaction.type === 'deposit'
+              ? t('transactionDetail.deposit').toUpperCase()
+              : transaction.type === 'payment'
+              ? t('transactionDetail.payment').toUpperCase()
+              : getTransactionTypeText().toUpperCase()}
+          </Text>
         </View>
 
         <View style={styles.detailsContainer}>
-          <DetailItem label="Loại giao dịch" value={getTransactionTypeText()} />
+          <DetailItem label={t('transactionDetail.transactionType')} value={getTransactionTypeText()} />
           <DetailItem
-            label="Ngày giao dịch"
+            label={t('transactionDetail.transactionDate')}
             value={new Date(transaction.timestamp).toLocaleString('vi-VN')}
           />
-          <DetailItem label="ID Giao dịch" value={transaction.transactionId} />
+          <DetailItem label={t('transactionDetail.transactionId')} value={transaction.transactionId} />
           <DetailItem
             label={
               transaction.type === 'deposit'
-                ? 'Nguồn nạp'
+                ? t('transactionDetail.source')
                 : transaction.type === 'payment'
-                ? 'Thanh toán đơn hàng'
+                ? t('transactionDetail.note')
                 : transaction.amount < 0
-                ? 'Người nhận'
-                : 'Người gửi'
+                ? t('transactionDetail.recipient')
+                : t('transactionDetail.sender')
             }
             value={
               transaction.type === 'deposit'
@@ -102,11 +106,11 @@ const TransactionDetailScreen = ({route}) => {
           />
 
           <DetailItem
-            label="Lời nhắn"
+            label={t('transactionDetail.note')}
             value={
               transaction.type === 'payment'
-                ? transaction.paymentNote || 'Không có lời nhắn'
-                : transaction.message || 'Không có lời nhắn'
+                ? transaction.paymentNote || t('transactionDetail.noMessage')
+                : transaction.message || t('transactionDetail.noMessage')
             }
           />
         </View>

@@ -35,6 +35,7 @@ const LoginScreen = () => {
   const {isLoading} = useSelector(state => state.user);
   const authState = useSelector(state => state.user);
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  console.log(isLoading)
 
   const handleLogin = async () => {
     if (!validateFieldsLogin(email, password, setErrors)) {
@@ -49,7 +50,9 @@ const LoginScreen = () => {
     const resultAction = await dispatch(login(body));
     if (login.fulfilled.match(resultAction)) {
       const {user} = resultAction.payload;
-      if (!user?.isVerified) {
+      console.log("user",user);
+      if (user?.isVerified==false) {
+        console.log('not verified', user?.isVerified);
         navigation.navigate('OtpVerification', {email});
       } else {
         navigation.reset({

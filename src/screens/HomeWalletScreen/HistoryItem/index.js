@@ -4,8 +4,10 @@ import { spacing } from '../../../constants';
 import appst from '../../../constants/AppStyle';
 import styles from './style';
 import {useNavigation} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
 // Hàm format tiền (VNĐ)
 const formatVND = (amount) => {
+   
   if (typeof amount !== 'number') {
     throw new Error('Input must be a number');
   }
@@ -26,14 +28,14 @@ const formatDate = (timestamp) => {
 
 // Hàm xác định loại giao dịch
 const getTransactionType = (type, amount) => {
-  
+  const {t} = useTranslation();
   switch (type) {
     case 'deposit':
-      return 'Nạp tiền';
+      return t('transactionDetail.deposit');
     case 'payment':
-      return 'Thanh toán';
+      return t('transactionDetail.payment');
     case 'transfer':
-      return amount > 0 ? 'Nhận tiền' : 'Chuyển tiền';
+      return amount > 0 ? t('transactionDetail.receive') : t('transactionDetail.transfer');
     default:
       return 'Không xác định';
   }

@@ -16,7 +16,7 @@ import {useTranslation} from 'react-i18next';
 import AxiosInstance from '../../helpers/AxiosInstance';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
-
+import dayjs from 'dayjs';
 const OtpVerification = () => {
   const {t} = useTranslation();
   const navigation = useNavigation();
@@ -42,15 +42,14 @@ const OtpVerification = () => {
       await AxiosInstance().post('auth/resend-otp', {email});
       Toast.show({
         text1: t('notifications.send_otp_success'),
-        type:'success',
-      }
-      );
+        type: 'success',
+      });
       setResendOtp(true);
       setTimer(60);
     } catch (error) {
       Toast.show({
         text1: t('notifications.send_otp_error'),
-        type:'error',
+        type: 'error',
       });
     }
   };
@@ -77,21 +76,26 @@ const OtpVerification = () => {
       });
 
       if (response.status && response.data.token) {
+        const expiredTokenDate = dayjs()
+          .add('7', 'day')
+          .format('YYYY-MM-DD HH:mm:ss');
+          console.log("response.data.token", response.data.token);
         await AsyncStorage.setItem('token', response.data.token);
+        await AsyncStorage.setItem('expiredTokenDate', expiredTokenDate);
+        console.log('token=>>>> verify', AsyncStorage.getItem('token'));
         Toast.show({
           text1: t('notifications.verify_success'),
-          type:'success',
+          type: 'success',
         });
-        navigation.navigate("LoginScreen")
-        // navigation.reset({
-        //   index: 0,
-        //   routes: [{name: 'BottomNav'}],
-        // });
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'BottomNav'}],
+        });
       }
     } catch (error) {
       Toast.show({
         text1: t('notifications.verify_error'),
-        type: 'error'
+        type: 'error',
       });
     }
   };
