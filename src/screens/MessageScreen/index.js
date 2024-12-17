@@ -181,7 +181,8 @@ const renderBottom = ({
   onChangeText,
   onSend,
   onOpenBottomSheet,
-  onOpenGallery
+  onOpenGallery,
+  sending
 }) => {
   return (
     <View style={messageScreenStyle.bottomContainer}>
@@ -214,7 +215,7 @@ const renderBottom = ({
           ]}
         />
       </TouchableOpacity>
-      <TouchableOpacity onPress={onSend}>
+      <TouchableOpacity disabled={sending} onPress={onSend}>
         <Image
           source={require('../../assets/icons/send.png')}
           style={[
@@ -448,18 +449,18 @@ const MessageTypeImage = ({ message, user, onImagePress }) => {
     <View style={{ flexDirection: 'row', flexWrap: 'wrap', maxWidth: maxWidth + 16, alignSelf: user._id == message.senderId._id ? 'flex-end' : 'flex-start' }}>
       {
         message.fileUrls.map((file, index) => {
-          return <TouchableOpacity onPress={() => {onImagePress(message.fileUrls, index)}} key={index.toString() + message._id}>
+          return <TouchableOpacity onPress={() => { onImagePress(message.fileUrls, index) }} key={index.toString() + message._id}>
             <Image
-            source={{ uri: file }}
-            style={[{
-              marginVertical: 2,
-              borderRadius: 16,
-              width: maxWidth / 2 - 2,
-              height: 100,
-              borderRadius: 10,
-              marginHorizontal: 5,
-            }, (isLastMessageExpand && index == message.fileUrls.length - 1) && { width: 220 }]}
-          />
+              source={{ uri: file }}
+              style={[{
+                marginVertical: 2,
+                borderRadius: 16,
+                width: maxWidth / 2 - 2,
+                height: 100,
+                borderRadius: 10,
+                marginHorizontal: 5,
+              }, (isLastMessageExpand && index == message.fileUrls.length - 1) && { width: 220 }]}
+            />
           </TouchableOpacity>
         })
       }
@@ -487,6 +488,7 @@ const MessageScreen = ({ navigation, route }) => {
   const [images, setImages] = useState([]);
   const [imageIndex, setImageIndex] = useState(0)
   const [visible, setVisible] = useState(false);
+  const [sending, setSending] = useState(false);
 
   console.log('message length: ' + messages.length)
 
@@ -509,6 +511,7 @@ const MessageScreen = ({ navigation, route }) => {
   const sendMessage = async () => {
     try {
       console.log('send message.....');
+      setSending(true);
       const response = await sendMessageAction(
         conversation._id,
         user._id,
@@ -516,6 +519,7 @@ const MessageScreen = ({ navigation, route }) => {
       );
       console.log('response...: ', response);
       setText('');
+      setSending(false);
     } catch (error) {
       console.error('Error sending message:', error);
     }
@@ -527,6 +531,7 @@ const MessageScreen = ({ navigation, route }) => {
       return;
     }
     try {
+      setSending(true)
       const response = await AxiosInstance().post('/messages/send-message', {
         conversationId: conversation._id,
         senderId: user._id,
@@ -538,6 +543,7 @@ const MessageScreen = ({ navigation, route }) => {
         setOrderSelected(null);
         closeBottomSheet();
       }
+      setSending(false)
     } catch (error) {
       console.log('Error sending order');
     }
@@ -548,6 +554,7 @@ const MessageScreen = ({ navigation, route }) => {
       if (!curProduct) {
         return
       }
+      setSending(true)
       const response = await AxiosInstance().post('/messages/send-message', {
         conversationId: conversation._id,
         senderId: user._id,
@@ -558,6 +565,7 @@ const MessageScreen = ({ navigation, route }) => {
         console.log('send product success');
         setCurProduct(null);
       }
+      setSending(false)
     } catch (error) {
       console.log('Error sending product');
     }
@@ -588,6 +596,7 @@ const MessageScreen = ({ navigation, route }) => {
       Alert.alert('No images selected!');
       return;
     }
+    setSending(true);
 
     const formData = new FormData();
     selectedImages.forEach((image, index) => {
@@ -606,15 +615,18 @@ const MessageScreen = ({ navigation, route }) => {
         'https://upload-image-production.up.railway.app/upload/upload-multiple',
         formData,
         {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
         }
-    );
+      );
 
       console.log('Upload successful:', result.data);
       sendImage(result.data.data);
+      setSending(false)
     } catch (error) {
+
+      setSending(false)
       console.error('Upload failed:', error);
       Alert.alert('Error', 'Failed to upload images.');
     }
@@ -754,6 +766,7 @@ const MessageScreen = ({ navigation, route }) => {
   return conversation ? (
     <View style={[appst.container, messageScreenStyle.container]}>
       {renderToolbar({ onBack, name, avatar })}
+      {sending ? <Text style={{ width: '100%', textAlign: 'center' }}>Đang gửi</Text> : <View />}
       <FlatList
         ItemSeparatorComponent={<View style={{ marginBottom: 10 }} />}
         inverted={true}
@@ -797,7 +810,8 @@ const MessageScreen = ({ navigation, route }) => {
         onChangeText,
         onSend: sendMessage,
         onOpenBottomSheet: openBottomSheet,
-        onOpenGallery: pickImages
+        onOpenGallery: pickImages,
+        sending
       })}
 
       <ImageView
