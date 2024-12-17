@@ -20,10 +20,11 @@ const amoutdeposit = [
   { id: 2, amount: '200.000', value: 200000 },
   { id: 3, amount: '500.000', value: 500000 },
 ];
-
+import {useTranslation} from 'react-i18next';
 const DepositWalletScreen = ({ route }) => {
   const { balance } = route.params || 0;
   const navigation = useNavigation();
+  const { t } = useTranslation(); 
   const [selectedMethod, setSelectedMethod] = useState(null);
   const [value, setValue] = useState('');
   const [orderUrl, setOrderUrl] = useState(null);
@@ -106,18 +107,18 @@ const DepositWalletScreen = ({ route }) => {
           transactionId: apptransid,
         });
         if (response.status) {
-          Toast.show({text1: 'Nạp tiền thành công!', type: 'success'});
+          Toast.show({text1: t('depositwallet.success'), type: 'success',position: 'bottom'});
           navigation.navigate('HomeWallet');
           setOrderUrl(null); 
 
         } else {
-          Toast.show({text2 :'Nạp tiền thất bại!', type: 'error'});
+          Toast.show({text2 :t('depositwallet.fail'), type: 'error',position: 'bottom'});
         }
       } else {
-        Toast.show({text2 : 'Nạp tiền thất bại!', type: 'error'});
+        Toast.show({text2 : t('depositwallet.fail'), type: 'error',position: 'bottom'});
       }
     } catch (error) {
-      Toast.show({text1: 'Nạp tiền thất bại!', type: 'error'});
+      Toast.show({text1: t('depositwallet.fail'), type: 'error',position: 'bottom'});
     }
   };
 
@@ -127,7 +128,7 @@ const DepositWalletScreen = ({ route }) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image style={appst.icon40} source={require('../../assets/icons/ic_backwhite.png')} />
         </TouchableOpacity>
-        <Text style={styles.title}>Nạp tiền</Text>
+        <Text style={styles.title}>{t('depositwallet.deposit')}</Text>
         <View style={{ width: 40 }} />
       </View>
       
@@ -147,12 +148,12 @@ const DepositWalletScreen = ({ route }) => {
       
       <View style={styles.viewBody}>
       <View style={styles.viewInput}>
-        <Text style={styles.label}>Nhập số tiền</Text>
+        <Text style={styles.label}>{t('depositwallet.enter_amount')}</Text>
         <View style={styles.inputContainer}>
           <Text style={styles.dollarSign}>₫</Text>
           <TextInput
             style={styles.textInput}
-            placeholder="Nhập số lượng"
+            placeholder="200.000"
             keyboardType="number-pad"
             value={value}
             onChangeText={setValue}
@@ -165,7 +166,7 @@ const DepositWalletScreen = ({ route }) => {
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.currentBalance}>Số dư ví hiện tại: {formatVND(balance)} ₫</Text>
+        <Text style={styles.currentBalance}>{t('depositwallet.current_balance')} {formatVND(balance)} ₫</Text>
 
         {/* Giá trị đề xuất */}
         <View style={styles.valueButtonsContainer}>
@@ -189,7 +190,7 @@ const DepositWalletScreen = ({ route }) => {
             style={styles.depositButton}
             onPress={() => setSelectedMethod('bank')}>
             <Image source={require('../../assets/images/vcb.png')} />
-            <Text style={styles.depositButtonText}>Ngân hàng</Text>
+            <Text style={styles.depositButtonText}>{t('depositwallet.bank')}</Text>
           </TouchableOpacity>
           <View style={styles.checkboxContainer}>
             <TouchableOpacity
@@ -235,11 +236,11 @@ const DepositWalletScreen = ({ route }) => {
       {/* Tổng thanh toán */}
       <View style={styles.summaryContainer}>
         <View style={appst.rowCenter}>
-          <Text>Nạp tiền </Text>
+          <Text>{t('depositwallet.deposit')}</Text>
           <Text>{value ? formatVND(value) : '0'} ₫</Text>
         </View>
         <View style={appst.rowCenter}>
-          <Text style={styles.totalcheckout}>Tổng thanh toán</Text>
+          <Text style={styles.totalcheckout}>{t('depositwallet.total_payment')}</Text>
           <Text style={styles.totalcheckout}>
 {value ? formatVND(value) : '0'} ₫
 </Text>
@@ -249,12 +250,12 @@ const DepositWalletScreen = ({ route }) => {
       {/* Nút nạp tiền */}
       <View style={styles.bottomContainer}>
         <Text style={styles.text}>
-          Nhấn “Nạp tiền ngay”, bạn đã đồng ý tuân theo{' '}
-          <Text style={styles.TermOfUse}>Điều khoản sử dụng</Text> và{' '}
-          <Text style={styles.TermOfUse}>Chính sách bảo mật</Text> của Shoes Mate.
+        {t('depositwallet.agree_terms')}
+          <Text style={styles.TermOfUse}>{t('depositwallet.terms')}</Text> {t('depositwallet.and')}
+          <Text style={styles.TermOfUse}> {t('depositwallet.policy')}</Text> {t('depositwallet.of')}
         </Text>
         <CustomedButton
-          title={'Nạp tiền ngay'}
+          title={t('depositwallet.recharge_now')}
           titleStyle={styles.textPress}
           onPress={handleDeposit}
           style={styles.press}

@@ -105,36 +105,43 @@ const CheckOutScreen = ({route}) => {
   
     try {
       if (state.payment && state.payment.payment_method == 'Shoes Mate Wallet') {
-        console.log('Shoes Mate Wallet');
-
         const walletResponse = await AxiosInstance().post('/wallet/payment', {
           amount: tongchiphi,
         });
         if (walletResponse.code == 'walletnotcreated') {
           Toast.show({
-            text1: 'Vui lòng tạo ví trước khi thanh toán',
+            text1: t('wallet.errors.notCreated'),
             type: 'error',
           });
           setIsLoading(false);
           return;
         } else if (walletResponse.code == 'walletnotactive') {
-          Toast.show({text2: 'Ví chưa được kích hoạt'});
+          Toast.show({
+            text1: t('wallet.errors.notActive'),
+            type: 'error',
+          });
           setIsLoading(false);
           return;
         } else if (walletResponse.code == 'Insufficientbalance') {
-          Toast.show({text2: 'Không đủ số dư', type: 'error'});
+          Toast.show({
+            text1: t('wallet.errors.insufficientBalance'),
+            type: 'error',
+          });
           setIsLoading(false);
           return;
         }
         const response = await createOrder(body);
         console.log('response', response);
         if (walletResponse.status && response.status) {
-          ToastAndroid.show('Đặt hàng thành công', ToastAndroid.SHORT);
+          Toast.show({
+            text1: t('order.success'),
+            type: 'success',
+          });
           navigation.navigate('CheckoutSuccess');
           return;
         } else {
           Toast.show({
-            text1: 'Có lỗi xảy ra, vui lòng thử lại sau',
+            text1: t('order.errors.general'),
             type: 'error',
           });
           setIsLoading(false);
@@ -151,19 +158,23 @@ const CheckOutScreen = ({route}) => {
         if (response.status) {
           setIsLoading(false);
           if (state.payment.payment_method === 'Zalo Pay') {
-            console.log('vào zalo pay');
             dispatch(setPriceToPay(tongchiphi));
             dispatch(setOrderId(response.data.order._id));
             navigation.navigate('ZaloPayScreen');
           } else if (
             state.payment.payment_method === 'Thanh toán khi nhận hàng'
           ) {
-            console.log('vào zalo pay');
-            Toast.show({text1: 'Tạo đơn thành công', type: 'success'});
+            Toast.show({
+              text1: t('order.successCOD'),
+              type: 'success',
+            });
             navigation.navigate('CheckoutSuccess');
           }
         } else {
-          Toast.show({text2: 'Tạo đơn không thành công', type: 'error'});
+          Toast.show({
+            text1: t('order.errors.createFail'),
+            type: 'error',
+          });
           setIsLoading(false);
         }
       }
