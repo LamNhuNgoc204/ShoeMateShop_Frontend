@@ -88,6 +88,7 @@ const OtpVerification = () => {
         Toast.show({
           text1: t('notifications.verify_success'),
           type: 'success',
+          position: 'bottom',
         });
         navigation.reset({
           index: 0,
