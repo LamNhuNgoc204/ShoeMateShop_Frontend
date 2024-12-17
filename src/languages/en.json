@@ -520,6 +520,10 @@
       "policy": "Privacy Policy",
       "of": "of Shoes Mate",
      "success": "Deposit successful",
-    "fail": "Deposit failed"
+    "fail": "Deposit failed",
+    "toastemrty":"Amount cannot be empty!",
+    "emrtypayment":"Please choose at least one payment method!",
+    "bankmaintenance":"Bank is under maintenance, please choose another payment method!",
+    "cannottrade":"Cannot create trade"
   }
 }

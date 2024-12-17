@@ -524,6 +524,10 @@
   "policy": "Chính sách bảo mật",
   "of": "của Shoes Mate",
   "success": "Nạp tiền thành công",
-  "fail": "Nạp tiền thất bại"
+  "fail": "Nạp tiền thất bại",
+  "toastemrty":"Tiền không được bỏ trống!",
+  "emrtypayment":"Vui lòng chọn ít nhất 1 phương thức thanh toán!",
+  "bankmaintenance":"Ngân hàng đang bảo trì, vui lòng chọn phương thức thanh toán khác!",
+  "cannottrade":"Không thể tạo giao dịch"
   }
 }
