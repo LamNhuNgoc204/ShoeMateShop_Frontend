@@ -488,5 +488,38 @@
     "title": "Transfer Successful!",
     "description": "Your transaction has been processed and completed. Thank you for using our service.",
     "buttonText": "Go back to Home"
+  },
+  "wallet": {
+    "errors": {
+      "notCreated": "Please create a wallet before making a payment",
+      "notActive": "Wallet is not activated",
+      "insufficientBalance": "Insufficient balance"
+    }
+  },
+  "order": {
+    "success": "Order placed successfully",
+    "successCOD": "Order created successfully",
+    "errors": {
+      "general": "An error occurred, please try again",
+      "createFail": "Order creation failed"
+    }
+  },
+  "depositwallet": {
+
+      "deposit": "Deposit",
+      "enter_amount": "Enter amount",
+      "current_balance": "Current wallet balance",
+      "payment_method": "Payment method",
+      "bank": "Bank",
+      "zalopay": "Zalo Pay",
+      "recharge_now": "Recharge now",
+      "total_payment": "Total payment",
+      "agree_terms": "By pressing 'Recharge now', you agree to ",
+      "terms": "Terms of Use",
+      "and": "and ",
+      "policy": "Privacy Policy",
+      "of": "of Shoes Mate",
+     "success": "Deposit successful",
+    "fail": "Deposit failed"
   }
 }

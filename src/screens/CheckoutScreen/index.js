@@ -119,7 +119,7 @@ const CheckOutScreen = ({route}) => {
         });
         if (walletResponse.code == 'walletnotcreated') {
           Toast.show({
-            text1: 'Vui lòng tạo ví trước khi thanh toán',
+            text1: t('wallet.errors.notCreated'),
             type: 'error',
             position: 'bottom',
           });
@@ -145,12 +145,15 @@ const CheckOutScreen = ({route}) => {
         const response = await createOrder(body);
         console.log('response', response);
         if (walletResponse.status && response.status) {
-          ToastAndroid.show('Đặt hàng thành công', ToastAndroid.SHORT);
+          Toast.show({
+            text1: t('order.success'),
+            type: 'success',
+          });
           navigation.navigate('CheckoutSuccess');
           return;
         } else {
           Toast.show({
-            text1: 'Có lỗi xảy ra, vui lòng thử lại sau',
+            text1: t('order.errors.general'),
             type: 'error',
           });
           setIsLoading(false);
@@ -166,7 +169,6 @@ const CheckOutScreen = ({route}) => {
         if (response.status) {
           setIsLoading(false);
           if (state.payment.payment_method === 'Zalo Pay') {
-            console.log('vào zalo pay');
             dispatch(setPriceToPay(tongchiphi));
             dispatch(setOrderId(response.data.order._id));
             navigation.navigate('ZaloPayScreen');

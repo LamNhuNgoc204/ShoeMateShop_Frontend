@@ -493,5 +493,37 @@
     "title": "Chuyển tiền thành công!",
     "description": "Giao dịch của bạn đã được xử lý và hoàn tất. Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi.",
     "buttonText": "Quay về trang chủ"
+  },
+  "wallet": {
+    "errors": {
+      "notCreated": "Vui lòng tạo ví trước khi thanh toán",
+      "notActive": "Ví chưa được kích hoạt",
+      "insufficientBalance": "Không đủ số dư"
+    }
+  },
+  "order": {
+    "success": "Đặt hàng thành công",
+    "successCOD": "Tạo đơn thành công",
+    "errors": {
+      "general": "Có lỗi xảy ra, vui lòng thử lại",
+      "createFail": "Tạo đơn không thành công"
+    }
+  },
+  "depositwallet": {
+  "deposit": "Nạp tiền",
+  "enter_amount": "Nhập số tiền",
+  "current_balance": "Số dư ví hiện tại:",
+  "payment_method": "Phương thức thanh toán",
+  "bank": "Ngân hàng",
+  "zalopay": "Zalo Pay",
+  "recharge_now": "Nạp tiền ngay",
+  "total_payment": "Tổng thanh toán",
+  "agree_terms": "Nhấn “Nạp tiền ngay”, bạn đã đồng ý tuân theo ",
+  "terms": "Điều khoản sử dụng",
+  "and": "và ",
+  "policy": "Chính sách bảo mật",
+  "of": "của Shoes Mate",
+  "success": "Nạp tiền thành công",
+  "fail": "Nạp tiền thất bại"
   }
 }
