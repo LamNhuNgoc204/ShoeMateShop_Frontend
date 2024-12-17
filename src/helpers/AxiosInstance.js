@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const AxiosInstance = (contentType = 'application/json') => {
   const axiosInstance = axios.create({
-    baseURL: `http://192.168.1.68:3000/`,
+    baseURL: `http://192.168.9.38:3000/`,
   });
 
   axiosInstance.interceptors.request.use(
@@ -29,7 +29,7 @@ const AxiosInstance = (contentType = 'application/json') => {
 
   //     if (dayjs().isAfter(expiredTokenDate)) {
   //       const response = await axios.post(
-  //         'https://192.168.1.68:3000/auth/refresh-token',
+  //         'https://192.168.9.38:3000/auth/refresh-token',
   //         {},
   //         {
   //           headers: {
