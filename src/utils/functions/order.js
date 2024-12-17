@@ -1,3 +1,4 @@
+import Toast from 'react-native-toast-message';
 import {cancelOrder} from '../../api/OrderApi';
 
 export const handleOrderDetail = async (
@@ -10,7 +11,7 @@ export const handleOrderDetail = async (
   if (orderDetail.orderStatus === 'pending') {
     const response = await cancelOrder(index);
     if (response.status) {
-      ToastAndroid.show(t('toast.cancel_order'), ToastAndroid.SHORT);
+      Toast.show({text1: t('toast.cancel_order'), type: 'success'});
       navigation.goBack();
     }
   }

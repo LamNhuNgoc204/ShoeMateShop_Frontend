@@ -24,6 +24,7 @@ import {useDispatch} from 'react-redux';
 import {setAddress} from '../../../redux/reducer/cartReducer';
 import SkeletonLoader from '../../../placeholders/addresses/AddressSkeleton';
 import Loading from '../../../components/Loading';
+import Toast from 'react-native-toast-message';
 
 const ChooseAddress = ({navigation, route}) => {
   const {t} = useTranslation();
@@ -84,10 +85,10 @@ const ChooseAddress = ({navigation, route}) => {
               );
               setAddresses(updatedAddresses);
 
-              ToastAndroid.show(
-                `${t('toast.del_add_succ')}`,
-                ToastAndroid.SHORT,
-              );
+              Toast.show({
+                text1: `${t('toast.del_add_succ')}`,
+                type: 'success'
+            });
             }
           } catch (error) {
             console.log('Error removing item from address:', error);
@@ -116,7 +117,7 @@ const ChooseAddress = ({navigation, route}) => {
               : {...item, isDefault: false},
           );
           setAddresses(updatedAddresses);
-          ToastAndroid.show(`${t('toast.change_add')}`, ToastAndroid.SHORT);
+          Toast.show({text2 : `${t('toast.change_add')}`, type : 'success'});
           setIsSetDefault(false);
         }
       } catch (error) {

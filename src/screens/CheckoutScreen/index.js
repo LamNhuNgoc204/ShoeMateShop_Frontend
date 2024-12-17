@@ -30,6 +30,7 @@ import {
 } from '../../redux/thunks/CartThunks';
 import {useNavigation} from '@react-navigation/native';
 import {formatPrice} from '../../utils/functions/formatData';
+import Toast from 'react-native-toast-message';
 
 const CheckOutScreen = ({route}) => {
   const {responseVoucher} = route.params || {};
@@ -74,7 +75,7 @@ const CheckOutScreen = ({route}) => {
 
   const handleOrder = async () => {
     if (!addressDefault) {
-      ToastAndroid.show(`${t('nothing.adress_war')}`, ToastAndroid.SHORT);
+      Toast.show({text1: `${t('nothing.adress_war')}`, type: 'success'});
       return;
     }
 
@@ -117,28 +118,30 @@ const CheckOutScreen = ({route}) => {
         });
         console.log('walletResponse', walletResponse);
         if (walletResponse.status) {
-          ToastAndroid.show('Đặt hàng thành công', ToastAndroid.SHORT);
+          Toast.show({text1: 'Đặt hàng thành công', type: 'success'});
           navigation.navigate('CheckoutSuccess');
           return;
         } else if (walletResponse.code === 'Insufficientbalance') {
-          ToastAndroid.show('Không đủ số dư', ToastAndroid.SHORT);
+          Toast.show({text2 : 'Không đủ số dư', type: 'error'});
           setIsLoading(false);
           return;
         } else if (walletResponse.code === 'walletnotcreated') {
-          ToastAndroid.show(
-            'Vui lòng tạo ví trước khi thanh toán',
-            ToastAndroid.SHORT,
-          );
+          Toast.show({
+            text1: 'Vui lòng tạo ví trước khi thanh toán',
+            type: 'error',
+        });
           setIsLoading(false);
           return;
         } else if (walletResponse.code === 'walletnotactive') {
-          ToastAndroid.show('Ví chưa được kích hoạt', ToastAndroid.SHORT);
+          Toast.show({text2 : 'Ví chưa được kích hoạt'});
           setIsLoading(false);
           return;
         } else {
-          ToastAndroid.show(
-            'Có lỗi xảy ra, vui lòng thử lại sau',
-            ToastAndroid.SHORT,
+          Toast.show(
+            {
+              text1: 'Có lỗi xảy ra, vui lòng thử lại sau',
+              type: 'error'
+            }
           );
           setIsLoading(false);
           return;
@@ -154,18 +157,18 @@ const CheckOutScreen = ({route}) => {
           } else if (
             state.payment.payment_method === 'Thanh toán khi nhận hàng'
           ) {
-            ToastAndroid.show('Tạo đơn thành công', ToastAndroid.SHORT);
+            Toast.show({text1: 'Tạo đơn thành công' , type: 'success'});
             navigation.navigate('CheckoutSuccess');
           }
         } else {
-          ToastAndroid.show('Tạo đơn không thành công', ToastAndroid.SHORT);
+          Toast.show({text2 : 'Tạo đơn không thành công', type: 'error'});
         }
       }
 
       // Nếu không sử dụng ví Shoes Mate Wallet, tiếp tục tạo đơn hàng
     } catch (error) {
       console.log('Error:', error);
-      ToastAndroid.show('Đã xảy ra lỗi, vui lòng thử lại', ToastAndroid.SHORT);
+      Toast.show({text1: 'Đã xảy ra lỗi, vui lòng thử lại', type: 'error'});
       setIsLoading(false);
     }
   };

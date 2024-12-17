@@ -9,6 +9,7 @@ import CustomModal from '../../components/Modal';
 import {CustomedButton} from '../../components';
 import {useTranslation} from 'react-i18next';
 import AxiosInstance from "../../helpers/AxiosInstance"
+import Toast from 'react-native-toast-message';
 const ForgotPassWord = () => {
   const {t} = useTranslation();
   const [modalVisible, setModalVisible] = useState(false);
@@ -27,17 +28,14 @@ console.log(email);
       setModalVisible(true);
       
     }else {
-      ToastAndroid.show(
-        "Email chưa được đăng kí", 
-         ToastAndroid.SHORT,
-       );
+      Toast.show({
+        text1: "Email chưa được đăng kí",
+        type: "error",
+      });
     }
    } catch (error) {
     console.log(error);
-    ToastAndroid.show(
-      "Vui lòng thử lại sau ", 
-       ToastAndroid.SHORT,
-     );
+    Toast.show({text1: "Vui lòng thử lại sau ", type: 'error'});
    }
     
   };

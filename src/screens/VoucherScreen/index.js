@@ -9,6 +9,7 @@ import styleItem from './styleItem';
 import AxiosInstance from '../../helpers/AxiosInstance';
 import {useNavigation} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
+import Toast from 'react-native-toast-message';
 
 const VoucherScreen = ({route}) => {
   const {t} = useTranslation();
@@ -27,13 +28,22 @@ const VoucherScreen = ({route}) => {
           totalOrderValue: totalOrderValue,
         });
         if (response.status) {
-          ToastAndroid.show(`${t('search.use_vc')}`, ToastAndroid.SHORT);
+          Toast.show({
+            text1: `${t('search.use_vc')}`,
+            type:'success',
+          });
           navigation.navigate('CheckOutScreen', {responseVoucher: response});
         } else {
-          ToastAndroid.show(`${t('search.used_vc')}`, ToastAndroid.SHORT);
+          Toast.show({
+            text1: `${t('search.used_vc')}`,
+            type:'error',
+          });
         }
       } catch (error) {
-        ToastAndroid.show(`${t('search.used_vc')}`, ToastAndroid.SHORT);
+        Toast.show({
+          text1: `${t('search.used_vc')}`,
+          type:'error',
+        });
       }
     }
   };
@@ -48,11 +58,17 @@ const VoucherScreen = ({route}) => {
           setVouchers(response.data);
         } else {
           setVouchers([]);
-          ToastAndroid.show(`${t('search.get_vc_err')}`, ToastAndroid.SHORT);
+          Toast.show({
+            text1: `${t('search.get_vc_err')}`,
+            type: 'error'
+          });
         }
       } catch (error) {
         setVouchers([]);
-        ToastAndroid.show(`${t('search.get_vc_err')}`, ToastAndroid.SHORT);
+        Toast.show({
+          text1: `${t('search.get_vc_err')}`,
+          type: 'error'
+        });
       } finally {
         setIsLoading(false);
       }
@@ -63,7 +79,10 @@ const VoucherScreen = ({route}) => {
   // Tìm kiếm voucher theo từ khóa
   const searchVouchers = async () => {
     if (!searchQuery.trim()) {
-      ToastAndroid.show(`${t('search.key')}`, ToastAndroid.SHORT);
+      Toast.show({
+        text1: `${t('search.key')}`,
+        type: 'error'
+      });
       return;
     }
 
@@ -76,11 +95,17 @@ const VoucherScreen = ({route}) => {
         setVouchers(response);
       } else {
         setVouchers([]);
-        ToastAndroid.show(`${t('search.not_found')}`, ToastAndroid.SHORT);
+        Toast.show({
+          text1: `${t('search.not_found')}`,
+          type: 'error'
+        });
       }
     } catch (error) {
       setVouchers([]);
-      ToastAndroid.show(`${t('search.get_vc_err')}`, ToastAndroid.SHORT);
+      Toast.show({
+        text1: `${t('search.get_vc_err')}`,
+        type: 'error'
+      });
     } finally {
       setIsLoading(false);
     }

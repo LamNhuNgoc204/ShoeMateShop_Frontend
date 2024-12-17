@@ -31,6 +31,7 @@ import {ActivityIndicator} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {gotoCart} from '../../utils/functions/navigationHelper';
+import Toast from 'react-native-toast-message';
 
 const OrderDetail = ({route}) => {
   const {item} = route.params;
@@ -104,25 +105,28 @@ const OrderDetail = ({route}) => {
 
           const response = await addItemToCartApi(itemCart);
           if (!response.status) {
-            ToastAndroid.show(
-              `${t('toast.addtocart_fail')}: ${product?.product?.name}`,
-              ToastAndroid.SHORT,
-            );
+            Toast.show({
+              text: `${t('toast.addtocart_fail')}: ${product?.product?.name}`,
+              type: 'error'
+            });
           }
         }
 
         if (allOutOfStock) {
           console.log('Sản phẩm này hết hàng, không thêm vào giỏ hàng');
-          ToastAndroid.show(`${t('toast.out_of_stock')}`, ToastAndroid.SHORT);
+          Toast.show({
+            text1: `${t('toast.out_of_stock')}`,
+            type: 'error'
+          });
         } else {
-          ToastAndroid.show(`${t('toast.addtocart_succ')}`, ToastAndroid.SHORT);
+          Toast.show({text1: `${t('toast.addtocart_succ')}`, type: 'success'});
           gotoCart(navigation);
         }
       }
     } catch (error) {
       console.log('lỗi thêm giỏ hàng received: ', error);
 
-      ToastAndroid.show(`${t('toast.del_err')}`, ToastAndroid.SHORT);
+      Toast.show({text1: `${t('toast.del_err')}`, type: 'error'});
     } finally {
       setIsOverlayLoading(false);
     }
@@ -153,7 +157,7 @@ const OrderDetail = ({route}) => {
     const response = await cancelOrder(item._id);
     if (response.status) {
       setisCancel(false);
-      ToastAndroid.show(t('toast.cancel_order'), ToastAndroid.SHORT);
+      Toast.show({text1: t('toast.cancel_order'), type: 'success'});
       navigation.navigate('OrderScreen', {initialRoute: t('orders.cancel')});
     }
     setModalVisible(false);
@@ -193,7 +197,7 @@ const OrderDetail = ({route}) => {
     try {
       const response = await handleReturnRq(id, reason);
       if (response.status) {
-        ToastAndroid.show(`${t('toast.returnRq')}`, ToastAndroid.SHORT);
+        Toast.show({text2 : `${t('toast.returnRq')}`, type: 'success'});
         navigation.navigate('OrderScreen', {
           initialRoute: t('orders.return'),
         });
@@ -207,7 +211,7 @@ const OrderDetail = ({route}) => {
     try {
       const response = await updateOrderStatus(id, 'completed');
       if (response.status) {
-        ToastAndroid.show(`${t('toast.confirm_order')}`, ToastAndroid.SHORT);
+        Toast.show({text1: `${t('toast.confirm_order')}`, type: 'success'});
         navigation.navigate('OrderScreen', {
           initialRoute: t('orders.completed'),
         });

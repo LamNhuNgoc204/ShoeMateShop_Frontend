@@ -9,6 +9,8 @@ import {useNavigation} from '@react-navigation/native';
 import {formatPrice} from '../../utils/functions/formatData';
 import {useTranslation} from 'react-i18next';
 import {useSelector} from 'react-redux';
+import Toast from 'react-native-toast-message';
+
 
 const ItemCart = ({
   item,
@@ -72,7 +74,7 @@ const ItemCart = ({
         const availableQuantity = size?.quantity || 0;
 
         if (newQuantity > availableQuantity) {
-          ToastAndroid.show(`${t('toast.max_pd')}`, ToastAndroid.SHORT);
+          Toast(`${t('toast.max_pd')}`, ToastAndroid.SHORT);
           return prev; // trả về sl hiện tại và không cho tăng tiếp
         }
       }
@@ -186,12 +188,12 @@ const ItemCart = ({
             setCheckedProducts(prevChecked =>
               prevChecked.filter(cart => cart._id !== item._id),
             );
-            ToastAndroid.show(`${t('toast.del_cart')}`, ToastAndroid.SHORT);
+            Toast.show({text1: `${t('toast.del_cart')}`, type: 'success'});
             if (swipeableRef.current) {
               swipeableRef.current.close();
             }
           } else {
-            ToastAndroid.show(`${t('toast.del_err')}`, ToastAndroid.SHORT);
+            Toast.show({text1: `${t('toast.del_err')}`, type: 'error'});
           }
         } catch (error) {
           console.log('error delete item card->', error);

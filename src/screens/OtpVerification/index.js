@@ -15,6 +15,7 @@ import {CustomedButton} from '../../components';
 import {useTranslation} from 'react-i18next';
 import AxiosInstance from '../../helpers/AxiosInstance';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 
 const OtpVerification = () => {
   const {t} = useTranslation();
@@ -39,14 +40,18 @@ const OtpVerification = () => {
   const handleResendOtp = async () => {
     try {
       await AxiosInstance().post('auth/resend-otp', {email});
-      ToastAndroid.show(
-        t('notifications.send_otp_success'),
-        ToastAndroid.SHORT,
+      Toast.show({
+        text1: t('notifications.send_otp_success'),
+        type:'success',
+      }
       );
       setResendOtp(true);
       setTimer(60);
     } catch (error) {
-      ToastAndroid.show(t('notifications.send_otp_error'), ToastAndroid.SHORT);
+      Toast.show({
+        text1: t('notifications.send_otp_error'),
+        type:'error',
+      });
     }
   };
 
@@ -73,10 +78,10 @@ const OtpVerification = () => {
 
       if (response.status && response.data.token) {
         await AsyncStorage.setItem('token', response.data.token);
-        ToastAndroid.show(
-          t('notifications.verify_success'),
-          ToastAndroid.SHORT,
-        );
+        Toast.show({
+          text1: t('notifications.verify_success'),
+          type:'success',
+        });
         navigation.navigate("LoginScreen")
         // navigation.reset({
         //   index: 0,
@@ -84,7 +89,10 @@ const OtpVerification = () => {
         // });
       }
     } catch (error) {
-      ToastAndroid.show(t('notifications.verify_error'), ToastAndroid.SHORT);
+      Toast.show({
+        text1: t('notifications.verify_error'),
+        type: 'error'
+      });
     }
   };
 

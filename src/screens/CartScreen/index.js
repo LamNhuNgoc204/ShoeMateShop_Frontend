@@ -23,6 +23,7 @@ import CartPlaceholder from '../../placeholders/product/cart';
 import ProductList from '../Product/ProductList';
 import {formatPrice} from '../../utils/functions/formatData';
 import SweetAlert from 'react-native-sweet-alert';
+import Toast from 'react-native-toast-message';
 
 const CartScreen = () => {
   const navigation = useNavigation();
@@ -111,11 +112,9 @@ const CartScreen = () => {
     setTotalPrice(total);
   }, [checkedProducts]);
 
-  // console.log('checkedProducts in cart =>  ', checkedProducts);
-
   const handleOrder = () => {
     if (checkedProducts.length == 0) {
-      ToastAndroid.show(`${t('toast.choose_pd')}`, ToastAndroid.SHORT);
+      Toast.show({text1: `${t('toast.choose_pd')}`, type: 'success'});
     } else {
       dispatch(setOrderData(checkedProducts));
       dispatch(setToltalPrice(totalPrice));
@@ -137,9 +136,9 @@ const CartScreen = () => {
         try {
           const res = await clearCart();
           if (res) {
-            ToastAndroid.show(`${t('toast.del_all_cart')}`, ToastAndroid.SHORT);
+            Toast.show({text1:`${t('toast.del_all_cart')}`, type: 'success' });
           } else {
-            ToastAndroid.show(`${t('toast.del_err')}`, ToastAndroid.SHORT);
+            Toast.show({text1: `${t('toast.del_err')}`, type: 'error'});
           }
         } catch (error) {
           console.log('Lỗi xóa giỏ hàng: ', error);
