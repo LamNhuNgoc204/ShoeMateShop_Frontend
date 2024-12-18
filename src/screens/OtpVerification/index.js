@@ -78,22 +78,23 @@ const OtpVerification = () => {
       });
 
       if (response.status && response.data.token) {
-        const expiredTokenDate = dayjs()
-          .add('7', 'day')
-          .format('YYYY-MM-DD HH:mm:ss');
-        console.log('response.data.token', response.data.token);
-        await AsyncStorage.setItem('token', response.data.token);
-        await AsyncStorage.setItem('expiredTokenDate', expiredTokenDate);
-        console.log('token=>>>> verify', AsyncStorage.getItem('token'));
+        // const expiredTokenDate = dayjs()
+        //   .add('7', 'day')
+        //   .format('YYYY-MM-DD HH:mm:ss');
+        // console.log('response.data.token', response.data.token);
+        // await AsyncStorage.setItem('token', response.data.token);
+        // await AsyncStorage.setItem('expiredTokenDate', expiredTokenDate);
+        // console.log('token=>>>> verify', AsyncStorage.getItem('token'));
         Toast.show({
           text1: t('notifications.verify_success'),
           type: 'success',
           position: 'bottom',
         });
-        navigation.reset({
-          index: 0,
-          routes: [{name: 'BottomNav'}],
-        });
+        navigation.navigate('LoginScreen');
+        // navigation.reset({
+        //   index: 0,
+        //   routes: [{name: 'BottomNav'}],
+        // });
       }
     } catch (error) {
       Toast.show({

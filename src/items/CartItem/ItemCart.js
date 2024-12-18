@@ -108,12 +108,29 @@ const ItemCart = ({
           style: 'error',
           cancellable: true,
         },
-        () => {
-          // setProductQuantity(0);
-          setCheckedProducts(
-            checkedProducts.filter(cart => cart._id !== item._id),
-          );
-          setCards(cards.filter(cart => cart._id !== item._id));
+        async () => {
+          try {
+            const productData = {
+              product_id: item.product_id._id,
+              size_id: item.size_id._id,
+              quantity: 0,
+            };
+            const delitem = await updateCartItem(productData);
+            console.log('delitem==>', delitem);
+
+            if (delitem.status) {
+              console.log('Cập nhật số lượng cart thành công');
+
+              setCheckedProducts(
+                checkedProducts.filter(cart => cart._id !== item._id),
+              );
+              setCards(cards.filter(cart => cart._id !== item._id));
+            } else {
+              console.log('Cập nhật số lượng cart thất bại');
+            }
+          } catch (error) {
+            console.log('error==>', error);
+          }
         },
       );
     }
@@ -122,16 +139,18 @@ const ItemCart = ({
   useEffect(() => {
     const updateQuantity = async () => {
       try {
-        const productData = {
-          product_id: item.product_id._id,
-          size_id: item.size_id._id,
-          quantity: productQuantity,
-        };
-        const response = await updateCartItem(productData);
-        if (response.status) {
-          console.log('Cập nhật so luong cart thành công');
-        } else {
-          console.log('Cập nhật so luong cart thất bại');
+        if (productQuantity > 0) {
+          const productData = {
+            product_id: item.product_id._id,
+            size_id: item.size_id._id,
+            quantity: productQuantity,
+          };
+          const response = await updateCartItem(productData);
+          if (response.status) {
+            console.log('Cập nhật so luong cart thành công');
+          } else {
+            console.log('Cập nhật so luong cart thất bại');
+          }
         }
       } catch (error) {
         SweetAlert.showAlertWithOptions({
